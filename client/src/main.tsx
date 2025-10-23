@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
-import { initGA, logPageView } from "./analytics/ga";
+import { initGA, logPageView } from "./analytics/ga.ts";
 import App from "./App.tsx";
-import { router } from "./App";
+import { router } from "./App.tsx";
 import React from "react";
 
 initGA();

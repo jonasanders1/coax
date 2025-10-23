@@ -51,9 +51,7 @@ const ChatBot = () => {
         description: error instanceof Error ? error.message : "Unknown error",
       });
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 4000);
+      setIsLoading(false);
     }
   };
 
@@ -63,7 +61,7 @@ const ChatBot = () => {
       <Button
         onClick={openChat}
         size="icon"
-        className="h-12 w-12 rounded-full shadow-lg border border-border"
+        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-lg border border-border"
       >
         <MessageCircle className="h-7 w-7" />
       </Button>

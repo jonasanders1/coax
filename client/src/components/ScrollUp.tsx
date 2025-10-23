@@ -1,7 +1,7 @@
 import "./scrollUp.css";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
-import { Link } from "react-router-dom";
+
 
 const ScrollUp = () => {
   
@@ -18,7 +18,7 @@ const ScrollUp = () => {
     <a href="#" className="scrollup">
       <Button
         size="icon"
-        className="h-12 w-12 rounded-full shadow-lg border border-border"
+        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-lg border border-border"
       >
         <ArrowUp className="h-10 w-10" />
       </Button>

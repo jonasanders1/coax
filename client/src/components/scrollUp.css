@@ -1,0 +1,9 @@
+.scrollup {
+  transform: translatex(200%);
+  transition: 0.4s;
+}
+
+/* Show Scroll */
+.show-scroll {
+  transform: translatex(0%);
+}
