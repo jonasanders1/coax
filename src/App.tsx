@@ -19,7 +19,7 @@ import FAQ from "./pages/FAQ";
 import References from "./pages/References";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import { initGA, logPageView } from "./analytics/ga";
+
 import ScrollUp from "./components/ScrollUp";
 
 import { AppProvider } from "@/context/AppContext";

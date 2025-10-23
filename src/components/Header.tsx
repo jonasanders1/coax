@@ -16,10 +16,8 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // navItems shared via src/navItems.ts
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <nav className="container mx-auto px-4 py-4 max-w-6xl">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -50,7 +48,7 @@ const Header = () => {
           </div>
           <Button className="hidden lg:flex" onClick={openChat} size="sm">
             <MessageCircle className="h-4 w-4" />
-            Chat med ThermaBuddy
+            ThermaBuddy
           </Button>
 
           {/* Mobile Menu Button */}
@@ -68,50 +66,50 @@ const Header = () => {
         {/* Mobile Navigation */}
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetContent
-              side="right"
-              className="w-full sm:w-[400px]"
-              closeSize="lg"
-            >
-              <SheetHeader>
-                <Link to="/" className="flex flex-col leading-tight">
-                  <img src={logo} className="w-24" alt="COAX" />
-                </Link>
-              </SheetHeader>
+            side="right"
+            className="w-full sm:w-[400px]"
+            closeSize="lg"
+          >
+            <SheetHeader>
+              <Link to="/" className="flex flex-col leading-tight">
+                <img src={logo} className="w-24" alt="COAX" />
+              </Link>
+            </SheetHeader>
 
-              <nav className="flex flex-col gap-4 mt-8 border-t border-border pt-4">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
-                      isActive(item.path)
-                        ? "bg-primary text-primary-foreground border-b border-primary"
-                        : "bg-gray-100 hover:bg-gray-200"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="inline-flex items-center gap-3">
-                      {item.icon ? (
-                        <item.icon className="h-5 w-5" aria-hidden="true" />
-                      ) : null}
-                      {item.label}
-                    </span>
-                  </Link>
-                ))}
-                <div className="border-t border-border pt-4">
-                  <Button
-                    size="lg"
-                    className="w-full mt-2"
-                    onClick={() => {
-                      openChat();
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Chat med ThermaBuddy
-                  </Button>
-                </div>
-              </nav>
+            <nav className="flex flex-col gap-4 mt-8 border-t border-border pt-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
+                    isActive(item.path)
+                      ? "bg-primary text-primary-foreground border-b border-primary"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="inline-flex items-center gap-3">
+                    {item.icon ? (
+                      <item.icon className="h-5 w-5" aria-hidden="true" />
+                    ) : null}
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+              <div className="border-t border-border pt-4">
+                <Button
+                  size="lg"
+                  className="w-full mt-2"
+                  onClick={() => {
+                    openChat();
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  Chat med ThermaBuddy
+                </Button>
+              </div>
+            </nav>
           </SheetContent>
         </Sheet>
       </nav>

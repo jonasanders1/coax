@@ -2,7 +2,7 @@
   "products": [
     {
       "id": "xfj-2",
-      "name": "XFJ-2 Momentan Elektrisk Varmtvannsbereder",
+      "name": "XFJ-2",
       "category": "Tankløs varmtvannsbereder",
       "phase": "1-fase",
       "images": ["cabinImage", "cabinImage"],
@@ -37,7 +37,7 @@
     },
     {
       "id": "xfj-3",
-      "name": "XFJ-3 Momentan Elektrisk Varmtvannsbereder",
+      "name": "XFJ-3",
       "category": "Tankløs varmtvannsbereder",
       "phase": "3-fase",
       "images": ["homeImage"],
@@ -74,7 +74,7 @@
     },
     {
       "id": "xfj-2-55",
-      "name": "XFJ-2-55 Kompakt Varmtvannsbereder",
+      "name": "XFJ-2-55",
       "category": "Tankløs varmtvannsbereder",
       "phase": "1-fase",
       "images": [],
@@ -120,7 +120,7 @@
     },
     {
       "id": "xfj-2-230volt",
-      "name": "XFJ-2-/230volt Momentan Varmtvannsbereder",
+      "name": "XFJ-2-/230volt",
       "category": "Tankløs varmtvannsbereder",
       "phase": "1-fase",
       "images": ["commercialImage"],
@@ -189,7 +189,7 @@
     },
     {
       "id": "varmepumpe",
-      "name": "Alt-i-ett Luft-til-Vann Varmepumpe",
+      "name": "Alt-i-ett Varmepumpe",
       "category": "Varmepumpe",
       "phase": "1-fase",
       "images": ["homeImage"],

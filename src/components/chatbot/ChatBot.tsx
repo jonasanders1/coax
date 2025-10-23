@@ -63,7 +63,7 @@ const ChatBot = () => {
       <Button
         onClick={openChat}
         size="icon"
-        className="h-12 w-12 rounded-full shadow-lg"
+        className="h-12 w-12 rounded-full shadow-lg border border-border"
       >
         <MessageCircle className="h-7 w-7" />
       </Button>
@@ -100,7 +100,7 @@ const ChatBot = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="relative flex-shrink-0 bg-white border-2 border-border rounded-lg focus-within:border-primary m-3"
+            className="relative flex-shrink-0 bg-white border border-border rounded-lg focus-within:border-primary m-3"
           >
             <Textarea
               value={input}

@@ -29,12 +29,16 @@ const ProductDetailsRedesigned = () => {
   const location = useLocation() as { state?: { product?: Product } };
   let product = location.state?.product;
   if (!product && id) {
-    const fromJson = (productDetails as any).products.find((p: any) => p.id === id);
+    const fromJson = (productDetails as any).products.find(
+      (p: any) => p.id === id
+    );
     if (fromJson) {
       product = {
         ...fromJson,
         images: Array.isArray(fromJson.images)
-          ? fromJson.images.map((key: string) => imageMap[key] || imageMap.homeImage)
+          ? fromJson.images.map(
+              (key: string) => imageMap[key] || imageMap.homeImage
+            )
           : [],
       } as Product;
     }
@@ -46,10 +50,10 @@ const ProductDetailsRedesigned = () => {
         <div className="text-center max-w-md">
           <h2 className="text-2xl font-semibold mb-2">Produkt ikke funnet</h2>
           <p className="text-muted-foreground mb-4">
-            Vi fant ikke produktdata i navigasjonen. Gå tilbake til
+            Vi fant ikke produktdata for dette produktet. Gå tilbake til
             produktoversikten og prøv igjen.
           </p>
-          <Button asChild variant="outline">
+          <Button asChild variant="secondary">
             <RouterLink to="/produkter">Tilbake til produkter</RouterLink>
           </Button>
         </div>
@@ -63,7 +67,9 @@ const ProductDetailsRedesigned = () => {
     (Array.isArray(product.voltage)
       ? product.voltage.join(", ")
       : product.voltage) ||
-    (Array.isArray(specs?.voltage) ? specs?.voltage?.join(", ") : specs?.voltage);
+    (Array.isArray(specs?.voltage)
+      ? specs?.voltage?.join(", ")
+      : specs?.voltage);
 
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background">
@@ -80,7 +86,7 @@ const ProductDetailsRedesigned = () => {
         </Breadcrumbs>
 
         {/* Hero Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Image */}
           <div className="relative rounded-2xl overflow-hidden shadow-sm bg-muted/30 aspect-[4/3]">
             {images && images.length > 0 ? (
@@ -97,17 +103,48 @@ const ProductDetailsRedesigned = () => {
           </div>
 
           {/* Details */}
-          <div className="space-y-6">
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">{phase}</Badge>
-              <Badge variant="outline">{category}</Badge>
-              {specs?.flowRates?.[0] && (
-                <Badge variant="outline">{specs.flowRates[0]}</Badge>
-              )}
-            </div>
-
+          <div className="space-y-4">
+            {/* Product name */}
             <h1 className="text-4xl font-bold tracking-tight">{name}</h1>
 
+            {/* Quick facts */}
+
+            <div className="rounded-xl border p-4 bg-muted/40 text-sm space-y-1">
+              <div>
+                <strong className="text-foreground">Fase:</strong> {phase}
+              </div>
+              {voltageStr && (
+                <div>
+                  <strong className="text-foreground">Spenning:</strong>{" "}
+                  {voltageStr}
+                </div>
+              )}
+              {specs?.flowRates?.[0] && (
+                <div>
+                  <strong className="text-foreground">Kapasitet:</strong>{" "}
+                  {specs.flowRates[0]}
+                </div>
+              )}
+              <div>
+                <strong className="text-foreground">Kategori:</strong>{" "}
+                {category}
+              </div>
+            </div>
+
+            {/* Ideal for */}
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Ideell for</h2>
+              <ul className="space-y-1">
+                {ideal.map((item, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <span className="text-green-600">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Price */}
             <div>
               <span className="block text-muted-foreground text-sm mb-1">
                 Fra
@@ -120,10 +157,7 @@ const ProductDetailsRedesigned = () => {
               </span>
             </div>
 
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              {description}
-            </p>
-
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button asChild className="flex-1 text-base">
                 <RouterLink to="/kontakt">Kontakt for kjøp</RouterLink>
@@ -135,12 +169,35 @@ const ProductDetailsRedesigned = () => {
           </div>
         </section>
 
+        {/* Description */}
+        <section>
+          <div className="flex flex-col md:flex-row md:items-center gap-2 mb-3">
+            <h2 className="text-xl font-semibold">{name} beskrivelse</h2>
+            <div className="flex gap-2">
+              <Badge variant="secondary" className="text-sm">
+                {phase}
+              </Badge>
+              <Badge variant="secondary" className="text-sm">
+                {category}
+              </Badge>
+              {specs?.flowRates?.[0] && (
+                <Badge variant="secondary" className="text-sm">
+                  {specs.flowRates[0]}
+                </Badge>
+              )}
+            </div>
+          </div>
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            {description}
+          </p>
+        </section>
+
         <Separator />
 
         {/* Content Section */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Left - Specs & Ideal */}
-          <div className="md:col-span-2 space-y-8">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Left - Specs */}
+          <div className="lg:col-span-2 space-y-8">
             <Accordion
               type="single"
               collapsible
@@ -152,36 +209,21 @@ const ProductDetailsRedesigned = () => {
                   Tekniske spesifikasjoner
                 </AccordionTrigger>
                 <AccordionContent>
-                  {specs ? (
+                  {specs && (
                     <ul className="space-y-2 text-sm">
                       {Object.entries(specs).map(([key, value]) => (
-                        <li key={key} className="flex justify-between border-b pb-1">
-                          <span className="font-medium">
-                            {key}
-                          </span>
+                        <li
+                          key={key}
+                          className="flex justify-between border-b pb-1"
+                        >
+                          <span className="font-medium">{key}</span>
                           <span className="text-muted-foreground">
                             {Array.isArray(value) ? value.join(", ") : value}
                           </span>
                         </li>
                       ))}
                     </ul>
-                  ) : null}
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="ideal">
-                <AccordionTrigger className="text-lg font-semibold">
-                  Ideell for
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="grid sm:grid-cols-2 gap-2 mt-2">
-                    {ideal.map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm">
-                        <span className="text-green-600">✓</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -198,31 +240,6 @@ const ProductDetailsRedesigned = () => {
               <Button size="lg" variant="secondary" className="w-full gap-2">
                 <MessageCircle className="h-5 w-5" /> Start chat
               </Button>
-            </div>
-
-            {/* Quick facts */}
-            <div className="rounded-2xl border p-6 shadow-sm">
-              <h3 className="font-semibold mb-3">Hurtigfakta</h3>
-              <ul className="text-sm space-y-1 text-muted-foreground">
-                <li>
-                  <strong className="text-foreground">Fase:</strong> {phase}
-                </li>
-                {voltageStr && (
-                  <li>
-                    <strong className="text-foreground">Spenning:</strong>{" "}
-                    {voltageStr}
-                  </li>
-                )}
-                {specs?.flowRates?.[0] && (
-                  <li>
-                    <strong className="text-foreground">Kapasitet:</strong>{" "}
-                    {specs.flowRates[0]}
-                  </li>
-                )}
-                <li>
-                  <strong className="text-foreground">Kategori:</strong> {category}
-                </li>
-              </ul>
             </div>
 
             {/* Support */}
