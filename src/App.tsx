@@ -22,7 +22,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 // ✅ Define routes with Data Router
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: (
