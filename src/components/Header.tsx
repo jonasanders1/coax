@@ -1,15 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, MessageCircle } from "lucide-react";
-import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import logo from "@/assets/coax-logo.png";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
+import { useAppStore } from "@/store/appStore";
 
 const Header = () => {
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuOpen = useAppStore((s) => s.mobileMenuOpen);
+  const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen);
+  const toggleMobileMenu = useAppStore((s) => s.toggleMobileMenu);
   const { openChat } = useChatBot();
 
   const isActive = (path: string) => location.pathname === path;
@@ -56,7 +58,7 @@ const Header = () => {
             variant="ghost"
             size="icon"
             className="lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
             <Menu size={24} />
@@ -64,9 +66,8 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetContent
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetContent
               side="right"
               className="w-full sm:w-[400px]"
               closeSize="lg"
@@ -111,9 +112,8 @@ const Header = () => {
                   </Button>
                 </div>
               </nav>
-            </SheetContent>
-          </Sheet>
-        )}
+          </SheetContent>
+        </Sheet>
       </nav>
     </header>
   );

@@ -10,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Phone } from "lucide-react";
-import { Product } from "../types";
+import { Product } from "../types/product";
 
 type ProductCardProps = {
   product: Product;

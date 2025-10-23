@@ -14,7 +14,7 @@ import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
 import industrialImage from "@/assets/industrial-water-heater.png";
 import productDetails from "@/product-details.json";
-import type { Product as ProductType } from "@/types";
+import type { Product as ProductType } from "@/types/product";
 
 const imageMap: Record<string, string> = {
   cabinImage,

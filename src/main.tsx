@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { initGA, logPageView } from "./analytics/ga";
 import App from "./App.tsx";
-import "./index.css";
 import { router } from "./App";
+import React from "react";
 
 initGA();
 
@@ -12,4 +12,8 @@ router.subscribe(() => {
   logPageView(currentLocation);
 });
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

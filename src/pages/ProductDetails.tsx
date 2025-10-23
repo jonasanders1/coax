@@ -12,7 +12,7 @@ import { MessageCircle, Download, LifeBuoy } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import type { Product } from "@/types";
+import type { Product } from "@/types/product";
 import productDetails from "@/product-details.json";
 import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";

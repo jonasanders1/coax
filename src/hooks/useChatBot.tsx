@@ -1,5 +1,3 @@
-import { create } from 'zustand';
-
 interface ChatBotStore {
   isOpen: boolean;
   openChat: () => void;
@@ -7,9 +5,12 @@ interface ChatBotStore {
   toggleChat: () => void;
 }
 
-export const useChatBot = create<ChatBotStore>((set) => ({
-  isOpen: false,
-  openChat: () => set({ isOpen: true }),
-  closeChat: () => set({ isOpen: false }),
-  toggleChat: () => set((state) => ({ isOpen: !state.isOpen })),
-}));
+import { useAppStore } from "@/store/appStore";
+
+export const useChatBot = () => {
+  const isOpen = useAppStore((s) => s.isOpen);
+  const openChat = useAppStore((s) => s.openChat);
+  const closeChat = useAppStore((s) => s.closeChat);
+  const toggleChat = useAppStore((s) => s.toggleChat);
+  return { isOpen, openChat, closeChat, toggleChat } as ChatBotStore;
+};
