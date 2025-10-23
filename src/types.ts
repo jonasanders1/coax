@@ -1,0 +1,35 @@
+export type Product = {
+  id: string;
+  name: string;
+  category: string;
+  phase: string;
+  voltage?: string | string[];
+  priceFrom: string;
+  images?: string[];
+  description: string;
+  features?: string[];
+  ideal: string[];
+  specs: {
+    flowRates?: string[];
+    powerOptions?: string[];
+    voltage?: string | string[];
+    current?: string[];
+    fuse?: string[];
+    safetyClass?: string;
+    tempRange?: string;
+    overheatProtection?: string;
+    workingPressure?: string;
+    dimensions?: string | string[];
+    weight?: string;
+    connectionWire?: string | string[];
+    pipeSize?: string | string[];
+    tankCapacity?: string[];
+    efficiency?: string;
+    pressureResistance?: string;
+    material?: string;
+    compressor?: string;
+    flowAt40C?: string[];
+  };
+  certifications?: string[];
+  installation?: string;
+};

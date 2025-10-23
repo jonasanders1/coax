@@ -1,0 +1,258 @@
+{
+  "products": [
+    {
+      "id": "xfj-2",
+      "name": "XFJ-2 Momentan Elektrisk Varmtvannsbereder",
+      "category": "Tankløs varmtvannsbereder",
+      "phase": "1-fase",
+      "images": ["cabinImage", "cabinImage"],
+      "priceFrom": "3 475 kr",
+      "description": "XFJ-2 er en kompakt og effektiv tankløs varmtvannsbereder som leverer varmtvann umiddelbart – perfekt for dusjer i leiligheter, små hus og hytter. Med en dybde på kun 8 cm tar den minimalt med plass, og installeres enkelt på eksisterende kaldtvannsrør. Den intuitive LED-berøringsskjermen gjør temperaturstyringen presis og enkel, mens flere innebygde sikkerhetsfunksjoner sørger for trygg bruk over tid. Et moderne og energieffektivt valg for deg som ønsker pålitelig varmtvann uten tank.",
+      "features": [
+        "Alltid varmtvann uten tank – aldri tom",
+        "Kompakt design – kun 8 cm fra veggen",
+        "LED-berøringsskjerm for enkel temperaturkontroll",
+        "Sikkerhetsfunksjoner mot lekkasje, skolding og overoppheting"
+      ],
+      "ideal": [
+        "Perfekt for dusj i leiligheter og små hjem",
+        "Ideell for hytter med begrenset plass",
+        "Raskt varmtvann for små husholdninger"
+      ],
+      "specs": {
+        "flowRates": ["3 L/min", "4 L/min", "5 L/min", "6 L/min", "7 L/min"],
+        "powerOptions": ["3.5 kW", "5 kW", "7 kW", "11 kW", "15 kW"],
+        "voltage": "230V",
+        "current": ["15.2 A", "21.7 A", "30.4 A", "47.8 A", "65.2 A"],
+        "safetyClass": "IPX4",
+        "tempRange": "30–60°C",
+        "overheatProtection": "65°C",
+        "dimensions": "300 x 180 x 80 mm",
+        "weight": "2.5 kg",
+        "connectionWire": ["2.5 mm²", "4 mm²", "6 mm²", "10 mm²"],
+        "pipeSize": "10–12 mm"
+      },
+      "certifications": ["ErP Ready", "CB", "CE", "LVD", "EMC"],
+      "installation": "Veggmontert, kobles til eksisterende kaldtvannsrør, krever 1-fase 230V strøm."
+    },
+    {
+      "id": "xfj-3",
+      "name": "XFJ-3 Momentan Elektrisk Varmtvannsbereder",
+      "category": "Tankløs varmtvannsbereder",
+      "phase": "3-fase",
+      "images": ["homeImage"],
+      "priceFrom": "4 875 kr",
+      "description": "XFJ-3 er en kraftig og moderne varmtvannsbereder designet for boliger, næringsbygg og industribruk. Den leverer mellom 6–13 liter varmtvann per minutt, med stabil temperaturkontroll og høy driftssikkerhet. En elektronisk styring sikrer nøyaktig temperatur, og systemet håndterer flere tappepunkter samtidig uten trykkfall. Med sin elegante front i MDF og avanserte sikkerhetssystemer er XFJ-3 et førsteklasses valg for både privat og profesjonell bruk.",
+      "features": [
+        "Elektronisk temperaturkontroll for jevn varme",
+        "Støtter flere tappepunkter samtidig uten trykkfall",
+        "Elegant og kompakt design med blank MDF-front",
+        "Avanserte sikkerhetsfunksjoner mot lekkasje, skolding og overtrykk"
+      ],
+      "ideal": [
+        "Helårsboliger med høyt vannbehov",
+        "Næringsbygg med flere tappepunkter",
+        "Industrimiljøer med stabilt varmtvannskrav"
+      ],
+      "specs": {
+        "flowRates": ["6 L/min", "7 L/min", "9 L/min", "11 L/min", "13 L/min"],
+        "powerOptions": ["12 kW", "15 kW", "18 kW", "21 kW", "24 kW"],
+        "voltage": ["230V", "400V"],
+        "current": ["20 A", "25 A", "30 A", "35 A", "40 A"],
+        "fuse": ["3x25 A", "3x32 A", "3x40 A", "3x50 A", "63 A"],
+        "safetyClass": "IPX4",
+        "tempRange": "30–60°C",
+        "overheatProtection": "90°C (manuell tilbakestilling)",
+        "workingPressure": "0.2–0.5 MPa",
+        "dimensions": "475 x 290 x 130 mm",
+        "weight": "5.0 kg",
+        "connectionWire": ["4 mm²", "6 mm²", "10 mm²"],
+        "pipeSize": ["1/2 tomme", "3/4 tomme", "1 tomme"]
+      },
+      "certifications": ["CE", "LVD", "EMC", "ISO"],
+      "installation": "Krever 3-fase 230V/400V strøm, profesjonell installasjon anbefales."
+    },
+    {
+      "id": "xfj-2-55",
+      "name": "XFJ-2-55 Kompakt Varmtvannsbereder",
+      "category": "Tankløs varmtvannsbereder",
+      "phase": "1-fase",
+      "images": [],
+      "priceFrom": "2 975 kr",
+      "description": "XFJ-2-55 er en ultrakompakt varmtvannsbereder med imponerende energieffektivitet. Med et forbruk på kun 0,3 kW per 4-minutters dusj er den ideell for håndvask, mindre husholdninger og energieffektive hytter. En tydelig LED-skjerm viser temperaturen i sanntid, mens varmeelementet i rustfritt stål sørger for lang levetid og pålitelig varme. Dette er løsningen for deg som ønsker raskt varmtvann, lavt strømforbruk og et minimalt fotavtrykk.",
+      "features": [
+        "Ekstremt lavt strømforbruk per dusj",
+        "LED-display viser nøyaktig temperatur",
+        "Rustfri stålvarmeelement for lang levetid",
+        "Kompakt og plassbesparende design"
+      ],
+      "ideal": [
+        "Håndvask i hjem og små bedrifter",
+        "Energivennlige hytter og små husholdninger",
+        "Lavt strømforbruk uten å gå på kompromiss med komfort"
+      ],
+      "specs": {
+        "flowRates": ["3 L/min", "4 L/min", "5 L/min", "6 L/min", "7 L/min"],
+        "powerOptions": ["5 kW", "6.5 kW", "7.5 kW", "9 kW", "11 kW"],
+        "voltage": "220–240V",
+        "current": ["21.7 A", "28.3 A", "32.7 A", "39.2 A", "47.9 A"],
+        "flowAt40C": [
+          "2.92 L/min",
+          "3.7 L/min",
+          "4.3 L/min",
+          "5.1 L/min",
+          "6.3 L/min"
+        ],
+        "safetyClass": "IP25",
+        "tempRange": "30–55°C",
+        "overheatProtection": "90°C",
+        "dimensions": [
+          "360 x 210 x 60 mm",
+          "420 x 215 x 60 mm",
+          "525 x 295 x 435 mm"
+        ],
+        "weight": "2.8 kg",
+        "connectionWire": ["2.5 mm²", "4 mm²", "6 mm²", "10 mm²"],
+        "pipeSize": "G1/2 tomme"
+      },
+      "certifications": ["ErP Ready", "CB", "CE", "LVD", "EMC"],
+      "installation": "Veggmontert, kobles til kaldtvannsrør, krever 16A 1-fase 230V kurs."
+    },
+    {
+      "id": "xfj-2-230volt",
+      "name": "XFJ-2-/230volt Momentan Varmtvannsbereder",
+      "category": "Tankløs varmtvannsbereder",
+      "phase": "1-fase",
+      "images": ["commercialImage"],
+      "priceFrom": "3 675 kr",
+      "description": "XFJ-2-/230V er utviklet for krevende omgivelser der pålitelig varmtvann er et must. Den benytter COAX-varmeteknologi, kjent for lang levetid og høy effektivitet. Med et bredt utvalg effektalternativer dekker den alt fra små vaskestasjoner til kommersielle kjøkken og offentlige toaletter. Den robuste konstruksjonen sikrer stabil drift, selv ved høy belastning – et solid valg for profesjonell bruk.",
+      "features": [
+        "COAX-varmeelement gir lang levetid",
+        "Tankløs design for kontinuerlig varmtvann",
+        "Bygget for høyt vannforbruk i krevende miljøer",
+        "Fleksible effektalternativer for ulike behov"
+      ],
+      "ideal": [
+        "Kommersielle bygg med høyt varmtvannsbehov",
+        "Industrielle anlegg med kontinuerlig bruk",
+        "Offentlige toaletter og vaskestasjoner"
+      ],
+      "specs": {
+        "flowRates": ["3 L/min", "5 L/min", "6 L/min"],
+        "powerOptions": ["3 kW", "5 kW", "7 kW", "9 kW", "11 kW", "13 kW"],
+        "voltage": "230V",
+        "current": ["13 A", "21.7 A", "30.4 A", "39.1 A", "47.8 A", "56.5 A"],
+        "safetyClass": "IPX4",
+        "tempRange": "30–60°C",
+        "overheatProtection": "65°C",
+        "dimensions": "Ikke spesifisert",
+        "weight": "Ikke spesifisert",
+        "connectionWire": ["2.5 mm²", "4 mm²", "6 mm²", "10 mm²"],
+        "pipeSize": "10–12 mm"
+      },
+      "certifications": ["CE", "LVD", "EMC"],
+      "installation": "Veggmontert, kobles til kaldtvannsrør, krever 1-fase 230V strøm."
+    },
+    {
+      "id": "armatur",
+      "name": "Armatur med Integrert Varmeelement",
+      "category": "Armatur",
+      "phase": "1-fase",
+      "images": ["homeImage"],
+      "priceFrom": "1 975 kr",
+      "description": "Denne innovative armaturen kombinerer moderne design med innebygd varmeelement på 3.3 kW – perfekt for raskt varmtvann uten ekstern bereder. Den installeres som en vanlig kran, kobles kun til kaldtvann, og gir umiddelbart varmt vann til håndvask og daglig bruk. Ideell for bad, vaskerom og små kjøkken der plass og effektivitet er viktig. Et elegant og praktisk valg for moderne hjem og kontorer.",
+      "features": [
+        "Integrert varmeelement – ingen ekstra plass nødvendig",
+        "Enkel montering som standard kran",
+        "Krever kun tilkobling til kaldtvann",
+        "Energieffektiv for kortvarig bruk (10 sekunder)"
+      ],
+      "ideal": [
+        "Håndvask på bad og vaskerom",
+        "Små kjøkken med behov for raskt varmtvann",
+        "Plassbesparende løsninger for moderne hjem og kontor"
+      ],
+      "specs": {
+        "flowRates": ["2–3 L/min"],
+        "powerOptions": ["3.3 kW"],
+        "voltage": "230V",
+        "current": ["10 A", "13 A", "16 A"],
+        "safetyClass": "IPX4",
+        "tempRange": "30–55°C",
+        "dimensions": "Ikke spesifisert",
+        "weight": "Ikke spesifisert",
+        "connectionWire": "Standard støpsel",
+        "pipeSize": "Standard kaldtvannsrør"
+      },
+      "certifications": ["CE"],
+      "installation": "Monteres som en vanlig kran, krever 10–16A stikkontakt."
+    },
+    {
+      "id": "varmepumpe",
+      "name": "Alt-i-ett Luft-til-Vann Varmepumpe",
+      "category": "Varmepumpe",
+      "phase": "1-fase",
+      "images": ["homeImage"],
+      "priceFrom": "19 900 kr",
+      "description": "Denne alt-i-ett luft-til-vann varmepumpen kombinerer høy ytelse med lavt strømforbruk. Utstyrt med en avansert Mitsubishi-kompressor og en robust, emaljebelagt ståltank, leverer den varmtvann, oppvarming og kjøling med imponerende effektivitet (COP opptil 4,0). Med tankkapasitet fra 100 til 300 liter dekker den både husholdninger og større bygg. En komplett, driftssikker løsning for bærekraftig energi og komfort året rundt.",
+      "features": [
+        "Mitsubishi-kompressor gir høy effektivitet (COP opptil 4)",
+        "Robust emaljebelagt tank for lang levetid",
+        "Leverer varmtvann, oppvarming og kjøling",
+        "Værbestandig for utendørs installasjon"
+      ],
+      "ideal": [
+        "Store husholdninger som krever stabil varmtvannsforsyning",
+        "Hoteller og næringsbygg med flere bruksområder",
+        "Bærekraftig energiløsning for privat og kommersiell bruk"
+      ],
+      "specs": {
+        "tankCapacity": ["100 L", "200 L", "300 L"],
+        "powerOptions": ["500 W (varmeelement)"],
+        "voltage": "230V",
+        "efficiency": "COP 3.5–4.0",
+        "pressureResistance": "0.8 MPa",
+        "dimensions": "Ikke spesifisert",
+        "weight": "Ikke spesifisert",
+        "material": "Emaljebelagt ståltank",
+        "compressor": "Mitsubishi"
+      },
+      "certifications": ["Ikke spesifisert"],
+      "installation": "Kan plasseres ute eller inne, kobles til standard røropplegg og 230V strøm."
+    },
+    {
+      "id": "sirkulasjon",
+      "name": "CX3-18 Sirkulasjonssystem",
+      "category": "Sirkulasjonssystem",
+      "phase": "3-fase",
+      "images": ["homeImage"],
+      "priceFrom": "6 475 kr",
+      "description": "CX3-18 er et allsidig og energieffektivt sirkulasjonssystem som sørger for stabil varmefordeling i både varmtvanns- og gulvvarmesystemer. Systemet er termostatstyrt for optimal temperaturkontroll og har innebygd frostbeskyttelse som sikrer drift året rundt. Med kompakt design og profesjonell ytelse passer det perfekt for moderne bygg med høye krav til komfort og pålitelighet.",
+      "features": [
+        "Dobbel funksjon: sirkulasjon for varmtvann og gulvvarme",
+        "Termostatstyrt for jevn og stabil temperatur",
+        "Frostbeskyttelse for trygg drift året rundt",
+        "Kompakt design som passer enkelt i tekniske rom"
+      ],
+      "ideal": [
+        "Gulvvarmesystemer i moderne bygg",
+        "Bygningssirkulasjon for effektiv varmefordeling",
+        "Fjernvarmesystemer og profesjonelle installasjoner"
+      ],
+      "specs": {
+        "powerOptions": ["18 kW"],
+        "voltage": "400V",
+        "current": ["32 A"],
+        "fuse": ["3x32 A"],
+        "safetyClass": "IPX4",
+        "tempRange": "30–60°C",
+        "dimensions": "Ikke spesifisert",
+        "weight": "Ikke spesifisert",
+        "connectionWire": "6 mm²",
+        "pipeSize": "Ikke spesifisert"
+      },
+      "certifications": ["CE"],
+      "installation": "Krever 3-fase 400V strøm, egnet for profesjonell installasjon."
+    }
+  ]
+}
