@@ -55,7 +55,7 @@ const Contact = () => {
               <CardTitle className="text-2xl">Send oss en melding</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form action="https://formsubmit.co/jonas@anders1.com" method="POST" className="space-y-6">
                 <div>
                   <Label htmlFor="name">Navn *</Label>
                   <Input

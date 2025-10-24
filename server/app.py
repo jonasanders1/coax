@@ -135,11 +135,7 @@ def chat_endpoint():
 
         Kontekst:
         {context}
-
-        Tidligere spørsmål og svar:
-        {conversation}
         
-
         Spørsmål:
         {query}
 
