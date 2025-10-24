@@ -49,7 +49,7 @@ const Footer = () => {
                 }}
               >
                 <MessageCircle className="h-4 w-4" />
-                ThermaBuddy
+                Luna
               </button>
             </nav>
           </div>

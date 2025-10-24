@@ -48,7 +48,7 @@ const Header = () => {
           </div>
           <Button className="hidden lg:flex" onClick={openChat} size="sm">
             <MessageCircle className="h-4 w-4" />
-            ThermaBuddy
+            Luna
           </Button>
 
           {/* Mobile Menu Button */}
@@ -106,7 +106,7 @@ const Header = () => {
                   }}
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
-                  Chat med ThermaBuddy
+                  Chat med Luna
                 </Button>
               </div>
             </nav>

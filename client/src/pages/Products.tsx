@@ -158,7 +158,7 @@ const Products = () => {
               className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
             >
               <MessageCircle className="mr-2 h-5 w-5" />
-              Chat med ThermaBuddy
+              Chat med Luna
             </Button>
           </div>
         </div>

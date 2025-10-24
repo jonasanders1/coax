@@ -43,14 +43,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setMessages((prev) => prev.filter((m) => m.id !== userMessage.id));
         throw error;
       }
-
-      // const assistantMessage: Message = {
-      //   id: `assistant-${Date.now()}`,
-      //   role: "assistant",
-      //   content: "Dette er en test melsding fra ThermaBuddy!",
-      //   timestamp: new Date().toISOString(),
-      // };
-      // setMessages((prev) => [...prev, assistantMessage]);
     },
     [messages]
   );

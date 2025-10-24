@@ -21,7 +21,7 @@ export function ChatMessage({ message }: { message: Message }) {
       >
         <div className="flex items-baseline justify-between gap-4 mb-2">
           <div className="font-semibold text-sm">
-            {isUser ? "Meg" : "ThermaBuddy"}
+            {isUser ? "Meg" : "Luna"}
           </div>
           <div
             className={cn(
@@ -41,7 +41,7 @@ export function ChatMessage({ message }: { message: Message }) {
           {message.content === "..." ? (
             <span className="flex items-center gap-2 text-sm animate-pulse">
               <Loader className="animate-spin h-4 w-4" />
-              <span className="">Thinking...</span>
+              <span className="">Tenker...</span>
             </span>
           ) : (
             <span>{message.content}</span>

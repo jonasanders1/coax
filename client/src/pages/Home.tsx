@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -16,6 +16,9 @@ import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
 import industrialImage from "@/assets/industrial-water-heater.png";
 import { CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { useLayoutAnimation } from "@/components/Layout";
 
 const benefits = [
   {
@@ -72,7 +75,26 @@ const customerSegments = [
 ];
 
 const HomePage = () => {
+  const { isAnimated } = useLayoutAnimation();
+  const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
+
+  // This ensures animation plays on both initial load and direct navigation
+  useEffect(() => {
+    if (isAnimated && !hasAnimated) {
+      setHasAnimated(true);
+    }
+  }, [isAnimated, hasAnimated]);
+
+  // Also trigger animation if the component mounts without layout animation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!hasAnimated) setHasAnimated(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [hasAnimated]);
+
+  const shouldAnimate = hasAnimated || isAnimated;
 
   useEffect(() => {
     if (!api) return;
@@ -85,7 +107,7 @@ const HomePage = () => {
   }, [api]);
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col">
       {/* Hero Section */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-muted to-background"
@@ -96,15 +118,79 @@ const HomePage = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="container mx-auto px-4 py-24 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-primary mb-6 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={
+            shouldAnimate
+              ? {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.6,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: 0.3,
+                  },
+                }
+              : {}
+          }
+          className="container mx-auto px-4 py-24 text-center"
+        >
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold text-primary mb-6 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={
+              shouldAnimate
+                ? {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: 0.4,
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  }
+                : {}
+            }
+          >
             Spar strøm, plass, og miljø!
-          </h1>
-          <p className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto">
+          </motion.h1>
+          <motion.p
+            className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={
+              shouldAnimate
+                ? {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: 0.5,
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  }
+                : {}
+            }
+          >
             COAXs plassbesparende, effektive elektriske vannvarmere – helt uten
             lagringstank. Den smarte måten å varme vann på!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          </motion.p>
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={
+              shouldAnimate
+                ? {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: 0.6,
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  }
+                : {}
+            }
+          >
             <Button asChild size="lg" className="text-md px-8 font-normal">
               <Link to="/velg-modell">Finn din modell</Link>
             </Button>
@@ -116,8 +202,8 @@ const HomePage = () => {
             >
               <Link to="/produkter">Se produkter</Link>
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Benefits Section */}

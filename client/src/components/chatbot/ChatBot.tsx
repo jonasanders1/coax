@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,14 +15,38 @@ import { useChatBot } from "@/hooks/useChatBot";
 import { useAppContext } from "@/context/AppContext";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
+import { Message } from "@/types/chat";
 
 const ChatBot = () => {
-  const { messages, sendMessage } = useAppContext();
+  const { messages, setMessages, sendMessage } = useAppContext();
   const { isOpen, openChat, closeChat } = useChatBot();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [hasWelcomed, setHasWelcomed] = useState(false);
+
+  // Show welcome message when chat opens
+  useEffect(() => {
+    if (isOpen && !hasWelcomed) {
+      setHasWelcomed(true);
+      setIsLoading(true);
+
+      // Simulate loading time
+      setTimeout(() => {
+        const welcomeMessage: Message = {
+          id: `assistant-${Date.now()}`,
+          role: "assistant",
+          content:
+            "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
+          timestamp: new Date().toISOString(),
+        };
+
+        setMessages((prev) => [...prev, welcomeMessage]);
+        setIsLoading(false);
+      }, 1000);
+    }
+  }, [isOpen, hasWelcomed]);
 
   useLayoutEffect(() => {
     const root = scrollAreaRef.current;
@@ -70,7 +94,7 @@ const ChatBot = () => {
       <Dialog open={isOpen} onOpenChange={closeChat}>
         <DialogContent className="sm:max-w-[500px] h-[600px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
-            <DialogTitle className="text-xl">ThermaBuddy</DialogTitle>
+            <DialogTitle className="text-xl">Luna</DialogTitle>
             <DialogDescription className="sr-only">
               Chat med assistenten for å få hjelp om produkter og valg av
               modell.
@@ -78,7 +102,7 @@ const ChatBot = () => {
           </DialogHeader>
 
           {/* Messages Area */}
-          <ScrollArea className="flex-1 px-4 bg-gray-200" ref={scrollAreaRef}>
+          <ScrollArea className="flex-1 px-4 bg-gray-100" ref={scrollAreaRef}>
             <div className="space-y-4 pt-4 pb-8">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
@@ -103,7 +127,9 @@ const ChatBot = () => {
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Fortell ThermaBuddy hva du lurer på..."
+              placeholder="Fortell Luna hva du lurer på..."
+              autoResize
+              maxHeight={150}
               className="pr-12 py-3 bg-transparent border-none resize-none overflow-hidden"
               rows={1}
               onKeyDown={(e) => {

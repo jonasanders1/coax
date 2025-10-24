@@ -7,6 +7,7 @@ import { AlertCircle, CheckCircle, MessageCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useChatBot } from "@/hooks/useChatBot";
 import PageTitile from "@/components/PageTitile";
+import BucketFill from "@/components/BucketFill";
 
 const recommendations = [
   {
@@ -101,15 +102,28 @@ const ModelSelector = () => {
                   <AlertCircle className="w-5 h-5 text-blue-600" />
                   Slik gjør du:
                 </h3>
-                <ol className="space-y-2 text-sm text-muted-foreground ml-7">
-                  <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
-                  <li>2. Skru på vannet til ønsket dusjtemperatur og trykk</li>
-                  <li>3. Start tidtaker og fyll bøtta helt opp</li>
-                  <li>4. Stopp når bøtta er full og noter antall sekunder</li>
-                  <li>
-                    5. Fyll inn tiden under, så regner vi ut riktig modell
-                  </li>
-                </ol>
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] lg:grid-cols-2 gap-6 items-center">
+                  <div className="md:pr-4">
+                    <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
+                      <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
+                      <li>
+                        2. Skru på vannet til ønsket dusjtemperatur og trykk
+                      </li>
+                      <li>3. Start tidtaker og fyll bøtta helt opp</li>
+                      <li>
+                        4. Stopp når bøtta er full og noter antall sekunder
+                      </li>
+                      <li>
+                        5. Fyll inn tiden under, så regner vi ut riktig modell
+                      </li>
+                    </ol>
+                  </div>
+                  <div className="flex justify-center md:justify-end lg:justify-center">
+                    <div className="w-[140px] md:w-auto">
+                      <BucketFill />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -246,7 +260,7 @@ const ModelSelector = () => {
               className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
             >
               <MessageCircle className="mr-2 h-5 w-5" />
-              Chat med ThermaBuddy
+              Chat med Luna
             </Button>
           </div>
         </div>
