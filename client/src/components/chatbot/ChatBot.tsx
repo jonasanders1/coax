@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import luna from "@/assets/luna-white.png";
+import lunaBlue from "@/assets/luna-blue.png";
 import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle, Send } from "lucide-react";
@@ -70,9 +72,9 @@ const ChatBot = () => {
     } catch (error) {
       console.error("Chat error:", error);
       toast({
-        variant: "destructive",
-        title: "Chat failed",
-        description: error instanceof Error ? error.message : "Unknown error",
+        className: "bg-secondary text-white",
+        title: "Noe gikk galt",
+        description: "Luna kan ikke svare akkurat nå. Prøv igjen senere.",
       });
     } finally {
       setIsLoading(false);
@@ -87,14 +89,17 @@ const ChatBot = () => {
         size="icon"
         className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-lg border border-border"
       >
-        <MessageCircle className="h-7 w-7" />
+        <img src={luna} className="w-6 h-6" />
       </Button>
 
       {/* Chat Dialog */}
       <Dialog open={isOpen} onOpenChange={closeChat}>
         <DialogContent className="sm:max-w-[500px] h-[600px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
-            <DialogTitle className="text-xl">Luna</DialogTitle>
+            <div className="flex items-center space-x-2">
+              <img src={lunaBlue} className="w-6 h-6" alt="Luna Logo" />
+              <DialogTitle className="text-xl m-0">Luna</DialogTitle>
+            </div>
             <DialogDescription className="sr-only">
               Chat med assistenten for å få hjelp om produkter og valg av
               modell.

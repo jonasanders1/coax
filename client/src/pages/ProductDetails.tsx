@@ -46,7 +46,7 @@ const ProductDetailsRedesigned = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-8">
+      <div className="min-h-screen flex items-center justify-center p-8 ">
         <div className="text-center max-w-md">
           <h2 className="text-2xl font-semibold mb-2">Produkt ikke funnet</h2>
           <p className="text-muted-foreground mb-4">
@@ -72,7 +72,7 @@ const ProductDetailsRedesigned = () => {
       : specs?.voltage);
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-background">
+    <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         {/* Breadcrumbs */}
         <Breadcrumbs aria-label="breadcrumb">

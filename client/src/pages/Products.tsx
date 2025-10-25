@@ -6,120 +6,141 @@ import PageTitile from "@/components/PageTitile";
 import { useChatBot } from "@/hooks/useChatBot";
 import ProductsList from "@/components/ProductsList";
 
-const products = [
-  {
-    id: "xfj-2",
-    name: "XFJ-2",
-    phase: "1-fase",
-    flow: "5-7 L/min",
-    voltage: "230V",
-    priceFrom: "3 475 kr",
-    description:
-      "Perfekt for dusj i leiligheter og hytter. Kompakt design, kun 8 cm ut fra vegg.",
-    specs: [
-      "Strålestørrelse: 5-7 L/min",
-      "Effekt: 5.5 - 11 kW",
-      "Sikring: 1x25-50A",
-      "Mål: 22 x 35 x 8 cm",
-      "Vekt: 2.5 kg",
-    ],
-    ideal: ["Dusj i leilighet", "Hytte", "Sommerhus"],
-  },
-  {
-    id: "xfj-2-55",
-    name: "XFJ-2-55",
-    phase: "1-fase",
-    flow: "3-5 L/min",
-    voltage: "230V",
-    priceFrom: "2 975 kr",
-    description:
-      "Kompakt og lavt forbruk på kun 0,3 kW per dusj. Ideell for laveffekt-installasjon.",
-    specs: [
-      "Strålestørrelse: 3-5 L/min",
-      "Effekt: 5.5 kW",
-      "Sikring: 1x25A",
-      "Lavt forbruk: 0.3 kW/dusj",
-      "Ekstra kompakt design",
-    ],
-    ideal: [
-      "Hytte med begrenset el-anlegg",
-      "Badekar",
-      "Energieffektiv løsning",
-    ],
-  },
-  {
-    id: "xfj-3",
-    name: "XFJ-3",
-    phase: "3-fase",
-    flow: "6-13 L/min",
-    voltage: "230/400V",
-    priceFrom: "4 875 kr",
-    description:
-      "Kraftig løsning for helårsboliger. Høy kapasitet med mulighet for flere tappesteder.",
-    specs: [
-      "Strålestørrelse: 6-13 L/min",
-      "Effekt: 9 - 27 kW",
-      "Sikring: 3x16-40A",
-      "Mulighet for flere tappesteder",
-      "Termisk sikring",
-    ],
-    ideal: ["Helårsbolig", "Flere dusjer samtidig", "Kjøkken + bad"],
-  },
-  {
-    id: "armatur",
-    name: "Armatur med integrert varmeelement",
-    phase: "1-fase",
-    flow: "2-3 L/min",
-    voltage: "230V",
-    priceFrom: "1 975 kr",
-    description:
-      "Perfekt for håndvask. Alt-i-ett løsning med innebygd varmeelement på 3,3 kW.",
-    specs: [
-      "Effekt: 3.3 kW",
-      "Sikring: 1x16A",
-      "Innebygd varmeelement",
-      "Enkel montering",
-      "Minimal plass",
-    ],
-    ideal: ["Håndvask", "Toalett", "Vaskerom"],
-  },
-  {
-    id: "varmepumpe",
-    name: "Varmepumpe alt-i-ett",
-    phase: "1-fase",
-    tank: "100-300L",
-    voltage: "230V",
-    priceFrom: "19 900 kr",
-    description:
-      "Komplett varmepumpeløsning med Mitsubishi kompressor. Tank på 100-300L med 500W element.",
-    specs: [
-      "Tank: 100-300 liter",
-      "Varmepumpe: Mitsubishi kompressor",
-      "Element: 500W",
-      "COP: 3.5",
-      "Energiklasse: A++",
-    ],
-    ideal: ["Store husholdninger", "Hoteller", "Bedrifter"],
-  },
-  {
-    id: "sirkulasjon",
-    name: "CX3-18 Sirkulasjon",
-    phase: "3-fase",
-    power: "18 kW",
-    voltage: "400V",
-    priceFrom: "6 475 kr",
-    description:
-      "For gulvvarme og sirkulasjonssystemer. Kontinuerlig vannoppvarming til ønsket temperatur.",
-    specs: [
-      "Effekt: 18 kW",
-      "Sikring: 3x32A",
-      "For sirkulasjonssystemer",
-      "Termostatstyrt",
-      "Frostsikring",
-    ],
-    ideal: ["Gulvvarme", "Sirkulasjon i bygg", "Fjernvarme"],
-  },
-];
+// const products = [
+//   {
+//     id: "xfj-2",
+//     name: "XFJ-2",
+//     phase: "1-fase",
+//     flow: "5-7 L/min",
+//     voltage: "230V",
+//     images: [
+//       "././assets/xfj-2/xfj-2-1.png",
+//       "././assets/xfj-2/xfj-2-2.png",
+//       "././assets/xfj-2/xfj-2-3.png",
+//       "././assets/xfj-2/xfj-2-4.png",
+//     ],
+//     priceFrom: "3 475 kr",
+//     description:
+//       "Perfekt for dusj i leiligheter og hytter. Kompakt design, kun 8 cm ut fra vegg.",
+//     specs: [
+//       "Strålestørrelse: 5-7 L/min",
+//       "Effekt: 5.5 - 11 kW",
+//       "Sikring: 1x25-50A",
+//       "Mål: 22 x 35 x 8 cm",
+//       "Vekt: 2.5 kg",
+//     ],
+//     ideal: ["Dusj i leilighet", "Hytte", "Sommerhus"],
+//   },
+//   {
+//     id: "xfj-2-55",
+//     name: "XFJ-2-55",
+//     phase: "1-fase",
+//     flow: "3-5 L/min",
+//     voltage: "230V",
+//     images: [],
+//     priceFrom: "2 975 kr",
+//     description:
+//       "Kompakt og lavt forbruk på kun 0,3 kW per dusj. Ideell for laveffekt-installasjon.",
+//     specs: [
+//       "Strålestørrelse: 3-5 L/min",
+//       "Effekt: 5.5 kW",
+//       "Sikring: 1x25A",
+//       "Lavt forbruk: 0.3 kW/dusj",
+//       "Ekstra kompakt design",
+//     ],
+//     ideal: [
+//       "Hytte med begrenset el-anlegg",
+//       "Badekar",
+//       "Energieffektiv løsning",
+//     ],
+//   },
+//   {
+//     id: "xfj-3",
+//     name: "XFJ-3",
+//     phase: "3-fase",
+//     flow: "6-13 L/min",
+//     voltage: "230/400V",
+//     images: ["././assets/xfj-3/xfj-3-1.png", "././assets/xfj-3/xfj-3-2.png"],
+//     priceFrom: "4 875 kr",
+//     description:
+//       "Kraftig løsning for helårsboliger. Høy kapasitet med mulighet for flere tappesteder.",
+//     specs: [
+//       "Strålestørrelse: 6-13 L/min",
+//       "Effekt: 9 - 27 kW",
+//       "Sikring: 3x16-40A",
+//       "Mulighet for flere tappesteder",
+//       "Termisk sikring",
+//     ],
+//     ideal: ["Helårsbolig", "Flere dusjer samtidig", "Kjøkken + bad"],
+//   },
+//   {
+//     id: "armatur",
+//     name: "Armatur med integrert varmeelement",
+//     phase: "1-fase",
+//     flow: "2-3 L/min",
+//     voltage: "230V",
+//     images: [
+//       "././assets/armatur/armatur-1.png",
+//       "././assets/armatur/armatur-2.png",
+//       "././assets/armatur/armatur-3.png",
+//       "././assets/armatur/armatur-4.png",
+//     ],
+//     priceFrom: "1 975 kr",
+//     description:
+//       "Perfekt for håndvask. Alt-i-ett løsning med innebygd varmeelement på 3,3 kW.",
+//     specs: [
+//       "Effekt: 3.3 kW",
+//       "Sikring: 1x16A",
+//       "Innebygd varmeelement",
+//       "Enkel montering",
+//       "Minimal plass",
+//     ],
+//     ideal: ["Håndvask", "Toalett", "Vaskerom"],
+//   },
+//   {
+//     id: "varmepumpe",
+//     name: "Varmepumpe alt-i-ett",
+//     phase: "1-fase",
+//     tank: "100-300L",
+//     voltage: "230V",
+//     images: [
+//       "././assets/varmepumpe/varmepumpe-1.png",
+//       "././assets/varmepumpe/varmepumpe-2.png",
+//       "././assets/varmepumpe/varmepumpe-3.png",
+//       "././assets/varmepumpe/varmepumpe-4.png",
+//     ],
+//     priceFrom: "19 900 kr",
+//     description:
+//       "Komplett varmepumpeløsning med Mitsubishi kompressor. Tank på 100-300L med 500W element.",
+//     specs: [
+//       "Tank: 100-300 liter",
+//       "Varmepumpe: Mitsubishi kompressor",
+//       "Element: 500W",
+//       "COP: 3.5",
+//       "Energiklasse: A++",
+//     ],
+//     ideal: ["Store husholdninger", "Hoteller", "Bedrifter"],
+//   },
+//   {
+//     id: "sirkulasjon",
+//     name: "CX3-18 Sirkulasjon",
+//     phase: "3-fase",
+//     power: "18 kW",
+//     voltage: "400V",
+//     images: ["././assets/CX3-18/CX3-18-1.png"],
+//     priceFrom: "6 475 kr",
+//     description:
+//       "For gulvvarme og sirkulasjonssystemer. Kontinuerlig vannoppvarming til ønsket temperatur.",
+//     specs: [
+//       "Effekt: 18 kW",
+//       "Sikring: 3x32A",
+//       "For sirkulasjonssystemer",
+//       "Termostatstyrt",
+//       "Frostsikring",
+//     ],
+//     ideal: ["Gulvvarme", "Sirkulasjon i bygg", "Fjernvarme"],
+//   },
+// ];
 
 const Products = () => {
   const { openChat } = useChatBot();

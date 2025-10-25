@@ -197,8 +197,8 @@ const HomePage = () => {
             <Button
               asChild
               size="lg"
-              variant="outline"
-              className="border-secondary bg-transparent text-secondary hover:bg-secondary hover:text-white text-md font-normal px-8"
+              variant="secondary"
+              className="text-md font-normal px-8"
             >
               <Link to="/produkter">Se produkter</Link>
             </Button>

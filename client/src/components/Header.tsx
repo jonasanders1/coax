@@ -6,6 +6,7 @@ import logo from "@/assets/coax-logo.png";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
+import luna from "@/assets/luna-white.png";
 
 const Header = () => {
   const location = useLocation();
@@ -47,8 +48,8 @@ const Header = () => {
             ))}
           </div>
           <Button className="hidden lg:flex" onClick={openChat} size="sm">
-            <MessageCircle className="h-4 w-4" />
-            Luna
+            <img src={luna} className="w-4 h-4" alt="" />
+            Chat med Luna
           </Button>
 
           {/* Mobile Menu Button */}

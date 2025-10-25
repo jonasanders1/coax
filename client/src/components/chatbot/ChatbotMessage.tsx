@@ -2,6 +2,7 @@
 import type { Message } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
+import luna from "@/assets/luna-blue.png";
 
 export function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -15,13 +16,20 @@ export function ChatMessage({ message }: { message: Message }) {
     <div className={cn("flex flex-col gap-1 p-3 md:p-0")}>
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3 shadow-sm",
-          isUser ? "bg-primary text-white self-end" : "bg-white self-start"
+          "max-w-[80%] rounded-lg px-4 py-3 ",
+          isUser ? "bg-primary text-white self-end shadow-sm" : "self-start border-b border-border rounded-b-none"
         )}
       >
         <div className="flex items-baseline justify-between gap-4 mb-2">
           <div className="font-semibold text-sm">
-            {isUser ? "Meg" : "Luna"}
+            {isUser ? (
+              "Meg"
+            ) : (
+              <div className="flex items-center gap-2">
+                <img src={luna} className="w-4 h-4" />
+                <p>Luna</p>
+              </div>
+            )}
           </div>
           <div
             className={cn(
