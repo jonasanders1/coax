@@ -6,7 +6,7 @@ import logo from "@/assets/coax-logo.png";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
-import luna from "@/assets/luna-white.png";
+import luna from "@/assets/luna.png";
 
 const Header = () => {
   const location = useLocation();
@@ -47,7 +47,12 @@ const Header = () => {
               </Link>
             ))}
           </div>
-          <Button className="hidden lg:flex" onClick={openChat} size="sm">
+          <Button
+            className="hidden lg:flex"
+            onClick={openChat}
+            size="sm"
+            variant="outline"
+          >
             <img src={luna} className="w-4 h-4" alt="" />
             Chat med Luna
           </Button>

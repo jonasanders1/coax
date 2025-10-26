@@ -2,7 +2,7 @@
 import type { Message } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
-import luna from "@/assets/luna-blue.png";
+import luna from "@/assets/luna.png";
 
 export function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -17,7 +17,9 @@ export function ChatMessage({ message }: { message: Message }) {
       <div
         className={cn(
           "max-w-[80%] rounded-lg px-4 py-3 ",
-          isUser ? "bg-primary text-white self-end shadow-sm" : "self-start border-b border-border rounded-b-none"
+          isUser
+            ? "bg-primary text-white self-end shadow-sm"
+            : "self-start border-b border-border rounded-b-none"
         )}
       >
         <div className="flex items-baseline justify-between gap-4 mb-2">
