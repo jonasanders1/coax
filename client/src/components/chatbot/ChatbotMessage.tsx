@@ -13,13 +13,13 @@ export function ChatMessage({ message }: { message: Message }) {
   })();
 
   return (
-    <div className={cn("flex flex-col gap-1 p-3 md:p-0")}>
+    <div className={cn("flex flex-col gap-1 p-0")}>
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3 ",
+          "max-w-[80%] py-3",
           isUser
-            ? "bg-primary text-white self-end shadow-sm"
-            : "self-start border-b border-border rounded-b-none"
+            ? "bg-primary text-white self-end shadow-sm px-4 rounded-lg"
+            : "self-start border-b-2 rounded-b-none"
         )}
       >
         <div className="flex items-baseline justify-between gap-4 mb-2">
@@ -28,7 +28,7 @@ export function ChatMessage({ message }: { message: Message }) {
               "Meg"
             ) : (
               <div className="flex items-center gap-2">
-                <img src={luna} className="w-4 h-4" />
+                <img src={luna} className="w-5 h-5" />
                 <p>Luna</p>
               </div>
             )}
@@ -44,12 +44,12 @@ export function ChatMessage({ message }: { message: Message }) {
         </div>
         <p
           className={cn(
-            "whitespace-pre-wrap text-sm md:text-md leading-relaxed text-foreground",
+            "whitespace-pre-wrap text-base leading-relaxed text-foreground",
             isUser ? "text-white" : "text-muted-foreground"
           )}
         >
           {message.content === "..." ? (
-            <span className="flex items-center gap-2 text-sm animate-pulse">
+            <span className="flex items-center gap-2 text-base animate-pulse">
               <Loader className="animate-spin h-4 w-4" />
               <span className="">Tenker...</span>
             </span>

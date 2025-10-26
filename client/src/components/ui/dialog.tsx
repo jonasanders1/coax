@@ -30,25 +30,62 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
-        className
-      )}
-      {...props}
-    >
-      {children}
-      <DialogPrimitive.Close className="absolute right-5 top-5 rounded-md bg-primary p-2 hover:bg-primary/80 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
-        <X className="h-5 w-5 text-primary-foreground" />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
-    </DialogPrimitive.Content>
-  </DialogPortal>
-));
+>(({ className, children, ...props }, ref) => {
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  
+  // Prevent focus trapping on the dialog itself
+  React.useEffect(() => {
+    const content = contentRef.current;
+    if (content) {
+      // Remove tabindex to prevent focus trapping
+      content.removeAttribute('tabindex');
+      // Make sure the dialog itself is not focusable
+      content.setAttribute('aria-modal', 'false');
+    }
+  }, []);
+
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        ref={(node) => {
+          if (typeof ref === 'function') ref(node);
+          else if (ref) ref.current = node;
+          contentRef.current = node;
+        }}
+        onOpenAutoFocus={(e) => {
+          // Prevent the dialog from auto-focusing on open
+          e.preventDefault();
+        }}
+        className={cn(
+          // Mobile styles (full screen, bottom sheet-like)
+          "fixed inset-0 md:inset-auto z-50 flex flex-col w-full h-full md:max-w-lg md:max-h-[600px] border bg-background shadow-lg duration-200 outline-none",
+          // Mobile animations
+          "data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+          // Mobile enter/exit animations (slide up/down)
+          "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+          "md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-top-[48%]",
+          // Desktop styles (centered)
+          "md:left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]",
+          // Desktop animations (zoom and fade)
+          "md:data-[state=closed]:zoom-out-95 md:data-[state=open]:zoom-in-95",
+          "md:data-[state=closed]:slide-out-to-left-1/2 md:data-[state=open]:slide-in-from-left-1/2",
+          // Rounded corners on desktop
+          "md:rounded-lg",
+          className
+        )}
+        {...props}
+      >
+        {children}
+        <DialogPrimitive.Close className="absolute right-5 top-5 rounded-md bg-primary p-2 hover:bg-primary/80 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+          <X className="h-5 w-5 text-primary-foreground" />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  );
+});
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({

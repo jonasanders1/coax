@@ -1,15 +1,7 @@
-"use client";
-
 import { useState } from "react";
 import ProductCard from "./ProductCard";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
+
+import FilterSelect from "@/components/FilterSelect";
 import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
 import industrialImage from "@/assets/industrial-water-heater.png";
@@ -72,99 +64,75 @@ export default function ProductList() {
     return categoryMatch && phaseMatch && applicationMatch && flowMatch;
   });
 
+  // Filter configuration
+  const filterConfigs = [
+    {
+      id: "filter-category",
+      label: "Kategori",
+      filterKey: "category" as const,
+      placeholder: "Filtrer etter Kategori",
+      options: [
+        { value: "all", label: "Alle" },
+        ...Array.from(new Set(allProducts.map((p) => p.category))).map((c) => ({
+          value: c,
+          label: c,
+        })),
+      ],
+    },
+    {
+      id: "filter-phase",
+      label: "Fase",
+      filterKey: "phase" as const,
+      placeholder: "Filtrer etter Fase",
+      options: [
+        { value: "all", label: "Alle" },
+        { value: "1-fase", label: "1-fase" },
+        { value: "3-fase", label: "3-fase" },
+      ],
+    },
+    {
+      id: "filter-application",
+      label: "Bruk",
+      filterKey: "application" as const,
+      placeholder: "Filtrer etter Bruk",
+      options: [
+        { value: "all", label: "Alle" },
+        { value: "Hytte", label: "Hytte" },
+        { value: "Bolig", label: "Bolig" },
+        { value: "Industri", label: "Industri" },
+      ],
+    },
+    {
+      id: "filter-flow",
+      label: "Liter/min",
+      filterKey: "flow" as const,
+      placeholder: "Filtrer etter Liter/min",
+      options: [
+        { value: "all", label: "Alle" },
+        { value: "low", label: "Lav (0-5 L/min)" },
+        { value: "medium", label: "Medium (6-10 L/min)" },
+        { value: "high", label: "Høy (10+ L/min)" },
+      ],
+    },
+  ];
+
   return (
     <div>
-      <div className="mb-8 p-4 bg-secondary">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 container max-w-6xl mx-auto p-4">
-          <div>
-            <Label
-              htmlFor="filter-category"
-              className="text-sm font-medium text-white"
-            >
-              Kategori
-            </Label>
-            <Select
-              onValueChange={handleFilterChange("category")}
-              defaultValue="all"
-            >
-              <SelectTrigger id="filter-category">
-                <SelectValue placeholder="Filtrer etter Kategori" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle</SelectItem>
-                {[...new Set(allProducts.map((p) => p.category))].map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {c}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label
-              htmlFor="filter-phase"
-              className="text-sm font-medium text-white"
-            >
-              Fase
-            </Label>
-            <Select
-              onValueChange={handleFilterChange("phase")}
-              defaultValue="all"
-            >
-              <SelectTrigger id="filter-phase">
-                <SelectValue placeholder="Filtrer etter Fase" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle</SelectItem>
-                <SelectItem value="1-fase">1-fase</SelectItem>
-                <SelectItem value="3-fase">3-fase</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label
-              htmlFor="filter-application"
-              className="text-sm font-medium text-white"
-            >
-              Bruk
-            </Label>
-            <Select
-              onValueChange={handleFilterChange("application")}
-              defaultValue="all"
-            >
-              <SelectTrigger id="filter-application">
-                <SelectValue placeholder="Filtrer etter Bruk" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle</SelectItem>
-                <SelectItem value="Hytte">Hytte</SelectItem>
-                <SelectItem value="Bolig">Bolig</SelectItem>
-                <SelectItem value="Industri">Industri</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label
-              htmlFor="filter-flow"
-              className="text-sm font-medium text-white"
-            >
-              Liter/min
-            </Label>
-            <Select
-              onValueChange={handleFilterChange("flow")}
-              defaultValue="all"
-            >
-              <SelectTrigger id="filter-flow">
-                <SelectValue placeholder="Filtrer etter Liter/min" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle</SelectItem>
-                <SelectItem value="low">Lav (0-5 L/min)</SelectItem>
-                <SelectItem value="medium">Medium (6-10 L/min)</SelectItem>
-                <SelectItem value="high">Høy (10+ L/min)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="mb-8 bg-secondary py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 container max-w-6xl mx-auto px-4">
+          {filterConfigs.map(
+            ({ id, label, filterKey, placeholder, options }) => (
+              <FilterSelect
+                key={id}
+                id={id}
+                label={label}
+                value={filters[filterKey]}
+                onValueChange={handleFilterChange(filterKey)}
+                options={options}
+                placeholder={placeholder}
+              />
+            )
+          )}
         </div>
       </div>
       <div className="container max-w-6xl mx-auto px-4 space-y-10">

@@ -26,29 +26,28 @@ const ChatBot = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasWelcomed, setHasWelcomed] = useState(false);
+  const hasInitialized = useRef(false);
 
-  // Show welcome message when chat opens
+  // Show welcome message when chat first opens
   useEffect(() => {
-    if (isOpen && !hasWelcomed) {
-      setHasWelcomed(true);
+    if (isOpen && !hasInitialized.current && messages.length === 0) {
+      hasInitialized.current = true;
       setIsLoading(true);
 
-      // Simulate loading time
       setTimeout(() => {
         const welcomeMessage: Message = {
           id: `assistant-${Date.now()}`,
           role: "assistant",
           content:
-            "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
-          timestamp: new Date().toISOString(),
-        };
+          "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
+        timestamp: new Date().toISOString(),
+      };
 
-        setMessages((prev) => [...prev, welcomeMessage]);
-        setIsLoading(false);
-      }, 1000);
+      setMessages([welcomeMessage]);
+      setIsLoading(false);
+    }, 1000);
     }
-  }, [isOpen, hasWelcomed]);
+  }, [isOpen, messages.length, setMessages]);
 
   useLayoutEffect(() => {
     const root = scrollAreaRef.current;
@@ -89,12 +88,12 @@ const ChatBot = () => {
         size="icon"
         className="md:h-12 md:w-12 h-10 w-10 bg-white rounded-full shadow-lg border border-border"
       >
-        <img src={luna} className="w-6 h-6" />
+        <img src={luna} />
       </Button>
 
       {/* Chat Dialog */}
-      <Dialog open={isOpen} onOpenChange={closeChat}>
-        <DialogContent className="sm:max-w-[500px] h-[600px] flex flex-col p-0 gap-0">
+      <Dialog open={isOpen} onOpenChange={closeChat} >
+        <DialogContent className="md:h-[600px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
             <div className="flex items-center space-x-2">
               <img src={luna} className="w-6 h-6" alt="Luna Logo" />
