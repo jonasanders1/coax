@@ -33,7 +33,6 @@ export async function postChat(
   payload: ChatRequest,
   signal?: AbortSignal
 ): Promise<ChatResponse> {
-  console.log(API_BASE_URL);
   const res = await fetch(`${API_BASE_URL}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
