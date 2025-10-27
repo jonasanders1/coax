@@ -313,8 +313,8 @@ const HomePage = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-[-50px] hidden lg:inline-flex" />
-            <CarouselNext className="right-[-50px] hidden lg:inline-flex" />
+            <CarouselPrevious className="left-[-50px] hidden xl:inline-flex" />
+            <CarouselNext className="right-[-50px] hidden xl:inline-flex" />
           </Carousel>
         </div>
       </section>
