@@ -39,13 +39,13 @@ const ChatBot = () => {
           id: `assistant-${Date.now()}`,
           role: "assistant",
           content:
-          "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
-        timestamp: new Date().toISOString(),
-      };
+            "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
+          timestamp: new Date().toISOString(),
+        };
 
-      setMessages([welcomeMessage]);
-      setIsLoading(false);
-    }, 1000);
+        setMessages([welcomeMessage]);
+        setIsLoading(false);
+      }, 1000);
     }
   }, [isOpen, messages.length, setMessages]);
 
@@ -65,6 +65,7 @@ const ChatBot = () => {
 
     setIsLoading(true);
     const currentInput = input;
+
     setInput("");
     try {
       await sendMessage(currentInput);
@@ -92,7 +93,7 @@ const ChatBot = () => {
       </Button>
 
       {/* Chat Dialog */}
-      <Dialog open={isOpen} onOpenChange={closeChat} >
+      <Dialog open={isOpen} onOpenChange={closeChat}>
         <DialogContent className="md:h-[600px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
             <div className="flex items-center space-x-2">

@@ -84,7 +84,8 @@ storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
 # Initialize LLM and embedding model
 llm = OpenAI(model="gpt-4o-mini", api_key=OPENAI_API_KEY, temperature=0.0, max_tokens=150)
-embed_model = HuggingFaceEmbedding(model_name="intfloat/e5-large-v2")
+
+embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
 # Initialize node parser and metadata extractor
 node_parser = MarkdownNodeParser()

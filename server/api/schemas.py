@@ -18,7 +18,8 @@ class ChatRequest:
     messages: list[dict]
 
     def get_user_query(self) -> str | None:
-        for msg in self.messages:
+        # Iterate in reverse to get the most recent user message
+        for msg in reversed(self.messages):
             if msg.get("role") == "user":
                 return msg.get("content", "").strip()
         return None

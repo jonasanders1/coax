@@ -9,7 +9,7 @@ class Settings:
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     CHROMA_DB_PATH: str = "./coax-chroma_db"
     COLLECTION_NAME: str = "coax_knowledge_db"
-    EMBED_MODEL_NAME: str = "intfloat/e5-large-v2"
+    EMBED_MODEL_NAME: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     LLM_MODEL: str = "gpt-4o-mini"
     SIMILARITY_TOP_K: int = 5
     PORT: int = 8000
