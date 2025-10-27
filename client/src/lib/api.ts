@@ -7,7 +7,7 @@ const resolveBaseUrl = (): string => {
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" ||
      window.location.hostname === "127.0.0.1");
-  return isLocal ? "http://localhost:8000" : "https://api.jonasanders1.com/";
+  return isLocal ? "http://localhost:8000" : "https://api.jonasanders1.com";
 };
 
 export const API_BASE_URL = resolveBaseUrl();
