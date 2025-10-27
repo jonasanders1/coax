@@ -35,5 +35,5 @@ def build_chat_engine(index):
         query_engine=query_engine,
         llm=llm,
     )
-    logger.info("Chat engine initialized.")
+    logger.info("Chat engine initialized (streaming-ready).")
     return chat_engine

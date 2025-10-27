@@ -16,10 +16,10 @@ export function ChatMessage({ message }: { message: Message }) {
     <div className={cn("flex flex-col gap-1 p-0")}>
       <div
         className={cn(
-          "max-w-[80%] py-3",
+          "py-3",
           isUser
-            ? "bg-primary text-white self-end shadow-sm px-4 rounded-lg"
-            : "self-start border-b-2 rounded-b-none"
+            ? "max-w-[90%] md:max-w-[80%] bg-primary text-white self-end shadow-sm px-4 rounded-lg"
+            : "w-[90%] md:w-[80%] self-start border-b-2 rounded-b-none"
         )}
       >
         <div className="flex items-baseline justify-between gap-4 mb-2">
@@ -48,13 +48,15 @@ export function ChatMessage({ message }: { message: Message }) {
             isUser ? "text-white" : "text-muted-foreground"
           )}
         >
-          {message.content === "..." ? (
-            <span className="flex items-center gap-2 text-base animate-pulse">
+          {message.status === 'writing' && message.content === '' ? (
+            <span className="flex items-center gap-2 text-base">
               <Loader className="animate-spin h-4 w-4" />
-              <span className="">Tenker...</span>
+              <span>Tenker...</span>
             </span>
           ) : (
-            <span>{message.content}</span>
+            <span className={message.status === 'writing' ? 'after:content-["_"] after:animate-pulse' : ''}>
+              {message.content}
+            </span>
           )}
         </p>
       </div>
