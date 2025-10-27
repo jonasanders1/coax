@@ -111,16 +111,6 @@ const ChatBot = () => {
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
               ))}
-              {isLoading && (
-                <ChatMessage
-                  message={{
-                    id: "loading",
-                    role: "assistant",
-                    content: "...",
-                    timestamp: "",
-                  }}
-                />
-              )}
             </div>
           </ScrollArea>
 
