@@ -19,21 +19,33 @@ import os
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY environment variable not set")
 
 app = Flask(__name__)
-CORS(
-    app,
-    resources={
-        r"/*": {
-            "origins": ["http://localhost:8080", "http://127.0.0.1:8080"],
-            "methods": ["GET", "POST", "OPTIONS"],
-            "allow_headers": ["Content-Type"],
-            "supports_credentials": True,
-        }
-    },
-)
+
+from flask_cors import CORS
+
+if ENVIRONMENT == "development":
+    CORS(
+        app,
+        resources={
+            r"/*": {
+                "origins": [
+                    "http://localhost:8080",
+                    "http://127.0.0.1:8080",
+                ],
+                "methods": ["GET", "POST", "OPTIONS"],
+                "allow_headers": ["Content-Type"],
+                "supports_credentials": True,
+            }
+        },
+    )
+    print("✅ Running in development mode with Flask-CORS enabled")
+else:
+    print("🚀 Running in production mode with Nginx handling CORS")
+
 
 # ----------------------------------------------------------------------
 # 2. LlamaIndex components (latest, no filters)
@@ -80,8 +92,8 @@ llm = OpenAI(
 
 retriever = VectorIndexRetriever(
     index=index,
-    similarity_top_k=total_nodes,   # fetch *everything* (or a fixed number if you prefer)
-    filters=5,                  # <-- crucial: None → where clause omitted
+    similarity_top_k=5,   # fetch *everything* (or a fixed number if you prefer)
+    filters=None,                  # <-- crucial: None → where clause omitted
 )
 
 # ----------------------------------------------------------------------
@@ -127,11 +139,7 @@ def health_check():
 @app.route("/chat", methods=["POST", "OPTIONS"])
 def chat_endpoint():
     if request.method == "OPTIONS":
-        resp = make_response()
-        resp.headers.add("Access-Control-Allow-Origin", "http://localhost:8080")
-        resp.headers.add("Access-Control-Allow-Headers", "Content-Type")
-        resp.headers.add("Access-Control-Allow-Methods", "POST")
-        return resp
+        return make_response()
 
     payload = request.get_json()
     if not payload:
@@ -170,9 +178,7 @@ def chat_endpoint():
         ]
 
         data = {"message": assistant_msg.to_dict(), "metadata": metadata}
-        resp = make_response(jsonify(data))
-        resp.headers.add("Access-Control-Allow-Origin", "http://localhost:8080")
-        return resp
+        return jsonify(data)
 
     except Exception as exc:
         logging.error(f"RAG error: {exc}", exc_info=True)
@@ -181,3 +187,5 @@ def chat_endpoint():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
+    # gunicorn -w 4 -b 0.0.0.0:8000 main:app
+    
