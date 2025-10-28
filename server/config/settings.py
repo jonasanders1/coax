@@ -6,6 +6,7 @@ load_dotenv()
 
 class Settings:
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
+    RAG_API_KEY: str = os.getenv("RAG_API_KEY")
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     CHROMA_DB_PATH: str = "./coax-chroma_db"
     COLLECTION_NAME: str = "coax_knowledge_db"

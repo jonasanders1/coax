@@ -6,6 +6,7 @@ from api.schemas import Message, ChatRequest
 from rag.chat import get_chat_engine
 from utils.logger import get_logger
 import json
+from utils.auth import require_api_key
 
 bp = Blueprint('api', __name__)
 logger = get_logger(__name__)
@@ -17,11 +18,28 @@ def health_check():
     return jsonify({"status": "ok", "timestamp": datetime.utcnow().isoformat()})
 
 # api/routes.py
-@bp.route("/chat", methods=["POST", "OPTIONS"])
-def chat():
-    if request.method == "OPTIONS":
-        return make_response()
+# api/routes.py
+import json
+import datetime as dt
+from flask import Blueprint, request, Response, jsonify, make_response
+from utils.auth import require_api_key  # your decorator
+from api.schemas import ChatRequest, Message
+import logging
 
+bp = Blueprint('api', __name__)
+logger = logging.getLogger(__name__)
+
+@bp.route("/chat", methods=["POST", "OPTIONS"])
+@require_api_key  # ← This was BLOCKING OPTIONS!
+def chat():
+    # === BYPASS AUTH FOR OPTIONS (CORS preflight) ===
+    if request.method == "OPTIONS":
+        resp = make_response()
+        resp.status_code = 204
+        # Flask-CORS will add headers automatically
+        return resp
+
+    # === NORMAL POST: Auth already passed via @require_api_key ===
     try:
         payload = request.get_json()
         if not payload:
@@ -37,38 +55,33 @@ def chat():
                 stream_response = chat_engine.stream_chat(query)
                 tokens = []
 
-                # Initialize tokens list
-                tokens = []
-                
-                # Stream tokens + collect
                 for token in stream_response.response_gen:
                     tokens.append(token)
                     yield f"data: {json.dumps({'type': 'token', 'token': token})}\n\n"
 
                 full_content = "".join(tokens)
 
-                # Get metadata from source nodes if available
+                # Extract metadata
                 metadata = []
                 if hasattr(stream_response, 'source_nodes'):
                     metadata = [
                         {
                             'node_id': node.node.node_id,
                             'score': float(node.score) if node.score is not None else None,
-                            'text': node.node.text[:200] + '...' if node.node.text else '',
+                            'text': (node.node.text[:200] + '...') if node.node.text else '',
                             'metadata': dict(node.node.metadata) if hasattr(node.node, 'metadata') else {}
                         }
                         for node in stream_response.source_nodes
                     ]
 
-                # Final message with metadata
+                # Final message
                 assistant_msg = Message(
                     id=f"assistant-{dt.datetime.now().timestamp()}",
                     role="assistant",
                     content=full_content,
                     timestamp=dt.datetime.now(dt.timezone.utc).isoformat(),
                 )
-                
-                # Send metadata with the final message
+
                 yield f"data: {json.dumps({
                     'type': 'done',
                     'message': assistant_msg.to_dict(),
