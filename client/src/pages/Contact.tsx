@@ -1,34 +1,21 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PageTitile from "@/components/PageTitile";
+import { useChatBot } from "@/hooks/useChatBot";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { openChat } = useChatBot();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // In a real application, this would send to an API
-    toast({
-      title: "Takk for din henvendelse!",
-      description: "Vi svarer innen 24 timer på hverdager.",
-    });
-
-    // Reset form
-    setFormData({ name: "", email: "", phone: "", message: "" });
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,71 +37,7 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Contact Form */}
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="text-2xl">Send oss en melding</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form action="https://formsubmit.co/jonas@anders1.com" method="POST" className="space-y-6">
-                <div>
-                  <Label htmlFor="name">Navn *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Ditt navn"
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">E-post *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="din@epost.no"
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Telefon</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="123 45 678"
-                    className="mt-1"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Melding *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Fortell oss om ditt behov..."
-                    className="mt-1 min-h-[150px]"
-                  />
-                </div>
-
-                <Button type="submit" size="lg" className="w-full">
-                  Send forespørsel
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <ContactForm />
 
           {/* Contact Info Sidebar */}
           <div className="space-y-6">
@@ -123,16 +46,12 @@ const Contact = () => {
                 <CardTitle>Kontaktinformasjon</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-start gap-3">
+                <div className="flex gap-3">
                   <MapPin className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <div>
                     <div className="font-semibold mb-1">Adresse</div>
                     <div className="text-sm text-muted-foreground">
-                      Grønnliveien 13
-                      <br />
-                      3474 Åros
-                      <br />
-                      Norge
+                      Grønnliveien 13, 3474 Åros, Norge
                     </div>
                   </div>
                 </div>
@@ -176,18 +95,37 @@ const Contact = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Lørdag - Søndag</span>
-                  <span className="font-semibold">Stengt</span>
+                  <span className="font-semibold text-destructive">Stengt</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-primary text-primary-foreground">
-              <CardContent className="pt-6">
-                <h3 className="font-bold mb-2">Rask respons</h3>
-                <p className="text-sm text-primary-foreground/90">
+            <Card className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/90 to-secondary/90">
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-white m-0 p-0">
+                  Snakk med Flux
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground/90">
                   Vi svarer vanligvis innen 24 timer på hverdager. Haster det?
                   Ring oss direkte!
                 </p>
+
+                <Button
+                  onClick={() => openChat()}
+                  size="lg"
+                  className="mt-4 group relative z-10 min-w-[180px] overflow-hidden border-2 border-white bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:shadow-primary/20"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5" />
+                    Snakk med Flux
+                  </span>
+                  <span className="absolute inset-0 -z-0 bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+                </Button>
               </CardContent>
             </Card>
           </div>

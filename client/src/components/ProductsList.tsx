@@ -118,7 +118,7 @@ export default function ProductList() {
 
   return (
     <div>
-      <div className="mb-8 bg-secondary py-8">
+      <div className="mb-8 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 container max-w-6xl mx-auto px-4">
           {filterConfigs.map(
             ({ id, label, filterKey, placeholder, options }) => (

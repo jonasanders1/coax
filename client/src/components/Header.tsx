@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, MessageCircle } from "lucide-react";
+import { Menu, MessageSquareText } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
-import logo from "@/assets/coax-logo.png";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
-import luna from "@/assets/luna.png";
+import { ThemeToggle } from "./ToggleTheme";
+import Logo from "./Logo";
 
 const Header = () => {
   const location = useLocation();
@@ -23,7 +23,8 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex flex-col leading-tight">
-            <img src={logo} className="w-32" alt="COAX" />
+            {/* <img src={logo} className="w-32" alt="COAX" /> */}
+            <Logo />
           </Link>
 
           {/* Desktop Navigation */}
@@ -32,7 +33,7 @@ const Header = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-md font-medium transition-colors hover:text-primary ${
+                className={`text-sm font-medium transition-colors hover:text-primary ${
                   isActive(item.path)
                     ? "text-primary border-b border-primary"
                     : "text-foreground/70"
@@ -47,21 +48,23 @@ const Header = () => {
               </Link>
             ))}
           </div>
+
           <Button
-            className="hidden lg:flex"
+            className="hidden lg:flex bg-gradient-to-r from-secondary to-primary text-white"
             onClick={openChat}
             size="sm"
-            variant="outline"
+            variant="default"
           >
-            <img src={luna} className="w-4 h-4" alt="" />
-            Chat med Luna
+            <MessageSquareText className="h-4 w-4" />
+            Snakk med Flux
           </Button>
 
           {/* Mobile Menu Button */}
+
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden hover:bg-primary hover:text-white"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
@@ -73,12 +76,12 @@ const Header = () => {
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetContent
             side="right"
-            className="w-full sm:w-[400px]"
+            className="w-full sm:w-[400px] bg-background"
             closeSize="lg"
           >
             <SheetHeader>
               <Link to="/" className="flex flex-col leading-tight">
-                <img src={logo} className="w-24" alt="COAX" />
+                <Logo className="w-30" />
               </Link>
             </SheetHeader>
 
@@ -90,7 +93,7 @@ const Header = () => {
                   className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
                     isActive(item.path)
                       ? "bg-primary text-primary-foreground border-b border-primary"
-                      : "bg-gray-100 hover:bg-gray-200"
+                      : "bg-gray-500/10 hover:bg-gray-500/20 dark:bg-muted/50 dark:hover:bg-muted"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -105,14 +108,14 @@ const Header = () => {
               <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-gradient-to-r from-primary to-secondary"
                   onClick={() => {
                     openChat();
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Chat med Luna
+                  <MessageSquareText className="h-4 w-4" />
+                  Snakk med Flux
                 </Button>
               </div>
             </nav>

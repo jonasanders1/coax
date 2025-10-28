@@ -19,6 +19,10 @@ import { CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { useLayoutAnimation } from "@/components/Layout";
+import CtaSection from "@/components/chatbot/CtaSection";
+import { useLocation } from "react-router-dom";
+import { useChatBot } from "@/hooks/useChatBot";
+import { ThemeToggle } from "@/components/ToggleTheme";
 
 const benefits = [
   {
@@ -75,6 +79,8 @@ const customerSegments = [
 ];
 
 const HomePage = () => {
+  const { openChat } = useChatBot();
+  const location = useLocation();
   const { isAnimated } = useLayoutAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
@@ -85,6 +91,12 @@ const HomePage = () => {
       setHasAnimated(true);
     }
   }, [isAnimated, hasAnimated]);
+
+  useEffect(() => {
+    if (location.state?.openChat) {
+      openChat();
+    }
+  }, [location.state]);
 
   // Also trigger animation if the component mounts without layout animation
   useEffect(() => {
@@ -110,12 +122,15 @@ const HomePage = () => {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section
-        className="relative min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-muted to-background"
+        className="relative min-h-[80vh] flex items-center justify-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.85)), url(${heroImage})`,
+          backgroundImage: `
+      var(--gradient-hero),
+      url(${heroImage})
+    `,
           backgroundSize: "cover",
-          objectFit: "cover",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <motion.div
@@ -205,6 +220,7 @@ const HomePage = () => {
           </motion.div>
         </motion.div>
       </section>
+      
 
       {/* Benefits Section */}
       <section className="py-16 bg-background">
@@ -240,7 +256,7 @@ const HomePage = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-red-500/30 border-2 shadow-lg">
+            <Card className="border-destructive/30 border-2 shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl text-destructive/80">
                   Tradisjonell Tank
@@ -257,9 +273,9 @@ const HomePage = () => {
                 </ul>
               </CardContent>
             </Card>
-            <Card className="border-green-500/30 border-2 shadow-lg">
+            <Card className="border-success/30 border-2 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl text-green-700">
+                <CardTitle className="text-2xl text-success/80">
                   COAX Tankløs
                 </CardTitle>
               </CardHeader>
@@ -267,7 +283,7 @@ const HomePage = () => {
                 <ul className="space-y-4">
                   {comparison.coax.map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <item.icon className="w-6 h-6 text-green-700 mt-1 shrink-0" />
+                      <item.icon className="w-6 h-6 text-success/80 mt-1 shrink-0" />
                       <span>{item.text}</span>
                     </li>
                   ))}
@@ -279,7 +295,7 @@ const HomePage = () => {
       </section>
 
       {/* Customer Segments Carousel */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container max-w-6xl mx-auto px-4">
           <Carousel
             opts={{
@@ -301,7 +317,7 @@ const HomePage = () => {
                         />
                       )}
                     </div>
-                    <div >
+                    <div>
                       <h3 className="text-xl md:text-3xl text-primary">
                         {segment.title}
                       </h3>
@@ -313,27 +329,16 @@ const HomePage = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-[-50px] hidden xl:inline-flex" />
-            <CarouselNext className="right-[-50px] hidden xl:inline-flex" />
+            <CarouselPrevious className="left-[-50px] hidden xl:inline-flex hover:bg-primary hover:text-primary-foreground" />
+            <CarouselNext className="right-[-50px] hidden xl:inline-flex hover:bg-primary hover:text-primary-foreground" />
           </Carousel>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="md:text-3xl text-xl mb-4">
-            Revolusjonerende varmtvannsberedere for alle byggtyper
-          </h2>
-          <p className="mb-8 text-white/80 max-w-2xl mx-auto text-sm">
-            Med COAX får du varmtvann direkte – ideelt for Norge med god tilgang
-            på elektrisitet. Våre løsninger er designet for fremtiden.
-          </p>
-          <Button asChild size="lg" variant="secondary">
-            <Link to="/kontakt">Kontakt oss</Link>
-          </Button>
-        </div>
-      </section>
+      <div className="container px-4 max-w-6xl mx-auto">
+        <CtaSection isHeader={false} />
+      </div>
     </div>
   );
 };

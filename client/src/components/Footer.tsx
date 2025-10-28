@@ -3,10 +3,13 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { navItems } from "@/navItems";
 import { useChatBot } from "@/hooks/useChatBot";
 import { MessageCircle } from "lucide-react";
-import logo from "@/assets/coax-logo.png";
+import { ThemeToggle } from "./ToggleTheme";
+import { useTheme } from "@/hooks/useTheme";
+import Logo from "./Logo";
 
 const Footer = () => {
   const { openChat } = useChatBot();
+  const { theme } = useTheme();
 
   return (
     <footer className="bg-muted border-t border-border">
@@ -18,7 +21,7 @@ const Footer = () => {
               to="/"
               className="flex flex-col leading-tight pb-3 items-center md:items-start"
             >
-              <img src={logo} className="w-28" alt="COAX" />
+              <Logo className="w-28" />
             </Link>
             <p className="text-sm text-muted-foreground">
               Plassbesparende, effektive elektriske vannvarmere – helt uten
@@ -49,8 +52,14 @@ const Footer = () => {
                 }}
               >
                 <MessageCircle className="h-4 w-4" />
-                Luna
+                Flux
               </button>
+              <div>
+                <ThemeToggle />
+                <span className="text-sm text-muted-foreground capitalize">
+                  {theme === "dark" ? "Mørkt" : "Lyst"}
+                </span>
+              </div>
             </nav>
           </div>
 

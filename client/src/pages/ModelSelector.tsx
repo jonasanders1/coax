@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useChatBot } from "@/hooks/useChatBot";
 import PageTitile from "@/components/PageTitile";
 import BucketFill from "@/components/BucketFill";
+import CtaSection from "@/components/chatbot/CtaSection";
 
 const recommendations = [
   {
@@ -82,7 +83,7 @@ const ModelSelector = () => {
 
   return (
     <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <PageTitile
           title="Finn riktig COAX-modell med Bøttemetoden"
@@ -97,32 +98,24 @@ const ModelSelector = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg mb-6">
+              <div className="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-lg mb-6">
                 <h3 className="font-semibold mb-2 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-blue-600" />
                   Slik gjør du:
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] lg:grid-cols-2 gap-6 items-center">
-                  <div className="md:pr-4">
-                    <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
-                      <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
-                      <li>
-                        2. Skru på vannet til ønsket dusjtemperatur og trykk
-                      </li>
-                      <li>3. Start tidtaker og fyll bøtta helt opp</li>
-                      <li>
-                        4. Stopp når bøtta er full og noter antall sekunder
-                      </li>
-                      <li>
-                        5. Fyll inn tiden under, så regner vi ut riktig modell
-                      </li>
-                    </ol>
-                  </div>
-                  <div className="flex justify-center md:justify-end lg:justify-center">
-                    <div className="w-[140px] md:w-auto">
-                      <BucketFill />
-                    </div>
-                  </div>
+
+                <div className="md:pr-4">
+                  <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
+                    <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
+                    <li>
+                      2. Skru på vannet til ønsket dusjtemperatur og trykk
+                    </li>
+                    <li>3. Start tidtaker og fyll bøtta helt opp</li>
+                    <li>4. Stopp når bøtta er full og noter antall sekunder</li>
+                    <li>
+                      5. Fyll inn tiden under, så regner vi ut riktig modell
+                    </li>
+                  </ol>
                 </div>
               </div>
 
@@ -155,16 +148,16 @@ const ModelSelector = () => {
               </div>
 
               {result && flowRate && (
-                <Alert className="bg-green-50 dark:bg-green-950 border-green-600">
+                <Alert className="border-green-600">
                   <AlertDescription>
                     <div className="space-y-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 bg-background">
                         <CheckCircle className="h-5 w-5 text-green-600" />
                         <strong className="text-lg">
                           Beregnet vannmengde: {flowRate} L/min
                         </strong>
                       </div>
-                      <div className="bg-green-100 dark:bg-slate-800 p-4 rounded-lg">
+                      <div className="bg-success-50 bg-background p-4 rounded-lg">
                         <h4 className="font-bold text-xl text-primary mb-2">
                           Anbefalt modell: {result.model}
                         </h4>
@@ -227,7 +220,10 @@ const ModelSelector = () => {
                 </thead>
                 <tbody>
                   {recommendations.map((rec, idx) => (
-                    <tr key={idx} className="border-b hover:bg-muted/50">
+                    <tr
+                      key={idx}
+                      className="border-b bg-background hover:bg-muted"
+                    >
                       <td className="p-3">
                         {rec.minFlow}-{rec.maxFlow} L/min
                       </td>
@@ -243,27 +239,7 @@ const ModelSelector = () => {
         </Card>
 
         {/* CTA */}
-        <div className="mt-8 bg-primary text-primary-foreground p-8 rounded-lg text-center">
-          <h2 className="text-2xl font-bold mb-4">Trenger du personlig råd?</h2>
-          <p className="mb-6">
-            Vi hjelper deg gjerne med å velge riktig modell og planlegge
-            installasjonen.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" variant="secondary">
-              <a href="/kontakt">Kontakt oss</a>
-            </Button>
-            <Button
-              onClick={openChat}
-              size="lg"
-              variant="outline"
-              className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Chat med Luna
-            </Button>
-          </div>
-        </div>
+        <CtaSection isHeader={false} />
       </div>
     </div>
   );

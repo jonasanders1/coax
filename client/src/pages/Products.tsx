@@ -1,10 +1,7 @@
-import { Button } from "@/components/ui/button";
-
-import { Download, MessageCircle, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
 import PageTitile from "@/components/PageTitile";
-import { useChatBot } from "@/hooks/useChatBot";
+
 import ProductsList from "@/components/ProductsList";
+import CtaSection from "@/components/chatbot/CtaSection";
 
 // const products = [
 //   {
@@ -143,13 +140,12 @@ import ProductsList from "@/components/ProductsList";
 // ];
 
 const Products = () => {
-  const { openChat } = useChatBot();
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24">
       {/* Header */}
       <PageTitile
-        title="Våre energieffektive vannvarmere – helt uten tank"
-        text="Velg fra modeller tilpasset ditt behov og el-anlegg. Fra 3,3kW til 27kW, 1-fase og 3-fase."
+        title="Energieffektive vannvarmere – våre produkter"
+        text="Velg fra modeller tilpasset ditt behov og el-anlegg."
       />
 
       {/* Product Grid */}
@@ -158,32 +154,10 @@ const Products = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-secondary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Usikker på hvilken modell som passer?
-          </h2>
-          <p className="text-white/80 mb-6">
-            Bruk vår bøttemetode-kalkulator for å finne riktig modell basert på
-            ditt vannforbruk.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 ">
-            <Button asChild size="lg">
-              <Link to="/velg-modell">Gå til modellvelger</Link>
-            </Button>
-            <span className="text-white/80">eller</span>
-            <Button
-              onClick={openChat}
-              size="lg"
-              variant="outline"
-              className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Chat med Luna
-            </Button>
-          </div>
-        </div>
-      </section>
+
+      <div className="container px-4 max-w-6xl mx-auto">
+        <CtaSection isHeader={false} />
+      </div>
     </div>
   );
 };

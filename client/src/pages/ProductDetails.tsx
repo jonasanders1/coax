@@ -75,14 +75,31 @@ const ProductDetailsRedesigned = () => {
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         {/* Breadcrumbs */}
-        <Breadcrumbs aria-label="breadcrumb">
-          <MuiLink underline="hover" color="inherit" href="/">
+        <Breadcrumbs
+          aria-label="breadcrumb"
+          sx={{
+            "& .MuiBreadcrumbs-separator": {
+              color: "hsl(var(--muted-foreground))",
+            },
+          }}
+        >
+          <MuiLink
+            href="/"
+            underline="hover"
+            sx={{ color: "hsl(var(--muted-foreground))" }}
+          >
             Hjem
           </MuiLink>
-          <MuiLink underline="hover" color="inherit" href="/produkter">
+          <MuiLink
+            href="/produkter"
+            underline="hover"
+            sx={{ color: "hsl(var(--muted-foreground))" }}
+          >
             Produkter
           </MuiLink>
-          <Typography color="text.primary">{name}</Typography>
+          <Typography sx={{ color: "hsl(var(--secondary))" }}>
+            {name}
+          </Typography>
         </Breadcrumbs>
 
         {/* Hero Section */}
@@ -109,7 +126,7 @@ const ProductDetailsRedesigned = () => {
 
             {/* Quick facts */}
 
-            <div className="rounded-xl border p-4 bg-muted/40 text-sm space-y-1">
+            <div className="rounded-xl border p-4 bg-card text-sm space-y-1">
               <div>
                 <strong className="text-foreground">Fase:</strong> {phase}
               </div>
@@ -162,7 +179,10 @@ const ProductDetailsRedesigned = () => {
               <Button asChild className="flex-1 text-base">
                 <RouterLink to="/kontakt">Kontakt for kjøp</RouterLink>
               </Button>
-              <Button variant="outline" className="flex-1 text-base gap-2">
+              <Button
+                variant="outline"
+                className="flex-1 text-base gap-2 bg-muted hover:bg-primary"
+              >
                 <Download className="w-4 h-4" /> Last ned datablad
               </Button>
             </div>

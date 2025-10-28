@@ -97,7 +97,7 @@ const References = () => {
                     <p className="font-semibold text-foreground">
                       {ref.caption}
                     </p>
-                    <blockquote className="mt-2 text-sm text-muted-foreground border-l-2 border-secondary italic pl-4">
+                    <blockquote className="mt-2 text-sm text-muted-foreground border-l-2 border-primary italic pl-4">
                       {ref.testimonial}
                     </blockquote>
                   </CardFooter>
@@ -108,7 +108,7 @@ const References = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 md:py-24 bg-primary text-primary-foreground">
+        <section className="py-16 md:py-24 bg-secondary text-primary-foreground ">
           <div className="container max-w-6xl mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold">
               Se hvordan COAX passer inn i ditt prosjekt.
@@ -131,7 +131,7 @@ const References = () => {
         </section>
 
         {/* Installation Examples */}
-        <section>
+        {/* <section>
           <div className="container max-w-6xl mx-auto px-4 mt-16">
             <h2 className="text-3xl font-bold text-center text-primary mb-8">
               Installasjonseksempler
@@ -165,7 +165,7 @@ const References = () => {
               </Card>
             </div>
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );

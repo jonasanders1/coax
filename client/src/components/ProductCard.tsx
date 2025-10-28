@@ -9,7 +9,6 @@ import {
 
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Phone } from "lucide-react";
 import { Product } from "../types/product";
 
 type ProductCardProps = {
@@ -20,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card
       key={product.id}
-      className="hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col group"
+      className="hover:shadow-md transition-shadow overflow-hidden h-full flex flex-col group"
     >
       <CardHeader className="p-0">
         <Link
@@ -82,11 +81,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Button
           asChild
           size="sm"
-          className="flex-1"
+          className="flex-1 hover:bg-primary hover:text-primary-foreground"
           variant="outline"
           onClick={(e) => e.stopPropagation()}
         >
-          <Link to={`/produkter/${product.id}`} className="flex items-center justify-center">
+          <Link
+            to={`/produkter/${product.id}`}
+            className="flex items-center justify-center"
+          >
             Les mer
           </Link>
         </Button>

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import { ThemeProvider } from "next-themes";
 
 import ChatBot from "./components/chatbot/ChatBot";
 import HomePage from "./pages/Home";
@@ -16,6 +17,7 @@ import FAQ from "./pages/FAQ";
 import References from "./pages/References";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Thanks from "./pages/Thanks";
 import ScrollUp from "./components/ScrollUp";
 import Layout from "@/components/Layout";
 
@@ -36,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "faq", element: <FAQ /> },
       { path: "referanser", element: <References /> },
       { path: "kontakt", element: <Contact /> },
+      { path: "thanks", element: <Thanks /> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -58,22 +61,24 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <motion.div
-            initial="initial"
-            animate="animate"
-            variants={appVariants}
-            className="min-h-screen"
-          >
-            <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end justify-end">
-              <ScrollUp />
-              <ChatBot />
-            </div>
-            <RouterProvider router={router} />
-          </motion.div>
-        </TooltipProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={appVariants}
+              className="min-h-screen"
+            >
+              <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end justify-end">
+                <ScrollUp />
+                <ChatBot />
+              </div>
+              <RouterProvider router={router} />
+            </motion.div>
+          </TooltipProvider>
+        </ThemeProvider>
       </AppProvider>
     </QueryClientProvider>
   );

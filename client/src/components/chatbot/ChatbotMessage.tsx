@@ -1,8 +1,8 @@
 "use client";
 import type { Message } from "@/types/chat";
 import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
-import luna from "@/assets/luna.png";
+import { Loader, MessageSquareText } from "lucide-react";
+import flux from "@/assets/flux.png";
 
 export function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -18,7 +18,7 @@ export function ChatMessage({ message }: { message: Message }) {
         className={cn(
           "py-3",
           isUser
-            ? "max-w-[90%] md:max-w-[80%] bg-primary text-white self-end shadow-sm px-4 rounded-lg"
+            ? "max-w-[90%] md:max-w-[80%] bg-primary dark:bg-primary/80 text-white self-end shadow-sm px-4 rounded-lg"
             : "w-[90%] md:w-[80%] self-start border-b-2 rounded-b-none"
         )}
       >
@@ -28,19 +28,12 @@ export function ChatMessage({ message }: { message: Message }) {
               "Meg"
             ) : (
               <div className="flex items-center gap-2">
-                <img src={luna} className="w-5 h-5" />
-                <p>Luna</p>
+                <MessageSquareText className="w-5 h-5" />
+                <p>Flux</p>
               </div>
             )}
           </div>
-          <div
-            className={cn(
-              "text-xs",
-              isUser ? "text-white/70" : "text-muted-foreground"
-            )}
-          >
-            {formattedTime}
-          </div>
+          <div className={cn("text-xs text-white")}>{formattedTime}</div>
         </div>
         <p
           className={cn(
@@ -48,13 +41,19 @@ export function ChatMessage({ message }: { message: Message }) {
             isUser ? "text-white" : "text-muted-foreground"
           )}
         >
-          {message.status === 'writing' && message.content === '' ? (
+          {message.status === "writing" && message.content === "" ? (
             <span className="flex items-center gap-2 text-base">
               <Loader className="animate-spin h-4 w-4" />
               <span>Tenker...</span>
             </span>
           ) : (
-            <span className={message.status === 'writing' ? 'after:content-["_"] after:animate-pulse' : ''}>
+            <span
+              className={
+                message.status === "writing"
+                  ? 'after:content-["_"] after:animate-pulse'
+                  : ""
+              }
+            >
               {message.content}
             </span>
           )}

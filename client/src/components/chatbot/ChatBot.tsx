@@ -8,11 +8,10 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import luna from "@/assets/luna.png";
 
 import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, Send } from "lucide-react";
+import { MessageCircle, MessageSquareText, Send } from "lucide-react";
 import { useChatBot } from "@/hooks/useChatBot";
 import { useAppContext } from "@/context/AppContext";
 import { toast } from "@/hooks/use-toast";
@@ -39,7 +38,7 @@ const ChatBot = () => {
           id: `assistant-${Date.now()}`,
           role: "assistant",
           content:
-            "Hei! Jeg er Luna, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
+            "Hei! Jeg er Flux, din hjelpsomme assistent for COAX varmtvannsberedere. Hvordan kan jeg hjelpe deg i dag?",
           timestamp: new Date().toISOString(),
         };
 
@@ -74,7 +73,7 @@ const ChatBot = () => {
       toast({
         className: "bg-secondary text-white",
         title: "Noe gikk galt",
-        description: "Luna kan ikke svare akkurat nå. Prøv igjen senere.",
+        description: "Flux kan ikke svare akkurat nå. Prøv igjen senere.",
       });
     } finally {
       setIsLoading(false);
@@ -87,27 +86,30 @@ const ChatBot = () => {
       <Button
         onClick={openChat}
         size="icon"
-        className="md:h-12 md:w-12 h-10 w-10 bg-white rounded-full shadow-lg border border-border"
+        className="md:h-12 md:w-12 h-10 w-10 bg-gradient-to-r from-secondary to-primary text-white rounded-full shadow-lg"
       >
-        <img src={luna} />
+        <MessageSquareText className="w-6 h-6" />
       </Button>
 
       {/* Chat Dialog */}
       <Dialog open={isOpen} onOpenChange={closeChat}>
         <DialogContent className="md:h-[600px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
-            <div className="flex items-center space-x-2">
-              <img src={luna} className="w-6 h-6" alt="Luna Logo" />
-              <DialogTitle className="text-xl m-0">Luna</DialogTitle>
+            <div
+              className="flex items-center space-x-2"
+              data-radix-dialog-title="Flux"
+            >
+              <MessageSquareText className="w-6 h-6" />
+              <DialogTitle className="text-xl m-0">Flux</DialogTitle>
             </div>
             <DialogDescription className="sr-only">
-              Chat med assistenten for å få hjelp om produkter og valg av
+              Snakk med assistenten for å få hjelp om produkter og valg av
               modell.
             </DialogDescription>
           </DialogHeader>
 
           {/* Messages Area */}
-          <ScrollArea className="flex-1 px-4 bg-gray-100" ref={scrollAreaRef}>
+          <ScrollArea className="flex-1 px-4 bg-muted" ref={scrollAreaRef}>
             <div className="space-y-4 pt-4 pb-8">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
@@ -117,12 +119,12 @@ const ChatBot = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="relative flex-shrink-0 bg-white border border-border rounded-lg focus-within:border-primary m-3"
+            className="relative flex-shrink-0 bg-transparent border border-border rounded-lg focus-within:border-primary m-3"
           >
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Fortell Luna hva du lurer på..."
+              placeholder="Fortell Flux hva du lurer på..."
               autoResize
               maxHeight={150}
               className="pr-12 py-3 bg-transparent border-none resize-none overflow-hidden"
@@ -146,6 +148,9 @@ const ChatBot = () => {
               </Button>
             </div>
           </form>
+          <div className="text-center text-xs text-muted-foreground mb-4">
+            Flux kan ta feil – dobbeltsjekk viktig informasjon.
+          </div>
         </DialogContent>
       </Dialog>
     </>

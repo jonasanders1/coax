@@ -21,7 +21,7 @@ interface AppState {
 const AppContext = createContext<AppState | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er Luna, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
+  const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
 
   const [messages, setMessages] = useState<Message[]>(() => [
     {

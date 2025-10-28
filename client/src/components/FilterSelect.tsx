@@ -24,7 +24,7 @@ const FilterSelect = ({
   placeholder: string;
 }) => (
   <div className="flex flex-col items-start gap-1 md:gap-2">
-    <Label htmlFor={id} className="text-sm md:text-lg font-medium text-white">
+    <Label htmlFor={id} className="text-sm md:text-lg font-medium ">
       {label}
     </Label>
     <Select value={value} onValueChange={onValueChange}>
