@@ -155,6 +155,8 @@ All colors MUST be HSL.
 
     --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(0 0% 98%));
 
+    --gradient-bg: linear-gradient(45deg, #5bbc51, #1a7c10);
+
     /* Sidebar */
     --sidebar-background: 42 25% 97%;
     --sidebar-foreground: 215 40% 15%;

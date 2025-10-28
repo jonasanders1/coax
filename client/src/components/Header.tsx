@@ -23,7 +23,6 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex flex-col leading-tight">
-            {/* <img src={logo} className="w-32" alt="COAX" /> */}
             <Logo />
           </Link>
 
