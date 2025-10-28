@@ -13,9 +13,6 @@ const resolveBaseUrl = (): string => {
 
 export const API_BASE_URL = resolveBaseUrl();
 
-console.log("API Base URL:", API_BASE_URL);
-console.log("API Key:", import.meta.env.VITE_API_KEY);
-
 /* --------------------------------------------------------------
    1. NON-STREAMING (existing) – kept for health-checks, etc.
    -------------------------------------------------------------- */
