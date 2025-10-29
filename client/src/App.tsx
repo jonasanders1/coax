@@ -16,6 +16,7 @@ import ModelSelector from "./pages/ModelSelector";
 import FAQ from "./pages/FAQ";
 import References from "./pages/References";
 import Contact from "./pages/Contact";
+import Calculator from "./pages/Calculator";
 import NotFound from "./pages/NotFound";
 import Thanks from "./pages/Thanks";
 import ScrollUp from "./components/ScrollUp";
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: "faq", element: <FAQ /> },
       { path: "referanser", element: <References /> },
       { path: "kontakt", element: <Contact /> },
+      // { path: "kalkulator", element: <Calculator /> },
       { path: "thanks", element: <Thanks /> },
       { path: "*", element: <NotFound /> },
     ],

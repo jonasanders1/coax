@@ -1,21 +1,26 @@
 # api/schemas.py
-from dataclasses import dataclass, asdict
-from datetime import datetime
+from pydantic import BaseModel, Field, field_validator
+from typing import List, Dict
 import datetime as dt
 
-@dataclass
-class Message:
+
+class Message(BaseModel):
     id: str
-    role: str
-    content: str
+    role: str = Field(..., pattern="^(user|assistant|system)$")  # Restrict roles to valid ones
+    content: str = Field(..., min_length=1, max_length=4096)  # Prevent empty or overly long content
     timestamp: str
 
-    def to_dict(self):
-        return asdict(self)
+    @field_validator("timestamp")
+    def validate_timestamp(cls, v):
+        try:
+            dt.datetime.fromisoformat(v)
+        except ValueError:
+            raise ValueError("Invalid ISO timestamp format")
+        return v
 
-@dataclass
-class ChatRequest:
-    messages: list[dict]
+
+class ChatRequest(BaseModel):
+    messages: List[Dict[str, str]] = Field(..., min_items=1, max_items=50)  # Limit history to prevent DoS attacks
 
     def get_user_query(self) -> str | None:
         # Iterate in reverse to get the most recent user message

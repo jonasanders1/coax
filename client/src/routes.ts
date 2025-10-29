@@ -7,6 +7,7 @@ export const routes = [
   { path: '/faq', name: 'FAQ' },
   { path: '/referanser', name: 'References' },
   { path: '/kontakt', name: 'Contact' },
+  // { path: '/kalkulator', name: 'Calculator' },
   { path: '/thanks', name: 'Thanks' },
   { path: '*', name: 'NotFound' },
 ];

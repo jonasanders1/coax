@@ -68,13 +68,13 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Kontakt</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2 justify-center md:justify-start">
-                <MapPin className="w-4 h-4 text-secondary mt-1 flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                 <span className="text-sm text-muted-foreground">
                   Grønnliveien 13, 3474 Åros
                 </span>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
-                <Phone className="w-4 h-4 text-secondary flex-shrink-0" />
+                <Phone className="w-4 h-4 text-primary flex-shrink-0" />
                 <a
                   href="tel:+4797732838"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -83,7 +83,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
-                <Mail className="w-4 h-4 text-secondary flex-shrink-0" />
+                <Mail className="w-4 h-4 text-primary flex-shrink-0" />
                 <a
                   href="mailto:post@coax.no"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"

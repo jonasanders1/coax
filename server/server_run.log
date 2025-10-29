@@ -1,0 +1,11 @@
+2025-10-29 15:45:30,152 - rag.index - INFO - Loading Chroma vector store...
+Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2025-10-29 15:45:33,765 - rag.index - INFO - Vector index loaded successfully.
+2025-10-29 15:45:33,765 - rag.engine - INFO - Chat engine initialized (streaming-ready).
+Local dev mode: Enabling Flask-CORS
+Running on http://0.0.0.0:8000
+ * Serving Flask app 'main'
+ * Debug mode: off
+Address already in use
+Port 8000 is in use by another program. Either identify and stop that program, or start the server with a different port.

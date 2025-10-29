@@ -22,7 +22,6 @@ import { useLayoutAnimation } from "@/components/Layout";
 import CtaSection from "@/components/chatbot/CtaSection";
 import { useLocation } from "react-router-dom";
 import { useChatBot } from "@/hooks/useChatBot";
-import { ThemeToggle } from "@/components/ToggleTheme";
 
 const benefits = [
   {
@@ -151,7 +150,7 @@ const HomePage = () => {
           className="container mx-auto px-4 py-24 text-center"
         >
           <motion.h1
-            className="text-5xl md:text-6xl font-bold text-primary mb-6 max-w-4xl mx-auto"
+            className="text-5xl md:text-6xl font-bold text-foreground mb-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
               shouldAnimate
@@ -220,7 +219,6 @@ const HomePage = () => {
           </motion.div>
         </motion.div>
       </section>
-      
 
       {/* Benefits Section */}
       <section className="py-16 bg-background">
@@ -231,8 +229,8 @@ const HomePage = () => {
               return (
                 <Card key={i} className="border-none shadow-none">
                   <CardContent className="pt-6 text-center">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
-                      <Icon className="w-6 h-6 text-secondary" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+                      <Icon className="w-6 h-6 text-primary" />
                     </div>
                     <h3 className="text-xl font-bold mb-3">{b.title}</h3>
                     <p className="text-muted-foreground">{b.text}</p>

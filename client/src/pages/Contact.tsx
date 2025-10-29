@@ -47,7 +47,7 @@ const Contact = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-3">
-                  <MapPin className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
+                  <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <div className="font-semibold mb-1">Adresse</div>
                     <div className="text-sm text-muted-foreground">
@@ -57,7 +57,7 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
+                  <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <div className="font-semibold mb-1">Telefon</div>
                     <a
@@ -70,7 +70,7 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
+                  <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <div className="font-semibold mb-1">E-post</div>
                     <a
@@ -100,7 +100,7 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/90 to-secondary/90">
+            <Card className="relative overflow-hidden rounded-2xl" style={{ background: 'var(--gradient-primary)' }}>
               <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
               <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
               <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
@@ -110,7 +110,7 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-primary-foreground/90">
+                <p className="text-white/90">
                   Vi svarer vanligvis innen 24 timer på hverdager. Haster det?
                   Ring oss direkte!
                 </p>
@@ -124,7 +124,7 @@ const Contact = () => {
                     <MessageCircle className="h-5 w-5" />
                     Snakk med Flux
                   </span>
-                  <span className="absolute inset-0 -z-0 bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+                  <span className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'var(--gradient-primary)' }}></span>
                 </Button>
               </CardContent>
             </Card>
