@@ -86,7 +86,8 @@ const ChatBot = () => {
       <Button
         onClick={openChat}
         size="icon"
-        className="md:h-12 md:w-12 h-10 w-10 bg-gradient-to-r from-secondary to-primary text-white rounded-full shadow-lg"
+        className="md:h-12 md:w-12 h-10 w-10 text-white rounded-full shadow-lg"
+        style={{ background: 'var(--gradient-primary)' }}
       >
         <MessageSquareText className="w-6 h-6" />
       </Button>

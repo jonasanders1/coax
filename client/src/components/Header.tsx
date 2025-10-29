@@ -49,7 +49,8 @@ const Header = () => {
           </div>
 
           <Button
-            className="hidden lg:flex bg-gradient-to-r from-secondary to-primary text-white"
+            className="hidden lg:flex text-white"
+            style={{ background: 'var(--gradient-primary)' }}
             onClick={openChat}
             size="sm"
             variant="default"
@@ -107,7 +108,8 @@ const Header = () => {
               <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
-                  className="w-full mt-2 bg-gradient-to-r from-primary to-secondary"
+                  className="w-full mt-2"
+                  style={{ background: 'var(--gradient-primary)' }}
                   onClick={() => {
                     openChat();
                     setMobileMenuOpen(false);

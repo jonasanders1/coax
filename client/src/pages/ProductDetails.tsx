@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/accordion";
 import { MessageCircle, Download, LifeBuoy } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
 import productDetails from "@/product-details.json";
@@ -83,23 +82,27 @@ const ProductDetailsRedesigned = () => {
             },
           }}
         >
-          <MuiLink
-            href="/"
-            underline="hover"
-            sx={{ color: "hsl(var(--muted-foreground))" }}
+          <RouterLink
+            to="/"
+            style={{
+              color: "hsl(var(--muted-foreground))",
+              textDecoration: "none",
+            }}
+            className="hover:underline"
           >
             Hjem
-          </MuiLink>
-          <MuiLink
-            href="/produkter"
-            underline="hover"
-            sx={{ color: "hsl(var(--muted-foreground))" }}
+          </RouterLink>
+          <RouterLink
+            to="/produkter"
+            style={{
+              color: "hsl(var(--muted-foreground))",
+              textDecoration: "none",
+            }}
+            className="hover:underline"
           >
             Produkter
-          </MuiLink>
-          <Typography sx={{ color: "hsl(var(--secondary))" }}>
-            {name}
-          </Typography>
+          </RouterLink>
+          <Typography sx={{ color: "hsl(var(--accent))" }}>{name}</Typography>
         </Breadcrumbs>
 
         {/* Hero Section */}
@@ -252,9 +255,12 @@ const ProductDetailsRedesigned = () => {
           {/* Right - Sidebar */}
           <aside className="space-y-6">
             {/* Chat */}
-            <div className="rounded-2xl p-6 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-md">
+            <div
+              className="rounded-2xl p-6 text-white shadow-md"
+              style={{ background: "var(--gradient-primary)" }}
+            >
               <h2 className="text-xl font-semibold mb-2">Chat om {name}</h2>
-              <p className="text-sm text-primary-foreground/90 mb-4">
+              <p className="text-sm text-white/90 mb-4">
                 Få hjelp til å vurdere om denne modellen passer for ditt behov.
               </p>
               <Button size="lg" variant="secondary" className="w-full gap-2">

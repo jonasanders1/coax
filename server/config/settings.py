@@ -17,6 +17,7 @@ class Settings:
     TEMPERATURE: float = 0.0
     MAX_TOKENS: int = 300
     HOST: str = "0.0.0.0"
+    CHAT_MEMORY_TOKEN_LIMIT: int = 1024
 
     @property
     def is_development(self) -> bool:

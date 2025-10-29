@@ -12,7 +12,7 @@ const CtaSection = ({ isHeader }: CtaSectionProps) => {
 
   return (
     <section className={isHeader ? "py-0 md:py-0" : "py-16 md:py-24"}>
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/90 to-secondary/90 p-8 text-white shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl p-8 text-white shadow-2xl" style={{ background: 'var(--gradient-primary)' }}>
         {/* Decorative elements */}
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
@@ -40,7 +40,7 @@ const CtaSection = ({ isHeader }: CtaSectionProps) => {
                   <MessageCircle className="h-5 w-5" />
                   Snakk med Flux
                 </span>
-                <span className="absolute inset-0 -z-0 bg-gradient-to-r from-primary to-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+                <span className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'var(--gradient-primary)' }}></span>
               </Button>
             </div>
           </div>
