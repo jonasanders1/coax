@@ -93,7 +93,7 @@ metadata_extractor = CoaxMetadataExtractor(llm=llm)
 
 # Load COAX document
 documents = SimpleDirectoryReader(
-    input_files=["./documents/coax-info.md"],
+    input_dir="./documents",
     file_metadata=lambda x: {"file_name": os.path.basename(x)}
 ).load_data()
 
