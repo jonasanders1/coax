@@ -1,9 +1,13 @@
-COAX er en leverandør av elektriske vannvarmere som varmer vann direkte ved behov, uten lagringstank. Dette gir flere fordeler, inkludert:
+Her er en oversikt over XFJ-2 i tabellformat:
 
-- **Plassbesparende design:** Vannvarmerne er kompakte og kan enkelt monteres nær tappesteder, noe som reduserer behovet for lange rørstrekk.
-- **Energieffektivitet:** De er kun aktive under bruk, noe som reduserer strømforbruket betydelig.
-- **Miljøvennlig:** Mindre vann- og strømforbruk bidrar til å redusere avløpsbelastningen.
-- **Hygienisk:** Vannet varmes direkte, noe som minimerer bakterievekst og sikrer friskt vann.
-- **Allsidighet:** COAX vannvarmere passer til ulike bruksområder, fra håndvasker til store bolighus og industrielle bygg. 
+| **Egenskap**          | **Detaljer**                          |
+|-----------------------|---------------------------------------|
+| **Modell**            | XFJ-2 (1-faset, 230V)                |
+| **Beskrivelse**       | Kompakt modell for dusj, håndvask, leiligheter, hytter og mindre boliger. Monteres på vegg, kun 8 cm ut fra veggen. |
+| **Kapasitet**         | 3–7 liter/min (justerbar)            |
+| **Watteffekt**        | 3,5–15 kW                            |
+| **Sikringskurs**      | 10–50A                               |
+| **Egenskaper**        | - LED-skjerm med berøringspanel for temperatur- og vannmengdeinnstilling. <br> - Beskyttelse mot lekkasjestrøm, overoppheting, overtrykk og skålding. <br> - IPX4-sertifisert (sprutsikker). |
+| **Dimensjoner**       | 300 x 180 x 80 mm                    |
 
-Disse egenskapene gjør COAX vannvarmere til en økonomisk og praktisk løsning for varmtvann i både boliger og industri.
+Hvis du har flere spørsmål om XFJ-2 eller andre produkter, er det bare å spørre!

@@ -4,107 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
-/* @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 20%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
-
-    --primary: 215 56% 23%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 359 65% 29%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 98%;
-    --muted-foreground: 0 0% 40%;
-
-    --accent: 215 56% 23%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 145 64% 42%;
-    --success-foreground: 0 0% 100%;
-
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 215 56% 23%;
-
-    --radius: 0.5rem;
-
-    --gradient-hero: linear-gradient(
-      135deg,
-      hsl(0 0% 98%) 0%,
-      hsl(0 0% 100%) 100%
-    );
-    --gradient-card: linear-gradient(to bottom, hsl(0 0% 100%), hsl(0 0% 99%));
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 215 56% 15%;
-    --foreground: 0 0% 98%;
-
-    --card: 215 56% 18%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 215 56% 18%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 215 56% 23%;
-
-    --secondary: 359 65% 35%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 215 30% 20%;
-    --muted-foreground: 0 0% 70%;
-
-    --accent: 215 56% 25%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 215 30% 25%;
-    --input: 215 30% 25%;
-    --ring: 0 0% 70%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-} */
 
 @layer base {
   :root {
@@ -303,4 +202,82 @@ html {
       font-size: 1.25rem;
     }
   }
+}
+.wmde-markdown table {
+  display: table !important; /* Restore standard table layout; original 'block' likely enables scrolling but breaks alignment */
+  width: 100% !important;   /* Force full width of the parent container */
+  max-width: 100% !important; /* Prevent exceeding parent */
+  -moz-width: auto !important; /* Override the vendor-prefixed version if present */
+}
+
+/* KaTeX and Markdown styling */
+@layer components {
+  .markdown-body {
+    @apply text-foreground;
+  }
+  .markdown-body .katex { font-size: 1.05em; }
+  .markdown-body .katex-display {
+    margin: 1em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .markdown-body code { @apply bg-muted px-1 py-0.5 rounded text-sm; }
+  .markdown-body pre { @apply bg-muted p-4 rounded-lg overflow-x-auto; }
+  /* .markdown-body table { display: block; width: 100%; overflow-x: auto; } */
+  
+  /* List styles */
+  .markdown-body ul {
+    list-style-type: disc;
+    padding-left: 2em;
+    margin: 1em 0;
+  }
+  .markdown-body ol {
+    list-style-type: decimal;
+    padding-left: 2em;
+    margin: 1em 0;
+  }
+  .markdown-body li {
+    margin: 0.5em 0;
+  }
+
+
+  .markdown-body table {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .markdown-body th,
+    .markdown-body td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    
+    /* Table header styling */
+    .markdown-body th {
+      background-color: hsl(var(--muted) / 0.1);
+      font-weight: 600;
+    }
+    
+    /* Table row styling */
+    .markdown-body tbody tr:nth-child(odd) td {
+      background-color: hsl(var(--muted) / 0.6);
+    }
+    
+    /* Alternate row colors for better readability */
+    .markdown-body tbody tr:nth-child(even) td {
+      background-color: hsl(var(--muted) / 0.9);
+    }
+    
+    /* Hover effect on rows */
+    .markdown-body tbody tr:hover td {
+      background-color: hsl(var(--muted) / 0.5);
+    }
+    
+  
 }

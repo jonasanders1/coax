@@ -1,4 +1,5 @@
 venv
+.venv
 server/coax-chroma_db
 server/app.log
 server/__pycache__

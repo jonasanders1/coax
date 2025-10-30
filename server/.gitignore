@@ -4,4 +4,5 @@ __pycache__
 .env.development
 coax-chroma_db
 venv
+.venv
 app.log
