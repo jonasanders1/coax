@@ -112,12 +112,14 @@ def chat():
                         timestamp=dt.datetime.now(dt.timezone.utc).isoformat(),
                     )
                     
-                    yield f"data: {json.dumps({
-                        'type': 'done',
-                        'message': assistant_msg.model_dump(),
-                        'metadata': metadata
+                    yield f"data: {json.dumps({ 
+                        'type': 'done', 
+                        'message': assistant_msg.model_dump(), 
+                        'metadata': metadata 
                     })}\n\n"
                     return
+
+
                 
                 # Has history - build a per-request chat engine with memory
                 index = get_index()

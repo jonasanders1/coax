@@ -2,7 +2,9 @@
 import type { Message } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import { Loader, MessageSquareText } from "lucide-react";
-import flux from "@/assets/flux.png";
+import MDEditor from "@uiw/react-md-editor";
+import katex from "katex";
+import "katex/dist/katex.css";
 
 export function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -35,29 +37,60 @@ export function ChatMessage({ message }: { message: Message }) {
           </div>
           <div className={cn("text-xs text-white")}>{formattedTime}</div>
         </div>
-        <p
-          className={cn(
-            "whitespace-pre-wrap text-base leading-relaxed text-foreground",
-            isUser ? "text-white" : "text-muted-foreground"
-          )}
-        >
-          {message.status === "writing" && message.content === "" ? (
-            <span className="flex items-center gap-2 text-base">
-              <Loader className="animate-spin h-4 w-4" />
-              <span>Tenker...</span>
-            </span>
-          ) : (
-            <span
-              className={
-                message.status === "writing"
-                  ? 'after:content-["_"] after:animate-pulse'
-                  : ""
-              }
-            >
-              {message.content}
-            </span>
-          )}
-        </p>
+
+        {/* Message content */}
+        {isUser ? (
+          <p className={cn("whitespace-pre-wrap text-base leading-relaxed text-foreground text-white")}>
+            {message.content}
+          </p>
+        ) : message.status === "writing" && message.content === "" ? (
+          <span className="flex items-center gap-2 text-base">
+            <Loader className="animate-spin h-4 w-4" />
+            <span>Tenker...</span>
+          </span>
+        ) : (
+          <div className="prose text-foreground max-w-full">
+            <MDEditor.Markdown
+              source={message.content}
+              style={{ whiteSpace: "pre-wrap" }}
+              previewOptions={{
+                components: {
+                  code: ({ children = [], className, ...props }) => {
+                    // KaTeX inline / block handling
+                    if (typeof children === "string" && /^\$\$(.*)\$\$/.test(children)) {
+                      const html = katex.renderToString(
+                        children.replace(/^\$\$(.*)\$\$/, "$1"),
+                        { throwOnError: false }
+                      );
+                      return (
+                        <code
+                          dangerouslySetInnerHTML={{ __html: html }}
+                          style={{ background: "transparent" }}
+                        />
+                      );
+                    }
+
+                    const code =
+                      props.node && props.node.children
+                        ? props.node.children[0]?.value || ""
+                        : children;
+
+                    if (
+                      typeof code === "string" &&
+                      typeof className === "string" &&
+                      /^language-katex/.test(className.toLowerCase())
+                    ) {
+                      const html = katex.renderToString(code, { throwOnError: false });
+                      return <code dangerouslySetInnerHTML={{ __html: html }} style={{ fontSize: "150%" }} />;
+                    }
+
+                    return <code className={String(className)}>{children}</code>;
+                  },
+                },
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

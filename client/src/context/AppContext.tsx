@@ -31,7 +31,111 @@ export function AppProvider({ children }: { children: ReactNode }) {
       timestamp: new Date().toISOString(),
       status: "complete",
     },
+    {
+      id: "mock-1",
+      role: "assistant",
+      content: `
+  # ⚡ Quick Tips for COAX Water Heater
+  
+  Here are some key points:
+  
+  - **Instant Heating:** No storage tank needed
+  - **Energy Efficient:** Only heats the water you use
+  - **Eco-Friendly:** Reduces standby heat loss
+  
+  You can calculate the required power using:
+  
+  \`\`\`katex
+  P = Q \\cdot \\Delta T \\cdot 69{,}77
+  \`\`\`
+  
+  Where:  
+  - $Q$ is the flow in liters per minute  
+  - $\\Delta T$ is the temperature difference in °C  
+  - $P$ is the required power in kW
+      `,
+      timestamp: new Date().toISOString(),
+      status: "complete",
+    },
+    {
+      id: "mock-2",
+      role: "assistant",
+      content: `
+  ## Example Calculation
+  
+  Suppose we have a flow of 7 L/min and a temperature rise of 28 °C:
+  
+  \`\`\`katex
+  P = 7 \\cdot 28 \\cdot 69{,}77 \\approx 13{,}7 \\text{kW}
+  \`\`\`
+  
+  Comparison to a traditional tank heater:
+  
+  \`\`\`text
+  Tank Heater: ~24 kW standby loss
+  COAX:      0 kW standby loss
+  \`\`\`
+      `,
+      timestamp: new Date().toISOString(),
+      status: "complete",
+    },
+    {
+      id: "mock-3",
+      role: "assistant",
+      content: `
+  ### Maintenance Tips
+  
+  1. Check inlet filters every 6 months
+  2. Inspect electrical connections
+  3. Use **soft water** to reduce scaling
+  
+  For a more advanced calculation, solve for flow given a power limit:
+  
+  \`\`\`katex
+  Q = \\frac{P}{\\Delta T \\cdot 69{,}77}
+  \`\`\`
+      `,
+      timestamp: new Date().toISOString(),
+      status: "complete",
+    },
+    {
+      id: "mock-4",
+      role: "assistant",
+      content: `
+  ### Energy Savings Example
+  
+  If you reduce the flow to 5 L/min and the temperature rise to 25 °C:
+  
+  \`\`\`katex
+  P = 5 \\cdot 25 \\cdot 69{,}77 \\approx 8{,}7 \\text{kW}
+  \`\`\`
+  
+  Small optimizations in flow and temperature significantly reduce power consumption.
+      `,
+      timestamp: new Date().toISOString(),
+      status: "complete",
+    },
+    {
+      id: "mock-5",
+      role: "assistant",
+      content: `
+  ### Quick Reference Table
+  
+  | Flow (L/min) | Temp Rise (°C) | Power (kW) |
+  |--------------|----------------|------------|
+  | 7            | 28             | 13.7       |
+  | 5            | 25             | 8.7        |
+  | 10           | 30             | 20.9       |
+  
+  \`\`\`katex
+  P = Q \\cdot \\Delta T \\cdot 69{,}77
+  \`\`\`
+      `,
+      timestamp: new Date().toISOString(),
+      status: "complete",
+    },
   ]);
+
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
