@@ -1,8 +1,0 @@
-llama-index==0.11.0
-llama-index-vector-stores-chroma==0.2.1
-
-
-new:
-
-llama-index==0.14.5
-llama-index-vector-stores-chroma==0.5.3

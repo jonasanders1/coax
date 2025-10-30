@@ -172,6 +172,8 @@ def chat():
                     timestamp=dt.datetime.now(dt.timezone.utc).isoformat(),
                 )
 
+                # print("Assistant message: ", full_content)
+
                 yield f"data: {json.dumps({
                     'type': 'done',
                     'message': assistant_msg.model_dump(),

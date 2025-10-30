@@ -9,14 +9,16 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
+// import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, MessageSquareText, Send } from "lucide-react";
+import { MessageSquareText, Send } from "lucide-react";
 import { useChatBot } from "@/hooks/useChatBot";
 import { useAppContext } from "@/context/AppContext";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
 import { Message } from "@/types/chat";
+import ChatbotMessage2 from "./ChatbotMessage2";
+
 
 const ChatBot = () => {
   const { messages, setMessages, sendMessage } = useAppContext();
@@ -87,7 +89,7 @@ const ChatBot = () => {
         onClick={openChat}
         size="icon"
         className="md:h-12 md:w-12 h-10 w-10 text-white rounded-full shadow-lg"
-        style={{ background: 'var(--gradient-primary)' }}
+        style={{ background: "var(--gradient-primary)" }}
       >
         <MessageSquareText className="w-6 h-6" />
       </Button>
@@ -113,7 +115,8 @@ const ChatBot = () => {
           <ScrollArea className="flex-1 px-4 bg-muted" ref={scrollAreaRef}>
             <div className="space-y-4 pt-4 pb-8">
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+                // <ChatMessage key={message.id} message={message} />
+                <ChatbotMessage2 key={message.id} message={message} />
               ))}
             </div>
           </ScrollArea>

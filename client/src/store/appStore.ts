@@ -24,7 +24,7 @@ export const useAppStore = create<AppStoreState>((set) => ({
   toggleMobileMenu: () => set((s) => ({ mobileMenuOpen: !s.mobileMenuOpen })),
 
   // Chat dialog
-  isOpen: true,
+  isOpen: false,
   openChat: () => set({ isOpen: true }),
   closeChat: () => set({ isOpen: false }),
   toggleChat: () => set((s) => ({ isOpen: !s.isOpen })),
