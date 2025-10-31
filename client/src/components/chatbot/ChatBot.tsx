@@ -18,6 +18,10 @@ import { toast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
 import { Message } from "@/types/chat";
 import ChatbotMessage2 from "./ChatbotMessage2";
+import { truncateString } from "@/utils/inputValidation";
+
+// Maximum length for chat input (prevents DoS and excessive API costs)
+const MAX_CHAT_INPUT_LENGTH = 2000;
 
 
 const ChatBot = () => {
@@ -64,8 +68,13 @@ const ChatBot = () => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    // Truncate input to max length to prevent DoS attacks
+    const sanitizedInput = truncateString(input.trim(), MAX_CHAT_INPUT_LENGTH);
+    
+    if (!sanitizedInput) return;
+
     setIsLoading(true);
-    const currentInput = input;
+    const currentInput = sanitizedInput;
 
     setInput("");
     try {
@@ -127,10 +136,17 @@ const ChatBot = () => {
           >
             <Textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                // Limit input length to prevent DoS
+                const value = e.target.value;
+                if (value.length <= MAX_CHAT_INPUT_LENGTH) {
+                  setInput(value);
+                }
+              }}
               placeholder="Fortell Flux hva du lurer på..."
               autoResize
               maxHeight={150}
+              maxLength={MAX_CHAT_INPUT_LENGTH}
               className="pr-12 py-3 bg-transparent border-none resize-none overflow-hidden"
               rows={1}
               onKeyDown={(e) => {

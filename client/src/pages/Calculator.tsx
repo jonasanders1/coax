@@ -24,6 +24,7 @@ import {
 import { Calculator, Zap, TrendingUp, Clock, DollarSign } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 import { useTheme } from "@/hooks/useTheme";
+import { sanitizeNumberInput } from "@/utils/inputValidation";
 
 interface CalculationParams {
   antallPersoner: number;
@@ -154,9 +155,28 @@ const CalculatorPage = () => {
     };
   }, [params]);
 
-  // Update parameter value
-  const updateParam = (key: keyof CalculationParams, value: number) => {
-    setParams((prev) => ({ ...prev, [key]: value }));
+  // Update parameter value with validation
+  const updateParam = (key: keyof CalculationParams, value: number | string) => {
+    let sanitizedValue: number;
+    
+    // Define bounds for each parameter to prevent invalid inputs
+    const bounds: Record<keyof CalculationParams, { min: number; max: number; default: number }> = {
+      antallPersoner: { min: 1, max: 10, default: 2 },
+      dusjerPerPersonPerDag: { min: 0.5, max: 10, default: 1 },
+      minPerDusj: { min: 1, max: 60, default: 4 },
+      tanklessPowerKW: { min: 1, max: 100, default: 18.0 },
+      tanklesskWhPer4min: { min: 0.1, max: 10, default: 1.2 },
+      tankkWhPer4min: { min: 0.1, max: 10, default: 3.0 },
+      standbyTapTankkWhPerYear: { min: 0, max: 10000, default: 900.0 },
+      strømprisNOKPerkWh: { min: 0.01, max: 100, default: 1.5 },
+      installasjonskostnadTanklessNOK: { min: 0, max: 1000000, default: 12000.0 },
+      installasjonskostnadTankNOK: { min: 0, max: 1000000, default: 5000.0 },
+    };
+    
+    const bound = bounds[key];
+    sanitizedValue = sanitizeNumberInput(value, bound.min, bound.max, bound.default);
+    
+    setParams((prev) => ({ ...prev, [key]: sanitizedValue }));
   };
 
   // Chart data

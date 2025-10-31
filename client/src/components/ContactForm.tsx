@@ -7,6 +7,14 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
+import {
+  sanitizeText,
+  sanitizeEmail,
+  sanitizeEmailHeader,
+  isValidEmail,
+  isValidPhone,
+  normalizeWhitespace,
+} from "@/utils/inputValidation";
 
 export default function ContactForm() {
   const { toast } = useToast();
@@ -24,24 +32,71 @@ export default function ContactForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
+    let sanitizedValue = value;
+
+    // Apply appropriate sanitization based on field type
+    if (name === "email") {
+      sanitizedValue = sanitizeEmail(value.slice(0, 254)); // Email max length
+    } else if (name === "phone") {
+      sanitizedValue = value.slice(0, 20); // Phone number max length
+    } else if (name === "name") {
+      sanitizedValue = normalizeWhitespace(value.slice(0, 100)); // Name max length
+    } else if (name === "message") {
+      sanitizedValue = value.slice(0, 5000); // Message max length
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: sanitizedValue,
     }));
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Client-side validation
+    if (!isValidEmail(formData.email)) {
+      toast({
+        title: "Ugyldig e-postadresse",
+        description: "Vennligst skriv inn en gyldig e-postadresse.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.phone && !isValidPhone(formData.phone)) {
+      toast({
+        title: "Ugyldig telefonnummer",
+        description: "Vennligst skriv inn et gyldig telefonnummer.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const form = e.currentTarget;
-    const data = new FormData(form);
+    // Sanitize data before sending
+    const sanitizedName = sanitizeText(normalizeWhitespace(formData.name));
+    const sanitizedEmail = sanitizeEmail(formData.email);
+    const sanitizedPhone = formData.phone ? normalizeWhitespace(formData.phone) : "";
+    const sanitizedMessage = sanitizeText(formData.message);
+
+    // Create FormData with sanitized values
+    const data = new FormData();
+    data.append("name", sanitizedName);
+    data.append("email", sanitizedEmail);
+    if (sanitizedPhone) {
+      data.append("phone", sanitizedPhone);
+    }
+    data.append("message", sanitizedMessage);
 
     // === Web3Forms required fields ===
     data.append("access_key", "a9c0ed65-714a-4a64-876b-e47b207198dd");
     data.append("from_name", "COAX nettside");
-    data.append("replyto", formData.email); // Reply-To header
-    data.append("subject", `${formData.name} har sendt en forespørsel via COAX.no`);
+    // Sanitize email headers to prevent header injection
+    data.append("replyto", sanitizeEmailHeader(sanitizedEmail));
+    data.append("subject", sanitizeEmailHeader(`${sanitizedName} har sendt en forespørsel via COAX.no`));
 
     // Honeypot (bots will fill it)
     data.append("botcheck", "");
@@ -63,7 +118,6 @@ export default function ContactForm() {
 
         // Reset form
         setFormData({ name: "", email: "", phone: "", message: "" });
-        form.reset();
 
         // React Router navigation (no redirect URL needed)
         navigate("/takk");
@@ -104,11 +158,11 @@ export default function ContactForm() {
           />
 
           {/* Dynamic hidden fields (updated on every change) */}
-          <input type="hidden" name="replyto" value={formData.email} />
+          <input type="hidden" name="replyto" value={sanitizeEmailHeader(formData.email)} />
           <input
             type="hidden"
             name="subject"
-            value={`${formData.name} har sendt en forespørsel via COAX.no`}
+            value={sanitizeEmailHeader(`${formData.name} har sendt en forespørsel via COAX.no`)}
           />
           <input type="hidden" name="from_name" value="COAX nettside" />
 
@@ -119,6 +173,7 @@ export default function ContactForm() {
               id="name"
               name="name"
               required
+              maxLength={100}
               value={formData.name}
               onChange={handleChange}
               placeholder="Ditt navn"
@@ -133,6 +188,7 @@ export default function ContactForm() {
               name="email"
               type="email"
               required
+              maxLength={254}
               value={formData.email}
               onChange={handleChange}
               placeholder="din@epost.no"
@@ -146,6 +202,7 @@ export default function ContactForm() {
               id="phone"
               name="phone"
               type="tel"
+              maxLength={20}
               value={formData.phone}
               onChange={handleChange}
               placeholder="123 45 678"
@@ -159,6 +216,7 @@ export default function ContactForm() {
               id="message"
               name="message"
               required
+              maxLength={5000}
               value={formData.message}
               onChange={handleChange}
               placeholder="Fortell oss om ditt behov..."
