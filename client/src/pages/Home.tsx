@@ -10,7 +10,15 @@ import {
   CarouselPrevious,
   CarouselApi,
 } from "@/components/ui/carousel";
-import { Zap, Droplet, Leaf, CheckCircle, XCircle } from "lucide-react";
+import {
+  Zap,
+  Droplet,
+  Leaf,
+  CheckCircle,
+  XCircle,
+  CalculatorIcon,
+  PackageIcon,
+} from "lucide-react";
 import heroImage from "@/assets/hero-water-heater.jpg";
 import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
@@ -206,7 +214,10 @@ const HomePage = () => {
             }
           >
             <Button asChild size="lg" className="text-md px-8 font-normal">
-              <Link to="/velg-modell">Finn din modell</Link>
+              <Link to="/kalkulator">
+                <CalculatorIcon className="w-4 h-4" />
+                Sparekalkulator
+              </Link>
             </Button>
             <Button
               asChild
@@ -214,7 +225,10 @@ const HomePage = () => {
               variant="secondary"
               className="text-md font-normal px-8"
             >
-              <Link to="/produkter">Se produkter</Link>
+              <Link to="/produkter">
+                <PackageIcon className="w-4 h-4" />
+                Se produkter
+              </Link>
             </Button>
           </motion.div>
         </motion.div>
@@ -246,7 +260,7 @@ const HomePage = () => {
       <section className="py-16 md:py-24 bg-muted">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl text-primary">
+            <h2 className="text-2xl md:text-3xl text-foreground">
               Moderne løsning vs. Gammel teknologi
             </h2>
             <p className="mt-2 text-lg text-muted-foreground">
@@ -256,7 +270,7 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 gap-8">
             <Card className="border-destructive/30 border-2 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl text-destructive/80">
+                <CardTitle className="text-2xl text-foreground">
                   Tradisjonell Tank
                 </CardTitle>
               </CardHeader>
@@ -273,14 +287,14 @@ const HomePage = () => {
             </Card>
             <Card className="border-success/30 border-2 shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl text-success/80">
+                <CardTitle className="text-2xl text-foreground">
                   COAX Tankløs
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
                   {comparison.coax.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3">
+                    <li key={index} className="flex items-center gap-3">
                       <item.icon className="w-6 h-6 text-success/80 mt-1 shrink-0" />
                       <span>{item.text}</span>
                     </li>
@@ -316,7 +330,7 @@ const HomePage = () => {
                       )}
                     </div>
                     <div>
-                      <h3 className="text-xl md:text-3xl text-primary">
+                      <h3 className="text-xl md:text-3xl text-foreground">
                         {segment.title}
                       </h3>
                       <p className="mt-2 md:mt-4 text-muted-foreground">

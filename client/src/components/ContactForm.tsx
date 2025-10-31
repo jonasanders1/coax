@@ -66,7 +66,7 @@ export default function ContactForm() {
         form.reset();
 
         // React Router navigation (no redirect URL needed)
-        navigate("/thanks");
+        navigate("/takk");
       } else {
         toast({
           title: "Oi! Noe gikk galt",

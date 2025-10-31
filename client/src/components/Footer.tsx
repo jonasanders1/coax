@@ -24,8 +24,9 @@ const Footer = () => {
               <Logo className="w-28" />
             </Link>
             <p className="text-sm text-muted-foreground">
-              Plassbesparende, effektive elektriske vannvarmere – helt uten
-              lagringstank.
+              COAX leverer plassbesparende og effektive elektriske vannvarmere.
+              Vår visjon er å tilby smarte, miljøvennlige løsninger for
+              oppvarming av vann i norske hjem, hytter og bedrifter.
             </p>
           </div>
 

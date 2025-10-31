@@ -3,6 +3,7 @@ export const sitemapRoutes = [
   "/velg-modell",
   "/faq",
   "/referanser",
+  "/kalkulator",
   "/kontakt",
-  "/thanks",
+  "/takk",
 ];

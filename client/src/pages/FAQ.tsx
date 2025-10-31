@@ -141,7 +141,7 @@ const FAQ = () => {
         <div className="space-y-8">
           {filteredFaqs.map((category, idx) => (
             <div key={idx}>
-              <h2 className="text-2xl font-bold text-primary mb-4">
+              <h2 className="text-2xl font-bold text-foreground mb-4">
                 {category.category}
               </h2>
               <Accordion type="single" collapsible className="space-y-2">
