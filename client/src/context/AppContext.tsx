@@ -30,7 +30,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       content: greetingsMessageContent,
       timestamp: new Date().toISOString(),
       status: "complete",
-    }
+    },
   ]);
 
   const [isLoading, setIsLoading] = useState(false);

@@ -82,7 +82,7 @@ const ModelSelector = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <PageTitile
@@ -98,7 +98,7 @@ const ModelSelector = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="bg-blue-50 dark:bg-blue-500/10 p-4 rounded-lg mb-6">
+              <div className="bg-muted p-4 rounded-lg mb-6">
                 <h3 className="font-semibold mb-2 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-blue-600" />
                   Slik gjør du:

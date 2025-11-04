@@ -37,8 +37,8 @@ const CtaSection = ({ isHeader }: CtaSectionProps) => {
                 className="group relative z-10 min-w-[180px] overflow-hidden border-2 border-white bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:shadow-primary/20"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5" />
                   Snakk med Flux
+                  <MessageCircle className="h-5 w-5" />
                 </span>
                 <span className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'var(--gradient-primary)' }}></span>
               </Button>

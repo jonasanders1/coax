@@ -59,7 +59,7 @@ const DialogContent = React.forwardRef<
         }}
         className={cn(
           // Mobile styles (full screen, bottom sheet-like)
-          "fixed inset-0 md:inset-auto z-50 flex flex-col w-full h-full md:max-w-lg md:max-h-[600px] border bg-background shadow-lg duration-200 outline-none",
+          "fixed inset-0 md:inset-auto z-50 flex flex-col w-full h-full md:max-w-3xl md:max-h-[700px] border bg-background shadow-lg duration-200 outline-none",
           // Mobile animations
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",

@@ -5,6 +5,7 @@ export function ThemeToggle() {
 
   return (
     <Switch
+      color="success"
       checked={resolvedTheme === "dark"}
       onChange={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
     />

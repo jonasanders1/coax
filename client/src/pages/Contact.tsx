@@ -2,32 +2,17 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/ContactForm";
+import NeedsAssessmentForm from "@/components/NeedsAssessmentForm";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import PageTitile from "@/components/PageTitile";
 import { useChatBot } from "@/hooks/useChatBot";
 
 const Contact = () => {
-  const { toast } = useToast();
   const { openChat } = useChatBot();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const [formType, setFormType] = useState<"general" | "needs">("general");
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 bg-muted">
       <div className="container mx-auto px-4">
         {/* Header */}
         <PageTitile
@@ -36,9 +21,29 @@ const Contact = () => {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Contact Form */}
-          <ContactForm />
+          {/* Form Section */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Form Toggle */}
+            <div className="flex gap-2">
+              <Button
+                variant={formType === "general" ? "default" : "outline"}
+                onClick={() => setFormType("general")}
+                className="flex-1"
+              >
+                Generell forespørsel
+              </Button>
+              <Button
+                variant={formType === "needs" ? "default" : "outline"}
+                onClick={() => setFormType("needs")}
+                className="flex-1"
+              >
+                Behovsvurdering
+              </Button>
+            </div>
 
+            {/* Contact Form */}
+            {formType === "general" ? <ContactForm /> : <NeedsAssessmentForm />}
+          </div>
           {/* Contact Info Sidebar */}
           <div className="space-y-6">
             <Card>
@@ -100,7 +105,10 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden rounded-2xl" style={{ background: 'var(--gradient-primary)' }}>
+            <Card
+              className="relative overflow-hidden shadow-none"
+              style={{ background: "var(--gradient-primary)" }}
+            >
               <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
               <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
               <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
@@ -124,7 +132,10 @@ const Contact = () => {
                     <MessageCircle className="h-5 w-5" />
                     Snakk med Flux
                   </span>
-                  <span className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: 'var(--gradient-primary)' }}></span>
+                  <span
+                    className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style={{ background: "var(--gradient-primary)" }}
+                  ></span>
                 </Button>
               </CardContent>
             </Card>

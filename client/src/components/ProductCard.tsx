@@ -19,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card
       key={product.id}
-      className="hover:shadow-md transition-shadow overflow-hidden h-full flex flex-col group"
+      className="shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col group"
     >
       <CardHeader className="p-0">
         <Link

@@ -79,6 +79,15 @@ export default {
         "gradient-card": "var(--gradient-card)",
         "gradient-hero": "var(--gradient-hero)",
       },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        inset: "var(--shadow-inset)",
+        "card-sm": "var(--shadow-card-sm)",
+        "card-md": "var(--shadow-card-md)",
+        "card-lg": "var(--shadow-card-lg)",
+      },
       keyframes: {
         "accordion-down": {
           from: {

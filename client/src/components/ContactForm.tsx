@@ -7,20 +7,22 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
+import { isValidEmail, isValidPhone } from "@/utils/inputValidation";
+import { useFormInput } from "@/hooks/useFormInput";
+import ContactFields from "./forms/ContactFields";
 import {
-  sanitizeText,
-  sanitizeEmail,
-  sanitizeEmailHeader,
-  isValidEmail,
-  isValidPhone,
-  normalizeWhitespace,
-} from "@/utils/inputValidation";
+  createFormData,
+  submitToWeb3Forms,
+  type ContactFormData,
+} from "@/utils/formSubmission";
 
 export default function ContactForm() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const { sanitizeInput } = useFormInput();
+
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     phone: "",
@@ -33,18 +35,7 @@ export default function ContactForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    let sanitizedValue = value;
-
-    // Apply appropriate sanitization based on field type
-    if (name === "email") {
-      sanitizedValue = sanitizeEmail(value.slice(0, 254)); // Email max length
-    } else if (name === "phone") {
-      sanitizedValue = value.slice(0, 20); // Phone number max length
-    } else if (name === "name") {
-      sanitizedValue = normalizeWhitespace(value.slice(0, 100)); // Name max length
-    } else if (name === "message") {
-      sanitizedValue = value.slice(0, 5000); // Message max length
-    }
+    const sanitizedValue = sanitizeInput(name, value);
 
     setFormData((prev) => ({
       ...prev,
@@ -76,38 +67,13 @@ export default function ContactForm() {
 
     setIsSubmitting(true);
 
-    // Sanitize data before sending
-    const sanitizedName = sanitizeText(normalizeWhitespace(formData.name));
-    const sanitizedEmail = sanitizeEmail(formData.email);
-    const sanitizedPhone = formData.phone ? normalizeWhitespace(formData.phone) : "";
-    const sanitizedMessage = sanitizeText(formData.message);
-
-    // Create FormData with sanitized values
-    const data = new FormData();
-    data.append("name", sanitizedName);
-    data.append("email", sanitizedEmail);
-    if (sanitizedPhone) {
-      data.append("phone", sanitizedPhone);
-    }
-    data.append("message", sanitizedMessage);
-
-    // === Web3Forms required fields ===
-    data.append("access_key", "a9c0ed65-714a-4a64-876b-e47b207198dd");
-    data.append("from_name", "COAX nettside");
-    // Sanitize email headers to prevent header injection
-    data.append("replyto", sanitizeEmailHeader(sanitizedEmail));
-    data.append("subject", sanitizeEmailHeader(`${sanitizedName} har sendt en forespørsel via COAX.no`));
-
-    // Honeypot (bots will fill it)
-    data.append("botcheck", "");
-
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: data,
+      const data = createFormData(formData, {
+        formType: "general",
+        subject: `${formData.name} har sendt en forespørsel via COAX.no`,
       });
 
-      const result = await response.json();
+      const result = await submitToWeb3Forms(data);
 
       if (result.success) {
         toast({
@@ -141,7 +107,7 @@ export default function ContactForm() {
   };
 
   return (
-    <Card className="lg:col-span-2">
+    <Card className="shadow-card-md">
       <CardHeader>
         <CardTitle className="text-2xl">Send oss en melding</CardTitle>
       </CardHeader>
@@ -157,61 +123,24 @@ export default function ContactForm() {
             autoComplete="off"
           />
 
-          {/* Dynamic hidden fields (updated on every change) */}
-          <input type="hidden" name="replyto" value={sanitizeEmailHeader(formData.email)} />
-          <input
-            type="hidden"
-            name="subject"
-            value={sanitizeEmailHeader(`${formData.name} har sendt en forespørsel via COAX.no`)}
+          {/* Contact Fields */}
+          <ContactFields
+            name={formData.name}
+            email={formData.email}
+            phone={formData.phone || ""}
+            onNameChange={(value) =>
+              setFormData((prev) => ({ ...prev, name: sanitizeInput("name", value) }))
+            }
+            onEmailChange={(value) =>
+              setFormData((prev) => ({ ...prev, email: sanitizeInput("email", value) }))
+            }
+            onPhoneChange={(value) =>
+              setFormData((prev) => ({ ...prev, phone: sanitizeInput("phone", value) }))
+            }
           />
-          <input type="hidden" name="from_name" value="COAX nettside" />
-
-          {/* Visible Fields */}
-          <div>
-            <Label htmlFor="name">Navn *</Label>
-            <Input
-              id="name"
-              name="name"
-              required
-              maxLength={100}
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Ditt navn"
-              className="mt-1"
-            />
-          </div>
 
           <div>
-            <Label htmlFor="email">E-post *</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              required
-              maxLength={254}
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="din@epost.no"
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="phone">Telefon</Label>
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              maxLength={20}
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="123 45 678"
-              className="mt-1"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="message">Melding *</Label>
+            <Label htmlFor="message">Melding <span className="text-destructive">*</span></Label>
             <Textarea
               id="message"
               name="message"

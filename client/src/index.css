@@ -4,7 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     /* Base Colors - Light Theme */
@@ -67,15 +66,23 @@
       hsla(45, 20%, 96%, 0.8) 100%
     );
 
-    /* Sidebar */
-    --sidebar-background: 45 25% 98%;
-    --sidebar-foreground: 215 25% 20%;
-    --sidebar-primary: 114 58% 34%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 15% 85%;
-    --sidebar-accent-foreground: 215 25% 20%;
-    --sidebar-border: 215 15% 88%;
-    --sidebar-ring: 114 58% 34%;
+    /* Default Shadows - Light Theme */
+    --shadow-sm: 0 1px 2px 0 hsl(215 20% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(215 20% 10% / 0.1),
+      0 2px 4px -1px hsl(215 20% 10% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(215 20% 10% / 0.1),
+      0 4px 6px -2px hsl(215 20% 10% / 0.05);
+
+    /* Card Shadows - Light Theme */
+    /* Subtle inset highlight (lighter than card) + outer shadow (darker) */
+    --shadow-card-sm: inset 0 1px 2px hsl(45 25% 98% / 0.6),
+      0 1px 2px hsl(45 10% 60% / 0.1), 0 2px 4px hsl(215 20% 10% / 0.08);
+
+    --shadow-card-md: inset 0 1px 3px hsl(45 25% 98% / 0.7),
+      0 2px 4px hsl(45 10% 50% / 0.12), 0 4px 8px hsl(215 20% 10% / 0.1);
+
+    --shadow-card-lg: inset 0 2px 4px hsl(45 25% 98% / 0.8),
+      0 4px 6px hsl(45 10% 40% / 0.15), 0 8px 16px hsl(215 20% 10% / 0.12);
   }
 
   .dark {
@@ -136,22 +143,25 @@
       hsla(214, 34%, 12%, 0.9) 0%,
       hsla(216, 29%, 10%, 0.8) 100%
     );
+    /* Default Shadows - Dark Theme */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4),
+      0 2px 4px -1px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5),
+      0 4px 6px -2px hsl(0 0% 0% / 0.4);
 
-    /* Sidebar */
-    --sidebar-background: 215 35% 12%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 114 58% 34%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 20% 25%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 215 20% 25%;
-    --sidebar-ring: 114 58% 34%;
+    /* Card Shadows - Dark Theme */
+    /* Subtle inset highlight (lighter than card) + outer shadow (darker) */
+    --shadow-card-sm: inset 0 1px 2px hsl(215 30% 24% / 0.6),
+      0 1px 2px hsl(215 35% 8% / 0.5), 0 2px 4px hsl(215 35% 5% / 0.3);
+
+    --shadow-card-md: inset 0 1px 3px hsl(215 30% 24% / 0.7),
+      0 2px 4px hsl(215 35% 8% / 0.6), 0 4px 8px hsl(215 35% 5% / 0.4);
+
+    --shadow-card-lg: inset 0 2px 4px hsl(215 30% 24% / 0.8),
+      0 4px 6px hsl(215 35% 8% / 0.7), 0 8px 16px hsl(215 35% 5% / 0.5);
   }
 }
-
-/* body, html {
-  scroll-behavior: smooth;
-} */
 
 html {
   transition: background-color 1s ease, color 1s ease;
@@ -205,7 +215,7 @@ html {
 }
 .wmde-markdown table {
   display: table !important; /* Restore standard table layout; original 'block' likely enables scrolling but breaks alignment */
-  width: 100% !important;   /* Force full width of the parent container */
+  width: 100% !important; /* Force full width of the parent container */
   max-width: 100% !important; /* Prevent exceeding parent */
   -moz-width: auto !important; /* Override the vendor-prefixed version if present */
 }
@@ -215,16 +225,22 @@ html {
   .markdown-body {
     @apply text-foreground;
   }
-  .markdown-body .katex { font-size: 1.05em; }
+  .markdown-body .katex {
+    font-size: 1.05em;
+  }
   .markdown-body .katex-display {
     margin: 1em 0;
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .markdown-body code { @apply bg-muted px-1 py-0.5 rounded text-sm; }
-  .markdown-body pre { @apply bg-muted p-4 rounded-lg overflow-x-auto; }
+  .markdown-body code {
+    @apply bg-muted px-1 py-0.5 rounded text-sm;
+  }
+  .markdown-body pre {
+    @apply bg-muted p-4 rounded-lg overflow-x-auto;
+  }
   /* .markdown-body table { display: block; width: 100%; overflow-x: auto; } */
-  
+
   /* List styles */
   .markdown-body ul {
     list-style-type: disc;
@@ -240,44 +256,41 @@ html {
     margin: 0.5em 0;
   }
 
-
   .markdown-body table {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      overflow-x: auto;
-      border-collapse: collapse;
-      margin: 1rem 0;
-      border-radius: 0.5rem;
-      overflow: hidden;
-    }
-    .markdown-body th,
-    .markdown-body td {
-      text-align: left;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid hsl(var(--border));
-    }
-    
-    /* Table header styling */
-    .markdown-body th {
-      background-color: hsl(var(--muted) / 0.1);
-      font-weight: 600;
-    }
-    
-    /* Table row styling */
-    .markdown-body tbody tr:nth-child(odd) td {
-      background-color: hsl(var(--muted) / 0.6);
-    }
-    
-    /* Alternate row colors for better readability */
-    .markdown-body tbody tr:nth-child(even) td {
-      background-color: hsl(var(--muted) / 0.9);
-    }
-    
-    /* Hover effect on rows */
-    .markdown-body tbody tr:hover td {
-      background-color: hsl(var(--muted) / 0.5);
-    }
-    
-  
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .markdown-body th,
+  .markdown-body td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  /* Table header styling */
+  .markdown-body th {
+    background-color: hsl(var(--muted) / 0.1);
+    font-weight: 600;
+  }
+
+  /* Table row styling */
+  .markdown-body tbody tr:nth-child(odd) td {
+    background-color: hsl(var(--muted) / 0.6);
+  }
+
+  /* Alternate row colors for better readability */
+  .markdown-body tbody tr:nth-child(even) td {
+    background-color: hsl(var(--muted) / 0.9);
+  }
+
+  /* Hover effect on rows */
+  .markdown-body tbody tr:hover td {
+    background-color: hsl(var(--muted) / 0.5);
+  }
 }

@@ -11,18 +11,17 @@ import {
 
 // import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquareText, Send } from "lucide-react";
+import { MessageCircle, MessageSquareText, Send } from "lucide-react";
 import { useChatBot } from "@/hooks/useChatBot";
 import { useAppContext } from "@/context/AppContext";
 import { toast } from "@/hooks/use-toast";
 import { Textarea } from "../ui/textarea";
 import { Message } from "@/types/chat";
-import ChatbotMessage2 from "./ChatbotMessage2";
+import ChatbotMessage from "@/components/chatbot/ChatbotMessage";
 import { truncateString } from "@/utils/inputValidation";
 
 // Maximum length for chat input (prevents DoS and excessive API costs)
 const MAX_CHAT_INPUT_LENGTH = 2000;
-
 
 const ChatBot = () => {
   const { messages, setMessages, sendMessage } = useAppContext();
@@ -70,7 +69,7 @@ const ChatBot = () => {
 
     // Truncate input to max length to prevent DoS attacks
     const sanitizedInput = truncateString(input.trim(), MAX_CHAT_INPUT_LENGTH);
-    
+
     if (!sanitizedInput) return;
 
     setIsLoading(true);
@@ -100,19 +99,19 @@ const ChatBot = () => {
         className="md:h-12 md:w-12 h-10 w-10 text-white rounded-full shadow-lg"
         style={{ background: "var(--gradient-primary)" }}
       >
-        <MessageSquareText className="w-6 h-6" />
+        <MessageCircle className="h-6 w-6" />
       </Button>
 
       {/* Chat Dialog */}
       <Dialog open={isOpen} onOpenChange={closeChat}>
-        <DialogContent className="md:h-[600px] flex flex-col p-0 gap-0">
+        <DialogContent className="md:h-[700px] flex flex-col p-0 gap-0">
           <DialogHeader className="px-4 pt-6 pb-4 border-b">
             <div
               className="flex items-center space-x-2"
               data-radix-dialog-title="Flux"
             >
-              <MessageSquareText className="w-6 h-6" />
-              <DialogTitle className="text-xl m-0">Flux</DialogTitle>
+              <MessageCircle className="h-6 w-6" />
+              <DialogTitle className="text-xl m-0">Snakk med Flux</DialogTitle>
             </div>
             <DialogDescription className="sr-only">
               Snakk med assistenten for å få hjelp om produkter og valg av
@@ -124,15 +123,14 @@ const ChatBot = () => {
           <ScrollArea className="flex-1 px-4 bg-muted" ref={scrollAreaRef}>
             <div className="space-y-4 pt-4 pb-8">
               {messages.map((message) => (
-                // <ChatMessage key={message.id} message={message} />
-                <ChatbotMessage2 key={message.id} message={message} />
+                <ChatbotMessage key={message.id} message={message} />
               ))}
             </div>
           </ScrollArea>
 
           <form
             onSubmit={handleSubmit}
-            className="relative flex-shrink-0 bg-transparent border border-border rounded-lg focus-within:border-primary m-3"
+            className="relative flex-shrink-0 bg-transparent border border-border rounded-lg focus-within:border-primary m-3 flex items-end gap-2 pt-2 pr-2 pb-2"
           >
             <Textarea
               value={input}
@@ -147,7 +145,7 @@ const ChatBot = () => {
               autoResize
               maxHeight={150}
               maxLength={MAX_CHAT_INPUT_LENGTH}
-              className="pr-12 py-3 bg-transparent border-none resize-none overflow-hidden"
+              className="bg-transparent resize-none overflow-hidden border-none"
               rows={1}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -157,12 +155,12 @@ const ChatBot = () => {
               }}
               disabled={isLoading}
             />
-            <div className="w-full flex justify-end pr-2 pb-2">
+            <div className="">
               <Button
                 type="submit"
                 size="icon"
                 disabled={isLoading || !input.trim()}
-                className="bg-primary h-8 w-8 rounded-lg"
+                className="bg-primary h-10 aspect-square rounded-lg"
               >
                 <Send className="h-5 w-5" />
               </Button>

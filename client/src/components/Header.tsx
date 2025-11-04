@@ -1,11 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, MessageSquareText } from "lucide-react";
+import { Menu, MessageCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
-import { ThemeToggle } from "./ToggleTheme";
 import Logo from "./Logo";
 
 const Header = () => {
@@ -55,8 +54,8 @@ const Header = () => {
             size="sm"
             variant="default"
           >
-            <MessageSquareText className="h-4 w-4" />
             Snakk med Flux
+            <MessageCircle className="h-5 w-5" />
           </Button>
 
           {/* Mobile Menu Button */}
@@ -115,7 +114,7 @@ const Header = () => {
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <MessageSquareText className="h-4 w-4" />
+                  <MessageCircle className="h-5 w-5" />
                   Snakk med Flux
                 </Button>
               </div>

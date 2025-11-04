@@ -241,7 +241,7 @@ const HomePage = () => {
             {benefits.map((b, i) => {
               const Icon = b.icon;
               return (
-                <Card key={i} className="border-none shadow-none">
+                <Card key={i}>
                   <CardContent className="pt-6 text-center">
                     <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
                       <Icon className="w-6 h-6 text-primary" />
@@ -268,7 +268,7 @@ const HomePage = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-destructive/30 border-2 shadow-lg">
+            <Card className="shadow-card-lg">
               <CardHeader>
                 <CardTitle className="text-2xl text-foreground">
                   Tradisjonell Tank
@@ -285,7 +285,7 @@ const HomePage = () => {
                 </ul>
               </CardContent>
             </Card>
-            <Card className="border-success/30 border-2 shadow-lg">
+            <Card className="shadow-card-lg">
               <CardHeader>
                 <CardTitle className="text-2xl text-foreground">
                   COAX Tankløs
