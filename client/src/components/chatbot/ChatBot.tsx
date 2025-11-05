@@ -9,9 +9,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-// import { ChatMessage } from "@/components/chatbot/ChatbotMessage";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, MessageSquareText, Send } from "lucide-react";
+import { MessageCircle, Send } from "lucide-react";
 import { useChatBot } from "@/hooks/useChatBot";
 import { useAppContext } from "@/context/AppContext";
 import { toast } from "@/hooks/use-toast";
@@ -24,19 +23,17 @@ import { truncateString } from "@/utils/inputValidation";
 const MAX_CHAT_INPUT_LENGTH = 2000;
 
 const ChatBot = () => {
-  const { messages, setMessages, sendMessage } = useAppContext();
+  const { messages, setMessages, sendMessage, isLoading } = useAppContext();
   const { isOpen, openChat, closeChat } = useChatBot();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const hasInitialized = useRef(false);
 
   // Show welcome message when chat first opens
   useEffect(() => {
     if (isOpen && !hasInitialized.current && messages.length === 0) {
       hasInitialized.current = true;
-      setIsLoading(true);
 
       setTimeout(() => {
         const welcomeMessage: Message = {
@@ -48,7 +45,6 @@ const ChatBot = () => {
         };
 
         setMessages([welcomeMessage]);
-        setIsLoading(false);
       }, 1000);
     }
   }, [isOpen, messages.length, setMessages]);
@@ -69,24 +65,23 @@ const ChatBot = () => {
 
     // Truncate input to max length to prevent DoS attacks
     const sanitizedInput = truncateString(input.trim(), MAX_CHAT_INPUT_LENGTH);
+    const correlationId = crypto.randomUUID();
 
     if (!sanitizedInput) return;
 
-    setIsLoading(true);
     const currentInput = sanitizedInput;
-
     setInput("");
+    
     try {
-      await sendMessage(currentInput);
+      await sendMessage(currentInput, correlationId);
     } catch (error) {
       console.error("Chat error:", error);
+      // Error handling is done in AppContext, but show toast for critical errors
       toast({
         className: "bg-secondary text-white",
         title: "Noe gikk galt",
         description: "Flux kan ikke svare akkurat nå. Prøv igjen senere.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
