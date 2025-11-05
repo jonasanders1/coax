@@ -8,13 +8,14 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { Message, ChatRequest } from "@/types/chat";
-import { streamChat, StreamChunk } from "@/lib/api";
+import { Message, ChatRequest, ErrorResponse } from "@/types/chat";
+import { streamChat } from "@/lib/api";
+import { SSEEvent } from "@/types/chat";
 
 interface AppState {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
-  sendMessage: (content: string) => Promise<void>;
+  sendMessage: (content: string, correlationId: string) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -37,13 +38,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(
-    async (content: string) => {
+    async (content: string, correlationId: string) => {
       // 1. Optimistic user message
       const userMessage: Message = {
         id: `user-${Date.now()}`,
         role: "user",
         content,
         timestamp: new Date().toISOString(),
+        correlation_id: correlationId,
       };
       setMessages((prev) => [...prev, userMessage]);
       setIsLoading(true);
@@ -64,6 +66,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
       setMessages((prev) => [...prev, assistantPlaceholder]);
 
+      // Accumulate text in closure variable (following documentation pattern)
+      // This avoids React state batching issues and ensures reliable streaming
+      let accumulatedText = "";
+
       try {
         const payload: ChatRequest = {
           messages: [...messages, userMessage],
@@ -71,24 +77,49 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
         await streamChat(payload, {
           signal: controller.signal,
-          onMessage: (chunk) => {
+          correlationId: correlationId,
+          onMessage: (chunk: SSEEvent) => {
             if (chunk.type === "token") {
+              // Accumulate text in closure variable (not reading from React state)
+              accumulatedText += chunk.token;
+              
+              // Update state with accumulated text (following documentation pattern)
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId
                     ? {
                         ...m,
-                        content: m.content + chunk.token,
+                        content: accumulatedText, // Use closure variable, not m.content
                         status: "writing" as const,
                       }
                     : m
                 )
               );
             } else if (chunk.type === "done") {
+              // Use done event's content (which should be complete), fallback to accumulated
+              const finalContent = chunk.message.content || accumulatedText;
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId
-                    ? { ...chunk.message, status: "complete" as const }
+                    ? {
+                        ...chunk.message,
+                        status: "complete" as const,
+                        content: finalContent,
+                      }
+                    : m
+                )
+              );
+            } else if (chunk.type === "error") {
+              console.error("Streaming error:", chunk);
+              // Store full error object as JSON string for proper error display
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === assistantId
+                    ? {
+                        ...m,
+                        content: JSON.stringify(chunk),
+                        status: "complete" as const,
+                      }
                     : m
                 )
               );
@@ -96,7 +127,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
           },
           onError: (error) => {
             console.error("Streaming error:", error);
-            setMessages((prev) => prev.filter((m) => m.id !== assistantId));
+            // Store full error object as JSON string for proper error display
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === assistantId
+                  ? {
+                      ...m,
+                      content: JSON.stringify(error),
+                      status: "complete" as const,
+                    }
+                  : m
+              )
+            );
           },
           onComplete: () => {
             setIsLoading(false);
@@ -106,7 +148,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Chat error:", err);
-          setMessages((prev) => prev.filter((m) => m.id !== assistantId));
+          // Create a proper error response for network/unknown errors
+          const errorResponse: ErrorResponse = {
+            type: "error",
+            error: err instanceof Error ? err.message : "En uventet feil oppstod. Prøv igjen senere.",
+            error_code: "NETWORK_ERROR",
+            correlation_id: correlationId,
+            timestamp: new Date().toISOString(),
+            details: {
+              service: "network",
+            },
+          };
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    content: JSON.stringify(errorResponse),
+                    status: "complete" as const,
+                  }
+                : m
+            )
+          );
         }
         setIsLoading(false);
         abortControllerRef.current = null;

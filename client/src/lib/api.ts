@@ -1,17 +1,8 @@
 // src/lib/api.ts
-import { ChatRequest, ChatResponse } from "@/types/chat";
+import { ChatRequest, ChatResponse, ErrorResponse, SSEEvent, createErrorResponse } from "@/types/chat";
 
-const resolveBaseUrl = (): string => {
-  if (import.meta.env.VITE_API_BASE_URL)
-    return import.meta.env.VITE_API_BASE_URL;
-  const isLocal =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1");
-  return isLocal ? "http://localhost:8000" : "https://api.jonasanders1.com";
-};
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const API_BASE_URL = resolveBaseUrl();
 
 /* --------------------------------------------------------------
    1. NON-STREAMING (existing) – kept for health-checks, etc.
@@ -43,44 +34,96 @@ export async function postChat(
 /* --------------------------------------------------------------
    2. STREAMING – Server-Sent Events (SSE)
    -------------------------------------------------------------- */
-export type StreamChunk =
-  | { type: "token"; token: string }
-  | {
-      type: "done";
-      message: ChatResponse["message"];
-      metadata?: Array<{
-        node_id: string;
-        score: number | null;
-        text: string;
-        metadata: Record<string, unknown>;
-      }>;
-    }
-  | { type: "error"; error: string };
+
 
 export interface StreamChatOptions {
-  onMessage: (chunk: StreamChunk) => void;
-  onError?: (error: Error) => void;
+  onMessage: (chunk: SSEEvent) => void;
+  onError?: (error: ErrorResponse) => void;
   onComplete?: () => void;
   signal?: AbortSignal;
+  correlationId?: string;
 }
 
 export async function streamChat(
   payload: ChatRequest,
-  { onMessage, onError, onComplete, signal }: StreamChatOptions
+  { onMessage, onError, onComplete, signal, correlationId }: StreamChatOptions
 ): Promise<void> {
+  const correlationIdToUse = correlationId || crypto.randomUUID();
+  
+  // Validate configuration before making request
+  if (!API_BASE_URL) {
+    const error = createErrorResponse(
+      "API base URL is not configured. Please check your .env file.",
+      "CONFIGURATION_ERROR",
+      correlationIdToUse,
+      "frontend"
+    );
+    onError?.(error);
+    return;
+  }
+
+  const apiUrl = `${API_BASE_URL}/chat`;
+  const apiKey = import.meta.env.VITE_API_KEY;
+
+  // Prepare payload - ensure messages only include required fields for API
+  const apiPayload: ChatRequest = {
+    messages: payload.messages.map((msg) => ({
+      id: msg.id,
+      role: msg.role,
+      content: msg.content,
+      timestamp: msg.timestamp,
+      // Note: correlation_id and status are client-side only, not sent to API
+    })),
+  };
+
+  console.log("🌐 Making API request:", {
+    url: apiUrl,
+    hasApiKey: !!apiKey,
+    correlationId: correlationIdToUse,
+    payload: apiPayload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "text/event-stream",
+      "x-api-key": apiKey ? "***" : "(missing)",
+      "X-Correlation-ID": correlationIdToUse,
+    },
+  });
+
   try {
-    const res = await fetch(`${API_BASE_URL}/chat`, {
+    const res = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "text/event-stream",
-        "X-API-Key": import.meta.env.VITE_API_KEY,
+        "x-api-key": apiKey || "",
+        "X-Correlation-ID": correlationIdToUse,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(apiPayload),
       signal,
     });
 
     if (!res.ok) {
+      // Try to parse error response from API
+      try {
+        const errorData = await res.json();
+        // Check if it's an ErrorResponse format
+        if (errorData && errorData.error_code && errorData.error) {
+          const apiError: ErrorResponse = {
+            type: "error",
+            error: errorData.error,
+            error_code: errorData.error_code,
+            correlation_id: errorData.correlation_id || correlationIdToUse,
+            timestamp: errorData.timestamp || new Date().toISOString(),
+            details: errorData.details || { service: "api" },
+          };
+          onError?.(apiError);
+          return;
+        }
+      } catch {
+        // Not JSON, try text
+      }
+      
+      // Fallback to text error
       const txt = await res.text().catch(() => "");
       throw new Error(txt || `HTTP ${res.status}`);
     }
@@ -101,14 +144,15 @@ export async function streamChat(
 
       for (const line of lines) {
         if (!line.startsWith("data:")) continue;
-        const jsonStr = line.slice(5).trim();
+        // Handle both "data: " (with space) and "data:" (without space)
+        const jsonStr = line.replace(/^data:\s*/, "").trim();
         if (!jsonStr) continue;
 
         try {
-          const data = JSON.parse(jsonStr) as StreamChunk;
+          const data = JSON.parse(jsonStr) as SSEEvent;
           onMessage(data);
         } catch (err) {
-          console.error("Error parsing SSE message:", err);
+          console.error("Error parsing SSE message:", err, "Raw:", jsonStr);
         }
       }
     }
@@ -118,7 +162,7 @@ export async function streamChat(
       const jsonStr = buffer.trim().replace(/^data:\s*/, "");
       if (jsonStr) {
         try {
-          const data = JSON.parse(jsonStr) as StreamChunk;
+          const data = JSON.parse(jsonStr) as SSEEvent;
           onMessage(data);
         } catch (err) {
           console.error("Error parsing final SSE message:", err);
@@ -129,6 +173,36 @@ export async function streamChat(
     onComplete?.();
   } catch (err) {
     if (err.name === "AbortError") return;
-    onError?.(err instanceof Error ? err : new Error(String(err)));
+    const correlationIdToUse = correlationId || crypto.randomUUID();
+    
+    // Enhanced error message for debugging
+    let errorMessage = "En feil oppstod ved kommunikasjon med serveren.";
+    let errorCode = "NETWORK_ERROR";
+    
+    if (err instanceof Error) {
+      if (err.message.includes("Failed to fetch")) {
+        errorMessage = `Kunne ikke koble til API: ${API_BASE_URL || "URL ikke konfigurert"}. Sjekk at:\n` +
+          "1. VITE_API_BASE_URL er satt i .env filen\n" +
+          "2. API-endepunktet er tilgjengelig\n" +
+          "3. CORS er konfigurert på serveren";
+        errorCode = "CONNECTION_ERROR";
+      } else {
+        errorMessage = err.message;
+      }
+      
+      console.error("❌ Network error:", {
+        message: err.message,
+        url: `${API_BASE_URL}/chat`,
+        correlationId: correlationIdToUse,
+        error: err,
+      });
+    }
+    
+    onError?.(createErrorResponse(
+      errorMessage,
+      errorCode,
+      correlationIdToUse,
+      "network"
+    ));
   }
 }
