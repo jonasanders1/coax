@@ -118,12 +118,7 @@ const References = () => {
               løsningen.
             </p>
             <div className="mt-8">
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-              >
+              <Button asChild size="lg" className="gap-2">
                 <Link to="/kontakt">Snakk med en ekspert</Link>
               </Button>
             </div>

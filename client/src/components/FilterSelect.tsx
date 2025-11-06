@@ -13,6 +13,7 @@ const FilterSelect = ({
   label,
   value,
   onValueChange,
+  disabled,
   options,
   placeholder,
 }: {
@@ -20,6 +21,7 @@ const FilterSelect = ({
   label: string;
   value: string;
   onValueChange: (value: string) => void;
+  disabled: boolean;
   options: { value: string; label: string }[];
   placeholder: string;
 }) => (
@@ -27,8 +29,8 @@ const FilterSelect = ({
     <Label htmlFor={id} className="text-sm md:text-lg font-medium ">
       {label}
     </Label>
-    <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger id={id}>
+    <Select value={value} onValueChange={onValueChange} disabled={disabled}>
+      <SelectTrigger id={id} disabled={disabled}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

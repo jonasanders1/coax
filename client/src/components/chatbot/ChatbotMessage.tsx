@@ -169,7 +169,7 @@ function ErrorMessage({ error }: { error: ErrorResponse }) {
 
         {error.correlation_id && (
           <div className="mt-2 text-xs text-muted-foreground">
-            Feil-ID: {error.correlation_id.slice(0, 8)}...
+            Feil-ID: {error.correlation_id}
           </div>
         )}
       </AlertDescription>

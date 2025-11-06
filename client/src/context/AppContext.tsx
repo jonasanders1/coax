@@ -11,12 +11,18 @@ import React, {
 import { Message, ChatRequest, ErrorResponse } from "@/types/chat";
 import { streamChat } from "@/lib/api";
 import { SSEEvent } from "@/types/chat";
+import { getAllProducts } from "@/lib/products";
+import type { Product } from "@/types/product";
 
 interface AppState {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   sendMessage: (content: string, correlationId: string) => Promise<void>;
   isLoading: boolean;
+  products: Product[];
+  productsLoading: boolean;
+  productsError: Error | null;
+  fetchProducts: () => Promise<void>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -36,6 +42,54 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Products state
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [productsError, setProductsError] = useState<Error | null>(null);
+  const productsFetchedRef = useRef(false);
+
+  const fetchProducts = useCallback(async () => {
+    // Only fetch if products haven't been loaded yet
+    if (productsFetchedRef.current || productsLoading) {
+      return;
+    }
+
+    productsFetchedRef.current = true;
+    setProductsLoading(true);
+    setProductsError(null);
+    try {
+      const fetchedProducts = await getAllProducts();
+      // INSERT_YOUR_CODE
+
+      // Define the specific category order you want
+      const categoryOrder = ["Tankløs varmtvannsbereder"]; 
+
+      // Helper to get index in order, unknown categories at end
+      function getCategoryOrderIndex(category: string) {
+        const idx = categoryOrder.indexOf(category);
+        return idx === -1 ? categoryOrder.length : idx;
+      }
+
+      // Sort products array by category first (with specific order), then by name as fallback
+      const sortedProducts = fetchedProducts.slice().sort((a, b) => {
+        const catA = getCategoryOrderIndex(a.category);
+        const catB = getCategoryOrderIndex(b.category);
+        if (catA !== catB) return catA - catB;
+        // fallback: alphabetically by name
+        return a.name.localeCompare(b.name);
+      });
+      setProducts(sortedProducts);
+    } catch (error) {
+      const err = error instanceof Error ? error : new Error("Failed to fetch products");
+      setProductsError(err);
+      console.error("Error fetching products:", error);
+      // Reset ref on error so user can retry
+      productsFetchedRef.current = false;
+    } finally {
+      setProductsLoading(false);
+    }
+  }, [productsLoading]);
 
   const sendMessage = useCallback(
     async (content: string, correlationId: string) => {
@@ -184,8 +238,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setMessages,
       sendMessage,
       isLoading,
+      products,
+      productsLoading,
+      productsError,
+      fetchProducts,
     }),
-    [messages, sendMessage, isLoading]
+    [messages, sendMessage, isLoading, products, productsLoading, productsError, fetchProducts]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

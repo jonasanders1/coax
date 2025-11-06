@@ -181,10 +181,7 @@ export async function streamChat(
     
     if (err instanceof Error) {
       if (err.message.includes("Failed to fetch")) {
-        errorMessage = `Kunne ikke koble til API: ${API_BASE_URL || "URL ikke konfigurert"}. Sjekk at:\n` +
-          "1. VITE_API_BASE_URL er satt i .env filen\n" +
-          "2. API-endepunktet er tilgjengelig\n" +
-          "3. CORS er konfigurert på serveren";
+        errorMessage = "Kunne ikke koble til server."
         errorCode = "CONNECTION_ERROR";
       } else {
         errorMessage = err.message;

@@ -1,14 +1,13 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { ThemeProvider } from "next-themes";
 
-import ChatBot from "./components/chatbot/ChatBot";
+// import ChatBot from "./components/chatbot/ChatBot";
 import HomePage from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
@@ -75,7 +74,7 @@ const App = () => {
             >
               <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end justify-end">
                 <ScrollUp />
-                <ChatBot />
+                {/* <ChatBot /> */}
               </div>
               <RouterProvider router={router} />
             </motion.div>

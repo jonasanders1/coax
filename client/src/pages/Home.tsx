@@ -348,9 +348,9 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <div className="container px-4 max-w-6xl mx-auto">
+      {/* <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
-      </div>
+      </div> */}
     </div>
   );
 };

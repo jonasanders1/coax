@@ -1,4 +1,5 @@
 import { useLocation, useParams, Link as RouterLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,38 +13,34 @@ import { MessageCircle, Download, LifeBuoy } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
-import productDetails from "@/product-details.json";
-import cabinImage from "@/assets/cabin-water-heater.png";
-import homeImage from "@/assets/home-water-heater.png";
-import industrialImage from "@/assets/industrial-water-heater.png";
-
-const imageMap: Record<string, string> = {
-  cabinImage,
-  homeImage,
-  commercialImage: industrialImage,
-};
+import { getProductById } from "@/lib/products";
 
 const ProductDetailsRedesigned = () => {
   const { id } = useParams();
   const location = useLocation() as { state?: { product?: Product } };
-  let product = location.state?.product;
-  if (!product && id) {
-    const fromJson = (productDetails as any).products.find(
-      (p: any) => p.id === id
+  
+  // Fetch product from Firestore if not in location state
+  const { data: fetchedProduct, isLoading, error } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getProductById(id!),
+    enabled: !location.state?.product && !!id,
+  });
+
+  // Use location state product first, then fetched product
+  // Images are already processed as storage URLs from getProductById
+  const product = location.state?.product || fetchedProduct;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="text-center max-w-md">
+          <p className="text-muted-foreground">Laster produktdata...</p>
+        </div>
+      </div>
     );
-    if (fromJson) {
-      product = {
-        ...fromJson,
-        images: Array.isArray(fromJson.images)
-          ? fromJson.images.map(
-              (key: string) => imageMap[key] || imageMap.homeImage
-            )
-          : [],
-      } as Product;
-    }
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8 ">
         <div className="text-center max-w-md">

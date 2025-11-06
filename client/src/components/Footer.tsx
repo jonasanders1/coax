@@ -46,7 +46,7 @@ const Footer = () => {
                   {item.label}
                 </Link>
               ))}
-              <button
+              {/* <button
                 className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
                 onClick={() => {
                   openChat();
@@ -54,7 +54,7 @@ const Footer = () => {
               >
                 <MessageCircle className="h-4 w-4" />
                 Flux
-              </button>
+              </button> */}
               <div>
                 <ThemeToggle />
                 <span className="text-sm text-muted-foreground capitalize">

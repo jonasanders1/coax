@@ -239,7 +239,7 @@ const ModelSelector = () => {
         </Card>
 
         {/* CTA */}
-        <CtaSection isHeader={false} />
+        {/* <CtaSection isHeader={false} /> */}
       </div>
     </div>
   );

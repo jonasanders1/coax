@@ -105,7 +105,7 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card
+            {/* <Card
               className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
             >
@@ -138,7 +138,7 @@ const Contact = () => {
                   ></span>
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
 

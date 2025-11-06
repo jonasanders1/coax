@@ -6,11 +6,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { LifeBuoy, Search } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 
 import { useChatBot } from "@/hooks/useChatBot";
 import CtaSection from "@/components/chatbot/CtaSection";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const faqs = [
   {
@@ -114,9 +116,9 @@ const FAQ = () => {
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
-        <section className="my-8">
+        {/* <section className="my-8">
           <CtaSection isHeader={true} />
-        </section>
+        </section> */}
         {/* Header */}
         <PageTitile
           title="Ofte stilte spørsmål"
@@ -180,12 +182,11 @@ const FAQ = () => {
           <p className="text-muted-foreground mb-6">
             Ta kontakt med oss, så hjelper vi deg gjerne!
           </p>
-          <a
-            href="/kontakt"
-            className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-8 py-3 font-medium hover:bg-primary/90 transition-colors"
-          >
-            Kontakt oss
-          </a>
+          <Link to="/kontakt">
+            <Button size="lg" className="gap-2">
+              Kontakt oss
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

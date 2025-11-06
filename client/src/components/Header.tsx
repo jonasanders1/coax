@@ -47,7 +47,7 @@ const Header = () => {
             ))}
           </div>
 
-          <Button
+          {/* <Button
             className="hidden lg:flex text-white"
             style={{ background: 'var(--gradient-primary)' }}
             onClick={openChat}
@@ -56,7 +56,7 @@ const Header = () => {
           >
             Snakk med Flux
             <MessageCircle className="h-5 w-5" />
-          </Button>
+          </Button> */}
 
           {/* Mobile Menu Button */}
 
@@ -104,7 +104,7 @@ const Header = () => {
                   </span>
                 </Link>
               ))}
-              <div className="border-t border-border pt-4">
+              {/* <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
                   className="w-full mt-2"
@@ -117,7 +117,7 @@ const Header = () => {
                   <MessageCircle className="h-5 w-5" />
                   Snakk med Flux
                 </Button>
-              </div>
+              </div> */}
             </nav>
           </SheetContent>
         </Sheet>
