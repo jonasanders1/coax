@@ -6,7 +6,7 @@ import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
 import Logo from "./Logo";
-import { ThemeToggle } from "./ToggleTheme";
+import { ModeToggle } from "./ModeToggle";
 
 const Header = () => {
   const location = useLocation();
@@ -49,7 +49,7 @@ const Header = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-2">
-            <ThemeToggle />
+            <ModeToggle />
           </div>
 
           {/* <Button
@@ -123,13 +123,10 @@ const Header = () => {
                   Snakk med Flux
                 </Button>
               </div> */}
-              <div className="border-t border-border pt-4 flex items-center gap-2">
-                <p className="text-sm text-muted-foreground">Tema:</p>
+              <div className="border-t border-border pt-4">
+                <p className="text-sm text-muted-foreground mb-2">Tema</p>
+                <ModeToggle />
               </div>
-              <span className="inline-flex items-center gap-3">
-                <ThemeToggle />
-                
-              </span>
             </nav>
           </SheetContent>
         </Sheet>

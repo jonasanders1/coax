@@ -3,9 +3,9 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { navItems } from "@/navItems";
 import { useChatBot } from "@/hooks/useChatBot";
 import { MessageCircle } from "lucide-react";
-import { ThemeToggle } from "./ToggleTheme";
 import { useTheme } from "@/hooks/useTheme";
 import Logo from "./Logo";
+import { ModeToggle } from "./ModeToggle";
 
 const Footer = () => {
   const { openChat } = useChatBot();
@@ -55,9 +55,6 @@ const Footer = () => {
                 <MessageCircle className="h-4 w-4" />
                 Flux
               </button> */}
-              {/* <div>
-                <ThemeToggle />
-              </div> */}
             </nav>
           </div>
 

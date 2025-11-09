@@ -1,85 +1,118 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, CheckCircle, MessageCircle } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useChatBot } from "@/hooks/useChatBot";
+import { AlertCircle, CheckCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAppContext } from "@/context/AppContext";
+import { Badge } from "@/components/ui/badge";
 import PageTitile from "@/components/PageTitile";
-import BucketFill from "@/components/BucketFill";
-import CtaSection from "@/components/chatbot/CtaSection";
 
-const recommendations = [
-  {
-    minFlow: 0,
-    maxFlow: 3,
-    model: "Armatur 3,3kW",
-    phase: "1-fase",
-    fuse: "1x16A",
-    usage: "Håndvask, oppvask",
-  },
-  {
-    minFlow: 3,
-    maxFlow: 5,
-    model: "XFJ-2-55 (KH 55)",
-    phase: "1-fase",
-    fuse: "1x25A",
-    usage: "Liten dusj, hytte",
-  },
-  {
-    minFlow: 5,
-    maxFlow: 7,
-    model: "XFJ-2",
-    phase: "1-fase",
-    fuse: "1x25-32A",
-    usage: "Dusj i leilighet",
-  },
-  {
-    minFlow: 7,
-    maxFlow: 9,
-    model: "XFJ-3 12kW",
-    phase: "3-fase",
-    fuse: "3x20A",
-    usage: "Dusj i bolig",
-  },
-  {
-    minFlow: 9,
-    maxFlow: 11,
-    model: "XFJ-3 18kW",
-    phase: "3-fase",
-    fuse: "3x32A",
-    usage: "Dusj + håndvask",
-  },
-  {
-    minFlow: 11,
-    maxFlow: 15,
-    model: "XFJ-3 24kW",
-    phase: "3-fase",
-    fuse: "3x40A",
-    usage: "Flere tappesteder",
-  },
-];
+type Recommendation = {
+  id: string;
+  model: string;
+  phase: string;
+  fuse: string;
+  usage: string;
+  minFlow: number;
+  maxFlow: number;
+  matchMax: number;
+};
 
 const ModelSelector = () => {
-  const { openChat } = useChatBot();
+  const { products, productsLoading, productsError, fetchProducts } =
+    useAppContext();
   const [seconds, setSeconds] = useState<number>(60);
-  const [result, setResult] = useState<(typeof recommendations)[0] | null>(
-    null
-  );
+  const [result, setResult] = useState<Recommendation | null>(null);
   const [flowRate, setFlowRate] = useState<number | null>(null);
 
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const recommendations = useMemo<Recommendation[]>(() => {
+    if (!products || products.length === 0) return [];
+
+    const parseFlowValues = (value: string): number[] => {
+      if (!value) return [];
+      const matches = value.match(/[\d]+(?:[.,]\d+)?/g);
+      if (!matches) return [];
+      return matches.map((match) => parseFloat(match.replace(",", ".")));
+    };
+
+    const derived = products
+      .map((product) => {
+        const flowEntries = product.specs?.flowRates ?? [];
+        const flowValues = flowEntries
+          .flatMap(parseFlowValues)
+          .filter((num) => !Number.isNaN(num))
+          .sort((a, b) => a - b);
+
+        if (!flowValues.length) {
+          return null;
+        }
+
+        const minFlow = flowValues[0];
+        const maxFlow = flowValues[flowValues.length - 1];
+
+        const fuseValue = Array.isArray(product.specs?.fuse)
+          ? product.specs?.fuse.join(", ")
+          : product.specs?.fuse ?? "Ikke spesifisert";
+
+        const usage =
+          product.ideal?.slice(0, 2).join(", ") ?? "Ikke spesifisert";
+
+        return {
+          id: product.id,
+          model: product.name,
+          phase: product.phase || "Ikke spesifisert",
+          fuse: fuseValue,
+          usage,
+          minFlow,
+          maxFlow,
+          matchMax: maxFlow,
+        } as Recommendation;
+      })
+      .filter((item): item is Recommendation => item !== null)
+      .sort((a, b) => a.minFlow - b.minFlow);
+
+    return derived.map((item, index) => {
+      const next = derived[index + 1];
+      return {
+        ...item,
+        matchMax: next ? next.minFlow : Number.POSITIVE_INFINITY,
+      };
+    });
+  }, [products]);
+
   const calculateRecommendation = () => {
-    // Calculate liters per minute for 10L bucket
-    const lpm = 600 / seconds; // 10L * 60 seconds / seconds
+    if (!recommendations.length) {
+      setResult(null);
+      setFlowRate(null);
+      return;
+    }
+
+    const lpm = 600 / seconds;
     setFlowRate(Math.round(lpm * 10) / 10);
 
-    // Find recommendation
     const rec = recommendations.find(
-      (r) => lpm >= r.minFlow && lpm < r.maxFlow
+      (r) => lpm >= r.minFlow && lpm < r.matchMax
     );
     setResult(rec || recommendations[recommendations.length - 1]);
   };
+
+  const formatFlowRange = (min: number, max: number) => {
+    const format = (value: number) =>
+      Number.isFinite(value) ? value.toFixed(value >= 10 ? 0 : 1) : "∞";
+    if (!Number.isFinite(max) || max === Number.POSITIVE_INFINITY) {
+      return `${format(min)}+ L/min`;
+    }
+    return `${format(min)} - ${format(max)} L/min`;
+  };
+
+  const isCalculateDisabled =
+    productsLoading || !recommendations.length || Boolean(productsError);
 
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background">
@@ -98,7 +131,7 @@ const ModelSelector = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="flex flex-col gap-4 md:flex-row">
+              <div className="flex flex-col gap-4 md:flex-row items-end">
                 <div className="bg-muted p-4 rounded-lg">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
                     <AlertCircle className="w-5 h-5 text-blue-600" />
@@ -145,52 +178,106 @@ const ModelSelector = () => {
                       onClick={calculateRecommendation}
                       size="lg"
                       className="w-full"
+                      disabled={isCalculateDisabled}
                     >
-                      Finn modell
+                      {productsLoading
+                        ? "Laster produkter..."
+                        : "Finn modell"}
                     </Button>
+                    {productsError ? (
+                      <p className="text-sm text-destructive">
+                        Kunne ikke laste produkter. Prøv igjen senere.
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>
 
               {result && flowRate && (
-                <Alert className="border-green-600">
+                <Alert>
+                  <AlertTitle className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-success" />
+                    Beregnet vannmengde: {flowRate} L/min
+                  </AlertTitle>
                   <AlertDescription>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 bg-background">
-                        <CheckCircle className="h-5 w-5 text-green-600" />
-                        <strong className="text-lg">
-                          Beregnet vannmengde: {flowRate} L/min
-                        </strong>
-                      </div>
-                      <div className="bg-success-50 bg-background p-4 rounded-lg">
-                        <h4 className="font-bold text-xl text-primary mb-2">
-                          Anbefalt modell: {result.model}
-                        </h4>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Fase:</span>
-                            <span className="ml-2 font-semibold">
-                              {result.phase}
-                            </span>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 "></div>
+                      {(() => {
+                        const usageItems = result.usage
+                          .split(",")
+                          .map((item) => item.trim())
+                          .filter(Boolean);
+                        const flowRangeLabel = formatFlowRange(
+                          result.minFlow,
+                          result.matchMax
+                        );
+                        return (
+                          <div className="rounded-xl border border-primary/20 bg-primary/10 p-6 shadow-sm">
+                            <div className="flex flex-wrap items-center justify-between gap-4">
+                              <div>
+                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  Anbefalt modell
+                                </p>
+                                <h4 className="text-2xl font-semibold text-foreground">
+                                  {result.model}
+                                </h4>
+                              </div>
+                              <Badge
+                                variant="secondary"
+                                className="border border-primary/30 bg-primary text-primary-foreground"
+                              >
+                                {flowRangeLabel}
+                              </Badge>
+                            </div>
+
+                            <div className="mt-6 grid gap-4 md:grid-cols-3">
+                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
+                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  Strålestørrelse
+                                </p>
+                                <p className="text-lg font-semibold text-foreground">
+                                  {flowRangeLabel}
+                                </p>
+                              </div>
+                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
+                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  Fase
+                                </p>
+                                <p className="text-lg font-semibold text-foreground">
+                                  {result.phase}
+                                </p>
+                              </div>
+                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
+                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  Sikring
+                                </p>
+                                <p className="text-lg font-semibold text-foreground">
+                                  {result.fuse}
+                                </p>
+                              </div>
+                            </div>
+
+                            {usageItems.length ? (
+                              <div className="mt-6">
+                                <p className="text-sm font-medium text-muted-foreground">
+                                  Ideell for
+                                </p>
+                                <ul className="mt-2 grid gap-2 md:grid-cols-2">
+                                  {usageItems.map((item) => (
+                                    <li
+                                      key={item}
+                                      className="inline-flex items-center gap-2 rounded-md bg-background p-3 text-sm text-foreground"
+                                    >
+                                      <span className="mt-0.5 h-2 w-2 rounded-full bg-foreground" />
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : null}
                           </div>
-                          <div>
-                            <span className="text-muted-foreground">
-                              Sikring:
-                            </span>
-                            <span className="ml-2 font-semibold">
-                              {result.fuse}
-                            </span>
-                          </div>
-                          <div className="col-span-2">
-                            <span className="text-muted-foreground">
-                              Ideell for:
-                            </span>
-                            <span className="ml-2 font-semibold">
-                              {result.usage}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                        );
+                      })()}
                       <p className="text-sm text-muted-foreground">
                         <strong>Merk:</strong> Dette er en anbefaling. Kontakt
                         alltid en elektriker for en vurdering av ditt elektriske
@@ -219,24 +306,36 @@ const ModelSelector = () => {
                   <tr className="border-b">
                     <th className="text-left p-3">Strålestørrelse (L/min)</th>
                     <th className="text-left p-3">Anbefalt modell</th>
+                    <th className="text-left p-3">Fase</th>
                     <th className="text-left p-3">Sikring</th>
                     <th className="text-left p-3">Brukseksempler</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {recommendations.map((rec, idx) => (
+                  {recommendations.map((rec) => (
                     <tr
-                      key={idx}
+                      key={rec.id}
                       className="border-b bg-background hover:bg-muted"
                     >
                       <td className="p-3">
-                        {rec.minFlow}-{rec.maxFlow} L/min
+                        {formatFlowRange(rec.minFlow, rec.matchMax)}
                       </td>
                       <td className="p-3 font-semibold">{rec.model}</td>
+                      <td className="p-3">{rec.phase}</td>
                       <td className="p-3">{rec.fuse}</td>
                       <td className="p-3 text-muted-foreground">{rec.usage}</td>
                     </tr>
                   ))}
+                  {!recommendations.length && !productsLoading ? (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="p-4 text-center text-muted-foreground"
+                      >
+                        Ingen produktdata tilgjengelig.
+                      </td>
+                    </tr>
+                  ) : null}
                 </tbody>
               </table>
             </div>
