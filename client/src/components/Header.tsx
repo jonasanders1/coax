@@ -7,19 +7,50 @@ import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
 import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
+import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const location = useLocation();
   const mobileMenuOpen = useAppStore((s) => s.mobileMenuOpen);
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen);
   const toggleMobileMenu = useAppStore((s) => s.toggleMobileMenu);
-  const { openChat } = useChatBot();
+  const [isSmall, setIsSmall] = useState(false);
+  const frameRequested = useRef(false);
+  // const { openChat } = useChatBot();
 
   const isActive = (path: string) => location.pathname === path;
 
+  useEffect(() => {
+    const threshold = 100;
+
+    const updateHeaderSize = () => {
+      const shouldBeSmall = window.scrollY >= threshold;
+      setIsSmall((prev) => (prev === shouldBeSmall ? prev : shouldBeSmall));
+      frameRequested.current = false;
+    };
+
+    const handleScroll = () => {
+      if (!frameRequested.current) {
+        frameRequested.current = true;
+        window.requestAnimationFrame(updateHeaderSize);
+      }
+    };
+
+    updateHeaderSize();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      frameRequested.current = false;
+    };
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <nav className="container mx-auto px-4 py-4 max-w-6xl">
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md transition-all 0.2s ease-out ${isSmall ? "shadow-md" : ""}`}>
+      <nav
+        className="container mx-auto px-4 py-2 max-w-6xl"
+      >
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex flex-col leading-tight">

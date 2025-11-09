@@ -472,7 +472,9 @@ const CalculatorPage = () => {
                   <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950 dark:border-purple-800">
                     <div className="flex items-center gap-2 mb-2">
                       <Clock className="w-5 h-5 text-purple-600" />
-                      <h3 className="font-semibold text-sm">Tilbakebetalingstid</h3>
+                      <h3 className="font-semibold text-sm">
+                        Tilbakebetalingstid
+                      </h3>
                     </div>
                     <p className="text-xl sm:text-2xl font-bold text-purple-900 dark:text-purple-100">
                       {isNaN(results.paybackYears)
@@ -629,22 +631,24 @@ const CalculatorPage = () => {
                     <div className="flex items-start gap-2">
                       <span>
                         Kalkulatoren beregner energibruk basert på antall
-                        personer, dusjer og dusjens lengde. 4 minutter per dusj er gjennomsnittet i Norge.
+                        personer, dusjer og dusjens lengde. 4 minutter per dusj
+                        er gjennomsnittet i Norge.
                       </span>
                     </div>
                   </li>
                   <li>
                     <div className="flex items-start gap-2">
                       <span>
-                        COAX bruker kun energi ved bruk, og derav mer energieffektiv enn tankbereder.
+                        COAX bruker kun energi under bruk, og er dermed mer
+                        energieffektiv enn en tradisjonell tankbereder.
                       </span>
                     </div>
                   </li>
                   <li>
                     <div className="flex items-start gap-2">
                       <span>
-                        Tankbereder inkluderer standby-tap (ca. 900 kWh/år), da vannet
-                        i tanken holdes varmt døgnet rundt.
+                        Tankbereder inkluderer standby-tap (ca. 900 kWh/år), da
+                        vannet i tanken holdes varmt døgnet rundt.
                       </span>
                     </div>
                   </li>
