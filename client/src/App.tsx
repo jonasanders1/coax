@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { useTheme } from "@/hooks/useTheme";
+import { useEffect } from "react";
 
 // import ChatBot from "./components/chatbot/ChatBot";
 import HomePage from "./pages/Home";
@@ -58,11 +60,37 @@ const appVariants = {
 } as const;
 
 // ✅ Main App component
-const App = () => {
+const FaviconUpdater = () => {
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    const faviconLight = document.getElementById(
+      "favicon-light"
+    ) as HTMLLinkElement | null;
+    const faviconDark = document.getElementById(
+      "favicon-dark"
+    ) as HTMLLinkElement | null;
+
+    if (faviconLight && faviconDark) {
+      if (resolvedTheme === "dark") {
+        faviconLight.rel = "alternate icon";
+        faviconDark.rel = "icon";
+      } else {
+        faviconDark.rel = "alternate icon";
+        faviconLight.rel = "icon";
+      }
+    }
+  }, [resolvedTheme]);
+
+  return null;
+};
+
+const AppContent = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <FaviconUpdater />
           <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -84,5 +112,7 @@ const App = () => {
     </QueryClientProvider>
   );
 };
+
+const App = () => <AppContent />;
 
 export default App;
