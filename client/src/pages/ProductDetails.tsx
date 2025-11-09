@@ -14,13 +14,41 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
 import { getProductById } from "@/lib/products";
+import { useChatBot } from "@/hooks/useChatBot";
+
+const SPEC_LABELS: Record<string, string> = {
+  flowRates: "Vannstrøm (L/min)",
+  flowAt40C: "Vannstrøm ved 40°C",
+  powerOptions: "Effektalternativer",
+  voltage: "Spenning (V)",
+  current: "Strøm (A)",
+  fuse: "Sikringskrav (A)",
+  safetyClass: "Beskyttelsesklasse",
+  tempRange: "Temperaturområde (°C)",
+  overheatProtection: "Overopphetingsvern",
+  workingPressure: "Arbeidstrykk (bar)",
+  dimensions: "Mål (H×B×D mm)",
+  weight: "Vekt (kg)",
+  connectionWire: "Anbefalt kabeltykkelse",
+  pipeSize: "Anbefalt rørdimensjon",
+  tankCapacity: "Tankkapasitet (L)",
+  efficiency: "Energieffektivitet (%)",
+  pressureResistance: "Trykkbestandighet",
+  material: "Materiale",
+  compressor: "Kompressor",
+};
 
 const ProductDetailsRedesigned = () => {
+  const { openChat } = useChatBot();
   const { id } = useParams();
   const location = useLocation() as { state?: { product?: Product } };
-  
+
   // Fetch product from Firestore if not in location state
-  const { data: fetchedProduct, isLoading, error } = useQuery({
+  const {
+    data: fetchedProduct,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById(id!),
     enabled: !location.state?.product && !!id,
@@ -191,9 +219,9 @@ const ProductDetailsRedesigned = () => {
 
         {/* Description */}
         <section>
-          <div className="flex flex-col md:flex-row md:items-center gap-2 mb-3">
+          <div className="flex flex-col gap-2 mb-3">
             <h2 className="text-xl font-semibold">{name} beskrivelse</h2>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Badge variant="secondary" className="text-sm">
                 {phase}
               </Badge>
@@ -231,17 +259,20 @@ const ProductDetailsRedesigned = () => {
                 <AccordionContent>
                   {specs && (
                     <ul className="space-y-2 text-sm">
-                      {Object.entries(specs).map(([key, value]) => (
-                        <li
-                          key={key}
-                          className="flex justify-between border-b pb-1"
-                        >
-                          <span className="font-medium">{key}</span>
-                          <span className="text-muted-foreground">
-                            {Array.isArray(value) ? value.join(", ") : value}
-                          </span>
-                        </li>
-                      ))}
+                      {Object.entries(specs).map(([key, value]) => {
+                        const label = SPEC_LABELS[key] ?? key;
+                        return (
+                          <li
+                            key={key}
+                            className="flex justify-between border-b pb-1"
+                          >
+                            <span className="font-medium">{label}</span>
+                            <span className="text-muted-foreground">
+                              {Array.isArray(value) ? value.join(", ") : value}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </AccordionContent>
@@ -252,33 +283,40 @@ const ProductDetailsRedesigned = () => {
           {/* Right - Sidebar */}
           <aside className="space-y-6">
             {/* Chat */}
-            <div
-              className="rounded-2xl p-6 text-white shadow-md"
+            {/* <Card
+              className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
             >
-              <h2 className="text-xl font-semibold mb-2">Chat om {name}</h2>
-              <p className="text-sm text-white/90 mb-4">
-                Få hjelp til å vurdere om denne modellen passer for ditt behov.
-              </p>
-              <Button size="lg" variant="secondary" className="w-full gap-2">
-                <MessageCircle className="h-5 w-5" /> Start chat
-              </Button>
-            </div>
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-white m-0 p-0">
+                  Snakk med Flux
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/90">
+                  Vi svarer vanligvis innen 24 timer på hverdager. Haster det?
+                  Ring oss direkte!
+                </p>
 
-            {/* Support */}
-            <div className="rounded-2xl border p-6 flex items-center justify-between shadow-sm">
-              <div>
-                <div className="font-semibold">Trenger du hjelp?</div>
-                <div className="text-sm text-muted-foreground">
-                  Kontakt oss for rådgivning
-                </div>
-              </div>
-              <Button asChild size="sm" className="gap-2">
-                <RouterLink to="/kontakt">
-                  <LifeBuoy className="w-4 h-4" /> Kontakt
-                </RouterLink>
-              </Button>
-            </div>
+                <Button
+                  onClick={() => openChat()}
+                  size="lg"
+                  className="mt-4 group relative z-10 min-w-[180px] overflow-hidden border-2 border-white bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:shadow-primary/20"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5" />
+                    Snakk med Flux
+                  </span>
+                  <span
+                    className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    style={{ background: "var(--gradient-primary)" }}
+                  ></span>
+                </Button>
+              </CardContent>
+            </Card>    */}
           </aside>
         </section>
       </div>

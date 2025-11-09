@@ -16,8 +16,9 @@
     --popover: 45 15% 95%;
     --popover-foreground: 215 25% 20%;
 
-    /* Accent Green - Primary Brand Color */
-    --primary: 114 58% 34%; /* #2E8824 - Your specified green */
+    
+    --primary: 217 54% 24%;
+    
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Complementary muted color for badges, etc. */
@@ -25,7 +26,7 @@
     --secondary-foreground: 215 25% 20%;
 
     /* Accent - Same green as primary for consistency */
-    --accent: 114 58% 34%; /* #2E8824 */
+    --accent: 217 54% 24%; /* #2E8824 */
     --accent-foreground: 0 0% 100%;
 
     /* Muted - Very light background for subtle elements */
@@ -45,15 +46,15 @@
     /* Borders and Inputs */
     --border: 215 15% 88%; /* Light gray borders */
     --input: 215 15% 88%;
-    --ring: 114 58% 34%; /* Green focus ring */
+    --ring: var(--primary); /* Green focus ring */
 
     --radius: 0.5rem;
 
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(114 58% 34%) 0%,
-      hsl(114 58% 28%) 100%
+      hsl(217 54% 24%) 0%,
+      hsl(217 38% 39%) 100%
     );
     --gradient-card: linear-gradient(
       to bottom,
@@ -97,7 +98,7 @@
     --popover-foreground: 0 0% 95%;
 
     /* Accent Green - Same as light theme */
-    --primary: 114 58% 34%; /* #2E8824 - Same green */
+    --primary: 212 84% 59%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Dark theme variant */
@@ -105,7 +106,7 @@
     --secondary-foreground: 0 0% 90%;
 
     /* Accent - Same green */
-    --accent: 114 58% 34%; /* #2E8824 */
+    --accent: 212 84% 59%; /* #2E8824 */
     --accent-foreground: 0 0% 100%;
 
     /* Muted - Dark background for subtle elements */
@@ -125,13 +126,13 @@
     /* Borders and Inputs */
     --border: 215 20% 25%; /* Dark borders */
     --input: 215 20% 25%;
-    --ring: 114 58% 34%; /* Same green focus ring */
+    --ring: var(--primary); /* Same green focus ring */
 
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(114 58% 34%) 0%,
-      hsl(114 58% 28%) 100%
+      hsl(212, 77%, 62%) 100%, 
+      hsl(212, 84%, 59%) 100%
     );
     --gradient-card: linear-gradient(
       to bottom,

@@ -55,12 +55,9 @@ const Footer = () => {
                 <MessageCircle className="h-4 w-4" />
                 Flux
               </button> */}
-              <div>
+              {/* <div>
                 <ThemeToggle />
-                <span className="text-sm text-muted-foreground capitalize">
-                  {theme === "dark" ? "Mørkt" : "Lyst"}
-                </span>
-              </div>
+              </div> */}
             </nav>
           </div>
 

@@ -45,7 +45,7 @@ const benefits = [
   {
     icon: Droplet,
     title: "Frisk vannkvalitet",
-    text: "Ingen lagring betyr ingen bakterievekst. Fersk, ren varmtvann direkte fra ledningen hver gang du åpner kranen.",
+    text: "Ingen lagring betyr ingen bakterievekst. Ferskt, rent varmtvann hver gang du åpner kranen.",
   },
 ];
 
@@ -55,12 +55,18 @@ const comparison = {
     { text: "Tar stor plass", icon: XCircle },
     { text: "Risiko for bakterievekst (Legionella)", icon: XCircle },
     { text: "Høyt standby-forbruk", icon: XCircle },
+    { text: "Begrenset varmtvannsmengde", icon: XCircle },
+    { text: "Lang oppvarmingstid", icon: XCircle },
+    { text: "Kortere levetid: 8-12 år", icon: XCircle },
   ],
   coax: [
     { text: "Kun på ved bruk", icon: CheckCircle },
     { text: "Kompakt, monteres på vegg", icon: CheckCircle },
     { text: "Friskt, rent vann hver gang", icon: CheckCircle },
-    { text: "Nøyaktig og lavere forbruk", icon: CheckCircle },
+    { text: "24-34% lavere energiforbruk", icon: CheckCircle },
+    { text: "Miljøvennlig alternativ", icon: CheckCircle },
+    { text: "Ubegrenset varmtvannsmengde", icon: CheckCircle },
+    { text: "Lang levetid: 15-20 år", icon: CheckCircle },
   ],
 };
 
@@ -68,7 +74,7 @@ const customerSegments = [
   {
     id: "cabin-owners",
     title: "For hytter og fritidshus",
-    text: "Minimal plass, enkel installasjon og frostsikring ved tømming gjør COAX ideell for hytter. Nyt komforten av øyeblikkelig varmtvann uten å bekymre deg for en stor tank.",
+    text: "Minimal plass, enkel installasjon, frostsikring ved tømming og ingen oppvarmingstid gjør COAX ideell for hytter.",
     image: cabinImage,
   },
   {

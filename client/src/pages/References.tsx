@@ -3,68 +3,37 @@ import { Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import PageTitile from "@/components/PageTitile";
+import { references } from "@/data/references";
 
 // Reference images
-import ref1 from "@/assets/references/reference-1.webp";
-import ref2 from "@/assets/references/reference-2.webp";
-import ref3 from "@/assets/references/reference-3.webp";
+// import ref1 from "@/assets/references/reference-1.webp";
+// import ref2 from "@/assets/references/reference-2.webp";
+// import ref3 from "@/assets/references/reference-3.webp";
+
 
 // const references = [
 //   {
-//     project: "XFJ-3 i bolighus, Oslo",
-//     testimonial: "Spar plass og strøm – anbefales! Vi installerte COAX i vårt bad og kjøkken. Perfekt løsning.",
-//     type: "Bolig"
+//     id: "ref-1",
+//     caption: "Kompakt modell i hytte, Geilo",
+//     testimonial:
+//       '"Perfekt for vår lille hytte. Enkel å tømme før vinteren, og gir en luksusfølelse med varm dusj på fjellet."',
+//     image: ref1,
 //   },
 //   {
-//     project: "Hytte i fjellheimen",
-//     testimonial: "Ingen tank å tømme, minimal plass, varmt vann når vi trenger det. Perfekt for hytta!",
-//     type: "Hytte"
+//     id: "ref-2",
+//     caption: "XFJ-3 i bolighus, Oslo",
+//     testimonial:
+//       '"Sparer utrolig mye plass på vaskerommet og har aldri gått tom for varmtvann siden. Anbefales på det sterkeste!"',
+//     image: ref2,
 //   },
 //   {
-//     project: "Leilighet i Bergen",
-//     testimonial: "Kompakt og effektiv. XFJ-2 passer perfekt i vårt lille bad. Varmtvann på sekunder.",
-//     type: "Leilighet"
+//     id: "ref-3",
+//     caption: "Plassbesparende løsning, Bergen",
+//     testimonial:
+//       '"Vi byttet ut en 200L tank med denne lille boksen. Utrolig hvor mye gulvplass vi plutselig fikk!"',
+//     image: ref3,
 //   },
-//   {
-//     project: "Verksted og industrihall",
-//     testimonial: "Pålitelig løsning for våre ansatte. Vedlikeholdsfri og energieffektiv drift.",
-//     type: "Industri"
-//   },
-//   {
-//     project: "Sommerhus ved kysten",
-//     testimonial: "XFJ-2-55 med lavt forbruk fungerer utmerket på vår begrensede el-tilkobling.",
-//     type: "Fritidsbolig"
-//   },
-//   {
-//     project: "Hotell i Trondheim",
-//     testimonial: "Flere COAX-enheter installert. Gjestene er fornøyde, og vi sparer på driftskostnadene.",
-//     type: "Hotell"
-//   }
 // ];
-
-const references = [
-  {
-    id: "ref-1",
-    caption: "Kompakt modell i hytte, Geilo",
-    testimonial:
-      '"Perfekt for vår lille hytte. Enkel å tømme før vinteren, og gir en luksusfølelse med varm dusj på fjellet."',
-    image: ref1,
-  },
-  {
-    id: "ref-2",
-    caption: "XFJ-3 i bolighus, Oslo",
-    testimonial:
-      '"Sparer utrolig mye plass på vaskerommet og har aldri gått tom for varmtvann siden. Anbefales på det sterkeste!"',
-    image: ref2,
-  },
-  {
-    id: "ref-3",
-    caption: "Plassbesparende løsning, Bergen",
-    testimonial:
-      '"Vi byttet ut en 200L tank med denne lille boksen. Utrolig hvor mye gulvplass vi plutselig fikk!"',
-    image: ref3,
-  },
-];
 
 const References = () => {
   return (

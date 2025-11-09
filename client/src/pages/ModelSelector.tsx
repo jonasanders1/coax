@@ -98,52 +98,57 @@ const ModelSelector = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="bg-muted p-4 rounded-lg mb-6">
-                <h3 className="font-semibold mb-2 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-blue-600" />
-                  Slik gjør du:
-                </h3>
+              <div className="flex flex-col gap-4 md:flex-row">
+                <div className="bg-muted p-4 rounded-lg">
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    <AlertCircle className="w-5 h-5 text-blue-600" />
+                    Slik gjør du:
+                  </h3>
 
-                <div className="md:pr-4">
-                  <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
-                    <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
-                    <li>
-                      2. Skru på vannet til ønsket dusjtemperatur og trykk
-                    </li>
-                    <li>3. Start tidtaker og fyll bøtta helt opp</li>
-                    <li>4. Stopp når bøtta er full og noter antall sekunder</li>
-                    <li>
-                      5. Fyll inn tiden under, så regner vi ut riktig modell
-                    </li>
-                  </ol>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="seconds" className="text-lg mb-4 block">
-                  Tid for å fylle 10L bøtte: <strong>{seconds} sekunder</strong>
-                </Label>
-                <div className="space-y-4">
-                  <Slider
-                    id="seconds"
-                    value={[seconds]}
-                    onValueChange={(value) => setSeconds(value[0])}
-                    min={10}
-                    max={120}
-                    step={1}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>10 sek (veldig høy strøm)</span>
-                    <span>120 sek (lav strøm)</span>
+                  <div className="md:pr-4">
+                    <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
+                      <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
+                      <li>
+                        2. Skru på vannet til ønsket dusjtemperatur og trykk
+                      </li>
+                      <li>3. Start tidtaker og fyll bøtta helt opp</li>
+                      <li>
+                        4. Stopp når bøtta er full og noter antall sekunder
+                      </li>
+                      <li>
+                        5. Fyll inn tiden under, så regner vi ut riktig modell
+                      </li>
+                    </ol>
                   </div>
-                  <Button
-                    onClick={calculateRecommendation}
-                    size="lg"
-                    className="w-full"
-                  >
-                    Finn modell
-                  </Button>
+                </div>
+
+                <div className="flex-1">
+                  <Label htmlFor="seconds" className="text-lg mb-4 block">
+                    Tid for å fylle 10L bøtte:{" "}
+                    <strong>{seconds} sekunder</strong>
+                  </Label>
+                  <div className="space-y-4">
+                    <Slider
+                      id="seconds"
+                      value={[seconds]}
+                      onValueChange={(value) => setSeconds(value[0])}
+                      min={10}
+                      max={120}
+                      step={1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>10 sek (veldig høy strøm)</span>
+                      <span>120 sek (lav strøm)</span>
+                    </div>
+                    <Button
+                      onClick={calculateRecommendation}
+                      size="lg"
+                      className="w-full"
+                    >
+                      Finn modell
+                    </Button>
+                  </div>
                 </div>
               </div>
 

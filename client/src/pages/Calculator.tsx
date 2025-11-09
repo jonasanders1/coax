@@ -10,6 +10,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   BarChart,
   Bar,
   XAxis,
@@ -91,15 +97,15 @@ const CalculatorPage = () => {
 
   // Default parameters matching the Python calculator
   const [params, setParams] = useState<CalculationParams>({
-    antallPersoner: 2,
+    antallPersoner: 3,
     dusjerPerPersonPerDag: 1,
     minPerDusj: 4,
     tanklessPowerKW: 18.0,
     tanklesskWhPer4min: 1.2,
     tankkWhPer4min: 3.0,
     standbyTapTankkWhPerYear: 900.0,
-    strømprisNOKPerkWh: 1.5,
-    installasjonskostnadTanklessNOK: 12000.0,
+    strømprisNOKPerkWh: 0.5,
+    installasjonskostnadTanklessNOK: 6000.0,
     installasjonskostnadTankNOK: 5000.0,
   });
 
@@ -156,11 +162,17 @@ const CalculatorPage = () => {
   }, [params]);
 
   // Update parameter value with validation
-  const updateParam = (key: keyof CalculationParams, value: number | string) => {
+  const updateParam = (
+    key: keyof CalculationParams,
+    value: number | string
+  ) => {
     let sanitizedValue: number;
-    
+
     // Define bounds for each parameter to prevent invalid inputs
-    const bounds: Record<keyof CalculationParams, { min: number; max: number; default: number }> = {
+    const bounds: Record<
+      keyof CalculationParams,
+      { min: number; max: number; default: number }
+    > = {
       antallPersoner: { min: 1, max: 10, default: 2 },
       dusjerPerPersonPerDag: { min: 0.5, max: 10, default: 1 },
       minPerDusj: { min: 1, max: 60, default: 4 },
@@ -168,14 +180,23 @@ const CalculatorPage = () => {
       tanklesskWhPer4min: { min: 0.1, max: 10, default: 1.2 },
       tankkWhPer4min: { min: 0.1, max: 10, default: 3.0 },
       standbyTapTankkWhPerYear: { min: 0, max: 10000, default: 900.0 },
-      strømprisNOKPerkWh: { min: 0.01, max: 100, default: 1.5 },
-      installasjonskostnadTanklessNOK: { min: 0, max: 1000000, default: 12000.0 },
+      strømprisNOKPerkWh: { min: 0.01, max: 100, default: 0.5 },
+      installasjonskostnadTanklessNOK: {
+        min: 0,
+        max: 1000000,
+        default: 12000.0,
+      },
       installasjonskostnadTankNOK: { min: 0, max: 1000000, default: 5000.0 },
     };
-    
+
     const bound = bounds[key];
-    sanitizedValue = sanitizeNumberInput(value, bound.min, bound.max, bound.default);
-    
+    sanitizedValue = sanitizeNumberInput(
+      value,
+      bound.min,
+      bound.max,
+      bound.default
+    );
+
     setParams((prev) => ({ ...prev, [key]: sanitizedValue }));
   };
 
@@ -183,7 +204,7 @@ const CalculatorPage = () => {
   const chartData = useMemo(() => {
     return [
       {
-        name: "Direkte (CoaX)",
+        name: "COAX",
         "Årlig kWh": results.tanklesskWhPerYear,
         "Årlig kostnad (NOK)": results.tanklessCostPerYearNOK,
       },
@@ -208,7 +229,7 @@ const CalculatorPage = () => {
 
         {/* Main Calculator Section */}
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          <div className="flex flex-col gap-8 mb-8">
             {/* Input Section */}
             <Card>
               <CardHeader>
@@ -266,118 +287,129 @@ const CalculatorPage = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="strømprisNOKPerkWh">
-                      Strømpris (NOK/kWh)
-                    </Label>
-                    <Input
-                      id="strømprisNOKPerkWh"
-                      type="number"
-                      step="0.1"
-                      value={params.strømprisNOKPerkWh}
-                      onChange={(e) =>
-                        updateParam(
-                          "strømprisNOKPerkWh",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="advanced-settings">
+                    <AccordionTrigger className="text-base font-semibold">
+                      Avanserte innstillinger
+                    </AccordionTrigger>
+                    <AccordionContent className="space-y-4 px-2">
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="strømprisNOKPerkWh">
+                            Strømpris (NOK/kWh)
+                          </Label>
+                          <Input
+                            id="strømprisNOKPerkWh"
+                            type="number"
+                            step="0.1"
+                            value={params.strømprisNOKPerkWh}
+                            onChange={(e) =>
+                              updateParam(
+                                "strømprisNOKPerkWh",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="standbyTapTankkWhPerYear">
-                      Standby tap tank (kWh/år)
-                    </Label>
-                    <Input
-                      id="standbyTapTankkWhPerYear"
-                      type="number"
-                      step="50"
-                      value={params.standbyTapTankkWhPerYear}
-                      onChange={(e) =>
-                        updateParam(
-                          "standbyTapTankkWhPerYear",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
-                </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="standbyTapTankkWhPerYear">
+                            Standby tap tank (kWh/år)
+                          </Label>
+                          <Input
+                            id="standbyTapTankkWhPerYear"
+                            type="number"
+                            step="50"
+                            value={params.standbyTapTankkWhPerYear}
+                            onChange={(e) =>
+                              updateParam(
+                                "standbyTapTankkWhPerYear",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="installasjonskostnadTanklessNOK">
-                      Installasjon Tankløs (NOK)
-                    </Label>
-                    <Input
-                      id="installasjonskostnadTanklessNOK"
-                      type="number"
-                      step="1000"
-                      value={params.installasjonskostnadTanklessNOK}
-                      onChange={(e) =>
-                        updateParam(
-                          "installasjonskostnadTanklessNOK",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="installasjonskostnadTanklessNOK">
+                            Installasjon Tankløs (NOK)
+                          </Label>
+                          <Input
+                            id="installasjonskostnadTanklessNOK"
+                            type="number"
+                            step="1000"
+                            value={params.installasjonskostnadTanklessNOK}
+                            onChange={(e) =>
+                              updateParam(
+                                "installasjonskostnadTanklessNOK",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="installasjonskostnadTankNOK">
-                      Installasjon Tank (NOK)
-                    </Label>
-                    <Input
-                      id="installasjonskostnadTankNOK"
-                      type="number"
-                      step="1000"
-                      value={params.installasjonskostnadTankNOK}
-                      onChange={(e) =>
-                        updateParam(
-                          "installasjonskostnadTankNOK",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
-                </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="installasjonskostnadTankNOK">
+                            Installasjon Tank (NOK)
+                          </Label>
+                          <Input
+                            id="installasjonskostnadTankNOK"
+                            type="number"
+                            step="1000"
+                            value={params.installasjonskostnadTankNOK}
+                            onChange={(e) =>
+                              updateParam(
+                                "installasjonskostnadTankNOK",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="tanklesskWhPer4min">
-                      Direkte kWh per 4 min
-                    </Label>
-                    <Input
-                      id="tanklesskWhPer4min"
-                      type="number"
-                      step="0.1"
-                      value={params.tanklesskWhPer4min}
-                      onChange={(e) =>
-                        updateParam(
-                          "tanklesskWhPer4min",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="tanklesskWhPer4min">
+                            Direkte kWh per 4 min
+                          </Label>
+                          <Input
+                            id="tanklesskWhPer4min"
+                            type="number"
+                            step="0.1"
+                            value={params.tanklesskWhPer4min}
+                            onChange={(e) =>
+                              updateParam(
+                                "tanklesskWhPer4min",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="tankkWhPer4min">Tank kWh per 4 min</Label>
-                    <Input
-                      id="tankkWhPer4min"
-                      type="number"
-                      step="0.1"
-                      value={params.tankkWhPer4min}
-                      onChange={(e) =>
-                        updateParam(
-                          "tankkWhPer4min",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="pt-4 border-t space-y-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="tankkWhPer4min">
+                            Tank kWh per 4 min
+                          </Label>
+                          <Input
+                            id="tankkWhPer4min"
+                            type="number"
+                            step="0.1"
+                            value={params.tankkWhPer4min}
+                            onChange={(e) =>
+                              updateParam(
+                                "tankkWhPer4min",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+                <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                     <div>
                       <span className="text-muted-foreground">
@@ -409,7 +441,7 @@ const CalculatorPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 rounded-lg bg-blue-100 dark:bg-blue-900/40">
                     <div className="flex items-center gap-2 mb-2">
                       <Zap className="w-5 h-5 text-blue-600" />
@@ -437,6 +469,22 @@ const CalculatorPage = () => {
                       {results.tankCostPerYearNOK.toFixed(0)} NOK/år
                     </p>
                   </div>
+                  <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950 dark:border-purple-800">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Clock className="w-5 h-5 text-purple-600" />
+                      <h3 className="font-semibold text-sm">Tilbakebetalingstid</h3>
+                    </div>
+                    <p className="text-xl sm:text-2xl font-bold text-purple-900 dark:text-purple-100">
+                      {isNaN(results.paybackYears)
+                        ? "N/A"
+                        : results.paybackYears.toFixed(1)}{" "}
+                      år
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Merpris installasjon:{" "}
+                      {results.installasjonsDiff.toFixed(0)} NOK
+                    </p>
+                  </div>
                 </div>
 
                 <div className="p-6 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
@@ -458,23 +506,6 @@ const CalculatorPage = () => {
                       </p>
                     </div>
                   </div>
-                </div>
-
-                <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950 border border-purple-200 dark:border-purple-800">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Clock className="w-5 h-5 text-purple-600" />
-                    <h3 className="font-semibold">Tilbakebetalingstid</h3>
-                  </div>
-                  <p className="text-xl sm:text-2xl font-bold text-purple-900 dark:text-purple-100">
-                    {isNaN(results.paybackYears)
-                      ? "N/A"
-                      : results.paybackYears.toFixed(1)}{" "}
-                    år
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Merpris installasjon: {results.installasjonsDiff.toFixed(0)}{" "}
-                    NOK
-                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -593,29 +624,44 @@ const CalculatorPage = () => {
                 <CardTitle>Hvordan fungerer kalkulatoren?</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3 text-muted-foreground list-disc pl-6">
-                  <li className="flex items-start gap-2">
-                    <span>
-                      Kalkulatoren beregner energibruk basert på antall
-                      personer, dusjer og dusjens lengde
-                    </span>
+                <ul className="space-y-3 list-disc pl-6 text-muted-foreground">
+                  <li>
+                    <div className="flex items-start gap-2">
+                      <span>
+                        Kalkulatoren beregner energibruk basert på antall
+                        personer, dusjer og dusjens lengde. 4 minutter per dusj er gjennomsnittet i Norge.
+                      </span>
+                    </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span>
-                      Direkte vannvarmer (CoaX) beregner kun energi ved bruk
-                    </span>
+                  <li>
+                    <div className="flex items-start gap-2">
+                      <span>
+                        COAX bruker kun energi ved bruk, og derav mer energieffektiv enn tankbereder.
+                      </span>
+                    </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span>
-                      Tankbereder inkluderer standby-tap som oppstår når vannet
-                      i tanken holdes varmt 24/7
-                    </span>
+                  <li>
+                    <div className="flex items-start gap-2">
+                      <span>
+                        Tankbereder inkluderer standby-tap (ca. 900 kWh/år), da vannet
+                        i tanken holdes varmt døgnet rundt.
+                      </span>
+                    </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span>
-                      Tilbakebetalingstid viser hvor lang tid det tar å dekke
-                      merprisen for tankløs løsning
-                    </span>
+                  <li>
+                    <div className="flex items-start gap-2">
+                      <span>
+                        Strømprisen (0.5 NOK/kWh) tar utgangspunkt i Norgespris.
+                      </span>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="flex items-start gap-2">
+                      <span>
+                        Tilbakebetalingstid viser hvor lang tid det tar å dekke
+                        merprisen for tankløs løsning
+                      </span>
+                    </div>
                   </li>
                 </ul>
               </CardContent>

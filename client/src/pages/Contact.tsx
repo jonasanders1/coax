@@ -28,14 +28,14 @@ const Contact = () => {
               <Button
                 variant={formType === "general" ? "default" : "outline"}
                 onClick={() => setFormType("general")}
-                className="flex-1"
+                className="flex-1 hover:text-white dark:hover:text-accent"
               >
                 Generell forespørsel
               </Button>
               <Button
                 variant={formType === "needs" ? "default" : "outline"}
                 onClick={() => setFormType("needs")}
-                className="flex-1"
+                className="flex-1 hover:text-white dark:hover:text-accent"
               >
                 Behovsvurdering
               </Button>

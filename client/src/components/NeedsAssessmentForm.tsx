@@ -11,6 +11,8 @@ import { Loader, ChevronLeft, ChevronRight } from "lucide-react";
 import { isValidEmail } from "@/utils/inputValidation";
 import { useFormInput } from "@/hooks/useFormInput";
 import ContactFields from "./forms/ContactFields";
+import FilterSelect from "./FilterSelect";
+import NeedsAssessmentFormHeader from "./forms/NeedsAssessmentFormHeader";
 import {
   createFormData,
   submitToWeb3Forms,
@@ -42,9 +44,7 @@ export default function NeedsAssessmentForm() {
     applicationArea: [],
     applicationAreaOther: "",
     voltagePhase: "",
-    voltagePhaseOther: "",
     mainFuse: "",
-    mainFuseOther: "",
     waterFlow: "",
     waterFlowCustom: "",
     usagePoints: [],
@@ -162,9 +162,7 @@ export default function NeedsAssessmentForm() {
           applicationArea: [],
           applicationAreaOther: "",
           voltagePhase: "",
-          voltagePhaseOther: "",
           mainFuse: "",
-          mainFuseOther: "",
           waterFlow: "",
           waterFlowCustom: "",
           usagePoints: [],
@@ -194,18 +192,25 @@ export default function NeedsAssessmentForm() {
   };
 
   const renderStepContent = () => {
+    const stepConfig = FORM_STEPS[currentStep] ?? {
+      title: `Steg ${currentStep}`,
+      description: "",
+    };
+
+    const header = (
+      <NeedsAssessmentFormHeader
+        currentStep={currentStep}
+        totalSteps={TOTAL_STEPS}
+        title={stepConfig.title}
+        description={stepConfig.description}
+      />
+    );
+
     switch (currentStep) {
       case 1:
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {FORM_STEPS[1].title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {FORM_STEPS[1].description}
-              </p>
-            </div>
+            {header}
 
             <ContactFields
               name={formData.name}
@@ -236,14 +241,7 @@ export default function NeedsAssessmentForm() {
       case 2:
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {FORM_STEPS[2].title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {FORM_STEPS[2].description}
-              </p>
-            </div>
+            {header}
 
             <div className="flex flex-wrap gap-2">
               {APPLICATION_AREAS.map((option) => (
@@ -258,14 +256,14 @@ export default function NeedsAssessmentForm() {
                   onClick={() =>
                     handleCheckboxChange("applicationArea", option)
                   }
-                  className="h-auto py-2 px-4 border border-border"
+                  className="h-auto border border-border px-4 py-2"
                 >
                   {option}
                 </Button>
               ))}
             </div>
 
-            <div className="pt-4">
+            <div>
               <Label htmlFor="applicationAreaOther">Annet:</Label>
               <Input
                 id="applicationAreaOther"
@@ -280,83 +278,53 @@ export default function NeedsAssessmentForm() {
           </div>
         );
 
-      case 3:
+      case 3: {
+        const mainFuseOptions = MAIN_FUSE_OPTIONS.map((option) => ({
+          value: option.value,
+          label: option.description
+            ? `${option.label} (${option.description})`
+            : option.label,
+        }));
+
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {FORM_STEPS[3].title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {FORM_STEPS[3].description}
-              </p>
-            </div>
+            {header}
 
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="voltagePhase">Spenning og faser:</Label>
-                <select
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <FilterSelect
                   id="voltagePhase"
-                  name="voltagePhase"
+                  label="Spenning og faser"
                   value={formData.voltagePhase}
-                  onChange={(e) =>
+                  onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                      voltagePhase: e.target.value,
+                      voltagePhase: value,
                     }))
                   }
-                  className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <option value="">Velg spenning/fase</option>
-                  {VOLTAGE_PHASE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-                <Input
-                  id="voltagePhaseOther"
-                  name="voltagePhaseOther"
-                  value={formData.voltagePhaseOther}
-                  onChange={handleInputChange}
-                  placeholder="Annet elektrisk oppsett"
-                  className="mt-2"
-                  maxLength={100}
+                  disabled={isSubmitting}
+                  options={VOLTAGE_PHASE_OPTIONS}
+                  placeholder="Velg spenning/fase"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="mainFuse">Hovedsikringer (Ampere):</Label>
-                <select
+              <div className="space-y-3">
+                <FilterSelect
                   id="mainFuse"
-                  name="mainFuse"
+                  label="Hovedsikringer (Ampere)"
                   value={formData.mainFuse}
-                  onChange={(e) =>
+                  onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                      mainFuse: e.target.value,
+                      mainFuse: value,
                     }))
                   }
-                  className="mt-1 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <option value="">Velg hovedsikringer</option>
-                  {MAIN_FUSE_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}{" "}
-                      {option.description && `(${option.description})`}
-                    </option>
-                  ))}
-                </select>
-                <Input
-                  id="mainFuseOther"
-                  name="mainFuseOther"
-                  value={formData.mainFuseOther}
-                  onChange={handleInputChange}
-                  placeholder="Annet (f.eks. 'Kontakt elektriker for watt-vurdering')"
-                  className="mt-2"
-                  maxLength={200}
+                  disabled={isSubmitting}
+                  options={mainFuseOptions}
+                  placeholder="Velg hovedsikringer"
                 />
-                <p className="text-xs text-muted-foreground mt-2">
+
+                <p className="text-xs text-muted-foreground">
                   Vi anbefaler å konsultere en elektriker for å bekrefte
                   maksimal watt som oppsettet ditt kan håndtere.
                 </p>
@@ -364,8 +332,9 @@ export default function NeedsAssessmentForm() {
             </div>
           </div>
         );
+      }
 
-      case 4:
+      case 4: {
         // Convert waterFlow string to number for slider (default to 6 if empty)
         const waterFlowValue = formData.waterFlow
           ? parseInt(formData.waterFlow.replace(" L/min", ""), 10)
@@ -377,24 +346,17 @@ export default function NeedsAssessmentForm() {
 
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {FORM_STEPS[4].title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {FORM_STEPS[4].description}
-              </p>
-            </div>
+            {header}
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
                     Vannstrøm: {clampedValue} L/min
                   </span>
                 </div>
                 <div className="relative px-2">
-                  <div className="flex justify-between mb-2">
+                  <div className="mb-2 flex justify-between">
                     <span className="text-xs text-muted-foreground">
                       3 L/min
                     </span>
@@ -415,7 +377,7 @@ export default function NeedsAssessmentForm() {
                     }}
                     className="w-full"
                   />
-                  <div className="flex justify-between mt-1">
+                  <div className="mt-1 flex justify-between">
                     <span className="text-xs text-muted-foreground">
                       Håndvask
                     </span>
@@ -428,18 +390,12 @@ export default function NeedsAssessmentForm() {
             </div>
           </div>
         );
+      }
 
       case 5:
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">
-                {FORM_STEPS[5].title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {FORM_STEPS[5].description}
-              </p>
-            </div>
+            {header}
 
             <div className="flex flex-wrap gap-2">
               {USAGE_POINTS.map((point) => (
@@ -450,14 +406,14 @@ export default function NeedsAssessmentForm() {
                     formData.usagePoints.includes(point) ? "default" : "outline"
                   }
                   onClick={() => handleCheckboxChange("usagePoints", point)}
-                  className="h-auto py-2 px-4 border border-border"
+                  className="h-auto border border-border px-4 py-2"
                 >
                   {point}
                 </Button>
               ))}
             </div>
 
-            <div className="pt-4">
+            <div>
               <Label htmlFor="usagePointsOther">Annet:</Label>
               <Input
                 id="usagePointsOther"
@@ -475,7 +431,7 @@ export default function NeedsAssessmentForm() {
               />
             </div>
 
-            <div className="pt-4 border-t">
+            <div className="border-t pt-3">
               <div>
                 <h3 className="text-lg font-semibold mb-2">
                   5. Tilleggskommentarer

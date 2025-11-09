@@ -24,9 +24,7 @@ export interface NeedsAssessmentFormData extends ContactFormData {
   applicationArea?: string[];
   applicationAreaOther?: string;
   voltagePhase?: string;
-  voltagePhaseOther?: string;
   mainFuse?: string;
-  mainFuseOther?: string;
   waterFlow?: string;
   waterFlowCustom?: string;
   usagePoints?: string[];
@@ -68,13 +66,13 @@ export function createFormData(
   const formData = new FormData();
 
   // Contact fields
-  formData.append("name", sanitized.name);
-  formData.append("email", sanitized.email);
+  formData.append("Navn", sanitized.name);
+  formData.append("E-post", sanitized.email);
   if (sanitized.phone) {
-    formData.append("phone", sanitized.phone);
+    formData.append("Telefonnr.", sanitized.phone);
   }
   if (sanitized.message) {
-    formData.append("message", sanitized.message);
+    formData.append("Melding", sanitized.message);
   }
 
   // Web3Forms required fields
@@ -94,43 +92,32 @@ export function createFormData(
   if (options.formType === "needs_assessment") {
     const assessmentData = data as NeedsAssessmentFormData;
     
-    formData.append("form_type", "needs_assessment");
+    formData.append("Type", "Behovsvurdering");
     
     if (assessmentData.applicationArea?.length) {
       formData.append(
-        "application_area",
+        "Anvendelsesområde",
         JSON.stringify(assessmentData.applicationArea)
       );
     }
     if (assessmentData.applicationAreaOther) {
       formData.append(
-        "application_area_other",
+        "Anvendelsesområde (annet)",
         sanitizeText(assessmentData.applicationAreaOther)
       );
     }
     
     if (assessmentData.voltagePhase) {
-      formData.append("voltage_phase", assessmentData.voltagePhase);
-    }
-    if (assessmentData.voltagePhaseOther) {
-      formData.append(
-        "voltage_phase_other",
-        sanitizeText(assessmentData.voltagePhaseOther)
-      );
+      formData.append("Spenning/fase", assessmentData.voltagePhase);
     }
     
     if (assessmentData.mainFuse) {
-      formData.append("main_fuse", assessmentData.mainFuse);
+      formData.append("Hovedsikringer", assessmentData.mainFuse);
     }
-    if (assessmentData.mainFuseOther) {
-      formData.append(
-        "main_fuse_other",
-        sanitizeText(assessmentData.mainFuseOther)
-      );
-    }
+
     
     if (assessmentData.waterFlow) {
-      formData.append("water_flow", assessmentData.waterFlow);
+      formData.append("Vannstrømbehov", assessmentData.waterFlow);
     }
     if (assessmentData.waterFlowCustom) {
       formData.append(
@@ -141,19 +128,19 @@ export function createFormData(
     
     if (assessmentData.usagePoints?.length) {
       formData.append(
-        "usage_points",
+        "Brukspunkter",
         JSON.stringify(assessmentData.usagePoints)
       );
     }
     if (assessmentData.usagePointsOther) {
       formData.append(
-        "usage_points_other",
+        "Brukspunkter (annet)",
         sanitizeText(assessmentData.usagePointsOther)
       );
     }
     
     if (assessmentData.comments) {
-      formData.append("comments", sanitizeText(assessmentData.comments));
+      formData.append("Tilleggskommentar", sanitizeText(assessmentData.comments));
     }
   }
 
