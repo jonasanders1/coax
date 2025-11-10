@@ -8,7 +8,7 @@ import "./index.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useTheme } from "@/hooks/useTheme";
 import { useEffect } from "react";
-
+import { HelmetProvider } from "react-helmet-async";
 // import ChatBot from "./components/chatbot/ChatBot";
 import HomePage from "./pages/Home";
 import Products from "./pages/Products";
@@ -59,38 +59,11 @@ const appVariants = {
   },
 } as const;
 
-// ✅ Main App component
-const FaviconUpdater = () => {
-  const { resolvedTheme } = useTheme();
-
-  useEffect(() => {
-    const faviconLight = document.getElementById(
-      "favicon-light"
-    ) as HTMLLinkElement | null;
-    const faviconDark = document.getElementById(
-      "favicon-dark"
-    ) as HTMLLinkElement | null;
-
-    if (faviconLight && faviconDark) {
-      if (resolvedTheme === "dark") {
-        faviconLight.rel = "alternate icon";
-        faviconDark.rel = "icon";
-      } else {
-        faviconDark.rel = "alternate icon";
-        faviconLight.rel = "icon";
-      }
-    }
-  }, [resolvedTheme]);
-
-  return null;
-};
-
 const AppContent = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppProvider>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <FaviconUpdater />
           <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -104,7 +77,9 @@ const AppContent = () => {
                 <ScrollUp />
                 {/* <ChatBot /> */}
               </div>
-              <RouterProvider router={router} />
+              <HelmetProvider>
+                <RouterProvider router={router} />
+              </HelmetProvider>
             </motion.div>
           </TooltipProvider>
         </ThemeProvider>

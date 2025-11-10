@@ -31,6 +31,7 @@ import { Calculator, Zap, TrendingUp, Clock, DollarSign } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 import { useTheme } from "@/hooks/useTheme";
 import { sanitizeNumberInput } from "@/utils/inputValidation";
+import Seo from "@/components/Seo";
 
 interface CalculationParams {
   antallPersoner: number;
@@ -218,9 +219,17 @@ const CalculatorPage = () => {
 
   const COLORS = ["#3b82f6", "#ef4444"];
 
+  const metaDescription =
+    "Beregn hvor mye du kan spare med COAX sin tankløse vannvarmer sammenlignet med en tradisjonell varmtvannsbereder. Juster familie- og forbruksdata.";
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
+        <Seo
+          title="COAX | Sparekalkulator for tankløse vannvarmere"
+          description={metaDescription}
+          canonicalPath="/kalkulator"
+        />
         {/* Header */}
         <PageTitile
           title="Sparekalkulator"

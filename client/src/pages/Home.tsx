@@ -30,6 +30,7 @@ import { useLayoutAnimation } from "@/components/Layout";
 import CtaSection from "@/components/chatbot/CtaSection";
 import { useLocation } from "react-router-dom";
 import { useChatBot } from "@/hooks/useChatBot";
+import Seo from "@/components/Seo";
 
 const benefits = [
   {
@@ -97,6 +98,8 @@ const HomePage = () => {
   const { isAnimated } = useLayoutAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
+  const metaDescription =
+    "COAX leverer plassbesparende, tankløse vannvarmere for bolig, hytte og industri. Spar strøm, få ubegrenset varmtvann og installer en robust løsning som varer i mange år.";
 
   // This ensures animation plays on both initial load and direct navigation
   useEffect(() => {
@@ -133,6 +136,11 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
+      <Seo
+        title="COAX | Tankløs vannvarmer for bolig, hytte og industri"
+        description={metaDescription}
+        canonicalPath="/"
+      />
       {/* Hero Section */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center"

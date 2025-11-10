@@ -14,10 +14,13 @@ import { useChatBot } from "@/hooks/useChatBot";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { faqs } from "@/data/faq";
+import Seo from "@/components/Seo";
 
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState("");
   // const { openChat } = useChatBot();
+  const metaDescription =
+    "Få svar på vanlige spørsmål om COAX sine tankløse vannvarmere, installasjon, energi- og kostnadsbesparelser.";
 
   const filteredFaqs = faqs
     .map((category) => ({
@@ -33,6 +36,11 @@ const FAQ = () => {
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
+        <Seo
+          title="COAX | Ofte stilte spørsmål om tankløse vannvarmere"
+          description={metaDescription}
+          canonicalPath="/faq"
+        />
         {/* <section className="my-8">
           <CtaSection isHeader={true} />
         </section> */}

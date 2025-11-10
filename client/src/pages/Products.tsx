@@ -6,10 +6,13 @@ import CtaSection from "@/components/chatbot/CtaSection";
 import { useAppContext } from "@/context/AppContext";
 import type { Product } from "@/types/product";
 import ProductsListSceleton from "@/components/product/ProductsListSceleton";
+import Seo from "@/components/Seo";
 
 const Products = () => {
   const { products, productsLoading, productsError, fetchProducts } =
     useAppContext();
+  const metaDescription =
+    "Utforsk COAX sitt utvalg av energieffektive, tankløse vannvarmere. Filtrer modeller etter fase, kategori og bruksområde for å finne riktig løsning.";
 
   // Fetch products when component mounts (only when route is reached)
   useEffect(() => {
@@ -117,6 +120,11 @@ const Products = () => {
 
   return (
     <div className="min-h-screen pt-24">
+      <Seo
+        title="COAX | Energieffektive vannvarmere – alle produkter"
+        description={metaDescription}
+        canonicalPath="/produkter"
+      />
       {/* Header */}
       <PageTitile
         title="Energieffektive vannvarmere – våre produkter"

@@ -6,14 +6,22 @@ import NeedsAssessmentForm from "@/components/NeedsAssessmentForm";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 import { useChatBot } from "@/hooks/useChatBot";
+import Seo from "@/components/Seo";
 
 const Contact = () => {
   const { openChat } = useChatBot();
   const [formType, setFormType] = useState<"general" | "needs">("general");
+  const metaDescription =
+    "Kontakt COAX for rådgivning, pris og installasjon av tankløse varmtvannsberedere. Fyll ut skjema eller ring oss direkte.";
 
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted">
       <div className="container mx-auto px-4">
+        <Seo
+          title="COAX | Kontakt oss for rådgivning og tilbud"
+          description={metaDescription}
+          canonicalPath="/kontakt"
+        />
         {/* Header */}
         <PageTitile
           title="Ta kontakt"

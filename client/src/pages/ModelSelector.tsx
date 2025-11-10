@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAppContext } from "@/context/AppContext";
 import { Badge } from "@/components/ui/badge";
 import PageTitile from "@/components/PageTitile";
+import Seo from "@/components/Seo";
 
 type Recommendation = {
   id: string;
@@ -26,6 +27,8 @@ const ModelSelector = () => {
   const [seconds, setSeconds] = useState<number>(60);
   const [result, setResult] = useState<Recommendation | null>(null);
   const [flowRate, setFlowRate] = useState<number | null>(null);
+  const metaDescription =
+    "Bruk COAX sin bøttemetode-kalkulator for å finne riktig tankløse vannvarmer basert på vannmengde. Perfekt for hytte, bolig og yrkesbygg.";
 
   useEffect(() => {
     fetchProducts();
@@ -117,6 +120,11 @@ const ModelSelector = () => {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background">
       <div className="container mx-auto px-4 max-w-6xl">
+        <Seo
+          title="COAX | Finn riktig modell med Bøttemetoden"
+          description={metaDescription}
+          canonicalPath="/velg-modell"
+        />
         {/* Header */}
         <PageTitile
           title="Finn riktig COAX-modell med Bøttemetoden"

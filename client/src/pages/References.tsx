@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import PageTitile from "@/components/PageTitile";
 import { references } from "@/data/references";
+import Seo from "@/components/Seo";
 
 // Reference images
 // import ref1 from "@/assets/references/reference-1.webp";
@@ -36,9 +37,17 @@ import { references } from "@/data/references";
 // ];
 
 const References = () => {
+  const metaDescription =
+    "Les historier fra hytter, boliger og næringsbygg som har valgt COAX sine tankløse vannvarmere for effektivt varmtvann.";
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="mx-auto">
+        <Seo
+          title="COAX | Erfaringer fra fornøyde kunder"
+          description={metaDescription}
+          canonicalPath="/referanser"
+        />
         {/* Header */}
         <PageTitile
           title="Fornøyde kunder i over 20 år"

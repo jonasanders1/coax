@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
 import { getProductById } from "@/lib/products";
 import { useChatBot } from "@/hooks/useChatBot";
+import Seo, { getAbsoluteUrl } from "@/components/Seo";
 
 const SPEC_LABELS: Record<string, string> = {
   flowRates: "Vannstrøm (L/min)",
@@ -95,8 +96,39 @@ const ProductDetailsRedesigned = () => {
       ? specs?.voltage?.join(", ")
       : specs?.voltage);
 
+  const metaDescription =
+    description?.slice(0, 155) ||
+    "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
+  const primaryImage = images?.[0];
+  const canonicalPath = id ? `/produkter/${id}` : "/produkter";
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name,
+    description: metaDescription,
+    sku: product.id,
+    category,
+    image: images
+      ?.map((img) => getAbsoluteUrl(img))
+      .filter((url): url is string => Boolean(url)),
+    brand: {
+      "@type": "Organization",
+      name: "COAX",
+    },
+    url: getAbsoluteUrl(canonicalPath),
+  };
+
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
+      <Seo
+        title={`COAX | ${name}`}
+        description={metaDescription}
+        canonicalPath={canonicalPath}
+        image={primaryImage}
+        type="product"
+        structuredData={structuredData}
+      />
+
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         {/* Breadcrumbs */}
         <Breadcrumbs
