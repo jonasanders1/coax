@@ -1,17 +1,37 @@
-import { Home, Package, SlidersHorizontal, HelpCircle, Star, Phone, Calculator, type LucideIcon } from "lucide-react";
+import {
+  Home,
+  Package,
+  SlidersHorizontal,
+  HelpCircle,
+  Star,
+  Phone,
+  Calculator,
+  type LucideIcon,
+} from "lucide-react";
 
 export type NavItem = {
   path: string;
   label: string;
   icon?: LucideIcon;
+  header?: boolean;
 };
 
 export const navItems: NavItem[] = [
-  { path: "/", label: "Hjem", icon: Home },
-  { path: "/produkter", label: "Produkter", icon: Package },
-  { path: "/velg-modell", label: "Velg Modell", icon: SlidersHorizontal },
-  // { path: "/kalkulator", label: "Kalkulator", icon: Calculator },
-  { path: "/faq", label: "FAQ", icon: HelpCircle },
-  { path: "/referanser", label: "Referanser", icon: Star },
-  { path: "/kontakt", label: "Kontakt", icon: Phone },
+  { path: "/", label: "Hjem", icon: Home, header: true },
+  { path: "/produkter", label: "Produkter", icon: Package, header: true },
+  {
+    path: "/velg-modell",
+    label: "Velg Modell",
+    icon: SlidersHorizontal,
+    header: true,
+  },
+  { path: "/faq", label: "FAQ", icon: HelpCircle, header: true },
+  { path: "/referanser", label: "Referanser", icon: Star, header: true },
+  { path: "/kontakt", label: "Kontakt", icon: Phone, header: true },
+  {
+    path: "/kalkulator",
+    label: "Sparekalkulator",
+    icon: Calculator,
+    header: false,
+  },
 ];

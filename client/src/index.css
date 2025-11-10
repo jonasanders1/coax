@@ -63,7 +63,8 @@
     );
     --gradient-hero: linear-gradient(
       135deg,
-      hsla(60, 20%, 98%, 0.9) 0%,
+      hsla(60, 20%, 98%, 0.4) 0%,
+      hsla(60, 20%, 98%, 0.7) 50%,
       hsla(45, 20%, 96%, 0.8) 100%
     );
 
@@ -141,7 +142,8 @@
     );
     --gradient-hero: linear-gradient(
       135deg,
-      hsla(214, 34%, 12%, 0.9) 0%,
+      hsla(214, 34%, 12%, 0.4) 0%,
+      hsla(216, 29%, 10%, 0.7) 50%,
       hsla(216, 29%, 10%, 0.8) 100%
     );
     /* Default Shadows - Dark Theme */

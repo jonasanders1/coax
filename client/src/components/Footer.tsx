@@ -1,15 +1,10 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { navItems } from "@/navItems";
-import { useChatBot } from "@/hooks/useChatBot";
-import { MessageCircle } from "lucide-react";
-import { useTheme } from "@/hooks/useTheme";
 import Logo from "./Logo";
-import { ModeToggle } from "./ModeToggle";
 
 const Footer = () => {
-  const { openChat } = useChatBot();
-  const { theme } = useTheme();
+
 
   return (
     <footer className="bg-muted border-t border-border">

@@ -259,14 +259,14 @@ const ModelSelector = () => {
 
                             {usageItems.length ? (
                               <div className="mt-6">
-                                <p className="text-sm font-medium text-muted-foreground">
-                                  Ideell for
+                                <p className="text-sm font-medium text-foreground">
+                                  Ideell for:
                                 </p>
-                                <ul className="mt-2 grid gap-2 md:grid-cols-2">
+                                <ul className="mt-2 flex flex-col gap-2">
                                   {usageItems.map((item) => (
                                     <li
                                       key={item}
-                                      className="inline-flex items-center gap-2 rounded-md bg-background p-3 text-sm text-foreground"
+                                      className="inline-flex items-center gap-2 rounded-md  text-sm text-foreground"
                                     >
                                       <span className="mt-0.5 h-2 w-2 rounded-full bg-foreground" />
                                       <span>{item}</span>

@@ -38,7 +38,7 @@ export function ModeToggle() {
             <ActiveIcon className="h-4 w-4 text-primary" />
             <span className="lg:hidden">{activeOption.label}</span>
           </span>
-          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          {/* <ChevronDown className="h-4 w-4 text-muted-foreground" /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-full min-w-[12rem]">

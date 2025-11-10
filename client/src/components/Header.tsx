@@ -59,24 +59,26 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(item.path)
-                    ? "text-primary border-b border-primary"
-                    : "text-foreground/70"
-                }`}
-              >
-                <span className="inline-flex items-center gap-2">
-                  {item.icon ? (
-                    <item.icon className="h-4 w-4" aria-hidden="true" />
-                  ) : null}
-                  {item.label}
-                </span>
-              </Link>
-            ))}
+            {navItems
+              .filter((item) => item.header)
+              .map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.path)
+                      ? "text-primary border-b border-primary"
+                      : "text-foreground/70"
+                  }`}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    {item.icon ? (
+                      <item.icon className="h-4 w-4" aria-hidden="true" />
+                    ) : null}
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
           </div>
 
           <div className="hidden lg:flex items-center gap-2">

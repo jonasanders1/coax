@@ -19,7 +19,7 @@ import {
   CalculatorIcon,
   PackageIcon,
 } from "lucide-react";
-import heroImage from "@/assets/hero-water-heater.jpg";
+import heroImage from "@/assets/hero-water-heater.png";
 import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
 import industrialImage from "@/assets/industrial-water-heater.png";
@@ -35,17 +35,17 @@ const benefits = [
   {
     icon: Zap,
     title: "Energieffektiv",
-    text: "Varmer vann kun når du trenger det – oppnå opptil 97% effektivitet og slå av helt når ikke i bruk. Spar strøm hver dag!",
+    text: "COAX varmer vannet kun når du faktisk bruker det – ingen standby-forbruk eller varmetap. Med opptil 97 % virkningsgrad sparer du strøm hver eneste dag.",
   },
   {
     icon: Leaf,
-    title: "Plassbesparende & Miljøvennlig",
-    text: "Frigjør verdifull plass og reduser energisløsing. Ingen tank, ingen varmetap. Perfekt for små bad, hytter og steder der plass er verdifullt.",
+    title: "Plassbesparende og miljøvennlig",
+    text: "Uten tank frigjøres verdifull plass, og energisløsing elimineres. Perfekt løsning for små bad, hytter og moderne boliger der effektivitet og design teller.",
   },
   {
     icon: Droplet,
-    title: "Frisk vannkvalitet",
-    text: "Ingen lagring betyr ingen bakterievekst. Ferskt, rent varmtvann hver gang du åpner kranen.",
+    title: "Friskt og hygienisk varmtvann",
+    text: "Vannet varmes direkte i det øyeblikket du åpner kranen – ingen stillestående vann, ingen bakterier. Alltid friskt, rent og trygt varmtvann.",
   },
 ];
 
