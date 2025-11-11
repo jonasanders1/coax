@@ -11,7 +11,7 @@ const CtaSection = ({ isHeader }: CtaSectionProps) => {
   const { openChat } = useChatBot();
 
   return (
-    <section className={isHeader ? "py-0 md:py-0" : "py-16 md:py-24"}>
+    <section className={isHeader ? "pb-8" : "py-16 md:py-24"}>
       <div className="relative overflow-hidden rounded-2xl p-8 text-white shadow-2xl" style={{ background: 'var(--gradient-primary)' }}>
         {/* Decorative elements */}
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>

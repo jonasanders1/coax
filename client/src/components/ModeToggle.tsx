@@ -1,3 +1,5 @@
+"use client";
+
 import { Sun, Moon, Monitor, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

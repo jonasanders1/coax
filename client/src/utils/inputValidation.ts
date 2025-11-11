@@ -63,7 +63,7 @@ export function isValidPhone(phone: string): boolean {
   if (!phone) return true; // Optional field
   
   // Allow digits, spaces, +, -, (, )
-  const phoneRegex = /^[\d\s\+\-\(\)]+$/;
+  const phoneRegex = /^[\d\s()+-]+$/;
   return phoneRegex.test(phone) && phone.replace(/\D/g, "").length >= 8;
 }
 

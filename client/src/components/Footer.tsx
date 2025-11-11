@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { navItems } from "@/navItems";
 import Logo from "./Logo";
@@ -13,7 +13,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="text-center md:text-left md:border-r md:border-border md:pr-8">
             <Link
-              to="/"
+              href="/"
               className="flex flex-col leading-tight pb-3 items-center md:items-start"
             >
               <Logo className="w-28" />
@@ -32,7 +32,7 @@ const Footer = () => {
               {navItems.map((item) => (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
                 >
                   {item.icon ? (

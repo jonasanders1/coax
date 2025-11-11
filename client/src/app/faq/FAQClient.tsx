@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   Accordion,
@@ -6,21 +8,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
-import { LifeBuoy, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
-
-import { useChatBot } from "@/hooks/useChatBot";
-// import CtaSection from "@/components/chatbot/CtaSection";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { faqs } from "@/data/faq";
-import Seo from "@/components/Seo";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import CtaSection from "@/components/chatbot/CtaSection";
 
-const FAQ = () => {
+const FAQClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // const { openChat } = useChatBot();
-  const metaDescription =
-    "Få svar på vanlige spørsmål om COAX sine tankløse vannvarmere, installasjon, energi- og kostnadsbesparelser.";
 
   const filteredFaqs = faqs
     .map((category) => ({
@@ -36,21 +32,13 @@ const FAQ = () => {
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4 max-w-6xl">
-        <Seo
-          title="COAX | Ofte stilte spørsmål om tankløse vannvarmere"
-          description={metaDescription}
-          canonicalPath="/faq"
-        />
-        {/* <section className="my-8">
-          <CtaSection isHeader={true} />
-        </section> */}
-        {/* Header */}
         <PageTitile
           title="Ofte stilte spørsmål"
           text="Finn svar på dine spørsmål om COAX vannvarmere"
         />
 
-        {/* Search */}
+        {/* <CtaSection isHeader={true} /> */}
+
         <div className="mb-8">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -64,7 +52,6 @@ const FAQ = () => {
           </div>
         </div>
 
-        {/* FAQ Accordion */}
         <div className="space-y-8">
           {filteredFaqs.map((category, idx) => (
             <div key={idx}>
@@ -94,7 +81,7 @@ const FAQ = () => {
                               ) : (
                                 <Link
                                   key={`link-${segmentIdx}`}
-                                  to={segment.to}
+                                  href={segment.to}
                                   className="text-primary underline font-medium"
                                 >
                                   {segment.value}
@@ -122,7 +109,6 @@ const FAQ = () => {
           </div>
         )}
 
-        {/* CTA */}
         <div className="mt-12 bg-muted rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold mb-4">
             Fikk du ikke svar på ditt spørsmål?
@@ -130,7 +116,7 @@ const FAQ = () => {
           <p className="text-muted-foreground mb-6">
             Ta kontakt med oss, så hjelper vi deg gjerne!
           </p>
-          <Link to="/kontakt">
+          <Link href="/kontakt">
             <Button size="lg" className="gap-2">
               Kontakt oss
             </Button>
@@ -141,4 +127,4 @@ const FAQ = () => {
   );
 };
 
-export default FAQ;
+export default FAQClient;

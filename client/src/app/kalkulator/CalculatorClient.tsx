@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo } from "react";
 import {
   Card,
@@ -31,7 +33,6 @@ import { Calculator, Zap, TrendingUp, Clock, DollarSign } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 import { useTheme } from "@/hooks/useTheme";
 import { sanitizeNumberInput } from "@/utils/inputValidation";
-import Seo from "@/components/Seo";
 
 interface CalculationParams {
   antallPersoner: number;
@@ -63,7 +64,6 @@ interface CalculationResults {
   paybackYears: number;
 }
 
-// Custom Tooltip component that adapts to theme
 const CustomTooltip = ({
   active,
   payload,
@@ -92,11 +92,10 @@ const CustomTooltip = ({
   return null;
 };
 
-const CalculatorPage = () => {
+const CalculatorClient = () => {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  // Default parameters matching the Python calculator
   const [params, setParams] = useState<CalculationParams>({
     antallPersoner: 3,
     dusjerPerPersonPerDag: 1,
@@ -110,18 +109,15 @@ const CalculatorPage = () => {
     installasjonskostnadTankNOK: 5000.0,
   });
 
-  // Calculate results based on current parameters
   const results = useMemo<CalculationResults>(() => {
     const dusjerPerDagTotal =
       params.antallPersoner * params.dusjerPerPersonPerDag;
     const minPerDagTotal = dusjerPerDagTotal * params.minPerDusj;
 
-    // Energy consumption per shower
     const tanklesskWhPerDusj =
       params.tanklesskWhPer4min * (params.minPerDusj / 4.0);
     const tankkWhPerDusj = params.tankkWhPer4min * (params.minPerDusj / 4.0);
 
-    // Daily & annual energy
     const tanklesskWhPerDay = tanklesskWhPerDusj * dusjerPerDagTotal;
     const tankkWhPerDay = tankkWhPerDusj * dusjerPerDagTotal;
 
@@ -129,7 +125,6 @@ const CalculatorPage = () => {
     const tankkWhPerYear =
       tankkWhPerDay * 365 + params.standbyTapTankkWhPerYear;
 
-    // Cost
     const tanklessCostPerYearNOK =
       tanklesskWhPerYear * params.strømprisNOKPerkWh;
     const tankCostPerYearNOK = tankkWhPerYear * params.strømprisNOKPerkWh;
@@ -137,7 +132,6 @@ const CalculatorPage = () => {
     const annualSavingskWh = tankkWhPerYear - tanklesskWhPerYear;
     const annualSavingsNOK = tankCostPerYearNOK - tanklessCostPerYearNOK;
 
-    // Payback
     const installasjonsDiff =
       params.installasjonskostnadTanklessNOK -
       params.installasjonskostnadTankNOK;
@@ -162,14 +156,11 @@ const CalculatorPage = () => {
     };
   }, [params]);
 
-  // Update parameter value with validation
   const updateParam = (
     key: keyof CalculationParams,
     value: number | string
   ) => {
-    let sanitizedValue: number;
 
-    // Define bounds for each parameter to prevent invalid inputs
     const bounds: Record<
       keyof CalculationParams,
       { min: number; max: number; default: number }
@@ -191,7 +182,7 @@ const CalculatorPage = () => {
     };
 
     const bound = bounds[key];
-    sanitizedValue = sanitizeNumberInput(
+    const sanitizedValue = sanitizeNumberInput(
       value,
       bound.min,
       bound.max,
@@ -201,7 +192,6 @@ const CalculatorPage = () => {
     setParams((prev) => ({ ...prev, [key]: sanitizedValue }));
   };
 
-  // Chart data
   const chartData = useMemo(() => {
     return [
       {
@@ -219,27 +209,16 @@ const CalculatorPage = () => {
 
   const COLORS = ["#3b82f6", "#ef4444"];
 
-  const metaDescription =
-    "Beregn hvor mye du kan spare med COAX sin tankløse vannvarmer sammenlignet med en tradisjonell varmtvannsbereder. Juster familie- og forbruksdata.";
-
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
-        <Seo
-          title="COAX | Sparekalkulator for tankløse vannvarmere"
-          description={metaDescription}
-          canonicalPath="/kalkulator"
-        />
-        {/* Header */}
         <PageTitile
           title="Sparekalkulator"
           text="Beregn energibruk og kostnader for å sammenligne en direkte vannvarmer (CoaX) med en tradisjonell tankbereder."
         />
 
-        {/* Main Calculator Section */}
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col gap-8 mb-8">
-            {/* Input Section */}
             <Card>
               <CardHeader>
                 <CardTitle>Innstillinger</CardTitle>
@@ -441,7 +420,6 @@ const CalculatorPage = () => {
               </CardContent>
             </Card>
 
-            {/* Results Section */}
             <Card>
               <CardHeader>
                 <CardTitle>Resultater</CardTitle>
@@ -523,10 +501,8 @@ const CalculatorPage = () => {
           </div>
         </div>
 
-        {/* Chart and Information Section - Side by side on large screens */}
         <div className="max-w-6xl mx-auto mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Chart Section */}
             <Card>
               <CardHeader>
                 <CardTitle>
@@ -629,7 +605,6 @@ const CalculatorPage = () => {
               </CardContent>
             </Card>
 
-            {/* Information Section */}
             <Card>
               <CardHeader>
                 <CardTitle>Hvordan fungerer kalkulatoren?</CardTitle>
@@ -686,4 +661,5 @@ const CalculatorPage = () => {
   );
 };
 
-export default CalculatorPage;
+export default CalculatorClient;
+

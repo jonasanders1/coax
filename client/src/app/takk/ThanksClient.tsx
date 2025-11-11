@@ -1,27 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { CheckCircle, MessageSquareText } from "lucide-react";
-import { useEffect, useState } from "react";
-import Seo from "@/components/Seo";
+"use client";
 
-const Thanks = () => {
-  const navigate = useNavigate();
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { CheckCircle, MessageSquareText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const ThanksClient = () => {
+  const router = useRouter();
   const [isNavigating, setIsNavigating] = useState(false);
 
   const handleChatClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsNavigating(true);
-    navigate('/', { state: { openChat: true } });
+    router.push("/?openChat=true");
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted/30 px-4 py-8 sm:py-12">
-      <Seo
-        title="COAX | Takk for meldingen din"
-        description="Takk for at du kontaktet COAX. Vi tar kontakt så raskt som mulig."
-        canonicalPath="/takk"
-        noIndex
-      />
       <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-lg transition-all hover:shadow-xl sm:p-8">
         <div className="mb-4 flex justify-center sm:mb-6">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 sm:h-16 sm:w-16">
@@ -36,7 +32,7 @@ const Thanks = () => {
         </p>
         <div className="space-y-3">
           <Button asChild className="w-full" size="lg">
-            <Link to="/">Tilbake til forsiden</Link>
+            <Link href="/">Tilbake til forsiden</Link>
           </Button>
           <p className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-2">
             <span>Har du spørsmål i mellomtiden?</span>
@@ -46,7 +42,7 @@ const Thanks = () => {
               className="group inline-flex items-center font-medium text-foreground underline-offset-4 hover:underline disabled:opacity-50"
             >
               <MessageSquareText className="mr-1 h-4 w-4 transition-transform group-hover:scale-110" />
-              {isNavigating ? 'Åpner...' : 'Snakk med Flux'}
+              {isNavigating ? "Åpner..." : "Snakk med Flux"}
             </button>
           </p>
         </div>
@@ -55,4 +51,5 @@ const Thanks = () => {
   );
 };
 
-export default Thanks;
+export default ThanksClient;
+

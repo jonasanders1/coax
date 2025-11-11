@@ -1,24 +1,39 @@
-import "./scrollUp.css";
+"use client";
+
+import { useEffect, useRef } from "react";
+import styles from "./scrollUp.module.css";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 
-
 const ScrollUp = () => {
-  
-  window.addEventListener("scroll", function () {
-    const scrollUp = this.document.querySelector(".scrollup");
-    if (this.scrollY >= 560) {
-      scrollUp?.classList.add("show-scroll");
-    } else {
-      scrollUp?.classList.remove("show-scroll");
-    }
-  });
+  const scrollUpRef = useRef<HTMLAnchorElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollUpRef.current) return;
+
+      if (window.scrollY >= 560) {
+        scrollUpRef.current.classList.add(styles.showScroll);
+      } else {
+        scrollUpRef.current.classList.remove(styles.showScroll);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <a href="#" className="scrollup">
+    <a
+      ref={scrollUpRef}
+      href="#"
+      className={styles.scrollUp}
+      aria-label="Til toppen"
+    >
       <Button
         size="icon"
-        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-lg border border-border"
+        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md border border-border"
       >
         <ArrowUp className="h-10 w-10" />
       </Button>

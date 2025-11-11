@@ -54,7 +54,7 @@ export interface TokenEvent {
 export interface DoneEvent {
   type: 'done';
   message: Message;
-  metadata: any[];
+  metadata: unknown[];
 }
 
 export type SSEEvent = ErrorResponse | TokenEvent | DoneEvent;

@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+"use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -23,14 +25,10 @@ import heroImage from "@/assets/hero-water-heater.png";
 import cabinImage from "@/assets/cabin-water-heater.png";
 import homeImage from "@/assets/home-water-heater.png";
 import industrialImage from "@/assets/industrial-water-heater.png";
-import { CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
-import { useLayoutAnimation } from "@/components/Layout";
-import CtaSection from "@/components/chatbot/CtaSection";
-import { useLocation } from "react-router-dom";
 import { useChatBot } from "@/hooks/useChatBot";
-import Seo from "@/components/Seo";
+import CtaSection from "@/components/chatbot/CtaSection";
 
 const benefits = [
   {
@@ -94,35 +92,21 @@ const customerSegments = [
 
 const HomePage = () => {
   const { openChat } = useChatBot();
-  const location = useLocation();
-  const { isAnimated } = useLayoutAnimation();
+  const router = useRouter();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
-  const metaDescription =
-    "COAX leverer plassbesparende, tankløse vannvarmere for bolig, hytte og industri. Spar strøm, få ubegrenset varmtvann og installer en robust løsning som varer i mange år.";
-
-  // This ensures animation plays on both initial load and direct navigation
-  useEffect(() => {
-    if (isAnimated && !hasAnimated) {
-      setHasAnimated(true);
-    }
-  }, [isAnimated, hasAnimated]);
 
   useEffect(() => {
-    if (location.state?.openChat) {
+    setHasAnimated(true);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("openChat") === "true") {
       openChat();
+      router.replace("/", { scroll: false });
     }
-  }, [location.state]);
-
-  // Also trigger animation if the component mounts without layout animation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!hasAnimated) setHasAnimated(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [hasAnimated]);
-
-  const shouldAnimate = hasAnimated || isAnimated;
+  }, [openChat, router]);
 
   useEffect(() => {
     if (!api) return;
@@ -136,18 +120,13 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
-      <Seo
-        title="COAX | Tankløs vannvarmer for bolig, hytte og industri"
-        description={metaDescription}
-        canonicalPath="/"
-      />
       {/* Hero Section */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center"
         style={{
           backgroundImage: `
       var(--gradient-hero),
-      url(${heroImage})
+      url(${heroImage.src})
     `,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -157,7 +136,7 @@ const HomePage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={
-            shouldAnimate
+            hasAnimated
               ? {
                   opacity: 1,
                   y: 0,
@@ -175,7 +154,7 @@ const HomePage = () => {
             className="text-5xl md:text-6xl font-bold text-foreground mb-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
-              shouldAnimate
+              hasAnimated
                 ? {
                     opacity: 1,
                     y: 0,
@@ -194,7 +173,7 @@ const HomePage = () => {
             className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
-              shouldAnimate
+              hasAnimated
                 ? {
                     opacity: 1,
                     y: 0,
@@ -214,7 +193,7 @@ const HomePage = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 10 }}
             animate={
-              shouldAnimate
+              hasAnimated
                 ? {
                     opacity: 1,
                     y: 0,
@@ -228,7 +207,7 @@ const HomePage = () => {
             }
           >
             <Button asChild size="lg" className="text-md px-8 font-normal">
-              <Link to="/kalkulator">
+              <Link href="/kalkulator">
                 <CalculatorIcon className="w-4 h-4" />
                 Sparekalkulator
               </Link>
@@ -239,7 +218,7 @@ const HomePage = () => {
               variant="secondary"
               className="text-md font-normal px-8"
             >
-              <Link to="/produkter">
+              <Link href="/produkter">
                 <PackageIcon className="w-4 h-4" />
                 Se produkter
               </Link>
@@ -337,7 +316,7 @@ const HomePage = () => {
                     <div className="relative aspect-video w-full rounded-lg overflow-hidden">
                       {segment.image && (
                         <img
-                          src={segment.image}
+                          src={segment.image.src}
                           alt={segment.title}
                           className="w-full h-full object-cover object-center"
                         />
@@ -360,9 +339,8 @@ const HomePage = () => {
           </Carousel>
         </div>
       </section>
-
-      {/* CTA Section */}
-      {/* <div className="container px-4 max-w-6xl mx-auto">
+{/* 
+      <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
       </div> */}
     </div>
@@ -370,3 +348,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

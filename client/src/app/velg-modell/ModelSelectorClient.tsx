@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,6 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAppContext } from "@/context/AppContext";
 import { Badge } from "@/components/ui/badge";
 import PageTitile from "@/components/PageTitile";
-import Seo from "@/components/Seo";
 
 type Recommendation = {
   id: string;
@@ -21,14 +22,12 @@ type Recommendation = {
   matchMax: number;
 };
 
-const ModelSelector = () => {
+const ModelSelectorClient = () => {
   const { products, productsLoading, productsError, fetchProducts } =
     useAppContext();
   const [seconds, setSeconds] = useState<number>(60);
   const [result, setResult] = useState<Recommendation | null>(null);
   const [flowRate, setFlowRate] = useState<number | null>(null);
-  const metaDescription =
-    "Bruk COAX sin bøttemetode-kalkulator for å finne riktig tankløse vannvarmer basert på vannmengde. Perfekt for hytte, bolig og yrkesbygg.";
 
   useEffect(() => {
     fetchProducts();
@@ -120,19 +119,12 @@ const ModelSelector = () => {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background">
       <div className="container mx-auto px-4 max-w-6xl">
-        <Seo
-          title="COAX | Finn riktig modell med Bøttemetoden"
-          description={metaDescription}
-          canonicalPath="/velg-modell"
-        />
-        {/* Header */}
         <PageTitile
           title="Finn riktig COAX-modell med Bøttemetoden"
           text="Enkel test: Mål hvor raskt du fyller en 10L bøtte i dusjen – vi anbefaler modell 
             basert på flow og el-tilgang."
         />
 
-        {/* Calculator */}
         <Card className="mb-8 border-2">
           <CardHeader>
             <CardTitle className="text-2xl">Bøttemetode-kalkulator</CardTitle>
@@ -299,7 +291,6 @@ const ModelSelector = () => {
           </CardContent>
         </Card>
 
-        {/* Recommendations Table */}
         <Card>
           <CardHeader>
             <CardTitle>Anbefalingstabell</CardTitle>
@@ -349,12 +340,10 @@ const ModelSelector = () => {
             </div>
           </CardContent>
         </Card>
-
-        {/* CTA */}
-        {/* <CtaSection isHeader={false} /> */}
       </div>
     </div>
   );
 };
 
-export default ModelSelector;
+export default ModelSelectorClient;
+

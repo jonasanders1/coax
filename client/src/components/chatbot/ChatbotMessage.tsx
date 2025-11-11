@@ -1,4 +1,4 @@
-("use client");
+"use client";
 import type { Message, ErrorResponse } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import { Loader, AlertCircle, Info } from "lucide-react";

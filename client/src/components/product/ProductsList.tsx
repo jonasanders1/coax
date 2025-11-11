@@ -18,7 +18,7 @@ export default function ProductsList({ products }: ProductsListProps) {
 
   return (
     <div className="container max-w-6xl mx-auto px-4 space-y-10">
-      {[...new Set(products.map((p) => p.category))].map((category) => {
+      {Array.from(new Set(products.map((p) => p.category))).map((category) => {
         const items = products.filter((p) => p.category === category);
         if (items.length === 0) return null;
         return (

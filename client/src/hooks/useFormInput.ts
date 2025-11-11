@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Shared hook for form input sanitization
  */

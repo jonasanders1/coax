@@ -1,4 +1,6 @@
-import { useLocation, useParams, Link as RouterLink } from "react-router-dom";
+"use client";
+
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,13 +11,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { MessageCircle, Download, LifeBuoy } from "lucide-react";
+import { Download } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
 import { getProductById } from "@/lib/products";
-import { useChatBot } from "@/hooks/useChatBot";
-import Seo, { getAbsoluteUrl } from "@/components/Seo";
+import Link from "next/link";
 
 const SPEC_LABELS: Record<string, string> = {
   flowRates: "Vannstrøm (L/min)",
@@ -39,25 +40,58 @@ const SPEC_LABELS: Record<string, string> = {
   compressor: "Kompressor",
 };
 
-const ProductDetailsRedesigned = () => {
-  const { openChat } = useChatBot();
-  const { id } = useParams();
-  const location = useLocation() as { state?: { product?: Product } };
+type ProductDetailsClientProps = {
+  productId: string;
+  fallbackProduct?: Product | null;
+};
 
-  // Fetch product from Firestore if not in location state
-  const {
-    data: fetchedProduct,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById(id!),
-    enabled: !location.state?.product && !!id,
+export const ProductDetailsClient = ({
+  productId,
+  fallbackProduct,
+}: ProductDetailsClientProps) => {
+  const { data: fetchedProduct, isLoading, error } = useQuery({
+    queryKey: ["product", productId],
+    queryFn: () => getProductById(productId),
+    initialData: fallbackProduct ?? undefined,
   });
 
-  // Use location state product first, then fetched product
-  // Images are already processed as storage URLs from getProductById
-  const product = location.state?.product || fetchedProduct;
+  const product = fetchedProduct ?? fallbackProduct ?? undefined;
+
+  const metaDescription = useMemo(() => {
+    if (!product?.description) {
+      return "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
+    }
+    return product.description.slice(0, 155);
+  }, [product?.description]);
+
+  const canonicalPath = `/produkter/${productId}`;
+  const toAbsoluteUrl = (path?: string | null) => {
+    if (!path) return undefined;
+    if (/^https?:\/\//i.test(path)) return path;
+    const normalized =
+      path.startsWith("/") || path.startsWith("#") ? path : `/${path}`;
+    return `https://coax.jonasanders1.com${normalized}`;
+  };
+
+  const structuredData = useMemo(() => {
+    if (!product) return undefined;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description: metaDescription,
+      sku: product.id,
+      category: product.category,
+      image: product.images
+        ?.map((img) => toAbsoluteUrl(img))
+        .filter((url): url is string => Boolean(url)),
+      brand: {
+        "@type": "Organization",
+        name: "COAX",
+      },
+      url: toAbsoluteUrl(canonicalPath),
+    };
+  }, [product, canonicalPath, metaDescription]);
 
   if (isLoading) {
     return (
@@ -79,7 +113,7 @@ const ProductDetailsRedesigned = () => {
             produktoversikten og prøv igjen.
           </p>
           <Button asChild variant="secondary">
-            <RouterLink to="/produkter">Tilbake til produkter</RouterLink>
+            <Link href="/produkter">Tilbake til produkter</Link>
           </Button>
         </div>
       </div>
@@ -96,41 +130,15 @@ const ProductDetailsRedesigned = () => {
       ? specs?.voltage?.join(", ")
       : specs?.voltage);
 
-  const metaDescription =
-    description?.slice(0, 155) ||
-    "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
-  const primaryImage = images?.[0];
-  const canonicalPath = id ? `/produkter/${id}` : "/produkter";
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name,
-    description: metaDescription,
-    sku: product.id,
-    category,
-    image: images
-      ?.map((img) => getAbsoluteUrl(img))
-      .filter((url): url is string => Boolean(url)),
-    brand: {
-      "@type": "Organization",
-      name: "COAX",
-    },
-    url: getAbsoluteUrl(canonicalPath),
-  };
-
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
-      <Seo
-        title={`COAX | ${name}`}
-        description={metaDescription}
-        canonicalPath={canonicalPath}
-        image={primaryImage}
-        type="product"
-        structuredData={structuredData}
-      />
-
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
-        {/* Breadcrumbs */}
+        {structuredData ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          />
+        ) : null}
         <Breadcrumbs
           aria-label="breadcrumb"
           sx={{
@@ -139,8 +147,8 @@ const ProductDetailsRedesigned = () => {
             },
           }}
         >
-          <RouterLink
-            to="/"
+          <Link
+            href="/"
             style={{
               color: "hsl(var(--muted-foreground))",
               textDecoration: "none",
@@ -148,9 +156,9 @@ const ProductDetailsRedesigned = () => {
             className="hover:underline"
           >
             Hjem
-          </RouterLink>
-          <RouterLink
-            to="/produkter"
+          </Link>
+          <Link
+            href="/produkter"
             style={{
               color: "hsl(var(--muted-foreground))",
               textDecoration: "none",
@@ -158,13 +166,11 @@ const ProductDetailsRedesigned = () => {
             className="hover:underline"
           >
             Produkter
-          </RouterLink>
+          </Link>
           <Typography sx={{ color: "hsl(var(--accent))" }}>{name}</Typography>
         </Breadcrumbs>
 
-        {/* Hero Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* Image */}
           <div className="relative rounded-2xl overflow-hidden shadow-sm bg-muted/30 aspect-[4/3]">
             {images && images.length > 0 ? (
               <img
@@ -179,12 +185,8 @@ const ProductDetailsRedesigned = () => {
             )}
           </div>
 
-          {/* Details */}
           <div className="space-y-4">
-            {/* Product name */}
             <h1 className="text-4xl font-bold tracking-tight">{name}</h1>
-
-            {/* Quick facts */}
 
             <div className="rounded-xl border p-4 bg-card text-sm space-y-1">
               <div>
@@ -208,7 +210,6 @@ const ProductDetailsRedesigned = () => {
               </div>
             </div>
 
-            {/* Ideal for */}
             <div>
               <h2 className="text-xl font-semibold mb-2">Ideell for</h2>
               <ul className="space-y-1">
@@ -221,7 +222,6 @@ const ProductDetailsRedesigned = () => {
               </ul>
             </div>
 
-            {/* Price */}
             <div>
               <span className="block text-muted-foreground text-sm mb-1">
                 Fra
@@ -234,10 +234,9 @@ const ProductDetailsRedesigned = () => {
               </span>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button asChild className="flex-1 text-base">
-                <RouterLink to="/kontakt">Kontakt for kjøp</RouterLink>
+                <Link href="/kontakt">Kontakt for kjøp</Link>
               </Button>
               <Button
                 variant="outline"
@@ -249,7 +248,6 @@ const ProductDetailsRedesigned = () => {
           </div>
         </section>
 
-        {/* Description */}
         <section>
           <div className="flex flex-col gap-2 mb-3">
             <h2 className="text-xl font-semibold">{name} beskrivelse</h2>
@@ -274,9 +272,7 @@ const ProductDetailsRedesigned = () => {
 
         <Separator />
 
-        {/* Content Section */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Left - Specs */}
           <div className="lg:col-span-2 space-y-8">
             <Accordion
               type="single"
@@ -312,48 +308,10 @@ const ProductDetailsRedesigned = () => {
             </Accordion>
           </div>
 
-          {/* Right - Sidebar */}
-          <aside className="space-y-6">
-            {/* Chat */}
-            {/* <Card
-              className="relative overflow-hidden shadow-none"
-              style={{ background: "var(--gradient-primary)" }}
-            >
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
-              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
-              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-white m-0 p-0">
-                  Snakk med Flux
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-white/90">
-                  Vi svarer vanligvis innen 24 timer på hverdager. Haster det?
-                  Ring oss direkte!
-                </p>
-
-                <Button
-                  onClick={() => openChat()}
-                  size="lg"
-                  className="mt-4 group relative z-10 min-w-[180px] overflow-hidden border-2 border-white bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:shadow-primary/20"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <MessageCircle className="h-5 w-5" />
-                    Snakk med Flux
-                  </span>
-                  <span
-                    className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    style={{ background: "var(--gradient-primary)" }}
-                  ></span>
-                </Button>
-              </CardContent>
-            </Card>    */}
-          </aside>
+          <aside className="space-y-6" />
         </section>
       </div>
     </div>
   );
 };
 
-export default ProductDetailsRedesigned;

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,33 +7,22 @@ import ContactForm from "@/components/ContactForm";
 import NeedsAssessmentForm from "@/components/NeedsAssessmentForm";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
+
 import { useChatBot } from "@/hooks/useChatBot";
-import Seo from "@/components/Seo";
 
-const Contact = () => {
-  const { openChat } = useChatBot();
+const ContactClient = () => {
   const [formType, setFormType] = useState<"general" | "needs">("general");
-  const metaDescription =
-    "Kontakt COAX for rådgivning, pris og installasjon av tankløse varmtvannsberedere. Fyll ut skjema eller ring oss direkte.";
-
+  const { openChat } = useChatBot();
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted">
       <div className="container mx-auto px-4">
-        <Seo
-          title="COAX | Kontakt oss for rådgivning og tilbud"
-          description={metaDescription}
-          canonicalPath="/kontakt"
-        />
-        {/* Header */}
         <PageTitile
           title="Ta kontakt"
           text="Vi hjelper deg med valg og installasjon – enten det er for bolig, hytte eller større byggeprosjekter."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Form Section */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Form Toggle */}
             <div className="flex gap-2">
               <Button
                 variant={formType === "general" ? "default" : "outline"}
@@ -49,10 +40,9 @@ const Contact = () => {
               </Button>
             </div>
 
-            {/* Contact Form */}
             {formType === "general" ? <ContactForm /> : <NeedsAssessmentForm />}
           </div>
-          {/* Contact Info Sidebar */}
+
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -112,7 +102,6 @@ const Contact = () => {
                 </div>
               </CardContent>
             </Card>
-
             {/* <Card
               className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
@@ -149,8 +138,6 @@ const Contact = () => {
             </Card> */}
           </div>
         </div>
-
-        {/* Map Section */}
         <div className="mt-12 max-w-6xl mx-auto">
           <Card>
             <CardContent className="p-0">
@@ -173,4 +160,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactClient;

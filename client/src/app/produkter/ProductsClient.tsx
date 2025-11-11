@@ -1,25 +1,22 @@
+"use client";
+
 import { useState, useEffect, useMemo } from "react";
 import PageTitile from "@/components/PageTitile";
 import ProductsList from "@/components/product/ProductsList";
 import FilterSelect from "@/components/FilterSelect";
-import CtaSection from "@/components/chatbot/CtaSection";
 import { useAppContext } from "@/context/AppContext";
 import type { Product } from "@/types/product";
 import ProductsListSceleton from "@/components/product/ProductsListSceleton";
-import Seo from "@/components/Seo";
+import CtaSection from "@/components/chatbot/CtaSection";
 
-const Products = () => {
+const ProductsClient = () => {
   const { products, productsLoading, productsError, fetchProducts } =
     useAppContext();
-  const metaDescription =
-    "Utforsk COAX sitt utvalg av energieffektive, tankløse vannvarmere. Filtrer modeller etter fase, kategori og bruksområde for å finne riktig løsning.";
 
-  // Fetch products when component mounts (only when route is reached)
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Products are already processed with storage URLs from the fetch function
   const allProducts: Product[] = useMemo(() => {
     return products;
   }, [products]);
@@ -66,7 +63,6 @@ const Products = () => {
     });
   }, [allProducts, filters]);
 
-  // Filter configuration
   const filterConfigs = [
     {
       id: "filter-category",
@@ -120,18 +116,11 @@ const Products = () => {
 
   return (
     <div className="min-h-screen pt-24">
-      <Seo
-        title="COAX | Energieffektive vannvarmere – alle produkter"
-        description={metaDescription}
-        canonicalPath="/produkter"
-      />
-      {/* Header */}
       <PageTitile
         title="Energieffektive vannvarmere – våre produkter"
         text="Velg fra modeller tilpasset ditt behov og el-anlegg."
       />
 
-      {/* Product Grid */}
       <section className="pb-16 md:pb-24 bg-muted">
         <div className="mb-8 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 container max-w-6xl mx-auto px-4">
@@ -163,13 +152,8 @@ const Products = () => {
           <ProductsList products={filteredProducts} />
         )}
       </section>
-
-      {/* CTA Section */}
-      {/* <div className="container px-4 max-w-6xl mx-auto">
-        <CtaSection isHeader={false} />
-      </div> */}
     </div>
   );
 };
 
-export default Products;
+export default ProductsClient;

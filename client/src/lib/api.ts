@@ -1,7 +1,13 @@
 // src/lib/api.ts
-import { ChatRequest, ChatResponse, ErrorResponse, SSEEvent, createErrorResponse } from "@/types/chat";
+import {
+  ChatRequest,
+  ChatResponse,
+  ErrorResponse,
+  SSEEvent,
+  createErrorResponse,
+} from "@/types/chat";
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
 /* --------------------------------------------------------------
@@ -63,7 +69,7 @@ export async function streamChat(
   }
 
   const apiUrl = `${API_BASE_URL}/chat`;
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   // Prepare payload - ensure messages only include required fields for API
   const apiPayload: ChatRequest = {

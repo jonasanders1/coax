@@ -1,26 +1,46 @@
 import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
+import nextPlugin from "@next/eslint-plugin-next";
 import tseslint from "typescript-eslint";
 
+const nextCoreWebVitals = nextPlugin.configs["core-web-vitals"] ?? {};
+const nextLanguageOptions = nextCoreWebVitals.languageOptions ?? {};
+const nextRules = nextCoreWebVitals.rules ?? {};
+const nextSettings = nextCoreWebVitals.settings ?? {};
+
 export default tseslint.config(
-  { ignores: ["dist"] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    ignores: [
+      "dist",
+      ".next",
+      "eslint.config.js",
+      "next.config.mjs",
+      "postcss.config.js",
+      "next-env.d.ts",
+    ],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ...nextLanguageOptions,
+      globals: {
+        ...(nextLanguageOptions.globals ?? {}),
+        ...globals.browser,
+      },
     },
     plugins: {
+      "@next/next": nextPlugin,
       "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
     },
+    settings: nextSettings,
     rules: {
+      ...nextRules,
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      "@next/next/no-img-element": "off",
     },
   },
 );

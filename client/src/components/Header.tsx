@@ -1,4 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, MessageCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
@@ -10,7 +13,7 @@ import { ModeToggle } from "./ModeToggle";
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
-  const location = useLocation();
+  const pathname = usePathname();
   const mobileMenuOpen = useAppStore((s) => s.mobileMenuOpen);
   const setMobileMenuOpen = useAppStore((s) => s.setMobileMenuOpen);
   const toggleMobileMenu = useAppStore((s) => s.toggleMobileMenu);
@@ -18,7 +21,7 @@ const Header = () => {
   const frameRequested = useRef(false);
   // const { openChat } = useChatBot();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => pathname === path;
 
   useEffect(() => {
     const threshold = 100;
@@ -53,7 +56,7 @@ const Header = () => {
       >
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex flex-col leading-tight">
+          <Link href="/" className="flex flex-col leading-tight">
             <Logo />
           </Link>
 
@@ -64,7 +67,7 @@ const Header = () => {
               .map((item) => (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     isActive(item.path)
                       ? "text-primary border-b border-primary"
@@ -117,16 +120,16 @@ const Header = () => {
             closeSize="lg"
           >
             <SheetHeader>
-              <Link to="/" className="flex flex-col leading-tight">
+              <Link href="/" className="flex flex-col leading-tight">
                 <Logo className="w-30" />
               </Link>
             </SheetHeader>
 
-            <nav className="flex flex-col gap-4 mt-8 border-t border-border pt-4">
+            <nav className="flex flex-col gap-4 mt-5 border-t border-border pt-4">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
                     isActive(item.path)
                       ? "bg-primary text-primary-foreground border-b border-primary"

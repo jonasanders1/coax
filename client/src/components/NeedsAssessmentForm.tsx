@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";
@@ -5,7 +7,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Loader, ChevronLeft, ChevronRight } from "lucide-react";
 import { isValidEmail } from "@/utils/inputValidation";
@@ -30,7 +32,7 @@ import {
 
 export default function NeedsAssessmentForm() {
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { sanitizeInput } = useFormInput();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,12 +58,16 @@ export default function NeedsAssessmentForm() {
     field: "applicationArea" | "usagePoints",
     value: string
   ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter((item) => item !== value)
-        : [...prev[field], value],
-    }));
+    setFormData((prev) => {
+      const current = prev[field] ?? [];
+      const nextValues = current.includes(value)
+        ? current.filter((item) => item !== value)
+        : [...current, value];
+      return {
+        ...prev,
+        [field]: nextValues,
+      };
+    });
   };
 
   const handleInputChange = (
@@ -171,7 +177,7 @@ export default function NeedsAssessmentForm() {
         });
         setCurrentStep(1);
 
-        navigate("/takk");
+        router.push("/takk");
       } else {
         toast({
           title: "Oi! Noe gikk galt",
@@ -249,7 +255,7 @@ export default function NeedsAssessmentForm() {
                   key={option}
                   type="button"
                   variant={
-                    formData.applicationArea.includes(option)
+                    (formData.applicationArea ?? []).includes(option)
                       ? "default"
                       : "outline"
                   }
@@ -295,7 +301,7 @@ export default function NeedsAssessmentForm() {
                 <FilterSelect
                   id="voltagePhase"
                   label="Spenning og faser"
-                  value={formData.voltagePhase}
+                  value={formData.voltagePhase ?? ""}
                   onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -312,7 +318,7 @@ export default function NeedsAssessmentForm() {
                 <FilterSelect
                   id="mainFuse"
                   label="Hovedsikringer (Ampere)"
-                  value={formData.mainFuse}
+                  value={formData.mainFuse ?? ""}
                   onValueChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
@@ -403,7 +409,9 @@ export default function NeedsAssessmentForm() {
                   key={point}
                   type="button"
                   variant={
-                    formData.usagePoints.includes(point) ? "default" : "outline"
+                    (formData.usagePoints ?? []).includes(point)
+                      ? "default"
+                      : "outline"
                   }
                   onClick={() => handleCheckboxChange("usagePoints", point)}
                   className="h-auto border border-border px-4 py-2"

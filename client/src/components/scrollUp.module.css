@@ -1,0 +1,9 @@
+.scrollUp {
+  transform: translateX(200%);
+  transition: 0.4s;
+}
+
+.showScroll {
+  transform: translateX(0%);
+}
+

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -23,11 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col group"
     >
       <CardHeader className="p-0">
-        <Link
-          to={`/produkter/${product.id}`}
-          state={{ product }}
-          className="block h-full"
-        >
+        <Link href={`/produkter/${product.id}`} className="block h-full">
           <div className="relative h-40 w-full">
             {product.images?.[0] && (
               <img
@@ -73,10 +69,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           variant="outline"
           onClick={(e) => e.stopPropagation()}
         >
-          <Link
-            to={`/produkter/${product.id}`}
-            className="flex items-center justify-center"
-          >
+          <Link href={`/produkter/${product.id}`} className="flex items-center justify-center">
             Les mer
           </Link>
         </Button>

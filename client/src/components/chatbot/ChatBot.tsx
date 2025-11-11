@@ -1,3 +1,4 @@
+"use client";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -71,7 +72,7 @@ const ChatBot = () => {
 
     const currentInput = sanitizedInput;
     setInput("");
-    
+
     try {
       await sendMessage(currentInput, correlationId);
     } catch (error) {
@@ -91,8 +92,7 @@ const ChatBot = () => {
       <Button
         onClick={openChat}
         size="icon"
-        className="md:h-12 md:w-12 h-10 w-10 text-white rounded-full shadow-lg"
-        style={{ background: "var(--gradient-primary)" }}
+        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md border border-border"
       >
         <MessageCircle className="h-6 w-6" />
       </Button>

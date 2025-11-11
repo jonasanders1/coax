@@ -37,12 +37,14 @@ async function generateRoutes() {
   const envVars = await loadEnvVars();
 
   const firebaseConfig = {
-    apiKey: envVars.VITE_FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY,
-    authDomain: envVars.VITE_FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: envVars.VITE_FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: envVars.VITE_FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: envVars.VITE_FIREBASE_MESSAGING_SENDER_ID || process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: envVars.VITE_FIREBASE_APP_ID || process.env.VITE_FIREBASE_APP_ID,
+    apiKey: envVars.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: envVars.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: envVars.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: envVars.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId:
+      envVars.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ||
+      process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: envVars.NEXT_PUBLIC_FIREBASE_APP_ID || process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   };
   // Note: "/" is excluded as vite-plugin-sitemap automatically adds it
   const staticRoutes = [
@@ -69,7 +71,14 @@ async function generateRoutes() {
     const productRoutes = querySnapshot.docs.map((doc) => `/produkter/${doc.id}`);
 
     // Combine routes and remove duplicates
-    const allRoutes = [...new Set([...staticRoutes, ...productRoutes])];
+    const routeSet = new Set<string>();
+    for (const route of staticRoutes) {
+      routeSet.add(route);
+    }
+    for (const route of productRoutes) {
+      routeSet.add(route);
+    }
+    const allRoutes = Array.from(routeSet);
 
     // Write to file
     const outputPath = resolve(__dirname, "../src/config/sitemapRoutes.json");

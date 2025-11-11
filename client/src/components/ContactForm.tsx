@@ -1,10 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
 import { isValidEmail, isValidPhone } from "@/utils/inputValidation";
@@ -18,7 +20,7 @@ import {
 
 export default function ContactForm() {
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { sanitizeInput } = useFormInput();
 
@@ -85,8 +87,7 @@ export default function ContactForm() {
         // Reset form
         setFormData({ name: "", email: "", phone: "", message: "" });
 
-        // React Router navigation (no redirect URL needed)
-        navigate("/takk");
+        router.push("/takk");
       } else {
         toast({
           title: "Oi! Noe gikk galt",

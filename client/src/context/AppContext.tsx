@@ -1,3 +1,5 @@
+"use client";
+
 // src/context/AppContext.tsx
 import React, {
   createContext,
@@ -66,10 +68,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const categoryOrder = ["Tankløs varmtvannsbereder"]; 
 
       // Helper to get index in order, unknown categories at end
-      function getCategoryOrderIndex(category: string) {
+      const getCategoryOrderIndex = (category: string) => {
         const idx = categoryOrder.indexOf(category);
         return idx === -1 ? categoryOrder.length : idx;
-      }
+      };
 
       // Sort products array by category first (with specific order), then by name as fallback
       const sortedProducts = fetchedProducts.slice().sort((a, b) => {

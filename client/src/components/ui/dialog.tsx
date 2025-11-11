@@ -31,7 +31,7 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
-  const contentRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
   
   // Prevent focus trapping on the dialog itself
   React.useEffect(() => {
@@ -49,9 +49,12 @@ const DialogContent = React.forwardRef<
       <DialogOverlay />
       <DialogPrimitive.Content
         ref={(node) => {
-          if (typeof ref === 'function') ref(node);
-          else if (ref) ref.current = node;
-          contentRef.current = node;
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref && "current" in ref) {
+            (ref as React.MutableRefObject<React.ElementRef<typeof DialogPrimitive.Content> | null>).current = node;
+          }
+          contentRef.current = node ?? null;
         }}
         onOpenAutoFocus={(e) => {
           // Prevent the dialog from auto-focusing on open
