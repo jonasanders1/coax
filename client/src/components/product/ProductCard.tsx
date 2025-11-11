@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Image } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -6,10 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-
 import { Product } from "@/types/product";
 
 type ProductCardProps = {
@@ -17,6 +17,13 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const heroImage = product.images?.[0] ?? null;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsImageLoaded(false);
+  }, [heroImage]);
+
   return (
     <Card
       key={product.id}
@@ -25,12 +32,25 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0">
         <Link href={`/produkter/${product.id}`} className="block h-full">
           <div className="relative h-40 w-full">
-            {product.images?.[0] && (
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+            {heroImage ? (
+              <>
+                {!isImageLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+                <img
+                  src={heroImage}
+                  alt={product.name}
+                  onLoad={() => setIsImageLoaded(true)}
+                  onError={() => setIsImageLoaded(true)}
+                  className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+                />
+              </>
+            ) : (
+              <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground">
+                <Image className="h-10 w-10" />
+              </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40" />
             <div className="absolute inset-0 p-4 flex flex-col justify-end gap-2 text-white">

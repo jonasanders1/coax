@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Download } from "lucide-react";
+import { Download, Loader } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
@@ -93,6 +93,13 @@ export const ProductDetailsClient = ({
     };
   }, [product, canonicalPath, metaDescription]);
 
+  const primaryImage = product?.images?.[0] ?? null;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsImageLoaded(false);
+  }, [primaryImage]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center p-8">
@@ -172,12 +179,21 @@ export const ProductDetailsClient = ({
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div className="relative rounded-2xl overflow-hidden shadow-sm bg-muted/30 aspect-[4/3]">
-            {images && images.length > 0 ? (
-              <img
-                src={images[0]}
-                alt={name}
-                className="absolute inset-0 w-full h-full object-cover object-center"
-              />
+            {primaryImage ? (
+              <>
+                {!isImageLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+                <img
+                  src={primaryImage}
+                  alt={name}
+                  onLoad={() => setIsImageLoaded(true)}
+                  onError={() => setIsImageLoaded(true)}
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                />
+              </>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
                 Ingen bilde tilgjengelig
