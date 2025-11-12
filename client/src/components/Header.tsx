@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, MessageCircle } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
 import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
 import { useEffect, useRef, useState } from "react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const Header = () => {
   const pathname = usePathname();
@@ -120,6 +121,12 @@ const Header = () => {
             closeSize="lg"
           >
             <SheetHeader>
+              <VisuallyHidden>
+                <SheetTitle>Hovedmeny</SheetTitle>
+              </VisuallyHidden>
+              <VisuallyHidden>
+                <SheetDescription>Navigasjon for nettstedet og tema-innstillinger</SheetDescription>
+              </VisuallyHidden>
               <Link href="/" className="flex flex-col leading-tight">
                 <Logo className="w-30" />
               </Link>

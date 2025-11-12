@@ -4,15 +4,15 @@ import { Providers } from "./providers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollUp from "@/components/ScrollUp";
-const SITE_URL = "https://coax.jonasanders1.com";
 import ChatBot from "@/components/chatbot/ChatBot";
+import { siteUrl } from "@/config/site";
 
 const defaultTitle = "COAX – Effektive tankløse vannvarmere";
 const defaultDescription =
   "Opplev kompakte, energieffektive vannvarmere fra COAX – umiddelbar varmtvann uten tank. Ideelt for bolig, hytte og industri.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
   title: defaultTitle,
   description: defaultDescription,
   icons: {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
-    url: SITE_URL,
+    url: siteUrl,
     type: "website",
     siteName: "COAX",
     images: [

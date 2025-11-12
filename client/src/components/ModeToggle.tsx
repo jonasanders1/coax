@@ -1,6 +1,7 @@
 "use client";
 
-import { Sun, Moon, Monitor, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,8 +26,30 @@ const OPTIONS: Array<{
 
 export function ModeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 🚫 Don't render until client is ready — avoids hydration mismatch
+  if (!mounted) {
+    return (
+      <Button
+        variant="outline"
+        className="flex w-full items-center justify-between rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+      >
+        <span className="inline-flex items-center gap-3">
+          <Monitor className="h-4 w-4 text-primary" />
+          <span className="lg:hidden">System</span>
+        </span>
+      </Button>
+    );
+  }
+
   const activeTheme = theme ?? "system";
-  const activeOption = OPTIONS.find((opt) => opt.value === activeTheme) ?? OPTIONS[2];
+  const activeOption =
+    OPTIONS.find((opt) => opt.value === activeTheme) ?? OPTIONS[2];
   const ActiveIcon = activeOption.icon;
 
   return (
@@ -40,7 +63,6 @@ export function ModeToggle() {
             <ActiveIcon className="h-4 w-4 text-primary" />
             <span className="lg:hidden">{activeOption.label}</span>
           </span>
-          {/* <ChevronDown className="h-4 w-4 text-muted-foreground" /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-full min-w-[12rem]">
@@ -68,4 +90,3 @@ export function ModeToggle() {
     </DropdownMenu>
   );
 }
-

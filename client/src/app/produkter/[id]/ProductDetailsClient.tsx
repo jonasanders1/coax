@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Download, Loader } from "lucide-react";
+import { Download } from "lucide-react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import type { Product } from "@/types/product";
 import { getProductById } from "@/lib/products";
 import Link from "next/link";
+import { ProductImageGallery } from "@/components/product/ProductImageGallery";
+import { absoluteUrl } from "@/config/site";
 
 const SPEC_LABELS: Record<string, string> = {
   flowRates: "Vannstrøm (L/min)",
@@ -49,7 +51,11 @@ export const ProductDetailsClient = ({
   productId,
   fallbackProduct,
 }: ProductDetailsClientProps) => {
-  const { data: fetchedProduct, isLoading, error } = useQuery({
+  const {
+    data: fetchedProduct,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["product", productId],
     queryFn: () => getProductById(productId),
     initialData: fallbackProduct ?? undefined,
@@ -65,16 +71,31 @@ export const ProductDetailsClient = ({
   }, [product?.description]);
 
   const canonicalPath = `/produkter/${productId}`;
-  const toAbsoluteUrl = (path?: string | null) => {
+  const resolveAbsoluteUrl = (path?: string | null) => {
     if (!path) return undefined;
     if (/^https?:\/\//i.test(path)) return path;
-    const normalized =
-      path.startsWith("/") || path.startsWith("#") ? path : `/${path}`;
-    return `https://coax.jonasanders1.com${normalized}`;
+    if (path.startsWith("/") || path.startsWith("#")) {
+      return absoluteUrl(path);
+    }
+    return absoluteUrl(`/${path}`);
   };
 
   const structuredData = useMemo(() => {
     if (!product) return undefined;
+    const priceValue =
+      typeof product.priceFrom === "number"
+        ? product.priceFrom
+        : Number.parseFloat(String(product.priceFrom));
+    const offer =
+      Number.isFinite(priceValue) && priceValue > 0
+        ? {
+            "@type": "Offer" as const,
+            price: priceValue.toFixed(2),
+            priceCurrency: "NOK",
+            availability: "https://schema.org/InStock",
+            url: resolveAbsoluteUrl(canonicalPath),
+          }
+        : undefined;
     return {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -83,22 +104,16 @@ export const ProductDetailsClient = ({
       sku: product.id,
       category: product.category,
       image: product.images
-        ?.map((img) => toAbsoluteUrl(img))
+        ?.map((img) => resolveAbsoluteUrl(img))
         .filter((url): url is string => Boolean(url)),
       brand: {
         "@type": "Organization",
         name: "COAX",
       },
-      url: toAbsoluteUrl(canonicalPath),
+      url: resolveAbsoluteUrl(canonicalPath),
+      offers: offer,
     };
   }, [product, canonicalPath, metaDescription]);
-
-  const primaryImage = product?.images?.[0] ?? null;
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsImageLoaded(false);
-  }, [primaryImage]);
 
   if (isLoading) {
     return (
@@ -178,28 +193,7 @@ export const ProductDetailsClient = ({
         </Breadcrumbs>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          <div className="relative rounded-2xl overflow-hidden shadow-sm bg-muted/30 aspect-[4/3]">
-            {primaryImage ? (
-              <>
-                {!isImageLoaded && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-                <img
-                  src={primaryImage}
-                  alt={name}
-                  onLoad={() => setIsImageLoaded(true)}
-                  onError={() => setIsImageLoaded(true)}
-                  className="absolute inset-0 w-full h-full object-cover object-center"
-                />
-              </>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                Ingen bilde tilgjengelig
-              </div>
-            )}
-          </div>
+          <ProductImageGallery images={images} name={name} />
 
           <div className="space-y-4">
             <h1 className="text-4xl font-bold tracking-tight">{name}</h1>
@@ -243,7 +237,7 @@ export const ProductDetailsClient = ({
                 Fra
               </span>
               <span className="text-3xl font-semibold text-primary">
-                {priceFrom}
+                {priceFrom} kr
               </span>
               <span className="block text-muted-foreground text-xs mt-0.5">
                 inkl. mva
@@ -330,4 +324,3 @@ export const ProductDetailsClient = ({
     </div>
   );
 };
-
