@@ -29,7 +29,7 @@ import {
   Cell,
   TooltipProps,
 } from "recharts";
-import { Calculator, Zap, TrendingUp, Clock, DollarSign } from "lucide-react";
+import { Zap, TrendingUp, Clock, DollarSign } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
 import { useTheme } from "@/hooks/useTheme";
 import { sanitizeNumberInput } from "@/utils/inputValidation";
@@ -103,7 +103,7 @@ const CalculatorClient = () => {
     tanklessPowerKW: 18.0,
     tanklesskWhPer4min: 1.2,
     tankkWhPer4min: 3.0,
-    standbyTapTankkWhPerYear: 900.0,
+    standbyTapTankkWhPerYear: 1000.0,
     strømprisNOKPerkWh: 0.5,
     installasjonskostnadTanklessNOK: 6000.0,
     installasjonskostnadTankNOK: 5000.0,
@@ -160,7 +160,6 @@ const CalculatorClient = () => {
     key: keyof CalculationParams,
     value: number | string
   ) => {
-
     const bounds: Record<
       keyof CalculationParams,
       { min: number; max: number; default: number }
@@ -662,4 +661,3 @@ const CalculatorClient = () => {
 };
 
 export default CalculatorClient;
-

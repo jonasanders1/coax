@@ -4,7 +4,7 @@ export type Product = {
   category: string;
   phase: string;
   voltage?: string | string[];
-  priceFrom: string;
+  priceFrom: number | string;
   images?: string[];
   description: string;
   features?: string[];

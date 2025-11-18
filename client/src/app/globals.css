@@ -172,7 +172,7 @@
     --accent-foreground: 0 0% 100%;
 
     --muted: 215 15% 18%; /* Subtle background for muted elements */
-    --muted-foreground: 45 10% 70%; /* Softer text for muted content */
+    --muted-foreground: 215 10% 80%; /* Neutral gray for muted content */
 
     --success: 114 45% 45%; /* Calmer, less saturated green */
     --success-foreground: 0 0% 100%;
