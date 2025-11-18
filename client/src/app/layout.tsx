@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/Header";
@@ -62,7 +63,9 @@ export default function RootLayout({
               <ScrollUp />
               {/* <ChatBot /> */}
             </div>
-            <CookieConsent />
+            <Suspense fallback={null}>
+              <CookieConsent />
+            </Suspense>
           </div>
         </Providers>
       </body>
