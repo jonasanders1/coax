@@ -85,7 +85,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-border text-center">
+        <div className="mt-8 pt-8 border-t border-border text-center space-y-3">
+          <Link
+            href="/personvern"
+            className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+          >
+            Personvern og cookies
+          </Link>
           <p className="text-sm text-muted-foreground">
             © 2025 COAX AS. Alle rettigheter reservert.
           </p>

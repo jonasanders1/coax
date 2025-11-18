@@ -85,9 +85,9 @@ const Header = () => {
               ))}
           </div>
 
-          <div className="hidden lg:flex items-center gap-2">
+          {/* <div className="hidden lg:flex items-center gap-2">
             <ModeToggle />
-          </div>
+          </div> */}
 
           {/* <Button
             className="hidden lg:flex text-white"
@@ -166,10 +166,10 @@ const Header = () => {
                   Snakk med Flux
                 </Button>
               </div> */}
-              <div className="border-t border-border pt-4">
+              {/* <div className="border-t border-border pt-4">
                 <p className="text-sm text-muted-foreground mb-2">Tema</p>
                 <ModeToggle />
-              </div>
+              </div> */}
             </nav>
           </SheetContent>
         </Sheet>

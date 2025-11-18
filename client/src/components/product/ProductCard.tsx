@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div className="flex justify-end gap-2">
                   <div className="text-end">
                     <div className="text-md font-bold text-white">
-                      {product.priceFrom}
+                      {product.priceFrom} kr
                     </div>
                     <div className="text-sm">(inkl. mva)</div>
                   </div>

@@ -16,9 +16,8 @@
     --popover: 45 15% 95%;
     --popover-foreground: 215 25% 20%;
 
-    
     --primary: 217 54% 24%;
-    
+
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Complementary muted color for badges, etc. */
@@ -89,50 +88,43 @@
 
   .dark {
     /* Base Colors - Dark Theme */
-    --background: 215 35% 12%; /* #131d29 */
-    --foreground: 0 0% 95%; /* Light text */
+    /* --background: 215 35% 12%;
+    --foreground: 0 0% 95%;
 
-    --card: 215 30% 16%; /* Slightly lighter dark blue for cards */
+    --card: 215 30% 16%;
     --card-foreground: 0 0% 95%;
 
     --popover: 215 30% 16%;
     --popover-foreground: 0 0% 95%;
 
-    /* Accent Green - Same as light theme */
     --primary: 212 84% 59%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Dark theme variant */
-    --secondary: 215 20% 25%; /* Dark blue-gray */
+    --secondary: 215 20% 25%;
     --secondary-foreground: 0 0% 90%;
 
-    /* Accent - Same green */
-    --accent: 212 84% 59%; /* #2E8824 */
+    --accent: 212 84% 59%;
     --accent-foreground: 0 0% 100%;
 
-    /* Muted - Dark background for subtle elements */
-    --muted: 215 25% 18%; /* Dark blue-gray */
-    --muted-foreground: 0 0% 70%; /* Medium gray for muted text */
+    --muted: 215 25% 18%;
+    --muted-foreground: 0 0% 70%;
 
-    /* Status Colors */
-    --success: 114 58% 34%; /* Same green */
+    --success: 114 58% 34%;
     --success-foreground: 0 0% 100%;
 
-    --destructive: 0 70% 55%; /* Slightly brighter red for dark theme */
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --info: 200 70% 60%; /* Brighter blue for dark theme */
+    --info: 200 70% 60%;
     --info-foreground: 0 0% 100%;
 
-    /* Borders and Inputs */
-    --border: 215 20% 25%; /* Dark borders */
+    --border: 215 20% 25%;
     --input: 215 20% 25%;
-    --ring: var(--primary); /* Same green focus ring */
+    --ring: var(--primary);
 
-    /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(212, 77%, 62%) 100%, 
+      hsl(212, 77%, 62%) 100%,
       hsl(212, 84%, 59%) 100%
     );
     --gradient-card: linear-gradient(
@@ -146,15 +138,13 @@
       hsla(216, 29%, 10%, 0.7) 50%,
       hsla(216, 29%, 10%, 0.8) 100%
     );
-    /* Default Shadows - Dark Theme */
+
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4),
       0 2px 4px -1px hsl(0 0% 0% / 0.3);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5),
       0 4px 6px -2px hsl(0 0% 0% / 0.4);
 
-    /* Card Shadows - Dark Theme */
-    /* Subtle inset highlight (lighter than card) + outer shadow (darker) */
     --shadow-card-sm: inset 0 1px 2px hsl(215 30% 24% / 0.6),
       0 1px 2px hsl(215 35% 8% / 0.5), 0 2px 4px hsl(215 35% 5% / 0.3);
 
@@ -162,7 +152,84 @@
       0 2px 4px hsl(215 35% 8% / 0.6), 0 4px 8px hsl(215 35% 5% / 0.4);
 
     --shadow-card-lg: inset 0 2px 4px hsl(215 30% 24% / 0.8),
-      0 4px 6px hsl(215 35% 8% / 0.7), 0 8px 16px hsl(215 35% 5% / 0.5);
+      0 4px 6px hsl(215 35% 8% / 0.7), 0 8px 16px hsl(215 35% 5% / 0.5); */
+    --background: 215 25% 10%; /* Deep blue-gray */
+    --foreground: 45 15% 92%; /* Light warm-gray for text */
+
+    --card: 215 20% 13%; /* Slightly lighter than background */
+    --card-foreground: 45 15% 92%;
+
+    --popover: 215 20% 13%;
+    --popover-foreground: 45 15% 92%;
+
+    --primary: 217 50% 60%; /* Muted blue-green with good contrast */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 215 15% 25%; /* Muted blue-gray for secondary elements */
+    --secondary-foreground: 45 20% 85%;
+
+    --accent: 217 50% 60%; /* Matches primary for consistency */
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 215 15% 18%; /* Subtle background for muted elements */
+    --muted-foreground: 45 10% 70%; /* Softer text for muted content */
+
+    --success: 114 45% 45%; /* Calmer, less saturated green */
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 65% 55%; /* Softer red that pops but isn’t harsh */
+    --destructive-foreground: 0 0% 100%;
+
+    --info: 200 65% 60%; /* Bright blue for info states */
+    --info-foreground: 0 0% 100%;
+
+    --border: 215 15% 25%; /* Subtle border lines */
+    --input: 215 15% 25%;
+    --ring: var(--primary); /* Highlight color remains consistent */
+
+    --radius: 0.5rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(217 50% 60%) 0%,
+      hsl(217 45% 45%) 100%
+    );
+
+    --gradient-card: linear-gradient(
+      to bottom,
+      hsl(215 20% 13%),
+      hsl(215 15% 10%)
+    );
+
+    --gradient-hero: linear-gradient(
+      135deg,
+      hsla(215, 25%, 12%, 0.8) 0%,
+      hsla(215, 25%, 8%, 0.9) 100%
+    );
+
+    /* Shadows - Dark Theme (light highlights instead of dark shadows) */
+    --shadow-sm: 0 1px 2px 0 hsl(215 50% 2% / 0.4);
+
+    --shadow-md: 0 4px 6px -1px hsl(215 50% 2% / 0.45),
+      0 2px 4px -1px hsl(215 50% 2% / 0.35);
+
+    --shadow-lg: 0 10px 15px -3px hsl(215 50% 2% / 0.5),
+      0 4px 6px -2px hsl(215 50% 2% / 0.35);
+
+    /* Card Shadows - Emphasis on soft depth + subtle inner light */
+    /* Card Shadows – soft inner highlight + deep realistic drop shadows */
+    --shadow-card-sm: inset 0 1px 2px hsl(215 15% 20% / 0.6),
+      /* light highlight on top edge */ 0 1px 2px hsl(215 50% 2% / 0.5),
+      /* deep subtle drop shadow */ 0 2px 4px hsl(215 50% 2% / 0.35); /* diffuse depth layer */
+
+    --shadow-card-md: inset 0 1px 3px hsl(215 15% 22% / 0.7),
+      /* stronger top-edge highlight */ 0 2px 4px hsl(215 50% 2% / 0.55),
+      /* main shadow depth */ 0 4px 8px hsl(215 50% 2% / 0.4); /* soft ambient layer */
+
+    --shadow-card-lg: inset 0 2px 4px hsl(215 15% 25% / 0.75),
+      /* pronounced highlight */ 0 4px 6px hsl(215 50% 2% / 0.55),
+      /* grounded shadow */ 0 8px 16px hsl(215 50% 2% / 0.45); /* large-area falloff */
   }
 }
 
@@ -299,4 +366,3 @@ html {
     background-color: hsl(var(--muted) / 0.5);
   }
 }
-

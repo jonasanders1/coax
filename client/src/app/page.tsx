@@ -254,7 +254,7 @@ const HomePage = () => {
         <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl text-foreground">
-              Moderne løsning vs. Gammel teknologi
+              Gammel teknologi vs. Moderne løsning
             </h2>
             <p className="mt-2 text-lg text-muted-foreground">
               Se forskjellen en tankløs varmer kan utgjøre.
@@ -339,7 +339,7 @@ const HomePage = () => {
           </Carousel>
         </div>
       </section>
-{/* 
+      {/* 
       <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
       </div> */}
@@ -348,4 +348,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

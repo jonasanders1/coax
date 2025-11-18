@@ -131,59 +131,84 @@ const ModelSelectorClient = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="flex flex-col gap-4 md:flex-row items-end">
-                <div className="bg-muted p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    <AlertCircle className="w-5 h-5 text-blue-600" />
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+                <div className="w-full bg-muted p-4 rounded-lg lg:w-auto lg:min-w-[280px] lg:max-w-md">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2 text-base">
+                    <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0" />
                     Slik gjør du:
                   </h3>
 
-                  <div className="md:pr-4">
-                    <ol className="space-y-2 text-sm text-muted-foreground md:ml-7">
-                      <li>1. Ta med deg en 10-liters bøtte i dusjen</li>
-                      <li>
-                        2. Skru på vannet til ønsket dusjtemperatur og trykk
+                  <div className="lg:pr-4">
+                    <ol className="space-y-2.5 text-sm md:text-base text-muted-foreground list-decimal list-inside ml-1">
+                      <li className="pl-1">
+                        Ta med deg en 10-liters bøtte i dusjen
                       </li>
-                      <li>3. Start tidtaker og fyll bøtta helt opp</li>
-                      <li>
-                        4. Stopp når bøtta er full og noter antall sekunder
+                      <li className="pl-1">
+                        Skru på vannet til ønsket dusjtemperatur og trykk
                       </li>
-                      <li>
-                        5. Fyll inn tiden under, så regner vi ut riktig modell
+                      <li className="pl-1">
+                        Start tidtaker og fyll bøtta helt opp
+                      </li>
+                      <li className="pl-1">
+                        Stopp når bøtta er full og noter antall sekunder
+                      </li>
+                      <li className="pl-1">
+                        Fyll inn tiden under, så regner vi ut riktig modell
                       </li>
                     </ol>
                   </div>
                 </div>
 
-                <div className="flex-1">
-                  <Label htmlFor="seconds" className="text-lg mb-4 block">
-                    Tid for å fylle 10L bøtte:{" "}
-                    <strong>{seconds} sekunder</strong>
-                  </Label>
-                  <div className="space-y-4">
-                    <Slider
-                      id="seconds"
-                      value={[seconds]}
-                      onValueChange={(value) => setSeconds(value[0])}
-                      min={10}
-                      max={120}
-                      step={1}
-                      className="w-full"
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>10 sek (veldig høy strøm)</span>
-                      <span>120 sek (lav strøm)</span>
+                <div className="w-full flex-1 lg:min-w-0">
+                  <div className="space-y-5">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="seconds"
+                        className="text-base mb-4 block font-medium"
+                      >
+                        Tid for å fylle 10L bøtte:{" "}
+                        <strong className="text-primary">
+                          {seconds} sekunder
+                        </strong>
+                      </Label>
+                      <Slider
+                        id="seconds"
+                        value={[seconds]}
+                        onValueChange={(value) => setSeconds(value[0])}
+                        min={10}
+                        max={120}
+                        step={1}
+                        className="w-full"
+                      />
+                      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between text-xs sm:text-sm text-muted-foreground">
+                        <span>Høy strøm</span>
+                        <span>Lav strøm</span>
+                      </div>
                     </div>
                     <Button
                       onClick={calculateRecommendation}
                       size="lg"
-                      className="w-full"
+                      className="w-full text-base"
                       disabled={isCalculateDisabled}
                     >
-                      {productsLoading
-                        ? "Laster produkter..."
-                        : "Finn modell"}
+                      {productsLoading ? "Laster produkter..." : "Finn modell"}
                     </Button>
+
+                    <Alert
+                      variant="default"
+                      className="shadow-card-md border border-red-400 bg-red-50 dark:border-red-600 dark:bg-red-950/70"
+                    >
+                      <AlertTitle className="font-bold text-red-900 dark:text-red-100 flex items-center gap-2">
+                        <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+                        Viktig informasjon
+                      </AlertTitle>
+                      <AlertDescription className="mt-1 font-medium leading-relaxed text-red-900 dark:text-red-100">
+                        <p>
+                          Kontakt alltid en elektriker for en vurdering av ditt
+                          elektriske anlegg.
+                        </p>
+                      </AlertDescription>
+                    </Alert>
                     {productsError ? (
                       <p className="text-sm text-destructive">
                         Kunne ikke laste produkter. Prøv igjen senere.
@@ -194,7 +219,7 @@ const ModelSelectorClient = () => {
               </div>
 
               {result && flowRate && (
-                <Alert>
+                <Alert className="rounded-xl border border-success p-6 shadow-sm">
                   <AlertTitle className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-success" />
                     Beregnet vannmengde: {flowRate} L/min
@@ -212,7 +237,7 @@ const ModelSelectorClient = () => {
                           result.matchMax
                         );
                         return (
-                          <div className="rounded-xl border border-primary/20 bg-primary/10 p-6 shadow-sm">
+                          <div className="">
                             <div className="flex flex-wrap items-center justify-between gap-4">
                               <div>
                                 <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -278,11 +303,6 @@ const ModelSelectorClient = () => {
                           </div>
                         );
                       })()}
-                      <p className="text-sm text-muted-foreground">
-                        <strong>Merk:</strong> Dette er en anbefaling. Kontakt
-                        alltid en elektriker for en vurdering av ditt elektriske
-                        anlegg.
-                      </p>
                     </div>
                   </AlertDescription>
                 </Alert>
@@ -300,13 +320,24 @@ const ModelSelectorClient = () => {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="text-sm w-full" style={{ minWidth: "800px", tableLayout: "fixed" }}>
+                <colgroup>
+                  <col style={{ width: "16%" }} />
+                  <col style={{ width: "16%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "14%" }} />
+                  <col style={{ width: "44%" }} />
+                </colgroup>
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left p-3">Strålestørrelse (L/min)</th>
-                    <th className="text-left p-3">Anbefalt modell</th>
-                    <th className="text-left p-3">Fase</th>
-                    <th className="text-left p-3">Sikring</th>
+                    <th className="text-left p-3 whitespace-nowrap">
+                      Strålestørrelse (L/min)
+                    </th>
+                    <th className="text-left p-3 whitespace-nowrap">
+                      Anbefalt modell
+                    </th>
+                    <th className="text-left p-3 whitespace-nowrap">Fase</th>
+                    <th className="text-left p-3 whitespace-nowrap">Sikring</th>
                     <th className="text-left p-3">Brukseksempler</th>
                   </tr>
                 </thead>
@@ -316,12 +347,12 @@ const ModelSelectorClient = () => {
                       key={rec.id}
                       className="border-b bg-background hover:bg-muted"
                     >
-                      <td className="p-3">
+                      <td className="p-3 whitespace-nowrap">
                         {formatFlowRange(rec.minFlow, rec.matchMax)}
                       </td>
                       <td className="p-3 font-semibold">{rec.model}</td>
-                      <td className="p-3">{rec.phase}</td>
-                      <td className="p-3">{rec.fuse}</td>
+                      <td className="p-3 whitespace-nowrap">{rec.phase}</td>
+                      <td className="p-3 ">{rec.fuse}</td>
                       <td className="p-3 text-muted-foreground">{rec.usage}</td>
                     </tr>
                   ))}
@@ -346,4 +377,3 @@ const ModelSelectorClient = () => {
 };
 
 export default ModelSelectorClient;
-

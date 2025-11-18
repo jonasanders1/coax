@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollUp from "@/components/ScrollUp";
 import ChatBot from "@/components/chatbot/ChatBot";
+import CookieConsent from "@/components/CookieConsent";
 import { siteUrl } from "@/config/site";
 
 const defaultTitle = "COAX – Effektive tankløse vannvarmere";
@@ -61,6 +62,7 @@ export default function RootLayout({
               <ScrollUp />
               {/* <ChatBot /> */}
             </div>
+            <CookieConsent />
           </div>
         </Providers>
       </body>
