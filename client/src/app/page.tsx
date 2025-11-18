@@ -271,7 +271,7 @@ const HomePage = () => {
                 <ul className="space-y-4">
                   {comparison.traditional.map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <item.icon className="w-6 h-6 text-destructive/80 mt-1 shrink-0" />
+                      <item.icon className="w-6 h-6 text-destructive/80 shrink-0" />
                       <span>{item.text}</span>
                     </li>
                   ))}
@@ -288,7 +288,7 @@ const HomePage = () => {
                 <ul className="space-y-4">
                   {comparison.coax.map((item, index) => (
                     <li key={index} className="flex items-center gap-3">
-                      <item.icon className="w-6 h-6 text-success/80 mt-1 shrink-0" />
+                      <item.icon className="w-6 h-6 text-success/80 shrink-0" />
                       <span>{item.text}</span>
                     </li>
                   ))}

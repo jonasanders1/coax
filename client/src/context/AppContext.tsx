@@ -65,7 +65,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       // INSERT_YOUR_CODE
 
       // Define the specific category order you want
-      const categoryOrder = ["Tankløs varmtvannsbereder"]; 
+      const categoryOrder = ["Direkte vannvarmer"]; 
 
       // Helper to get index in order, unknown categories at end
       const getCategoryOrderIndex = (category: string) => {

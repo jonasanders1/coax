@@ -10,10 +10,16 @@ type ProductImageGalleryProps = {
   name: string;
 };
 
-export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) => {
+export const ProductImageGallery = ({
+  images,
+  name,
+}: ProductImageGalleryProps) => {
   const mainImages = useMemo(
-    () => (Array.isArray(images) ? images.filter((src): src is string => Boolean(src)) : []),
-    [images],
+    () =>
+      Array.isArray(images)
+        ? images.filter((src): src is string => Boolean(src))
+        : [],
+    [images]
   );
   const hasImages = mainImages.length > 0;
 
@@ -68,7 +74,7 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
       if (!mainApi) return;
       mainApi.scrollTo(index);
     },
-    [mainApi],
+    [mainApi]
   );
 
   const handleImageLoad = useCallback(
@@ -82,12 +88,12 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
         setIsLoading(false);
       }
     },
-    [selectedIndex],
+    [selectedIndex]
   );
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted/30 shadow-sm">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted/30 shadow-sm">
         {hasImages ? (
           <>
             {isLoading && (
@@ -98,7 +104,10 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
             <div ref={mainRef} className="h-full">
               <div className="flex h-full">
                 {mainImages.map((src, index) => (
-                  <div key={`${src}-${index}`} className="relative flex-[0_0_100%]">
+                  <div
+                    key={`${src}-${index}`}
+                    className="relative flex-[0_0_100%]"
+                  >
                     <img
                       src={src}
                       alt={`${name} bilde ${index + 1}`}
@@ -108,7 +117,9 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
                       onError={() => handleImageLoad(index)}
                       className={cn(
                         "h-full w-full object-cover object-center transition-opacity duration-300",
-                        isLoading && index === selectedIndex ? "opacity-0" : "opacity-100",
+                        isLoading && index === selectedIndex
+                          ? "opacity-0"
+                          : "opacity-100"
                       )}
                     />
                   </div>
@@ -161,10 +172,10 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
               type="button"
               onClick={() => handleThumbClick(index)}
               className={cn(
-                "relative h-12 w-12 md:h-20 md:w-20 flex-shrink-0 overflow-hidden rounded-xl border transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                "relative h-12 w-12 md:h-16 md:w-16 flex-shrink-0 overflow-hidden rounded-xl border transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selectedIndex === index
                   ? "opacity-100"
-                  : "opacity-50 hover:opacity-100",
+                  : "opacity-50 hover:opacity-100"
               )}
               aria-label={`Vis bilde ${index + 1}`}
               aria-current={selectedIndex === index}
@@ -183,5 +194,3 @@ export const ProductImageGallery = ({ images, name }: ProductImageGalleryProps) 
     </div>
   );
 };
-
-

@@ -10,7 +10,7 @@ export default function ProductsList({ products }: ProductsListProps) {
     return (
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <p className="text-center text-muted-foreground">
-          Ingen produkter samsvarer med valgte filtere.
+          Ingen produkter tilgjengelig.
         </p>
       </div>
     );
