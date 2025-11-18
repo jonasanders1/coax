@@ -176,7 +176,7 @@ export default function ProductForm({
     setPendingImages((prev) => [...prev, ...files]);
   };
 
-  const handleSpecsChange = (field: string, value: any) => {
+  const handleSpecsChange = (field: string, value: string | string[] | undefined) => {
     setFormData({
       ...formData,
       specs: {

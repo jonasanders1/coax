@@ -26,10 +26,10 @@ export function useAuth() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        error: error.message || "Login failed",
+        error: error instanceof Error ? error.message : "Login failed",
       };
     }
   };
@@ -38,10 +38,10 @@ export function useAuth() {
     try {
       await signOut(auth);
       return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
-        error: error.message || "Logout failed",
+        error: error instanceof Error ? error.message : "Logout failed",
       };
     }
   };
