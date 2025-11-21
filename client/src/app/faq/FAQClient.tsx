@@ -48,6 +48,7 @@ const FAQClient = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 text-lg"
+              maxLength={200}
             />
           </div>
         </div>
@@ -58,7 +59,7 @@ const FAQClient = () => {
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 {category.category}
               </h2>
-              <Accordion type="single" collapsible className="space-y-2">
+              <Accordion type="multiple" className="space-y-2">
                 {category.questions.map((faq, qIdx) => (
                   <AccordionItem
                     key={qIdx}
