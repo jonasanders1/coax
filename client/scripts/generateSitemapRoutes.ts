@@ -54,7 +54,7 @@ async function generateRoutes() {
     "/referanser",
     "/kalkulator",
     "/kontakt",
-    "/takk",
+    // "/takk",
   ];
 
   try {

@@ -34,7 +34,7 @@ const ThanksClient = () => {
           <Button asChild className="w-full" size="lg">
             <Link href="/">Tilbake til forsiden</Link>
           </Button>
-          <p className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-2">
+          {/* <p className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-2">
             <span>Har du spørsmål i mellomtiden?</span>
             <button
               onClick={handleChatClick}
@@ -44,7 +44,7 @@ const ThanksClient = () => {
               <MessageSquareText className="mr-1 h-4 w-4 transition-transform group-hover:scale-110" />
               {isNavigating ? "Åpner..." : "Snakk med Flux"}
             </button>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
