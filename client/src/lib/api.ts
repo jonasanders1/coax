@@ -4,10 +4,68 @@ import {
   ChatResponse,
   ErrorResponse,
   SSEEvent,
+  Message,
   createErrorResponse,
 } from "@/types/chat";
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+/* --------------------------------------------------------------
+   LOGGING – Write messages and user queries to JSON file
+   -------------------------------------------------------------- */
+async function logChatToFile(
+  payload: ChatRequest,
+  correlationId: string,
+  apiResponse?: any
+): Promise<void> {
+  try {
+    // Extract user query (last user message)
+    const userMessages = payload.messages.filter((msg) => msg.role === "user");
+    const userQuery = userMessages[userMessages.length - 1]?.content || "";
+
+    const logData = {
+      timestamp: new Date().toISOString(),
+      correlationId,
+      userQuery,
+      request: {
+        messages: payload.messages.map((msg) => ({
+          id: msg.id,
+          role: msg.role,
+          content: msg.content,
+          timestamp: msg.timestamp,
+        })),
+      },
+      response: apiResponse || null,
+    };
+
+    console.log("📝 Attempting to log chat:", { correlationId, userQuery });
+
+    // Call the logging API route
+    const response = await fetch("/api/log-chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(logData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => "Unknown error");
+      console.error("❌ Failed to log chat to file:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      return;
+    }
+
+    const result = await response.json().catch(() => null);
+    console.log("✅ Chat logged successfully:", result);
+  } catch (err) {
+    // Log error but don't interrupt the main flow
+    console.error("❌ Error logging chat to file:", err);
+  }
+}
 
 /* --------------------------------------------------------------
    1. NON-STREAMING (existing) – kept for health-checks, etc.
@@ -24,6 +82,8 @@ export async function postChat(
   payload: ChatRequest,
   signal?: AbortSignal
 ): Promise<ChatResponse> {
+  const correlationId = crypto.randomUUID();
+
   const res = await fetch(`${API_BASE_URL}/chat`, {
     method: "POST",
     headers: {
@@ -33,7 +93,13 @@ export async function postChat(
     body: JSON.stringify(payload),
     signal,
   });
-  return handleResponse<ChatResponse>(res);
+  
+  const responseData = await handleResponse<ChatResponse>(res);
+  
+  // Log the chat request and response
+  await logChatToFile(payload, correlationId, responseData);
+  
+  return responseData;
 }
 
 /* --------------------------------------------------------------
@@ -105,8 +171,9 @@ export async function streamChat(
 
     if (!res.ok) {
       // Try to parse error response from API
+      let errorData: any = null;
       try {
-        const errorData = await res.json();
+        errorData = await res.json();
         // Check if it's an ErrorResponse format
         if (errorData && errorData.error_code && errorData.error) {
           const apiError: ErrorResponse = {
@@ -117,6 +184,14 @@ export async function streamChat(
             timestamp: errorData.timestamp || new Date().toISOString(),
             details: errorData.details || { service: "api" },
           };
+          
+          // Log the error response
+          await logChatToFile(payload, correlationIdToUse, {
+            type: "error",
+            error: apiError,
+            status: res.status,
+          });
+          
           onError?.(apiError);
           return;
         }
@@ -126,6 +201,17 @@ export async function streamChat(
 
       // Fallback to text error
       const txt = await res.text().catch(() => "");
+      const errorResponse = {
+        type: "error",
+        status: res.status,
+        statusText: res.statusText,
+        error: txt || `HTTP ${res.status}`,
+        errorData,
+      };
+      
+      // Log the error response
+      await logChatToFile(payload, correlationIdToUse, errorResponse);
+      
       throw new Error(txt || `HTTP ${res.status}`);
     }
 
@@ -134,6 +220,8 @@ export async function streamChat(
 
     const decoder = new TextDecoder();
     let buffer = "";
+    let finalMessage: Message | null = null;
+    let metadata: unknown[] | null = null;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -151,6 +239,13 @@ export async function streamChat(
 
         try {
           const data = JSON.parse(jsonStr) as SSEEvent;
+          
+          // Only capture the "done" event which contains the final message
+          if (data.type === "done") {
+            finalMessage = data.message;
+            metadata = data.metadata;
+          }
+          
           onMessage(data);
         } catch (err) {
           console.error("Error parsing SSE message:", err, "Raw:", jsonStr);
@@ -164,12 +259,26 @@ export async function streamChat(
       if (jsonStr) {
         try {
           const data = JSON.parse(jsonStr) as SSEEvent;
+          
+          // Only capture the "done" event which contains the final message
+          if (data.type === "done") {
+            finalMessage = data.message;
+            metadata = data.metadata;
+          }
+          
           onMessage(data);
         } catch (err) {
           console.error("Error parsing final SSE message:", err);
         }
       }
     }
+
+    // Log the chat request and final message only
+    await logChatToFile(payload, correlationIdToUse, {
+      type: "stream",
+      message: finalMessage,
+      metadata: metadata,
+    });
 
     onComplete?.();
   } catch (err) {
@@ -196,13 +305,20 @@ export async function streamChat(
       });
     }
 
-    onError?.(
-      createErrorResponse(
-        errorMessage,
-        errorCode,
-        correlationIdToUse,
-        "network"
-      )
+    const errorResponse = createErrorResponse(
+      errorMessage,
+      errorCode,
+      correlationIdToUse,
+      "network"
     );
+    
+    // Log the error response
+    await logChatToFile(payload, correlationIdToUse, {
+      type: "error",
+      error: errorResponse,
+      originalError: err instanceof Error ? err.message : String(err),
+    });
+    
+    onError?.(errorResponse);
   }
 }

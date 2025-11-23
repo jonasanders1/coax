@@ -93,7 +93,7 @@ const Footer = () => {
             Personvern og cookies
           </Link>
           <p className="text-sm text-muted-foreground">
-            © 2025 COAX AS. Alle rettigheter reservert.
+            © 1994-2025 COAX AS. Alle rettigheter reservert.
           </p>
         </div>
       </div>

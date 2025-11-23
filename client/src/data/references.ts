@@ -1,65 +1,65 @@
 export const references = [
     {
       id: "ref-1",
-      caption: "Hvor er dette?",
+      caption: "Lysthus, Bærum",
       testimonial:
-      '"Blabla"',
+      '"Stort lysthus med 3-fase på kjøkken"',
     image: "/reference-images/ref1.webp",
     },
     {
       id: "ref-2",
-      caption: "XFJ-3 i bolighus, Røyken",
+      caption: "Eventyrhytter, Gol",
       testimonial:
-      '"blabla"',
+      '"3-fase til fjellhytte (Eventyrhytter.no)"',
     image: "/reference-images/ref2.webp",
     },
     {
       id: "ref-3",
-      caption: "Salt, Oslo kai",
+      caption: "SALT, Oslo kai",
       testimonial:
-      '"blabla"',
+      '"Varmere for dusjanlegg"',
     image: "/reference-images/ref3.webp",
     },
     {
       id: "ref-4",
-      caption: "Firemansbolig",
+      caption: "Firemansbolig, Åmot",
       testimonial:
-      '"blabla"',
+      '"3-fase varmere for kjøkken og bad."',
     image: "/reference-images/ref4.webp",
     },
     {
       id: "ref-5",
       caption: "Headhunters Frisør, Horten",
       testimonial:
-      '"blabla"',
+      '"3 stk. 1-fase varmere for hodevask"',
     image: "/reference-images/ref5.webp",
     },
     {
       id: "ref-6",
       caption: "Furustrand hytteutleie, Tønsberg",
       testimonial:
-      '"blabla"',
+      '"1-fase varemere kjøkken og bad til flere bad"',
     image: "/reference-images/ref6.webp",
     },
     {
       id: "ref-7",
       caption: "XFJ-3 i bolighus, Røyken",
       testimonial:
-      '"blabla"',
+      '"3-fase til kjøkken og bad"',
     image: "/reference-images/ref7.jpeg",
     },
     {
       id: "ref-8",
-      caption: "Sognedalshytta",
+      caption: "Hytteutleie, Sognedalshytta",
       testimonial:
       '"blabla"',
     image: "/reference-images/ref8.webp",
     },
     {
       id: "ref-9",
-      caption: "Tretopphutter",
+      caption: "Tretopphytter, Odda",
       testimonial:
-      '"blabla"',
+      '"3-fase varmere til kjøkken og bad i tretopphytter"',
     image: "/reference-images/ref9.webp",
     },
   ];
