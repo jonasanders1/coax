@@ -5,7 +5,7 @@ import { Providers } from "./providers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollUp from "@/components/ScrollUp";
-import ChatBot from "@/components/chatbot/ChatBot";
+// import ChatBot from "@/components/chatbot/ChatBot";
 import CookieConsent from "@/components/CookieConsent";
 import { siteUrl } from "@/config/site";
 

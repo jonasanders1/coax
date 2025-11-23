@@ -9,7 +9,6 @@ import {
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 /* --------------------------------------------------------------
    1. NON-STREAMING (existing) – kept for health-checks, etc.
    -------------------------------------------------------------- */
@@ -41,7 +40,6 @@ export async function postChat(
    2. STREAMING – Server-Sent Events (SSE)
    -------------------------------------------------------------- */
 
-
 export interface StreamChatOptions {
   onMessage: (chunk: SSEEvent) => void;
   onError?: (error: ErrorResponse) => void;
@@ -55,7 +53,7 @@ export async function streamChat(
   { onMessage, onError, onComplete, signal, correlationId }: StreamChatOptions
 ): Promise<void> {
   const correlationIdToUse = correlationId || crypto.randomUUID();
-  
+  console.log("🌐 API_BASE_URL:", API_BASE_URL);
   // Validate configuration before making request
   if (!API_BASE_URL) {
     const error = createErrorResponse(
@@ -69,7 +67,6 @@ export async function streamChat(
   }
 
   const apiUrl = `${API_BASE_URL}/chat`;
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 
   // Prepare payload - ensure messages only include required fields for API
   const apiPayload: ChatRequest = {
@@ -84,13 +81,12 @@ export async function streamChat(
 
   console.log("🌐 Making API request:", {
     url: apiUrl,
-    hasApiKey: !!apiKey,
+
     correlationId: correlationIdToUse,
     payload: apiPayload,
     headers: {
       "Content-Type": "application/json",
       Accept: "text/event-stream",
-      "x-api-key": apiKey ? "***" : "(missing)",
       "X-Correlation-ID": correlationIdToUse,
     },
   });
@@ -101,7 +97,6 @@ export async function streamChat(
       headers: {
         "Content-Type": "application/json",
         Accept: "text/event-stream",
-        "x-api-key": apiKey || "",
         "X-Correlation-ID": correlationIdToUse,
       },
       body: JSON.stringify(apiPayload),
@@ -128,7 +123,7 @@ export async function streamChat(
       } catch {
         // Not JSON, try text
       }
-      
+
       // Fallback to text error
       const txt = await res.text().catch(() => "");
       throw new Error(txt || `HTTP ${res.status}`);
@@ -180,19 +175,19 @@ export async function streamChat(
   } catch (err) {
     if (err.name === "AbortError") return;
     const correlationIdToUse = correlationId || crypto.randomUUID();
-    
+
     // Enhanced error message for debugging
     let errorMessage = "En feil oppstod ved kommunikasjon med serveren.";
     let errorCode = "NETWORK_ERROR";
-    
+
     if (err instanceof Error) {
       if (err.message.includes("Failed to fetch")) {
-        errorMessage = "Kunne ikke koble til server."
+        errorMessage = "Kunne ikke koble til server.";
         errorCode = "CONNECTION_ERROR";
       } else {
         errorMessage = err.message;
       }
-      
+
       console.error("❌ Network error:", {
         message: err.message,
         url: `${API_BASE_URL}/chat`,
@@ -200,12 +195,14 @@ export async function streamChat(
         error: err,
       });
     }
-    
-    onError?.(createErrorResponse(
-      errorMessage,
-      errorCode,
-      correlationIdToUse,
-      "network"
-    ));
+
+    onError?.(
+      createErrorResponse(
+        errorMessage,
+        errorCode,
+        correlationIdToUse,
+        "network"
+      )
+    );
   }
 }

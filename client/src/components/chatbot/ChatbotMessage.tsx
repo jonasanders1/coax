@@ -70,7 +70,12 @@ function parseErrorIfPresent(content: string): ErrorResponse | null {
     // Try to parse as JSON
     const parsed = JSON.parse(content);
     // Check if it has error structure
-    if (parsed && typeof parsed === "object" && parsed.error && parsed.error_code) {
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      parsed.error &&
+      parsed.error_code
+    ) {
       return parsed as ErrorResponse;
     }
   } catch {
@@ -80,57 +85,63 @@ function parseErrorIfPresent(content: string): ErrorResponse | null {
 }
 
 // Helper function to get user-friendly error message
-function getErrorMessage(errorCode: string, error: string): { title: string; description: string; retry?: number } {
-  const errorMessages: Record<string, { title: string; description: string }> = {
-    VALIDATION_ERROR: {
-      title: "Valideringsfeil",
-      description: "Forespørselen inneholder ugyldige data. Vennligst sjekk at alle felter er korrekt utfylt.",
-    },
-    INVALID_JSON: {
-      title: "Ugyldig format",
-      description: "Forespørselen har et ugyldig format. Prøv å oppdatere siden og send meldingen på nytt.",
-    },
-    MISSING_QUERY: {
-      title: "Mangler melding",
-      description: "Meldingen din er tom. Vennligst skriv inn en melding og prøv igjen.",
-    },
-    REQUEST_TOO_LARGE: {
-      title: "Forespørselen er for stor",
-      description: error || "Forespørselen overstiger størrelsesgrensen. Vennligst forkort meldingen og prøv igjen.",
-    },
-    PROMPT_INJECTION_DETECTED: {
-      title: "Sikkerhetsadvarsel",
-      description: "Meldingen din inneholder potensielt skadelig innhold og kan ikke behandles.",
-    },
-    BEDROCK_INIT_ERROR: {
-      title: "Tjenestefeil",
-      description: "Kunne ikke koble til AI-tjenesten. Vennligst prøv igjen om litt.",
-    },
-    INTERNAL_ERROR: {
-      title: "Intern feil",
-      description: "En uventet feil oppstod. Vårt team har blitt varslet. Prøv igjen om litt.",
-    },
-    OPENSEARCH_AUTH: {
-      title: "Tilgangsfeil",
-      description: "Kunne ikke få tilgang til søketjenesten. Vennligst prøv igjen senere.",
-    },
-    OPENSEARCH_CONNECTION_ERROR: {
-      title: "Tilkoblingsfeil",
-      description: "Kunne ikke koble til søketjenesten. Vennligst prøv igjen om litt.",
-    },
-    OPENSEARCH_INIT_ERROR: {
-      title: "Tjenestefeil",
-      description: "Søketjenesten kunne ikke initialiseres. Vennligst prøv igjen senere.",
-    },
-    OPENSEARCH_TIMEOUT: {
-      title: "Timeout",
-      description: "Søketjenesten tok for lang tid å svare. Vennligst prøv igjen om litt.",
-    },
-    NETWORK_ERROR: {
-      title: "Nettverksfeil",
-      description: "Kunne ikke koble til serveren. Sjekk internettforbindelsen din og prøv igjen.",
-    },
-  };
+function getErrorMessage(
+  errorCode: string,
+  error: string
+): { title: string; description: string; retry?: number } {
+  const errorMessages: Record<string, { title: string; description: string }> =
+    {
+      RATE_LIMIT_EXCEEDED: {
+        title: "For mange forespørsler",
+        description:
+          "Du har nådd grensen for antall forespørsler. Vennligst prøv igjen senere.",
+      },
+      VALIDATION_ERROR: {
+        title: "Valideringsfeil",
+        description:
+          "Forespørselen inneholder ugyldige data. Vennligst sjekk at alle felter er korrekt utfylt.",
+      },
+      INVALID_JSON: {
+        title: "Ugyldig format",
+        description:
+          "Forespørselen har et ugyldig format. Prøv å oppdatere siden og send meldingen på nytt.",
+      },
+      MISSING_QUERY: {
+        title: "Mangler melding",
+        description:
+          "Meldingen din er tom. Vennligst skriv inn en melding og prøv igjen.",
+      },
+      REQUEST_TOO_LARGE: {
+        title: "Forespørselen er for stor",
+        description:
+          error ||
+          "Forespørselen overstiger størrelsesgrensen. Vennligst forkort meldingen og prøv igjen.",
+      },
+      PROMPT_INJECTION_DETECTED: {
+        title: "Sikkerhetsadvarsel",
+        description:
+          "Meldingen din inneholder potensielt skadelig innhold og kan ikke behandles.",
+      },
+      BEDROCK_INIT_ERROR: {
+        title: "Tjenestefeil",
+        description:
+          "Kunne ikke koble til AI-tjenesten. Vennligst prøv igjen om litt.",
+      },
+      INTERNAL_ERROR: {
+        title: "Intern feil",
+        description:
+          "En uventet feil oppstod. Vårt team har blitt varslet. Prøv igjen om litt.",
+      },
+      NETWORK_ERROR: {
+        title: "Nettverksfeil",
+        description:
+          "Kunne ikke koble til serveren. Sjekk internettforbindelsen din og prøv igjen.",
+      },
+      CONNECTION_ERROR: {
+        title: "Tilkoblingsfeil",
+        description: "Kunne ikke koble til serveren. Feilen er hos oss.",
+      },
+    };
 
   const errorInfo = errorMessages[errorCode] || {
     title: "En feil oppstod",
@@ -147,7 +158,10 @@ function ErrorMessage({ error }: { error: ErrorResponse }) {
   const isValidationError = error.details?.service === "validation";
 
   return (
-    <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+    <Alert
+      variant="destructive"
+      className="border-destructive/50 bg-destructive/10"
+    >
       <AlertCircle className="h-4 w-4" />
       <AlertTitle className="flex items-center gap-2">
         {errorInfo.title}
@@ -159,7 +173,7 @@ function ErrorMessage({ error }: { error: ErrorResponse }) {
       </AlertTitle>
       <AlertDescription className="mt-2">
         <p className="mb-2">{errorInfo.description}</p>
-        
+
         {isRetryable && error.details?.retry_after && (
           <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
             <Info className="h-4 w-4" />
