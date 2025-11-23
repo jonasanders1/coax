@@ -375,9 +375,7 @@ export const ProductDetailsClient = ({
         <section className="grid grid-cols-1 gap-10">
           <div className="lg:col-span-2 space-y-8">
             <Accordion
-              type="single"
-              collapsible
-              defaultValue="specs"
+              type="multiple"
               className="border-none"
             >
               {features && features.length > 0 && (
