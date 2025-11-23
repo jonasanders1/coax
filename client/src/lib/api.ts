@@ -8,6 +8,12 @@ import {
   createErrorResponse,
 } from "@/types/chat";
 
+type ApiResponse = 
+  | { type: 'stream'; message: Message | null; metadata: unknown[] | null }
+  | { type: 'error'; error: ErrorResponse; status?: number; statusText?: string; errorData?: unknown; originalError?: string }
+  | { type: 'response'; message: Message }
+  | null;
+
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 /* --------------------------------------------------------------
@@ -16,7 +22,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 async function logChatToFile(
   payload: ChatRequest,
   correlationId: string,
-  apiResponse?: any
+  apiResponse?: ApiResponse
 ): Promise<void> {
   try {
     // Extract user query (last user message)
@@ -97,7 +103,10 @@ export async function postChat(
   const responseData = await handleResponse<ChatResponse>(res);
   
   // Log the chat request and response
-  await logChatToFile(payload, correlationId, responseData);
+  await logChatToFile(payload, correlationId, {
+    type: "response",
+    message: responseData.message,
+  });
   
   return responseData;
 }
@@ -171,18 +180,31 @@ export async function streamChat(
 
     if (!res.ok) {
       // Try to parse error response from API
-      let errorData: any = null;
+      let errorData: unknown = null;
       try {
         errorData = await res.json();
         // Check if it's an ErrorResponse format
-        if (errorData && errorData.error_code && errorData.error) {
+        if (
+          errorData &&
+          typeof errorData === "object" &&
+          "error_code" in errorData &&
+          "error" in errorData
+        ) {
+          const errorObj = errorData as {
+            error: string;
+            error_code: string;
+            correlation_id?: string;
+            timestamp?: string;
+            details?: { service: string };
+          };
+          
           const apiError: ErrorResponse = {
             type: "error",
-            error: errorData.error,
-            error_code: errorData.error_code,
-            correlation_id: errorData.correlation_id || correlationIdToUse,
-            timestamp: errorData.timestamp || new Date().toISOString(),
-            details: errorData.details || { service: "api" },
+            error: errorObj.error,
+            error_code: errorObj.error_code,
+            correlation_id: errorObj.correlation_id || correlationIdToUse,
+            timestamp: errorObj.timestamp || new Date().toISOString(),
+            details: errorObj.details || { service: "api" },
           };
           
           // Log the error response
@@ -201,16 +223,21 @@ export async function streamChat(
 
       // Fallback to text error
       const txt = await res.text().catch(() => "");
-      const errorResponse = {
-        type: "error",
-        status: res.status,
-        statusText: res.statusText,
-        error: txt || `HTTP ${res.status}`,
-        errorData,
-      };
+      const errorResponseObj = createErrorResponse(
+        txt || `HTTP ${res.status}`,
+        "HTTP_ERROR",
+        correlationIdToUse,
+        "api"
+      );
       
       // Log the error response
-      await logChatToFile(payload, correlationIdToUse, errorResponse);
+      await logChatToFile(payload, correlationIdToUse, {
+        type: "error" as const,
+        error: errorResponseObj,
+        status: res.status,
+        statusText: res.statusText,
+        errorData,
+      });
       
       throw new Error(txt || `HTTP ${res.status}`);
     }

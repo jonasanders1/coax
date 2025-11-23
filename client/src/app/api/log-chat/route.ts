@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
+import { Message, ErrorResponse } from '@/types/chat';
+
+type ApiResponse = 
+  | { type: 'stream'; message: Message | null; metadata: unknown[] | null }
+  | { type: 'error'; error: ErrorResponse; status?: number; statusText?: string; errorData?: unknown; originalError?: string }
+  | { type: 'response'; message: Message }
+  | null;
 
 interface LogEntry {
   timestamp: string;
@@ -15,7 +22,7 @@ interface LogEntry {
       timestamp: string;
     }>;
   };
-  response: any;
+  response: ApiResponse;
 }
 
 export async function POST(request: NextRequest) {
