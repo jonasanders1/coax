@@ -52,8 +52,8 @@ export default function AdminDashboard() {
       setProducts(fetchedProducts);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch products",
+        title: "Feil",
+        description: "Kunne ikke hente produkter",
         variant: "destructive",
       });
     } finally {
@@ -127,11 +127,11 @@ export default function AdminDashboard() {
               <div className="flex gap-2">
                 <Button onClick={handleAdd} variant="default">
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Product
+                  Legg til produkt
                 </Button>
                 <Button onClick={handleLogout} variant="outline">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  Logg ut
                 </Button>
               </div>
             </div>
@@ -139,10 +139,10 @@ export default function AdminDashboard() {
           <CardContent>
             {products.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No products found</p>
+                <p className="text-muted-foreground">Ingen produkter funnet</p>
                 <Button onClick={handleAdd} className="mt-4">
                   <Plus className="mr-2 h-4 w-4" />
-                  Add First Product
+                  Legg til første produkt
                 </Button>
               </div>
             ) : (
@@ -150,11 +150,11 @@ export default function AdminDashboard() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Phase</TableHead>
-                      <TableHead>Price From</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>Navn</TableHead>
+                      <TableHead>Kategori</TableHead>
+                      <TableHead>Fase</TableHead>
+                      <TableHead>Pris fra</TableHead>
+                      <TableHead>Handlinger</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -200,15 +200,15 @@ export default function AdminDashboard() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>Er du sikker?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete "{productToDelete?.name}". This
-              action cannot be undone.
+              Dette vil slette "{productToDelete?.name}" permanent. Denne
+              handlingen kan ikke angres.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            <AlertDialogCancel>Avbryt</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>Slett</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
