@@ -40,6 +40,14 @@ type ProductFormState = {
   };
 };
 
+type SpecsFormState = Product["specs"] & {
+  [key: string]: unknown;
+  tempRange?: string;
+  connectionWire?: unknown;
+  flowAt40C?: unknown;
+  voltage?: string | string[];
+};
+
 interface ProductFormProps {
   product: Product | null;
   onClose: () => void;
@@ -93,7 +101,7 @@ export default function ProductForm({
     }
   }, [product]);
 
-  const specs = formData.specs as any;
+  const specs = formData.specs as SpecsFormState;
 
   const toStringArray = (value: unknown): string[] => {
     if (Array.isArray(value)) {
@@ -116,7 +124,7 @@ export default function ProductForm({
           ? parseFloat(String(formData.priceFrom)) || 0
           : formData.priceFrom || 0;
 
-      const rawSpecs = (formData.specs || {}) as any;
+      const rawSpecs = (formData.specs || {}) as SpecsFormState;
 
       const toNumber = (value: unknown): number | undefined => {
         if (value == null) return undefined;
@@ -140,7 +148,7 @@ export default function ProductForm({
         return nums.length ? nums : undefined;
       };
 
-      const specsBase: any = { ...rawSpecs };
+      const specsBase: SpecsFormState = { ...rawSpecs };
 
       // Map certifications from top-level form state into specs
       if (formData.certifications && formData.certifications.length > 0) {
@@ -647,7 +655,11 @@ export default function ProductForm({
                 </Label>
                 <Input
                   id="overheatProtection"
-                  value={(specs?.overheatProtection as string) || ""}
+                  value={
+                    specs?.overheatProtection != null
+                      ? String(specs.overheatProtection)
+                      : ""
+                  }
                   onChange={(e) =>
                     handleSpecsChange("overheatProtection", e.target.value)
                   }
@@ -658,7 +670,11 @@ export default function ProductForm({
                 <Label htmlFor="workingPressure">Arbeidstrykk (bar)</Label>
                 <Input
                   id="workingPressure"
-                  value={(specs?.workingPressure as string) || ""}
+                  value={
+                    specs?.workingPressure != null
+                      ? String(specs.workingPressure)
+                      : ""
+                  }
                   onChange={(e) =>
                     handleSpecsChange("workingPressure", e.target.value)
                   }
@@ -730,7 +746,9 @@ export default function ProductForm({
                 <Label htmlFor="efficiency">Energieffektivitet (%)</Label>
                 <Input
                   id="efficiency"
-                  value={(specs?.efficiency as string) || ""}
+                  value={
+                    specs?.efficiency != null ? String(specs.efficiency) : ""
+                  }
                   onChange={(e) =>
                     handleSpecsChange("efficiency", e.target.value)
                   }
@@ -741,11 +759,7 @@ export default function ProductForm({
                 <Label htmlFor="thermalCutoff">Termisk utkobling (°C)</Label>
                 <Input
                   id="thermalCutoff"
-                  value={
-                    specs?.thermalCutoff !== undefined
-                      ? String(specs.thermalCutoff)
-                      : ""
-                  }
+                  value={String(specs?.thermalCutoff ?? "")}
                   onChange={(e) =>
                     handleSpecsChange("thermalCutoff", e.target.value)
                   }

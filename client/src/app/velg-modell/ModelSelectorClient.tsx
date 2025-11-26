@@ -58,9 +58,14 @@ const ModelSelectorClient = () => {
         const minFlow = flowValues[0];
         const maxFlow = flowValues[flowValues.length - 1];
 
-        const fuseRaw: any =
-          (product.specs as any)?.circuitBreaker ??
-          (product.specs as any)?.fuseCircuit;
+        const specs =
+          product.specs as
+            | {
+                circuitBreaker?: string | string[];
+                fuseCircuit?: string | string[];
+              }
+            | undefined;
+        const fuseRaw = specs?.circuitBreaker ?? specs?.fuseCircuit;
         const fuseValue = Array.isArray(fuseRaw)
           ? fuseRaw.join(", ")
           : fuseRaw ?? "Ikke spesifisert";

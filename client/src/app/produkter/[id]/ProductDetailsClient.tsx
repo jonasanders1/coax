@@ -86,18 +86,17 @@ const getUnitForKey = (key: string): string | null => {
   }
 };
 
-// Helper function to extract numeric value from a string
-const extractNumericValue = (value: string): string => {
-  // Remove any existing units and extract just the number
-  const numValue = parseFloat(value);
+// Helper function to extract numeric value from a string or number
+const extractNumericValue = (value: string | number): string => {
+  const numValue = typeof value === "number" ? value : parseFloat(value);
   if (!isNaN(numValue)) {
     return numValue.toString();
   }
-  return value;
+  return String(value);
 };
 
 // Helper function to format values with appropriate units
-const formatSpecValue = (key: string, value: any): string => {
+const formatSpecValue = (key: string, value: unknown): string => {
   // Handle arrays - group values and add unit once at the end
   if (Array.isArray(value)) {
     const unit = getUnitForKey(key);
@@ -110,8 +109,10 @@ const formatSpecValue = (key: string, value: any): string => {
     // Temperature range as "min - max °C" instead of "min, max °C"
     if (key === "temperatureRange") {
       const numericValues = value
-        .map((v: any) => (typeof v === "number" ? v : parseFloat(String(v))))
-        .filter((v: any) => !Number.isNaN(v));
+        .map((v) =>
+          typeof v === "number" ? v : parseFloat(String(v))
+        )
+        .filter((v) => !Number.isNaN(v));
       if (!numericValues.length) return "";
       const text = `${numericValues[0]}${
         numericValues.length > 1
@@ -123,7 +124,7 @@ const formatSpecValue = (key: string, value: any): string => {
 
     // For other arrays, extract numeric values and add unit once
     if (unit) {
-      const numericValues = value.map(extractNumericValue);
+      const numericValues = value.map((v) => extractNumericValue(v));
       return `${numericValues.join(", ")}${unit}`;
     }
 
@@ -139,25 +140,26 @@ const formatSpecValue = (key: string, value: any): string => {
   // Handle dimensions specially (can be "100x200x300" format)
   if (key === "dimensions") {
     // Check if it's already formatted with separators
-    if (value.includes("×") || value.includes("x") || value.includes("X")) {
+    const str = String(value);
+    if (str.includes("×") || str.includes("x") || str.includes("X")) {
       // Split by any separator, trim, and join with proper formatting
-      const parts = value
+      const parts = str
         .split(/[×xX]/)
         .map((part) => part.trim())
         .filter((part) => part.length > 0);
       return `${parts.join(" × ")} mm`;
     }
     // If it's a single number, add mm
-    const numValue = parseFloat(value);
+    const numValue = parseFloat(String(value));
     if (!isNaN(numValue)) {
-      return `${value} mm`;
+      return `${String(value)} mm`;
     }
-    return value;
+    return String(value);
   }
 
-  const numValue = parseFloat(value);
+  const numValue = parseFloat(String(value));
   if (isNaN(numValue)) {
-    return value; // Return as-is if not a number
+    return String(value); // Return as-is if not a number
   }
 
   // Add units based on spec key
@@ -166,7 +168,7 @@ const formatSpecValue = (key: string, value: any): string => {
     return `${value}${unit}`;
   }
 
-  return value;
+  return String(value);
 };
 
 type ProductDetailsClientProps = {
@@ -283,7 +285,7 @@ export const ProductDetailsClient = ({
   const name = model;
   const phase = product.specs?.phase;
   const category = product.category;
-  const rawVoltage = (specs as any)?.voltage;
+  const rawVoltage = specs?.voltage;
   const voltageStr =
     Array.isArray(rawVoltage) && rawVoltage.length
       ? rawVoltage.join(", ")
@@ -443,7 +445,7 @@ export const ProductDetailsClient = ({
                 })()}
               {specs?.powerOptions &&
                 (() => {
-                  const rawOptions: any = specs.powerOptions;
+                  const rawOptions = specs.powerOptions;
                   const optionStrings: string[] = Array.isArray(rawOptions)
                     ? rawOptions.map((p) => String(p))
                     : [String(rawOptions)];
@@ -611,7 +613,7 @@ export const ProductDetailsClient = ({
                               "certifications",
                             ] as const
                           ).map((key) => {
-                            const value = (specs as any)[key];
+                            const value = (specs as Record<string, unknown>)[key];
                             if (
                               value === undefined ||
                               value === null ||
