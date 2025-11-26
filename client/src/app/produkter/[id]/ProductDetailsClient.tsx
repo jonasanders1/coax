@@ -55,8 +55,6 @@ const getUnitForKey = (key: string): string | null => {
   switch (key) {
     case "flowRates":
       return " L/min";
-    case "flowRates":
-      return " L/min";
     case "powerOptions":
       return " kW";
     case "overheatProtection":
