@@ -22,26 +22,151 @@ import { absoluteUrl } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const SPEC_LABELS: Record<string, string> = {
-  flowRates: "Vannstrøm (L/min)",
-  flowAt40C: "Vannstrøm ved 40°C",
-  powerOptions: "Effektalternativer",
+  color: "Farge",
+  phase: "Fase",
   voltage: "Spenning (V)",
+  powerOptions: "Effektalternativer (kW)",
   current: "Strøm (A)",
-  fuse: "Sikringskrav (A)",
+  flowRates: "Vannstrøm (L/min)",
+  circuitBreaker: "Sikringskrav",
+  recommendedConnectionWire: "Anbefalt kabeltykkelse (mm²)",
   safetyClass: "Beskyttelsesklasse",
-  tempRange: "Temperaturområde (°C)",
-  overheatProtection: "Overopphetingsvern",
-  workingPressure: "Arbeidstrykk (bar)",
+  temperatureRange: "Temperaturområde (°C)",
+  overheatProtection: "Overopphetingsvern (°C)",
+  thermalCutoff: "Termisk utkobling (°C)",
+  workingPressure: "Arbeidstrykk",
   dimensions: "Mål (H×B×D mm)",
-  weight: "Vekt (kg)",
-  connectionWire: "Anbefalt kabeltykkelse",
-  pipeSize: "Anbefalt rørdimensjon",
-  tankCapacity: "Tankkapasitet (L)",
   efficiency: "Energieffektivitet (%)",
-  pressureResistance: "Trykkbestandighet",
+  weight: "Vekt (kg)",
+  minWaterFlowActivation: "Min. vannmengde for aktivering",
+  pipeConnection: "Rørtilkobling",
   material: "Materiale",
+  tankCapacity: "Tankkapasitet (L)",
   compressor: "Kompressor",
+  pipeSize: "Anbefalt rørdimensjon",
+  productSize: "Produktstørrelse (mm)",
+  giftBoxSize: "Gaveeske størrelse (mm)",
+  packageSize: "Emballasjestørrelse (mm)",
   certifications: "Sertifiseringer",
+};
+
+// Helper function to get the unit for a spec key
+const getUnitForKey = (key: string): string | null => {
+  switch (key) {
+    case "flowRates":
+      return " L/min";
+    case "flowRates":
+      return " L/min";
+    case "powerOptions":
+      return " kW";
+    case "overheatProtection":
+      return " °C";
+    case "thermalCutoff":
+      return " °C";
+    case "workingPressure":
+      return null;
+    case "temperatureRange":
+      return " °C";
+    case "current":
+      return " A";
+    case "connectionWire":
+      return " mm²";
+    case "voltage":
+      return " V";
+    case "weight":
+      return " kg";
+    case "tankCapacity":
+      return " L";
+    case "phase":
+      return "-fase";
+    case "efficiency":
+      return " %";
+    default:
+      return null;
+  }
+};
+
+// Helper function to extract numeric value from a string
+const extractNumericValue = (value: string): string => {
+  // Remove any existing units and extract just the number
+  const numValue = parseFloat(value);
+  if (!isNaN(numValue)) {
+    return numValue.toString();
+  }
+  return value;
+};
+
+// Helper function to format values with appropriate units
+const formatSpecValue = (key: string, value: any): string => {
+  // Handle arrays - group values and add unit once at the end
+  if (Array.isArray(value)) {
+    const unit = getUnitForKey(key);
+
+    // Handle dimensions specially (can be "100x200x300" format)
+    if (key === "dimensions") {
+      return value.map((v) => formatSpecValue(key, v)).join(", ");
+    }
+
+    // Temperature range as "min - max °C" instead of "min, max °C"
+    if (key === "temperatureRange") {
+      const numericValues = value
+        .map((v: any) => (typeof v === "number" ? v : parseFloat(String(v))))
+        .filter((v: any) => !Number.isNaN(v));
+      if (!numericValues.length) return "";
+      const text = `${numericValues[0]}${
+        numericValues.length > 1
+          ? ` - ${numericValues[numericValues.length - 1]}`
+          : ""
+      }`;
+      return unit ? `${text}${unit}` : text;
+    }
+
+    // For other arrays, extract numeric values and add unit once
+    if (unit) {
+      const numericValues = value.map(extractNumericValue);
+      return `${numericValues.join(", ")}${unit}`;
+    }
+
+    // For keys without units, just join with commas
+    return value.join(", ");
+  }
+
+  // Normalize numbers to strings
+  if (typeof value === "number") {
+    value = value.toString();
+  }
+
+  // Handle dimensions specially (can be "100x200x300" format)
+  if (key === "dimensions") {
+    // Check if it's already formatted with separators
+    if (value.includes("×") || value.includes("x") || value.includes("X")) {
+      // Split by any separator, trim, and join with proper formatting
+      const parts = value
+        .split(/[×xX]/)
+        .map((part) => part.trim())
+        .filter((part) => part.length > 0);
+      return `${parts.join(" × ")} mm`;
+    }
+    // If it's a single number, add mm
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      return `${value} mm`;
+    }
+    return value;
+  }
+
+  const numValue = parseFloat(value);
+  if (isNaN(numValue)) {
+    return value; // Return as-is if not a number
+  }
+
+  // Add units based on spec key
+  const unit = getUnitForKey(key);
+  if (unit) {
+    return `${value}${unit}`;
+  }
+
+  return value;
 };
 
 type ProductDetailsClientProps = {
@@ -101,7 +226,7 @@ export const ProductDetailsClient = ({
     return {
       "@context": "https://schema.org",
       "@type": "Product",
-      name: product.name,
+      name: product.model,
       description: metaDescription,
       sku: product.id,
       category: product.category,
@@ -145,27 +270,26 @@ export const ProductDetailsClient = ({
   }
 
   const {
-    name,
+    model,
     images,
-    phase,
     priceFrom,
     description,
     ideal,
+    inStock,
     specs,
     features,
     installation,
-    certifications,
   } = product;
+  const name = model;
+  const phase = product.specs?.phase;
   const category = product.category;
+  const rawVoltage = (specs as any)?.voltage;
   const voltageStr =
-    (Array.isArray(product.voltage)
-      ? product.voltage.join(", ")
-      : product.voltage) ||
-    (Array.isArray(specs?.voltage)
-      ? specs?.voltage?.join(", ")
-      : specs?.voltage);
-
-  console.log(specs);
+    Array.isArray(rawVoltage) && rawVoltage.length
+      ? rawVoltage.join(", ")
+      : typeof rawVoltage === "string" && rawVoltage
+      ? rawVoltage
+      : null;
 
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
@@ -212,9 +336,21 @@ export const ProductDetailsClient = ({
 
           <div className="space-y-4">
             <div className="border-b pb-2">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
-                {name}
-              </h1>
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+                  {name}
+                </h1>
+                <span
+                  className={cn(
+                    "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
+                    inStock
+                      ? "bg-emerald-100 text-emerald-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  )}
+                >
+                  {inStock ? "På lager" : "Ikke på lager"}
+                </span>
+              </div>
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl md:text-4xl font-semibold text-foreground">
                   {priceFrom} kr
@@ -242,9 +378,12 @@ export const ProductDetailsClient = ({
             </div>
 
             <div className="rounded-xl border p-4 bg-card text-sm md:text-base space-y-1">
-              <div>
-                <strong className="text-foreground">Fase:</strong> {phase}
-              </div>
+              {phase !== undefined && (
+                <div>
+                  <strong className="text-foreground">Fase:</strong> {phase}
+                  -fase
+                </div>
+              )}
               {voltageStr && (
                 <div>
                   <strong className="text-foreground">Spenning:</strong>{" "}
@@ -254,10 +393,10 @@ export const ProductDetailsClient = ({
               {specs?.flowRates &&
                 specs.flowRates.length > 0 &&
                 (() => {
-                  // Extract numeric values from flow rates (e.g., "3 L/min" -> 3)
+                  // Parse numeric values from flow rates (now just numbers)
                   const parseFlowRate = (rate: string): number | null => {
-                    const match = rate.match(/(\d+(?:\.\d+)?)/);
-                    return match ? parseFloat(match[1]) : null;
+                    const num = parseFloat(rate);
+                    return isNaN(num) ? null : num;
                   };
 
                   const flowRateValues = specs.flowRates
@@ -285,7 +424,7 @@ export const ProductDetailsClient = ({
                             <strong className="text-foreground">
                               Kapasitet:
                             </strong>{" "}
-                            {minFlowStr}
+                            {minFlowStr} L/min
                           </div>
                         );
                       } else {
@@ -294,7 +433,7 @@ export const ProductDetailsClient = ({
                             <strong className="text-foreground">
                               Kapasitet:
                             </strong>{" "}
-                            {minFlowStr} - {maxFlowStr}
+                            {minFlowStr} - {maxFlowStr} L/min
                           </div>
                         );
                       }
@@ -303,15 +442,18 @@ export const ProductDetailsClient = ({
                   return null;
                 })()}
               {specs?.powerOptions &&
-                specs.powerOptions.length > 0 &&
                 (() => {
-                  // Extract numeric values from power options (e.g., "3.5 kW" -> 3.5)
+                  const rawOptions: any = specs.powerOptions;
+                  const optionStrings: string[] = Array.isArray(rawOptions)
+                    ? rawOptions.map((p) => String(p))
+                    : [String(rawOptions)];
+
                   const parsePower = (power: string): number | null => {
-                    const match = power.match(/(\d+(?:\.\d+)?)/);
-                    return match ? parseFloat(match[1]) : null;
+                    const num = parseFloat(power);
+                    return isNaN(num) ? null : num;
                   };
 
-                  const powerValues = specs.powerOptions
+                  const powerValues = optionStrings
                     .map(parsePower)
                     .filter((val): val is number => val !== null);
 
@@ -320,11 +462,11 @@ export const ProductDetailsClient = ({
                     const maxPower = Math.max(...powerValues);
 
                     // Find the original strings that correspond to min and max
-                    const minPowerStr = specs.powerOptions.find((power) => {
+                    const minPowerStr = optionStrings.find((power) => {
                       const val = parsePower(power);
                       return val !== null && val === minPower;
                     });
-                    const maxPowerStr = specs.powerOptions.find((power) => {
+                    const maxPowerStr = optionStrings.find((power) => {
                       const val = parsePower(power);
                       return val !== null && val === maxPower;
                     });
@@ -334,14 +476,14 @@ export const ProductDetailsClient = ({
                         return (
                           <div>
                             <strong className="text-foreground">Effekt:</strong>{" "}
-                            {minPowerStr}
+                            {minPowerStr} kW
                           </div>
                         );
                       } else {
                         return (
                           <div>
                             <strong className="text-foreground">Effekt:</strong>{" "}
-                            {minPowerStr} - {maxPowerStr}
+                            {minPowerStr} - {maxPowerStr} kW
                           </div>
                         );
                       }
@@ -360,7 +502,7 @@ export const ProductDetailsClient = ({
         </section>
 
         <section>
-          <div className="flex flex-col gap-2 mb-3">
+          <div className="flex flex-col gap-2 mb-1 md:mb-3">
             <h2 className="text-lg md:text-xl font-semibold">
               Produktbeskrivelse
             </h2>
@@ -368,16 +510,34 @@ export const ProductDetailsClient = ({
           <p className="text-muted-foreground text-sm md:text-base leading-relaxed whitespace-pre-line">
             {description}
           </p>
+
+          <div className="flex flex-col gap-2 mb-1 md:mb-3 mt-4">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg md:text-xl font-semibold">Lagerstatus</h2>
+              <span
+                className={cn(
+                  "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
+                  inStock
+                    ? "bg-emerald-100 text-emerald-800"
+                    : "bg-yellow-100 text-yellow-800"
+                )}
+              >
+                {inStock ? "På lager" : "Ikke på lager"}
+              </span>
+            </div>
+            <p className="text-muted-foreground text-sm md:text-base">
+              {inStock
+                ? "Dette produktet er for øyeblikket på lager og kan bestilles."
+                : "Dette produktet er ikke på lager. Ta kontakt for estimert leveringstid."}
+            </p>
+          </div>
         </section>
 
         <Separator />
 
         <section className="grid grid-cols-1 gap-10">
           <div className="lg:col-span-2 space-y-8">
-            <Accordion
-              type="multiple"
-              className="border-none"
-            >
+            <Accordion type="multiple" className="border-none">
               {features && features.length > 0 && (
                 <AccordionItem value="features">
                   <AccordionTrigger className="text-base md:text-lg font-semibold">
@@ -418,37 +578,68 @@ export const ProductDetailsClient = ({
                 </AccordionTrigger>
                 <AccordionContent>
                   {specs && (
-                    <ul className="space-y-2 text-sm md:text-base">
-                      {Object.entries(specs).map(
-                        ([key, value], index, array) => {
-                          const label = SPEC_LABELS[key] ?? key;
-                          const isLast = index === array.length - 1;
-                          return (
-                            <li
-                              key={key}
-                              className="flex justify-between border-b pb-1"
-                            >
-                              <span className="font-medium">{label}</span>
-                              <span className="text-muted-foreground">
-                                {Array.isArray(value)
-                                  ? value.join(", ")
-                                  : value}
-                              </span>
-                            </li>
-                          );
-                        }
-                      )}
-                      {certifications && certifications.length > 0 && (
-                        <li className="flex justify-between">
-                          <span className="font-medium">
-                            {SPEC_LABELS.certifications}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {certifications.join(", ")}
-                          </span>
-                        </li>
-                      )}
-                    </ul>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm md:text-base border-collapse">
+                        <tbody>
+                          {(
+                            [
+                              "color",
+                              "phase",
+                              "voltage",
+                              "powerOptions",
+                              "current",
+                              "flowRates",
+                              "circuitBreaker",
+                              "recommendedConnectionWire",
+                              "safetyClass",
+                              "temperatureRange",
+                              "overheatProtection",
+                              "thermalCutoff",
+                              "workingPressure",
+                              "dimensions",
+                              "efficiency",
+                              "weight",
+                              "minWaterFlowActivation",
+                              "pipeConnection",
+                              "material",
+                              "tankCapacity",
+                              "compressor",
+                              "pipeSize",
+                              "productSize",
+                              "giftBoxSize",
+                              "packageSize",
+                              "certifications",
+                            ] as const
+                          ).map((key) => {
+                            const value = (specs as any)[key];
+                            if (
+                              value === undefined ||
+                              value === null ||
+                              (typeof value === "string" &&
+                                value.trim().length === 0) ||
+                              (Array.isArray(value) && value.length === 0)
+                            ) {
+                              return null;
+                            }
+
+                            const label = SPEC_LABELS[key] ?? key;
+                            return (
+                              <tr
+                                key={key}
+                                className="border-b last:border-b-0"
+                              >
+                                <th className="py-2 pr-4 text-left font-medium align-top whitespace-nowrap">
+                                  {label}
+                                </th>
+                                <td className="py-2 text-muted-foreground text-right">
+                                  {formatSpecValue(key, value)}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   )}
                 </AccordionContent>
               </AccordionItem>

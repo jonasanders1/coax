@@ -100,13 +100,12 @@ const ChatBot = () => {
       {/* Chat Dialog */}
       <Dialog open={isOpen} onOpenChange={closeChat}>
         <DialogContent className="md:h-[700px] flex flex-col p-0 gap-0">
-          <DialogHeader className="px-4 pt-6 pb-4 border-b">
+          <DialogHeader className="px-4 py-4 border-b">
             <div
               className="flex items-center space-x-2"
               data-radix-dialog-title="Flux"
             >
-              <MessageCircle className="h-6 w-6" />
-              <DialogTitle className="text-xl m-0">Snakk med Flux</DialogTitle>
+              <DialogTitle className="text-2xl m-0">Flux</DialogTitle>
             </div>
             <DialogDescription className="sr-only">
               Snakk med assistenten for å få hjelp om produkter og valg av

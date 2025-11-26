@@ -51,7 +51,7 @@ async function processProductImages(images: string[] | undefined): Promise<strin
 export async function getAllProducts(): Promise<Product[]> {
   try {
     const productsRef = collection(db, PRODUCTS_COLLECTION);
-    const q = query(productsRef, orderBy("name"));
+    const q = query(productsRef, orderBy("model"));
     const querySnapshot = await getDocs(q);
     
     const products: Product[] = [];

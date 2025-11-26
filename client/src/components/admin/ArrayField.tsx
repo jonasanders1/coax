@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 
 interface ArrayFieldProps {
   label: string;
+  required?: boolean;
   values: string[];
   onChange: (values: string[]) => void;
   placeholder?: string;
@@ -16,6 +17,7 @@ interface ArrayFieldProps {
 
 export default function ArrayField({
   label,
+  required = false,
   values,
   onChange,
   placeholder = "Legg til...",

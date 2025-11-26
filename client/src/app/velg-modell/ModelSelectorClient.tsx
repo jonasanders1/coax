@@ -58,17 +58,20 @@ const ModelSelectorClient = () => {
         const minFlow = flowValues[0];
         const maxFlow = flowValues[flowValues.length - 1];
 
-        const fuseValue = Array.isArray(product.specs?.fuse)
-          ? product.specs?.fuse.join(", ")
-          : product.specs?.fuse ?? "Ikke spesifisert";
+        const fuseRaw: any =
+          (product.specs as any)?.circuitBreaker ??
+          (product.specs as any)?.fuseCircuit;
+        const fuseValue = Array.isArray(fuseRaw)
+          ? fuseRaw.join(", ")
+          : fuseRaw ?? "Ikke spesifisert";
 
         const usage =
           product.ideal?.slice(0, 2).join(", ") ?? "Ikke spesifisert";
 
         return {
           id: product.id,
-          model: product.name,
-          phase: product.phase || "Ikke spesifisert",
+          model: product.model,
+          phase: String(product.specs?.phase ?? "Ikke spesifisert"),
           fuse: fuseValue,
           usage,
           minFlow,

@@ -41,7 +41,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 )}
                 <img
                   src={heroImage}
-                  alt={product.name}
+                  alt={product.model}
                   onLoad={() => setIsImageLoaded(true)}
                   onError={() => setIsImageLoaded(true)}
                   className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
       <CardContent className="flex-1 pt-5 space-y-2">
         <CardTitle className="text-lg md:text-xl font-semibold">
-          {product.name}
+          {product.model}
         </CardTitle>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl md:text-3xl font-semibold">

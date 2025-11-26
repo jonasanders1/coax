@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getAuth } from "firebase/auth";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -22,5 +22,16 @@ export const db = getFirestore(app);
 // Initialize Firebase Storage
 export const storage = getStorage(app);
 
-// Initialize Firebase Auth
-export const auth = getAuth(app);
+/**
+ * Initialize Firebase Auth only in the browser.
+ *
+ * This avoids Node/ts-node scripts (like migrations) failing with
+ * auth/invalid-api-key when env is not fully configured for Auth,
+ * while keeping Auth fully available in the client app.
+ */
+let authInstance: Auth | undefined;
+if (typeof window !== "undefined") {
+  authInstance = getAuth(app);
+}
+
+export const auth = authInstance as Auth;

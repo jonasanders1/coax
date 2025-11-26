@@ -22,7 +22,7 @@ const ContactClient = () => {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4">
             <div className="flex gap-2">
               <Button
                 variant={formType === "general" ? "default" : "outline"}

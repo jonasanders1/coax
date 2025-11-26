@@ -1,35 +1,40 @@
+// NEW SCHEMA
 export type Product = {
   id: string;
-  name: string;
+  model: string; // e.g. JNE70
   category: string;
-  phase: string;
-  voltage?: string | string[];
-  priceFrom: number | string;
+  inStock: boolean;
+  priceFrom: number;
   images?: string[];
   description: string;
-  features?: string[];
   ideal: string[];
+  features?: string[];
+  installation?: string;
   specs: {
+    phase?: number;
+    voltage?: string;
+    certifications?: string[];
+    powerOptions?: number | number[];
+    current?: number | number[];
     flowRates?: string[];
-    powerOptions?: string[];
-    voltage?: string | string[];
-    current?: string[];
-    fuse?: string[];
+    circuitBreaker?: string;
+    recommendedConnectionWire?: number | number[];
     safetyClass?: string;
-    tempRange?: string;
-    overheatProtection?: string;
+    temperatureRange?: number | number[];
+    overheatProtection?: number;
+    thermalCutoff?: number;
     workingPressure?: string;
     dimensions?: string | string[];
+    efficiency?: number;
     weight?: string;
-    connectionWire?: string | string[];
-    pipeSize?: string | string[];
-    tankCapacity?: string[];
-    efficiency?: string;
-    pressureResistance?: string;
+    color?: string;
+    minWaterFlowActivation?: string; // not specified
+    pipeConnection?: string; // G1/2"
     material?: string;
+    tankCapacity?: string[];
     compressor?: string;
-    flowAt40C?: string[];
+    pipeSize?: string | string[];
+    productSize?: number | number[]; // 358×246×85 mm
+    packageSize?: number | number[]; // 410×310×120 mm
   };
-  certifications?: string[];
-  installation?: string;
 };

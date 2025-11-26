@@ -34,6 +34,7 @@ import { Loader2, Plus, Edit, Trash2, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProductForm from "./ProductForm";
 import PageTitile from "../PageTitile";
+import { cn } from "@/lib/utils";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -150,8 +151,9 @@ export default function AdminDashboard() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Navn</TableHead>
+                      <TableHead>Modell</TableHead>
                       <TableHead>Kategori</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Fase</TableHead>
                       <TableHead>Pris fra</TableHead>
                       <TableHead>Handlinger</TableHead>
@@ -161,10 +163,22 @@ export default function AdminDashboard() {
                     {products.map((product) => (
                       <TableRow key={product.id}>
                         <TableCell className="font-medium">
-                          {product.name}
+                          {product.model}
                         </TableCell>
                         <TableCell>{product.category}</TableCell>
-                        <TableCell>{product.phase}</TableCell>
+                        <TableCell>
+                          <span
+                            className={cn(
+                              "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                              product.inStock
+                                ? "bg-emerald-100 text-emerald-800"
+                                : "bg-yellow-100 text-yellow-800"
+                            )}
+                          >
+                            {product.inStock ? "På lager" : "Ikke på lager"}
+                          </span>
+                        </TableCell>
+                        <TableCell>{product.specs?.phase}</TableCell>
                         <TableCell>{product.priceFrom}</TableCell>
                         <TableCell>
                           <div className="flex gap-2">
@@ -202,7 +216,7 @@ export default function AdminDashboard() {
           <AlertDialogHeader>
             <AlertDialogTitle>Er du sikker?</AlertDialogTitle>
             <AlertDialogDescription>
-              Dette vil slette "{productToDelete?.name}" permanent. Denne
+              Dette vil slette "{productToDelete?.model}" permanent. Denne
               handlingen kan ikke angres.
             </AlertDialogDescription>
           </AlertDialogHeader>

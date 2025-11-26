@@ -21,7 +21,7 @@ const PRODUCTS_COLLECTION = "products";
 export async function getAllProductsAdmin(): Promise<Product[]> {
   try {
     const productsRef = collection(db, PRODUCTS_COLLECTION);
-    const q = query(productsRef, orderBy("name"));
+    const q = query(productsRef, orderBy("model"));
     const querySnapshot = await getDocs(q);
 
     const products: Product[] = querySnapshot.docs.map((doc) => ({

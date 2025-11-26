@@ -62,10 +62,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setProductsError(null);
     try {
       const fetchedProducts = await getAllProducts();
-      // INSERT_YOUR_CODE
 
       // Define the specific category order you want
-      const categoryOrder = ["Direkte vannvarmer"]; 
+      const categoryOrder = ["Direkte vannvarmer"];
 
       // Helper to get index in order, unknown categories at end
       const getCategoryOrderIndex = (category: string) => {
@@ -73,14 +72,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return idx === -1 ? categoryOrder.length : idx;
       };
 
-      // Sort products array by category first (with specific order), then by name as fallback
+      // Sort products array by category first (with specific order),
+      // then by model name as a fallback
       const sortedProducts = fetchedProducts.slice().sort((a, b) => {
         const catA = getCategoryOrderIndex(a.category);
         const catB = getCategoryOrderIndex(b.category);
         if (catA !== catB) return catA - catB;
-        // fallback: alphabetically by name
-        return a.name.localeCompare(b.name);
+        return a.model.localeCompare(b.model);
       });
+
       setProducts(sortedProducts);
     } catch (error) {
       const err = error instanceof Error ? error : new Error("Failed to fetch products");

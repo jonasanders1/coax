@@ -34,7 +34,7 @@ const benefits = [
   {
     icon: Zap,
     title: "Energieffektiv",
-    text: "COAX varmer vannet kun når du faktisk bruker det – ingen standby-forbruk eller varmetap. Med opptil 97 % virkningsgrad sparer du strøm hver eneste dag.",
+    text: "Våre varmtvannsberedere varmer vannet kun når du faktisk bruker det – ingen standby-forbruk eller varmetap. Med opptil 97 % virkningsgrad sparer du strøm hver eneste dag.",
   },
   {
     icon: Leaf,
@@ -151,7 +151,7 @@ const HomePage = () => {
           className="container mx-auto px-4 py-24 text-center"
         >
           <motion.h1
-            className="text-5xl md:text-6xl font-bold text-foreground mb-6 max-w-4xl mx-auto"
+            className="text-4xl md:text-6xl font-bold text-foreground mb-6 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
               hasAnimated
@@ -167,7 +167,7 @@ const HomePage = () => {
                 : {}
             }
           >
-            Spar strøm, plass, og miljø!
+            Spar strøm, plass, vann og miljø!
           </motion.h1>
           <motion.p
             className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto"
@@ -186,7 +186,7 @@ const HomePage = () => {
                 : {}
             }
           >
-            COAXs plassbesparende, effektive elektriske vannvarmere – helt uten
+            Med våre plassbesparende, effektive elektriske vannvarmere – helt uten
             lagringstank. Den smarte måten å varme vann på!
           </motion.p>
           <motion.div
