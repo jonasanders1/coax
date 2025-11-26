@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import productsData from "@/product-details.json";
-import type { Product } from "@/types/product";
 import { ProductDetailsClient } from "./ProductDetailsClient";
 
 type Params = {
   id: string;
 };
 
-const fallbackProducts = (productsData as { products?: Product[] }).products ?? [];
+type StaticProduct = {
+  id: string;
+  name?: string;
+  description?: string;
+  images?: string[];
+};
+
+const staticProducts =
+  (productsData as { products?: StaticProduct[] }).products ?? [];
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +28,9 @@ export async function generateMetadata(
     path.startsWith("http")
       ? path
       : `https://coax.jonasanders1.com${path.startsWith("/") ? path : `/${path}`}`;
-  const fallbackProduct = fallbackProducts.find((product) => product.id === params.id);
+  const fallbackProduct = staticProducts.find(
+    (product) => product.id === params.id
+  );
   const title = fallbackProduct
     ? `COAX | ${fallbackProduct.name}`
     : `COAX | Produkt ${params.id}`;
@@ -65,15 +74,9 @@ export async function generateMetadata(
 
 const ProductDetailsPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
-  const fallbackProduct = fallbackProducts.find(
-    (product) => product.id === resolvedParams.id
-  );
 
   return (
-    <ProductDetailsClient
-      productId={resolvedParams.id}
-      fallbackProduct={fallbackProduct}
-    />
+    <ProductDetailsClient productId={resolvedParams.id} />
   );
 };
 
