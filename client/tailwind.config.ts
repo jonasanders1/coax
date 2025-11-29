@@ -76,6 +76,8 @@ export default {
       },
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
+        "gradient-destructive": "var(--gradient-destructive)",
+        "gradient-success": "var(--gradient-success)",
         "gradient-card": "var(--gradient-card)",
         "gradient-hero": "var(--gradient-hero)",
       },

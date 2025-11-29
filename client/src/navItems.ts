@@ -6,6 +6,7 @@ import {
   Star,
   Phone,
   Calculator,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -14,22 +15,39 @@ export type NavItem = {
   label: string;
   icon?: LucideIcon;
   header?: boolean;
+  children?: NavItem[];
 };
 
 export const navItems: NavItem[] = [
   { path: "/", label: "Hjem", icon: Home, header: true },
   { path: "/produkter", label: "Produkter", icon: Package, header: true },
+  {
+    path: "/velg-modell",
+    label: "Velg Modell",
+    icon: SlidersHorizontal,
+    header: true,
+  },
   // {
-  //   path: "/velg-modell",
-  //   label: "Velg Modell",
-  //   icon: SlidersHorizontal,
+  //   path: "/coax-vs-tank",
+  //   label: "COAX vs. Tank",
+  //   icon: Zap,
   //   header: true,
   // },
   {
     path: "/kalkulator",
-    label: "Sparekalkulator",
+    label: "Forbrukskalkulator",
     icon: Calculator,
     header: true,
+    children: [
+      {
+        path: "/kalkulator/detaljer",
+        label: "Detaljer",
+      },
+      {
+        path: "/kalkulator/innstillinger",
+        label: "Innstillinger",
+      },
+    ],
   },
   { path: "/faq", label: "FAQ", icon: HelpCircle, header: true },
   { path: "/referanser", label: "Referanser", icon: Star, header: true },

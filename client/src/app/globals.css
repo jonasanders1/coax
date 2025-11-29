@@ -52,8 +52,18 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(217 54% 24%) 0%,
-      hsl(217 38% 39%) 100%
+      hsla(217, 54%, 24%, 0.9) 0%,
+      hsla(217, 38%, 39%, 0.8) 100%
+    );
+    --gradient-destructive: linear-gradient(
+      135deg,
+      hsla(0, 70%, 50%, 0.9) 0%,
+      hsla(0, 65%, 55%, 0.8) 100%
+    );
+    --gradient-success: linear-gradient(
+      135deg,
+      hsla(114, 45%, 45%, 0.9) 0%,
+      hsla(114, 40%, 40%, 0.8) 100%
     );
     --gradient-card: linear-gradient(
       to bottom,
@@ -192,8 +202,18 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsl(217 50% 60%) 0%,
-      hsl(217 45% 45%) 100%
+      hsla(217, 50%, 60%, 0.7) 0%,
+      hsla(217, 45%, 45%, 0.6) 100%
+    );
+    --gradient-destructive: linear-gradient(
+      135deg,
+      hsla(0, 65%, 55%, 0.7) 0%,
+      hsla(0, 70%, 50%, 0.6) 100%
+    );
+    --gradient-success: linear-gradient(
+      135deg,
+      hsla(114, 45%, 45%, 0.7) 0%,
+      hsla(114, 40%, 40%, 0.6) 100%
     );
 
     --gradient-card: linear-gradient(
@@ -305,11 +325,19 @@ html {
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .markdown-body code {
-    @apply bg-muted px-1 py-0.5 rounded text-sm;
+  .markdown-body code,
+  .wmde-markdown code {
+    @apply px-1 py-0.5 rounded text-sm;
   }
-  .markdown-body pre {
-    @apply bg-muted p-4 rounded-lg overflow-x-auto;
+  .markdown-body pre,
+  .wmde-markdown pre {
+    @apply p-4 rounded-lg overflow-x-auto border border-border;
+    background-color: hsl(var(--background)) !important; /* amber-400 */
+  }
+  .markdown-body pre code,
+  .wmde-markdown pre code {
+    @apply p-0;
+    background-color: inherit !important; /* amber-400 */
   }
   /* .markdown-body table { display: block; width: 100%; overflow-x: auto; } */
 

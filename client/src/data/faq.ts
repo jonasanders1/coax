@@ -56,7 +56,7 @@ export const faqs: FaqCategory[] = [
         a: "COAX varmer kun vannet når du faktisk bruker det. I motsetning til en tradisjonell varmtvannstank som holder vannet varmt døgnet rundt, reduserer du både standby-forbruk og varmetap. Mange brukere opplever 20–40 % lavere strømforbruk til varmtvann, avhengig av bruksmønster og antall tappesteder.",
         contentSegments: [
           { kind: "text", value: "Bruk vår " },
-          { kind: "link", value: "sparekalkulator", to: "/kalkulator" },
+          { kind: "link", value: "Forbrukskalkulator", to: "/kalkulator" },
           {
             kind: "text",
             value: " for å beregne hvor mye du kan spare, eller ta kontakt hvis du trenger hjelp til å vurdere løsningen.",

@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Zap, Droplet, Settings } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAppContext } from "@/context/AppContext";
-import { Badge } from "@/components/ui/badge";
 import PageTitile from "@/components/PageTitile";
 
 type Recommendation = {
@@ -20,6 +25,7 @@ type Recommendation = {
   minFlow: number;
   maxFlow: number;
   matchMax: number;
+  minPowerOption: number;
 };
 
 const ModelSelectorClient = () => {
@@ -30,20 +36,42 @@ const ModelSelectorClient = () => {
   const [flowRate, setFlowRate] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    // Fetch products if not already loaded
+    if (!productsLoading && products.length === 0 && !productsError) {
+      fetchProducts();
+    }
+  }, [products, productsLoading, productsError, fetchProducts]);
 
-  const recommendations = useMemo<Recommendation[]>(() => {
+  // Helper functions
+  const parseFlowValues = (value: string): number[] => {
+    if (!value) return [];
+    const matches = value.match(/[\d]+(?:[.,]\d+)?/g);
+    if (!matches) return [];
+    return matches.map((match) => parseFloat(match.replace(",", ".")));
+  };
+
+  const parsePowerOptions = (powerOptions?: number | number[]): number[] => {
+    if (powerOptions === undefined || powerOptions === null) return [];
+    if (typeof powerOptions === "number") return [powerOptions];
+    if (Array.isArray(powerOptions) && powerOptions.length > 0) {
+      return powerOptions;
+    }
+    return [];
+  };
+
+  // Filter products by category "Direkte vannvarmer"
+  const filteredProducts = useMemo(() => {
     if (!products || products.length === 0) return [];
+    return products.filter(
+      (product) => product.category === "Direkte vannvarmer"
+    );
+  }, [products]);
 
-    const parseFlowValues = (value: string): number[] => {
-      if (!value) return [];
-      const matches = value.match(/[\d]+(?:[.,]\d+)?/g);
-      if (!matches) return [];
-      return matches.map((match) => parseFloat(match.replace(",", ".")));
-    };
+  // Recommendations for model selector (based on flow calculation)
+  const recommendations = useMemo<Recommendation[]>(() => {
+    if (!filteredProducts || filteredProducts.length === 0) return [];
 
-    const derived = products
+    const derived = filteredProducts
       .map((product) => {
         const flowEntries = product.specs?.flowRates ?? [];
         const flowValues = flowEntries
@@ -58,13 +86,16 @@ const ModelSelectorClient = () => {
         const minFlow = flowValues[0];
         const maxFlow = flowValues[flowValues.length - 1];
 
-        const specs =
-          product.specs as
-            | {
-                circuitBreaker?: string | string[];
-                fuseCircuit?: string | string[];
-              }
-            | undefined;
+        const powerOptions = parsePowerOptions(product.specs?.powerOptions);
+        const minPowerOption =
+          powerOptions.length > 0 ? Math.min(...powerOptions) : 0;
+
+        const specs = product.specs as
+          | {
+              circuitBreaker?: string | string[];
+              fuseCircuit?: string | string[];
+            }
+          | undefined;
         const fuseRaw = specs?.circuitBreaker ?? specs?.fuseCircuit;
         const fuseValue = Array.isArray(fuseRaw)
           ? fuseRaw.join(", ")
@@ -82,10 +113,17 @@ const ModelSelectorClient = () => {
           minFlow,
           maxFlow,
           matchMax: maxFlow,
+          minPowerOption,
         } as Recommendation;
       })
       .filter((item): item is Recommendation => item !== null)
-      .sort((a, b) => a.minFlow - b.minFlow);
+      .sort((a, b) => {
+        // Sort by minFlow first, then by minPowerOption
+        if (a.minFlow !== b.minFlow) {
+          return a.minFlow - b.minFlow;
+        }
+        return a.minPowerOption - b.minPowerOption;
+      });
 
     return derived.map((item, index) => {
       const next = derived[index + 1];
@@ -94,7 +132,51 @@ const ModelSelectorClient = () => {
         matchMax: next ? next.minFlow : Number.POSITIVE_INFINITY,
       };
     });
-  }, [products]);
+  }, [filteredProducts]);
+
+  // All products for the table (not filtered by flow)
+  const tableProducts = useMemo(() => {
+    if (!filteredProducts || filteredProducts.length === 0) return [];
+
+    return filteredProducts
+      .map((product) => {
+        const flowEntries = product.specs?.flowRates ?? [];
+        const flowValues = flowEntries
+          .flatMap(parseFlowValues)
+          .filter((num) => !Number.isNaN(num))
+          .sort((a, b) => a - b);
+
+        const powerOptions = parsePowerOptions(product.specs?.powerOptions);
+
+        const specs = product.specs as
+          | {
+              circuitBreaker?: string | string[];
+              fuseCircuit?: string | string[];
+            }
+          | undefined;
+        const fuseRaw = specs?.circuitBreaker ?? specs?.fuseCircuit;
+        const fuseValue = Array.isArray(fuseRaw)
+          ? fuseRaw.join(", ")
+          : fuseRaw ?? "Ikke spesifisert";
+
+        const usage = product.ideal?.join(", ") ?? "Ikke spesifisert";
+
+        return {
+          id: product.id,
+          model: product.model,
+          flowRates: flowEntries.length > 0 ? flowEntries : ["—"],
+          flowValues,
+          powerOptions: powerOptions.length > 0 ? powerOptions : [],
+          phase: String(product.specs?.phase ?? "Ikke spesifisert"),
+          fuse: fuseValue,
+          usage,
+        };
+      })
+      .sort((a, b) => {
+        // Sort by model name
+        return a.model.localeCompare(b.model);
+      });
+  }, [filteredProducts]);
 
   const calculateRecommendation = () => {
     if (!recommendations.length) {
@@ -106,10 +188,33 @@ const ModelSelectorClient = () => {
     const lpm = 600 / seconds;
     setFlowRate(Math.round(lpm * 10) / 10);
 
-    const rec = recommendations.find(
+    // Find all products that meet the flow requirement
+    const matchingProducts = recommendations.filter(
       (r) => lpm >= r.minFlow && lpm < r.matchMax
     );
-    setResult(rec || recommendations[recommendations.length - 1]);
+
+    if (matchingProducts.length === 0) {
+      // If no exact match, use the highest flow product
+      setResult(recommendations[recommendations.length - 1]);
+      return;
+    }
+
+    // Among matching products, select the one with the lowest power option
+    const bestMatch = matchingProducts.reduce((best, current) => {
+      if (current.minPowerOption < best.minPowerOption) {
+        return current;
+      }
+      // If power is equal, prefer the one with lower minFlow
+      if (
+        current.minPowerOption === best.minPowerOption &&
+        current.minFlow < best.minFlow
+      ) {
+        return current;
+      }
+      return best;
+    });
+
+    setResult(bestMatch);
   };
 
   const formatFlowRange = (min: number, max: number) => {
@@ -119,6 +224,17 @@ const ModelSelectorClient = () => {
       return `${format(min)}+ L/min`;
     }
     return `${format(min)} - ${format(max)} L/min`;
+  };
+
+  const formatFlowRates = (flowRates: string[]): string => {
+    if (flowRates.length === 0 || flowRates[0] === "—") return "—";
+    return flowRates.join(", ");
+  };
+
+  const formatPowerOptions = (powerOptions: number[]): string => {
+    if (powerOptions.length === 0) return "—";
+    if (powerOptions.length === 1) return `${powerOptions[0]} kW`;
+    return `${powerOptions.join(", ")} kW`;
   };
 
   const isCalculateDisabled =
@@ -183,8 +299,8 @@ const ModelSelectorClient = () => {
                         id="seconds"
                         value={[seconds]}
                         onValueChange={(value) => setSeconds(value[0])}
-                        min={10}
-                        max={120}
+                        min={40}
+                        max={200}
                         step={1}
                         className="w-full"
                       />
@@ -227,93 +343,100 @@ const ModelSelectorClient = () => {
               </div>
 
               {result && flowRate && (
-                <Alert className="rounded-xl border border-success p-6 shadow-sm">
-                  <AlertTitle className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-success" />
-                    Beregnet vannmengde: {flowRate} L/min
-                  </AlertTitle>
-                  <AlertDescription>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 "></div>
-                      {(() => {
-                        const usageItems = result.usage
-                          .split(",")
-                          .map((item) => item.trim())
-                          .filter(Boolean);
-                        const flowRangeLabel = formatFlowRange(
-                          result.minFlow,
-                          result.matchMax
-                        );
-                        return (
-                          <div className="">
-                            <div className="flex flex-wrap items-center justify-between gap-4">
-                              <div>
-                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                                  Anbefalt modell
-                                </p>
-                                <h4 className="text-2xl font-semibold text-foreground">
-                                  {result.model}
-                                </h4>
-                              </div>
-                              <Badge
-                                variant="secondary"
-                                className="border border-primary/30 bg-primary text-primary-foreground"
-                              >
-                                {flowRangeLabel}
-                              </Badge>
-                            </div>
+                <Card
+                  className="shadow-lg overflow-hidden relative"
+                  style={{ background: "var(--gradient-primary)" }}
+                >
+                  {/* Decorative elements */}
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+                  <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+                  <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
 
-                            <div className="mt-6 grid gap-4 md:grid-cols-3">
-                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
-                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  <CardHeader className="relative z-10">
+                    <CardTitle className="flex items-center gap-2 text-white text-2xl">
+                      <CheckCircle className="h-6 w-6" />
+                      {result.model}
+                    </CardTitle>
+                    <CardDescription className="text-white/90 text-base mt-2">
+                      Beregnet vannmengde:{" "}
+                      <span className="font-semibold">{flowRate} L/min</span>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-4 relative z-10">
+                    {(() => {
+                      const usageItems = result.usage
+                        .split(",")
+                        .map((item) => item.trim())
+                        .filter(Boolean);
+                      const flowRangeLabel = formatFlowRange(
+                        result.minFlow,
+                        result.matchMax
+                      );
+                      return (
+                        <div className="space-y-6">
+                          {/* Metrics Grid */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Droplet className="w-5 h-5 text-white" />
+                                <p className="text-sm text-white/90 font-medium">
                                   Strålestørrelse
                                 </p>
-                                <p className="text-lg font-semibold text-foreground">
-                                  {flowRangeLabel}
+                              </div>
+                              <p className="text-xl font-bold text-white">
+                                {flowRangeLabel}
+                              </p>
+                            </div>
+                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Zap className="w-5 h-5 text-white" />
+                                <p className="text-sm text-white/90 font-medium">
+                                  Effekt
                                 </p>
                               </div>
-                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
-                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                              <p className="text-xl font-bold text-white">
+                                {result.minPowerOption > 0
+                                  ? `${result.minPowerOption} kW`
+                                  : "—"}
+                              </p>
+                            </div>
+                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Settings className="w-5 h-5 text-white" />
+                                <p className="text-sm text-white/90 font-medium">
                                   Fase
                                 </p>
-                                <p className="text-lg font-semibold text-foreground">
-                                  {result.phase}
-                                </p>
                               </div>
-                              <div className="rounded-lg bg-background/70 p-4 shadow-sm">
-                                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                                  Sikring
-                                </p>
-                                <p className="text-lg font-semibold text-foreground">
-                                  {result.fuse}
-                                </p>
+                              <p className="text-xl font-bold text-white">
+                                {result.phase}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Usage Items */}
+                          {usageItems.length > 0 && (
+                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
+                              <p className="text-sm font-semibold text-white mb-3">
+                                Ideell for:
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {usageItems.map((item) => (
+                                  <span
+                                    key={item}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 text-sm text-white font-medium"
+                                  >
+                                    <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                                    {item}
+                                  </span>
+                                ))}
                               </div>
                             </div>
-
-                            {usageItems.length ? (
-                              <div className="mt-6">
-                                <p className="text-sm font-medium text-foreground">
-                                  Ideell for:
-                                </p>
-                                <ul className="mt-2 flex flex-col gap-2">
-                                  {usageItems.map((item) => (
-                                    <li
-                                      key={item}
-                                      className="inline-flex items-center gap-2 rounded-md  text-sm text-foreground"
-                                    >
-                                      <span className="mt-0.5 h-2 w-2 rounded-full bg-foreground" />
-                                      <span>{item}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ) : null}
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  </AlertDescription>
-                </Alert>
+                          )}
+                        </div>
+                      );
+                    })()}
+                  </CardContent>
+                </Card>
               )}
             </div>
           </CardContent>
@@ -321,50 +444,69 @@ const ModelSelectorClient = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Anbefalingstabell</CardTitle>
+            <CardTitle>Produkttabell</CardTitle>
             <p className="text-muted-foreground">
-              Anbefalt modell per vannmengde
+              Oversikt over alle COAX direkte vannvarmere
             </p>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="text-sm w-full" style={{ minWidth: "800px", tableLayout: "fixed" }}>
+              <table
+                className="text-sm w-full"
+                style={{ minWidth: "1000px", tableLayout: "fixed" }}
+              >
                 <colgroup>
-                  <col style={{ width: "16%" }} />
-                  <col style={{ width: "16%" }} />
                   <col style={{ width: "10%" }} />
-                  <col style={{ width: "14%" }} />
-                  <col style={{ width: "44%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "18%" }} />
+                  <col style={{ width: "8%" }} />
+                  <col style={{ width: "40%" }} />
                 </colgroup>
                 <thead>
                   <tr className="border-b">
+                    <th className="text-left p-3 whitespace-nowrap">Modell</th>
                     <th className="text-left p-3 whitespace-nowrap">
-                      Strålestørrelse (L/min)
+                      Liter per minutt
                     </th>
                     <th className="text-left p-3 whitespace-nowrap">
-                      Anbefalt modell
+                      Effekt (kW)
                     </th>
                     <th className="text-left p-3 whitespace-nowrap">Fase</th>
-                    <th className="text-left p-3 whitespace-nowrap">Sikring</th>
                     <th className="text-left p-3">Brukseksempler</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {recommendations.map((rec) => (
-                    <tr
-                      key={rec.id}
-                      className="border-b bg-background hover:bg-muted"
-                    >
-                      <td className="p-3 whitespace-nowrap">
-                        {formatFlowRange(rec.minFlow, rec.matchMax)}
+                  {productsLoading ? (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="p-4 text-center text-muted-foreground"
+                      >
+                        Laster produkter...
                       </td>
-                      <td className="p-3 font-semibold">{rec.model}</td>
-                      <td className="p-3 whitespace-nowrap">{rec.phase}</td>
-                      <td className="p-3 ">{rec.fuse}</td>
-                      <td className="p-3 text-muted-foreground">{rec.usage}</td>
                     </tr>
-                  ))}
-                  {!recommendations.length && !productsLoading ? (
+                  ) : tableProducts.length > 0 ? (
+                    tableProducts.map((product) => (
+                      <tr
+                        key={product.id}
+                        className="border-b bg-background hover:bg-muted"
+                      >
+                        <td className="p-3 font-semibold">{product.model}</td>
+                        <td className="p-3">
+                          {formatFlowRates(product.flowRates)}
+                        </td>
+                        <td className="p-3 whitespace-nowrap">
+                          {formatPowerOptions(product.powerOptions)}
+                        </td>
+                        <td className="p-3 whitespace-nowrap">
+                          {product.phase}
+                        </td>
+                        <td className="p-3 text-muted-foreground">
+                          {product.usage}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
                     <tr>
                       <td
                         colSpan={5}
@@ -373,7 +515,7 @@ const ModelSelectorClient = () => {
                         Ingen produktdata tilgjengelig.
                       </td>
                     </tr>
-                  ) : null}
+                  )}
                 </tbody>
               </table>
             </div>

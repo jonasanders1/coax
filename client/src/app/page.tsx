@@ -20,6 +20,7 @@ import {
   XCircle,
   CalculatorIcon,
   PackageIcon,
+  ShowerHead,
 } from "lucide-react";
 import heroImage from "@/assets/hero-water-heater.png";
 import cabinImage from "@/assets/cabin-water-heater.png";
@@ -45,6 +46,24 @@ const benefits = [
     icon: Droplet,
     title: "Friskt og hygienisk varmtvann",
     text: "Vannet varmes direkte i det øyeblikket du åpner kranen – ingen stillestående vann, ingen bakterier. Alltid friskt, rent og trygt varmtvann.",
+  },
+];
+
+const howItWorksSteps = [
+  {
+    icon: ShowerHead,
+    title: "Steg 1: Åpne kranen",
+    text: "Når du skrur på vannet, starter COAX umiddelbart.",
+  },
+  {
+    icon: Zap,
+    title: "Steg 2: Vannet varmes opp",
+    text: "Vannet passerer gjennom et trygt varmeelement. Temperatur: 30-60°C.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Steg 3: Steng kranen",
+    text: "COAX slår seg av automatisk. Ingen strøm sløses.",
   },
 ];
 
@@ -186,8 +205,8 @@ const HomePage = () => {
                 : {}
             }
           >
-            Med våre plassbesparende, effektive elektriske vannvarmere – helt uten
-            lagringstank. Den smarte måten å varme vann på!
+            Med våre plassbesparende, effektive elektriske vannvarmere – helt
+            uten lagringstank. Den smarte måten å varme vann på!
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -209,7 +228,7 @@ const HomePage = () => {
             <Button asChild size="lg" className="text-md px-8 font-normal">
               <Link href="/kalkulator">
                 <CalculatorIcon className="w-4 h-4" />
-                Sparekalkulator
+                Forbrukskalkulator
               </Link>
             </Button>
             <Button
@@ -298,6 +317,55 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl text-foreground">
+              Hvordan fungerer COAX?
+            </h2>
+            <p className="mt-2 text-lg text-muted-foreground">
+              Se hvor smart og enkelt det kan være.
+            </p>
+          </div>
+          <div className="relative max-w-2xl mx-auto">
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/20"></div>{" "}
+            {/* Vertical line */}
+            {howItWorksSteps.map((step, index) => {
+              const Icon = step.icon;
+              const isEven = index % 2 === 0;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{
+                    delay: index * 0.2,
+                    duration: 0.6,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className={`relative flex ${
+                    isEven ? "flex-row" : "flex-row-reverse"
+                  } items-center mb-12`}
+                >
+                  <div
+                    className={`w-1/2 ${
+                      isEven ? "pr-8 text-right" : "pl-8 text-left"
+                    }`}
+                  >
+                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                    <p className="text-muted-foreground">{step.text}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10">
+                    <Icon className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <div className="w-1/2"></div> {/* Spacer */}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Customer Segments Carousel */}
       <section className="py-16 md:py-24 bg-background">
@@ -339,10 +407,10 @@ const HomePage = () => {
           </Carousel>
         </div>
       </section>
-      {/* 
+      
       <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -5,6 +5,12 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Menu, MessageCircle } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
@@ -12,6 +18,7 @@ import Logo from "./Logo";
 import { ModeToggle } from "./ModeToggle";
 import { useEffect, useRef, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   const pathname = usePathname();
@@ -132,26 +139,91 @@ const Header = () => {
               </Link>
             </SheetHeader>
 
-            <nav className="flex flex-col gap-4 mt-5 border-t border-border pt-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
-                    isActive(item.path)
-                      ? "bg-primary text-primary-foreground border-b border-primary"
-                      : "bg-gray-500/10 hover:bg-gray-500/20 dark:bg-muted/50 dark:hover:bg-muted"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <span className="inline-flex items-center gap-3">
-                    {item.icon ? (
-                      <item.icon className="h-5 w-5" aria-hidden="true" />
-                    ) : null}
-                    {item.label}
-                  </span>
-                </Link>
-              ))}
+            <nav className="flex flex-col gap-2 mt-5 border-t border-border pt-4">
+              {navItems.map((item) => {
+                const hasChildren = item.children && item.children.length > 0;
+                const isParentActive =
+                  isActive(item.path) ||
+                  (hasChildren &&
+                    item.children?.some((child) => isActive(child.path)));
+
+                if (hasChildren) {
+                  return (
+                    <Accordion
+                      key={item.path}
+                      type="single"
+                      collapsible
+                      className="w-full"
+                    >
+                      <AccordionItem value={item.path} className="border-none">
+                        <AccordionTrigger
+                          className={`text-lg font-medium py-3 px-4 rounded-lg transition-all hover:no-underline ${
+                            isParentActive
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-gray-500/10 hover:bg-gray-500/20 dark:bg-muted/50 dark:hover:bg-muted"
+                          }`}
+                        >
+                          <span className="inline-flex items-center gap-3">
+                            {item.icon ? (
+                              <item.icon className="h-5 w-5" aria-hidden="true" />
+                            ) : null}
+                            {item.label}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-2">
+                          <div className="flex flex-col gap-2 pl-7">
+                            <Link
+                              href={item.path}
+                              className={`text-base font-medium py-2 px-3 rounded-lg transition-all mt-3 ${
+                                isActive(item.path)
+                                  ? "bg-primary/20 text-primary"
+                                  : "hover:bg-muted"
+                              }`}
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Kalkulator
+                            </Link>
+                            {item.children?.map((child) => (
+                              <Link
+                                key={child.path}
+                                href={child.path}
+                                className={`text-base font-medium py-2 px-3 rounded-lg transition-all ${
+                                  isActive(child.path)
+                                    ? "bg-primary/20 text-primary"
+                                    : "hover:bg-muted"
+                                }`}
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`text-lg font-medium py-3 px-4 rounded-lg transition-all ${
+                      isActive(item.path)
+                        ? "bg-primary text-primary-foreground border-b border-primary"
+                        : "bg-gray-500/10 hover:bg-gray-500/20 dark:bg-muted/50 dark:hover:bg-muted"
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      {item.icon ? (
+                        <item.icon className="h-5 w-5" aria-hidden="true" />
+                      ) : null}
+                      {item.label}
+                    </span>
+                  </Link>
+                );
+              })}
               {/* <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
