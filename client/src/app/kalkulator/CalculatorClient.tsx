@@ -84,11 +84,20 @@ function searchParamsToParams(
 ): Partial<CalculationParams> {
   const params: Partial<CalculationParams> = {};
   searchParams.forEach((value, key) => {
+    const paramKey = key as keyof CalculationParams;
     const numValue = parseFloat(value);
+    
     if (!isNaN(numValue)) {
-      params[key as keyof CalculationParams] = numValue as any;
+      // Only assign if the key exists in DEFAULT_PARAMS (valid CalculationParams key)
+      if (paramKey in DEFAULT_PARAMS && paramKey !== "insulatedPipes") {
+        // Type assertion is safe here because we've verified the key exists and is not boolean
+        (params as Record<string, number>)[key] = numValue;
+      }
     } else if (value === "true" || value === "false") {
-      params[key as keyof CalculationParams] = (value === "true") as any;
+      // Only assign if the key is the boolean field
+      if (paramKey === "insulatedPipes") {
+        params[paramKey] = value === "true";
+      }
     }
   });
   return params;
