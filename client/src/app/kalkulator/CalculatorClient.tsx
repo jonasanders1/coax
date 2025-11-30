@@ -55,6 +55,11 @@ import {
 import PageTitile from "@/components/PageTitile";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  StructuredData,
+  ServiceSchema,
+} from "@/components/StructuredData";
+import { siteUrl } from "@/config/site";
 
 const CustomTooltip = ({
   active,
@@ -158,8 +163,20 @@ const CalculatorClient = () => {
 
   const COLORS = ["hsl(var(--primary))", "#ef4444"];
 
+  const serviceSchema = useMemo(
+    () =>
+      ServiceSchema({
+        name: "COAX Forbrukskalkulator",
+        description:
+          "Beregn hvor mye energi, vann og penger du kan spare ved å bytte fra tradisjonell varmtvannstank til en direkte vannvarmer fra COAX",
+        url: `${siteUrl}/kalkulator`,
+      }),
+    []
+  );
+
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
+      <StructuredData data={serviceSchema} />
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         <PageTitile
           title="COAX Forbrukskalkulator"

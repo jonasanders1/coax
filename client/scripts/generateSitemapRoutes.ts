@@ -49,10 +49,12 @@ async function generateRoutes() {
   // Note: "/" is excluded as vite-plugin-sitemap automatically adds it
   const staticRoutes = [
     "/produkter",
-    // "/velg-modell",
+    "/velg-modell",
     "/faq",
     "/referanser",
     "/kalkulator",
+    "/kalkulator/innstillinger",
+    "/kalkulator/detaljer",
     "/kontakt",
     // "/takk",
   ];

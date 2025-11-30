@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -14,6 +14,10 @@ import { faqs } from "@/data/faq";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CtaSection from "@/components/chatbot/CtaSection";
+import {
+  StructuredData,
+  FAQPageSchema,
+} from "@/components/StructuredData";
 
 const FAQClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,8 +33,20 @@ const FAQClient = () => {
     }))
     .filter((category) => category.questions.length > 0);
 
+  // Generate FAQ schema from all FAQs (not filtered)
+  const faqSchema = useMemo(() => {
+    const allFaqs = faqs.flatMap((category) =>
+      category.questions.map((faq) => ({
+        question: faq.q,
+        answer: faq.a,
+      }))
+    );
+    return FAQPageSchema(allFaqs);
+  }, []);
+
   return (
     <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
+      <StructuredData data={faqSchema} />
       <div className="container mx-auto px-4 max-w-6xl">
         <PageTitile
           title="Ofte stilte spørsmål om COAX vannvarmere"

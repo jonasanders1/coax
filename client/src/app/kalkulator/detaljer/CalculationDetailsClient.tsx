@@ -10,6 +10,11 @@ import PageTitile from "@/components/PageTitile";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import {
+  StructuredData,
+  BreadcrumbListSchema,
+} from "@/components/StructuredData";
+import { siteUrl } from "@/config/site";
 
 function normalizeMarkdown(src: string) {
   // Convert ```katex ... ``` to $$...$$
@@ -22,8 +27,16 @@ function normalizeMarkdown(src: string) {
 
 const CalculationDetailsClient = () => {
   const { resolvedTheme } = useTheme();
+
+  const breadcrumbSchema = BreadcrumbListSchema([
+    { name: "Hjem", url: `${siteUrl}/` },
+    { name: "Forbrukskalkulator", url: `${siteUrl}/kalkulator` },
+    { name: "Detaljer", url: `${siteUrl}/kalkulator/detaljer` },
+  ]);
+
   return (
     <div className="min-h-screen pt-24 bg-muted pb-16 animate-fade-in-up">
+      <StructuredData data={breadcrumbSchema} />
       <div className="container mx-auto px-4 max-w-6xl space-y-6">
         <Breadcrumbs
           aria-label="breadcrumb"

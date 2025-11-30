@@ -8,6 +8,11 @@ import ScrollUp from "@/components/ScrollUp";
 // import ChatBot from "@/components/chatbot/ChatBot";
 import CookieConsent from "@/components/CookieConsent";
 import { siteUrl } from "@/config/site";
+import {
+  StructuredData,
+  OrganizationSchema,
+  WebSiteSchema,
+} from "@/components/StructuredData";
 
 const defaultTitle = "COAX – Effektive tankløse vannvarmere";
 const defaultDescription =
@@ -54,6 +59,8 @@ export default function RootLayout({
   return (
     <html lang="nb">
       <body>
+        <StructuredData data={OrganizationSchema()} />
+        <StructuredData data={WebSiteSchema()} />
         <Providers>
           <div className="min-h-screen">
             <Header />

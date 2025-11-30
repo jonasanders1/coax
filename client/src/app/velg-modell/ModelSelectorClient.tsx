@@ -15,6 +15,12 @@ import { AlertCircle, CheckCircle, Zap, Droplet, Settings } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAppContext } from "@/context/AppContext";
 import PageTitile from "@/components/PageTitile";
+import {
+  StructuredData,
+  ServiceSchema,
+  HowToSchema,
+} from "@/components/StructuredData";
+import { siteUrl } from "@/config/site";
 
 type Recommendation = {
   id: string;
@@ -240,8 +246,54 @@ const ModelSelectorClient = () => {
   const isCalculateDisabled =
     productsLoading || !recommendations.length || Boolean(productsError);
 
+  const serviceSchema = useMemo(
+    () =>
+      ServiceSchema({
+        name: "COAX Bøttemetode-kalkulator",
+        description:
+          "Finn riktig COAX-modell med Bøttemetoden. Den enkleste måten å finne riktig kapasitet på.",
+        url: `${siteUrl}/velg-modell`,
+      }),
+    []
+  );
+
+  const howToSchema = useMemo(
+    () =>
+      HowToSchema({
+        name: "Bøttemetoden for å finne riktig COAX vannvarmer",
+        description:
+          "En enkel metode for å måle vannforbruket ditt og finne riktig COAX-modell",
+        url: `${siteUrl}/velg-modell`,
+        steps: [
+          {
+            name: "Ta med deg en 10-liters bøtte i dusjen",
+            text: "Ta med deg en 10-liters bøtte i dusjen",
+          },
+          {
+            name: "Skru på vannet til ønsket dusjtemperatur og trykk",
+            text: "Skru på vannet til ønsket dusjtemperatur og trykk",
+          },
+          {
+            name: "Start tidtaker og fyll bøtta helt opp",
+            text: "Start tidtaker og fyll bøtta helt opp",
+          },
+          {
+            name: "Stopp når bøtta er full og noter antall sekunder",
+            text: "Stopp når bøtta er full og noter antall sekunder",
+          },
+          {
+            name: "Fyll inn tiden i kalkulatoren",
+            text: "Fyll inn tiden under, så regner vi ut riktig modell",
+          },
+        ],
+      }),
+    []
+  );
+
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background animate-fade-in-up">
+      <StructuredData data={serviceSchema} />
+      <StructuredData data={howToSchema} />
       <div className="container mx-auto px-4 max-w-6xl">
         <PageTitile
           title="Finn riktig COAX-modell med Bøttemetoden"

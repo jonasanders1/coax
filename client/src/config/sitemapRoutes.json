@@ -1,8 +1,11 @@
 [
   "/produkter",
+  "/velg-modell",
   "/faq",
   "/referanser",
   "/kalkulator",
+  "/kalkulator/innstillinger",
+  "/kalkulator/detaljer",
   "/kontakt",
   "/produkter/varmepumpe",
   "/produkter/armatur",

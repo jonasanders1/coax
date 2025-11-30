@@ -7,6 +7,10 @@ import ContactForm from "@/components/ContactForm";
 import NeedsAssessmentForm from "@/components/NeedsAssessmentForm";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import PageTitile from "@/components/PageTitile";
+import {
+  StructuredData,
+  LocalBusinessSchema,
+} from "@/components/StructuredData";
 
 import { useChatBot } from "@/hooks/useChatBot";
 
@@ -15,6 +19,7 @@ const ContactClient = () => {
   const { openChat } = useChatBot();
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
+      <StructuredData data={LocalBusinessSchema()} />
       <div className="container mx-auto px-4">
         <PageTitile
           title="Ta kontakt med oss"

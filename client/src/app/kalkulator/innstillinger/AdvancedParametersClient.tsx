@@ -17,6 +17,11 @@ import PageTitile from "@/components/PageTitile";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import {
+  StructuredData,
+  BreadcrumbListSchema,
+} from "@/components/StructuredData";
+import { siteUrl } from "@/config/site";
 
 // Helper to serialize params to URL
 function paramsToSearchParams(params: CalculationParams): URLSearchParams {
@@ -97,8 +102,15 @@ const AdvancedParametersClient = () => {
     router.push(`/kalkulator?${urlParams.toString()}`);
   };
 
+  const breadcrumbSchema = BreadcrumbListSchema([
+    { name: "Hjem", url: `${siteUrl}/` },
+    { name: "Forbrukskalkulator", url: `${siteUrl}/kalkulator` },
+    { name: "Innstillinger", url: `${siteUrl}/kalkulator/innstillinger` },
+  ]);
+
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
+      <StructuredData data={breadcrumbSchema} />
       <div className="container max-w-6xl mx-auto px-4 space-y-6">
         <Breadcrumbs
           aria-label="breadcrumb"
