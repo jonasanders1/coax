@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import ProductsClient from "./ModelSelectorClient";
 
 export const metadata: Metadata = {
-  title: "COAX | Velg modell",
+  title: "COAX | Finn riktig direkte vannvarmer – Bøttemetoden",
   description:
-    "Velg riktig COAX-modell med Bøttemetoden. Mål hvor raskt du fyller en 10L bøtte i dusjen og finn den beste modellen for deg.",
+    "Finn riktig COAX vannvarmer med Bøttemetoden. Mål vannmengden på 10 liter og få anbefalt modell basert på strømtilgang og varmtvannsbehov.",
   alternates: {
     canonical: "/velg-modell",
   },
@@ -15,4 +15,3 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-

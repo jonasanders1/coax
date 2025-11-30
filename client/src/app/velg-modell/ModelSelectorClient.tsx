@@ -241,12 +241,11 @@ const ModelSelectorClient = () => {
     productsLoading || !recommendations.length || Boolean(productsError);
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background">
+    <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background animate-fade-in-up">
       <div className="container mx-auto px-4 max-w-6xl">
         <PageTitile
           title="Finn riktig COAX-modell med Bøttemetoden"
-          text="Enkel test: Mål hvor raskt du fyller en 10L bøtte i dusjen – vi anbefaler modell 
-            basert på flow og el-tilgang."
+          text="Den enkleste måten å finne riktig kapasitet på."
         />
 
         <Card className="mb-8 border-2">

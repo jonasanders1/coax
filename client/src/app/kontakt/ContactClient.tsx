@@ -14,11 +14,11 @@ const ContactClient = () => {
   const [formType, setFormType] = useState<"general" | "needs">("general");
   const { openChat } = useChatBot();
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-muted">
+    <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
       <div className="container mx-auto px-4">
         <PageTitile
-          title="Ta kontakt"
-          text="Vi hjelper deg med valg og installasjon – enten det er for bolig, hytte eller større byggeprosjekter."
+          title="Ta kontakt med oss"
+          text="Vi hjelper deg å velge riktig modell og samarbeider med autoriserte elektrikere og rørleggere for trygg installasjon. Perfekt for bolig, hytte eller større prosjekter."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">

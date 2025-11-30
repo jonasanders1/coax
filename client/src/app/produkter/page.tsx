@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import ProductsClient from "./ProductsClient";
 
 export const metadata: Metadata = {
-  title: "COAX | Energieffektive vannvarmere – alle produkter",
+  title: "COAX | Direkte vannvarmere – produkter og modeller",
   description:
-    "Utforsk COAX sitt utvalg av energieffektive, tankløse vannvarmere. Filtrer modeller etter fase, kategori og bruksområde for å finne riktig løsning.",
+    "Se hele utvalget av COAX direkte vannvarmere. Sammenlign energieffektive, tankløse modeller og finn riktig løsning for bolig, hytte eller næringsbygg.",
   alternates: {
     canonical: "/produkter",
   },
@@ -15,4 +15,3 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-

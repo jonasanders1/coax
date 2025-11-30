@@ -8,11 +8,11 @@ import { references } from "@/data/references";
 
 const ReferencesClient = () => {
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
       <div className="mx-auto">
         <PageTitile
           title="Fornøyde kunder i over 20 år"
-          text="Fra hytter til industri – se hvordan COAX har gjort en forskjell"
+          text="COAX leverer varmtvannsløsninger til hytter, boliger, næringsbygg, hoteller og industri. Se hvordan våre energieffektive vannvarmere har redusert kostnader og økt komfort for kunder."
         />
 
         <section className="pb-16 md:pb-24">

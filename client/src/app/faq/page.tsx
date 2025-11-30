@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import FAQClient from "./FAQClient";
 
 export const metadata: Metadata = {
-  title: "COAX | Ofte stilte spørsmål om tankløse vannvarmere",
+  title: "COAX | FAQ om direkte vannvarmere uten tank",
   description:
-    "Få svar på vanlige spørsmål om COAX sine tankløse vannvarmere, installasjon, energi- og kostnadsbesparelser.",
+    "Få svar på vanlige spørsmål om COAX direkte vannvarmere – installasjon, strømkrav, effektivitet, vannkvalitet og besparelser.",
   alternates: {
     canonical: "/faq",
   },
@@ -13,4 +13,3 @@ export const metadata: Metadata = {
 export default function FAQPage() {
   return <FAQClient />;
 }
-

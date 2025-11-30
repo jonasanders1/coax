@@ -15,10 +15,10 @@ const ProductsClient = () => {
   }, [fetchProducts]);
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen pt-24 animate-fade-in-up">
       <PageTitile
-        title="Energieffektive vannvarmere – våre produkter"
-        text="Velg fra modeller tilpasset ditt behov og el-anlegg."
+        title="Energieffektive COAX vannvarmere"
+        text="Velg blant modeller tilpasset både små og store varmtvannsbehov. Våre direkte vannvarmere finnes i både 1-fase og 3-fase varianter, slik at du kan finne den optimale løsningen for ditt el-anlegg og tappemønster."
       />
 
       <section className="py-16 md:py-24 bg-muted">

@@ -35,35 +35,35 @@ const benefits = [
   {
     icon: Zap,
     title: "Energieffektiv",
-    text: "Våre varmtvannsberedere varmer vannet kun når du faktisk bruker det – ingen standby-forbruk eller varmetap. Med opptil 97 % virkningsgrad sparer du strøm hver eneste dag.",
+    text: "COAX varmer vannet direkte i det øyeblikket du åpner kranen. Det betyr ingen standby-forbruk, ingen varmetap og opptil 99 % virkningsgrad. Resultatet: lavere energibruk og lavere strømregning.",
   },
   {
     icon: Leaf,
     title: "Plassbesparende og miljøvennlig",
-    text: "Uten tank frigjøres verdifull plass, og energisløsing elimineres. Perfekt løsning for små bad, hytter og moderne boliger der effektivitet og design teller.",
+    text: "Uten tank frigjør du verdifull plass i boligen. COAX er kompakt, diskret og ideell for små bad, hytter og moderne leiligheter. Null lagring betyr også mindre energisløsing og lavere CO₂-avtrykk.",
   },
   {
     icon: Droplet,
     title: "Friskt og hygienisk varmtvann",
-    text: "Vannet varmes direkte i det øyeblikket du åpner kranen – ingen stillestående vann, ingen bakterier. Alltid friskt, rent og trygt varmtvann.",
+    text: "Vannet varmes direkte ved tapping, uten å stå lagret i en tank. Det gir hygienisk, oksygenrikt varmtvann – helt uten risiko for bakterievekst som legionella.",
   },
 ];
 
 const howItWorksSteps = [
   {
     icon: ShowerHead,
-    title: "Steg 1: Åpne kranen",
-    text: "Når du skrur på vannet, starter COAX umiddelbart.",
+    title: "1: Åpne kranen",
+    text: "Når vannet begynner å renne, starter COAX automatisk.",
   },
   {
     icon: Zap,
     title: "Steg 2: Vannet varmes opp",
-    text: "Vannet passerer gjennom et trygt varmeelement. Temperatur: 30-60°C.",
+    text: "Vannet passerer gjennom et sikkert varmeelement som varmer opp til 30–60 °C i sanntid.",
   },
   {
     icon: CheckCircle,
     title: "Steg 3: Steng kranen",
-    text: "COAX slår seg av automatisk. Ingen strøm sløses.",
+    text: "COAX slår seg av umiddelbart. Ingen unødig strømbruk – kun rent varmtvann når du trenger det.",
   },
 ];
 
@@ -78,11 +78,11 @@ const comparison = {
     { text: "Kortere levetid: 8-12 år", icon: XCircle },
   ],
   coax: [
-    { text: "Kun på ved bruk", icon: CheckCircle },
-    { text: "Kompakt, monteres på vegg", icon: CheckCircle },
-    { text: "Friskt, rent vann hver gang", icon: CheckCircle },
-    { text: "24-34% lavere energiforbruk", icon: CheckCircle },
-    { text: "Miljøvennlig alternativ", icon: CheckCircle },
+    { text: "Bruker kun strøm når vann tappes", icon: CheckCircle },
+    { text: "Kompakt veggmontering", icon: CheckCircle },
+    { text: "Alltid friskt og rent vann", icon: CheckCircle },
+    { text: "24-34% lavere energibruk", icon: CheckCircle },
+    { text: "Miljøvennlig og driftssikkert valg", icon: CheckCircle },
     { text: "Ubegrenset varmtvannsmengde", icon: CheckCircle },
     { text: "Lang levetid: 15-20 år", icon: CheckCircle },
   ],
@@ -91,20 +91,20 @@ const comparison = {
 const customerSegments = [
   {
     id: "cabin-owners",
-    title: "For hytter og fritidshus",
-    text: "Minimal plass, enkel installasjon, frostsikring ved tømming og ingen oppvarmingstid gjør COAX ideell for hytter.",
+    title: "For hytter og fritidsboliger",
+    text: "COAX krever minimalt med plass, har enkel installasjon og gir varmtvann uten forvarming. Perfekt for sesongbruk og steder der du ønsker en trygg, vedlikeholdsfri løsning.",
     image: cabinImage,
   },
   {
     id: "home-owners",
     title: "For boliger og leiligheter",
-    text: "Få raskt og pålitelig varmtvann samtidig som du frigjør plass til andre formål. Perfekt for moderne hjem som verdsetter effektivitet og design.",
+    text: "Få raskt og stabilt varmtvann, samtidig som du frigjør gulvplass fra store beredere. Ideelt for moderne hjem som ønsker lavere energibruk og bedre komfort.",
     image: homeImage,
   },
   {
     id: "businesses",
-    title: "For industri og yrkesbygg",
-    text: "Skalerbare og vedlikeholdsfrie løsninger som leverer varmtvann nøyaktig der det trengs, fra kontorer og restauranter til verksteder. Reduser driftskostnader og øk effektiviteten.",
+    title: "For industri og næringsbygg",
+    text: "Skalerbare løsninger som leverer varmtvann direkte til arbeidsstasjoner, dusjer og kjøkken. Reduser driftskostnadene og øk effektiviteten med driftssikker, tankløs oppvarming.",
     image: industrialImage,
   },
 ];
@@ -132,7 +132,7 @@ const HomePage = () => {
 
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 5000);
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [api]);
@@ -170,7 +170,7 @@ const HomePage = () => {
           className="container mx-auto px-4 py-24 text-center"
         >
           <motion.h1
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6 max-w-4xl mx-auto"
+            className="text-3xl md:text-4xl font-bold text-foreground mb-6 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
               hasAnimated
@@ -186,10 +186,11 @@ const HomePage = () => {
                 : {}
             }
           >
-            Spar strøm, plass, vann og miljø!
+            {/* Spar strøm, plass, vann og miljø! */}
+            Spar strøm, plass og miljø – med direkte vannvarming uten tank
           </motion.h1>
           <motion.p
-            className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto"
+            className="text-base md:text-xl text-foreground/80 mb-8 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={
               hasAnimated
@@ -205,8 +206,10 @@ const HomePage = () => {
                 : {}
             }
           >
-            Med våre plassbesparende, effektive elektriske vannvarmere – helt
-            uten lagringstank. Den smarte måten å varme vann på!
+            Opplev moderne, energieffektive vannvarmere som gir varmtvann på
+            sekundet. COAX leverer friskt, hygienisk og kontinuerlig varmtvann
+            helt uten lagringstank – en smartere løsning for boliger, hytter og
+            næringsbygg.
           </motion.p>
           <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -247,7 +250,7 @@ const HomePage = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 bg-background">
+      <section className="py-16 bg-muted">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((b, i) => {
@@ -276,7 +279,8 @@ const HomePage = () => {
               Gammel teknologi vs. Moderne løsning
             </h2>
             <p className="mt-2 text-lg text-muted-foreground">
-              Se forskjellen en tankløs varmer kan utgjøre.
+              Se hvor stor forskjell en tankløs vannvarmer kan gjøre i
+              strømforbruk, plass og komfort.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -324,7 +328,7 @@ const HomePage = () => {
               Hvordan fungerer COAX?
             </h2>
             <p className="mt-2 text-lg text-muted-foreground">
-              Se hvor smart og enkelt det kan være.
+              Smart, effektiv og umiddelbar vannoppvarming – forklart i tre steg
             </p>
           </div>
           <div className="relative max-w-2xl mx-auto">
@@ -407,10 +411,10 @@ const HomePage = () => {
           </Carousel>
         </div>
       </section>
-      
+{/* 
       <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
-      </div>
+      </div> */}
     </div>
   );
 };

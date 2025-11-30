@@ -23,7 +23,7 @@ function normalizeMarkdown(src: string) {
 const CalculationDetailsClient = () => {
   const { resolvedTheme } = useTheme();
   return (
-    <div className="min-h-screen pt-24 bg-muted pb-16">
+    <div className="min-h-screen pt-24 bg-muted pb-16 animate-fade-in-up">
       <div className="container mx-auto px-4 max-w-6xl space-y-6">
         <Breadcrumbs
           aria-label="breadcrumb"

@@ -98,7 +98,7 @@ const AdvancedParametersClient = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-background">
+    <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
       <div className="container max-w-6xl mx-auto px-4 space-y-6">
         <Breadcrumbs
           aria-label="breadcrumb"

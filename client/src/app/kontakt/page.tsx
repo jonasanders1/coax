@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {
-  title: "COAX | Kontakt oss for rådgivning og tilbud",
+  title: "COAX | Kontakt oss for rådgivning og installasjon",
   description:
-    "Kontakt COAX for rådgivning, pris og installasjon av tankløse varmtvannsberedere. Fyll ut skjema eller ring oss direkte.",
+    "Ta kontakt for hjelp med valg av COAX direkte vannvarmer. Få rådgivning, pristilbud og installasjon via autoriserte fagfolk.",
   alternates: {
     canonical: "/kontakt",
   },
@@ -13,4 +13,3 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return <ContactClient />;
 }
-

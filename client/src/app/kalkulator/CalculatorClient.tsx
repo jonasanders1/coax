@@ -86,7 +86,7 @@ function searchParamsToParams(
   searchParams.forEach((value, key) => {
     const paramKey = key as keyof CalculationParams;
     const numValue = parseFloat(value);
-    
+
     if (!isNaN(numValue)) {
       // Only assign if the key exists in DEFAULT_PARAMS (valid CalculationParams key)
       if (paramKey in DEFAULT_PARAMS && paramKey !== "insulatedPipes") {
@@ -163,7 +163,7 @@ const CalculatorClient = () => {
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         <PageTitile
           title="COAX Forbrukskalkulator"
-          text="Se hvor mye du energi, vann og penger du kan spare ved å bytte fra tradisjonell tankbereder til COAX direkte vannvarmer"
+          text="Se hvor mye energi, vann og penger du kan spare ved å bytte fra tradisjonell varmtvannstank til en direkte vannvarmer fra COAX"
         />
 
         {/* Default Parameters Display */}
@@ -175,8 +175,9 @@ const CalculatorClient = () => {
                   Standard forutsetninger
                 </CardTitle>
                 <CardDescription className="text-sm md:text-base text-muted-foreground">
-                  Vi har valgt å bruke følgende verdier som utgangspunkt for
-                  beregningene våre.
+                  Kalkulatoren bruker realistiske standardverdier for
+                  energibruk, vannforbruk og temperatur. Disse kan justeres for
+                  mer nøyaktige beregninger.
                 </CardDescription>
               </div>
             </div>
@@ -494,7 +495,7 @@ const CalculatorClient = () => {
                     kr
                   </p>
                   <p className="text-lg text-white/90">
-                    {results.annualSavingskWh.toFixed(0)} kWh mindre energibruk
+                    {results.annualSavingskWh.toFixed(0)} kWh redusert energibruk
                     per år
                   </p>
                 </div>
@@ -580,7 +581,7 @@ const CalculatorClient = () => {
 
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  Tradisjonell Tankbereder
+                  Tradisjonell tankbereder
                 </CardTitle>
                 <CardDescription className="text-white/90">
                   Konvensjonell sentralisert løsning
@@ -732,7 +733,7 @@ const CalculatorClient = () => {
             <CardContent className="text-muted-foreground space-y-4">
               <p className="md:text-base">
                 Det er vanskelig å gi presise beregninger for
-                vannvarmingsforbruk. COAX-systemer er relativt enkle å beregne
+                vannvarmingsforbruk. COAX vannvarmere er enkle å beregne
                 siden de kun varmer vann når det brukes, mens
                 tankbereder-forbruk avhenger av mange variabler som
                 tankstørrelse, isolasjonskvalitet, plassering, romtemperatur,
@@ -765,7 +766,6 @@ const CalculatorClient = () => {
           </Card>
         </div>
       </div>
-
     </div>
   );
 };

@@ -17,7 +17,7 @@ const ThanksClient = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted/30 px-4 py-8 sm:py-12">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted/30 px-4 py-8 sm:py-12 animate-fade-in-up">
       <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-lg transition-all hover:shadow-xl sm:p-8">
         <div className="mb-4 flex justify-center sm:mb-6">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-success/10 sm:h-16 sm:w-16">

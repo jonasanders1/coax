@@ -30,11 +30,11 @@ const FAQClient = () => {
     .filter((category) => category.questions.length > 0);
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
+    <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
       <div className="container mx-auto px-4 max-w-6xl">
         <PageTitile
-          title="Ofte stilte spørsmål"
-          text="Finn svar på dine spørsmål om COAX vannvarmere"
+          title="Ofte stilte spørsmål om COAX vannvarmere"
+          text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
         />
 
         {/* <CtaSection isHeader={true} /> */}

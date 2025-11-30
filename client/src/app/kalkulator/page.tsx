@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import CalculatorClient from "./CalculatorClient";
 
 export const metadata: Metadata = {
-  title: "COAX | Forbrukskalkulator",
+  title: "COAX | Forbrukskalkulator for tankløs vannvarmer",
   description:
-    "Beregn hvor mye du kan spare med COAX sin tankløse vannvarmer sammenlignet med en tradisjonell varmtvannsbereder. Juster familie- og forbruksdata.",
+    "Beregn hvor mye du sparer med COAX direkte vannvarmer. Sammenlign strømforbruk, vannforbruk og kostnader med tradisjonell varmtvannsbereder.",
   alternates: {
     canonical: "/kalkulator",
   },
@@ -18,4 +18,3 @@ export default function CalculatorPage() {
     </Suspense>
   );
 }
-
