@@ -1,6 +1,3 @@
-"use client";
-
-import { useMemo } from "react";
 import { siteUrl } from "@/config/site";
 
 interface StructuredDataProps {
@@ -10,11 +7,10 @@ interface StructuredDataProps {
 /**
  * Component to render JSON-LD structured data
  * Usage: <StructuredData data={schemaObject} />
+ * This is a server component - JSON-LD doesn't need client-side rendering
  */
 export function StructuredData({ data }: StructuredDataProps) {
-  const jsonLd = useMemo(() => {
-    return JSON.stringify(data, null, 0);
-  }, [data]);
+  const jsonLd = JSON.stringify(data, null, 0);
 
   return (
     <script
