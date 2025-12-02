@@ -205,7 +205,7 @@ const CalculatorClient = () => {
             </h3>
             <div className="space-y-6">
               {/* Common Parameters Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <ParameterBadge
                   icon={Timer}
                   iconColor="text-green-500"
@@ -285,19 +285,19 @@ const CalculatorClient = () => {
                   <h3 className="text-base font-semibold mb-2 text-muted-foreground">
                     Ulike parametere
                   </h3>
-                  {/* Table-style header for services */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="text-base font-semibold text-muted-foreground border-b border-primary pb-2">
+                  {/* Table-style header for services - hidden on mobile */}
+                  <div className="hidden md:grid grid-cols-2 gap-3">
+                    <div className="text-base font-semibold text-muted-foreground border-b border-primary pb-2 text-left">
                       COAX
                     </div>
-                    <div className="text-base font-semibold text-muted-foreground text-right border-b border-destructive pb-2">
+                    <div className="text-base font-semibold text-muted-foreground border-b border-destructive pb-2 text-right">
                       Tank
                     </div>
                   </div>
 
                   {/* Standby Tap Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Flame}
                         iconColor="text-blue-500"
@@ -305,6 +305,7 @@ const CalculatorClient = () => {
                         value="0 kWh/år"
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Flame}
@@ -313,13 +314,14 @@ const CalculatorClient = () => {
                         value={`${params.standbyTapTankkWhPerYear} kWh/år`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>
 
                   {/* Flow Rate Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Droplet}
                         iconColor="text-blue-500"
@@ -327,6 +329,7 @@ const CalculatorClient = () => {
                         value={`${params.flowRateLPerMinTankless} L/min`}
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Droplet}
@@ -335,13 +338,14 @@ const CalculatorClient = () => {
                         value={`${params.flowRateLPerMinTank} L/min`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>
 
                   {/* Efficiency Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Zap}
                         iconColor="text-blue-500"
@@ -351,6 +355,7 @@ const CalculatorClient = () => {
                         )} %`}
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Zap}
@@ -359,13 +364,14 @@ const CalculatorClient = () => {
                         value={`${(params.tankEfficiency * 100).toFixed(0)} %`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>
 
                   {/* Pipe Length Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Home}
                         iconColor="text-blue-500"
@@ -373,6 +379,7 @@ const CalculatorClient = () => {
                         value={`${params.pipeLengthTanklessM} m`}
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Home}
@@ -381,13 +388,14 @@ const CalculatorClient = () => {
                         value={`${params.pipeLengthTankM} m`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>
 
                   {/* Wait Time Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Clock}
                         iconColor="text-blue-500"
@@ -395,6 +403,7 @@ const CalculatorClient = () => {
                         value="3 sek"
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Clock}
@@ -403,13 +412,14 @@ const CalculatorClient = () => {
                         value={`${params.tankWaitTimeSec} sek`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>
 
                   {/* Room Temperature Comparison */}
                   <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <ParameterBadge
                         icon={Thermometer}
                         iconColor="text-blue-500"
@@ -417,6 +427,7 @@ const CalculatorClient = () => {
                         value="21°C"
                         variant="comparison"
                         side="left"
+                        typeLabel="COAX"
                       />
                       <ParameterBadge
                         icon={Thermometer}
@@ -425,6 +436,7 @@ const CalculatorClient = () => {
                         value={`${params.ambientTempC}°C`}
                         variant="comparison"
                         side="right"
+                        typeLabel="Tank"
                       />
                     </div>
                   </div>

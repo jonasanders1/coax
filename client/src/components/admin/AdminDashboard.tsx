@@ -81,7 +81,7 @@ export default function AdminDashboard() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to delete product",
+        description: "Sletting av produkte er deaktivert av sikkerhetsgrunner",
         variant: "destructive",
       });
     }

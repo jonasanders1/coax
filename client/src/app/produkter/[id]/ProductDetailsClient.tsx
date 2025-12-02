@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { CheckCircle } from "lucide-react";
 import {
   Accordion,
@@ -67,7 +68,7 @@ const getUnitForKey = (key: string): string | null => {
       return " °C";
     case "current":
       return " A";
-    case "connectionWire":
+    case "recommendedConnectionWire":
       return " mm²";
     case "voltage":
       return " V";
@@ -91,6 +92,42 @@ const extractNumericValue = (value: string | number): string => {
     return numValue.toString();
   }
   return String(value);
+};
+
+// Helper function to check if a field should be displayed as badges
+// Exclude fields that have special formatting (dimensions, temperatureRange)
+const shouldDisplayAsBadges = (key: string, value: unknown): boolean => {
+  // Only use badges for arrays
+  if (!Array.isArray(value) || value.length === 0) {
+    return false;
+  }
+  
+  // Exclude fields with special formatting
+  const excludedKeys = ["dimensions", "temperatureRange"];
+  return !excludedKeys.includes(key);
+};
+
+// Helper function to render badges for array values
+const renderBadges = (key: string, value: unknown): React.ReactNode => {
+  if (!Array.isArray(value) || value.length === 0) {
+    return null;
+  }
+
+  const unit = getUnitForKey(key);
+  
+  return (
+    <div className="flex flex-wrap gap-2 justify-end">
+      {value.map((item, index) => {
+        const displayValue = typeof item === "number" ? item.toString() : String(item);
+        const badgeText = unit ? `${displayValue}${unit}` : displayValue;
+        return (
+          <Badge key={index} variant="primary" className="text-sm">
+            {badgeText}
+          </Badge>
+        );
+      })}
+    </div>
+  );
 };
 
 // Helper function to format values with appropriate units
@@ -623,6 +660,8 @@ export const ProductDetailsClient = ({
                             }
 
                             const label = SPEC_LABELS[key] ?? key;
+                            const shouldUseBadges = shouldDisplayAsBadges(key, value);
+                            
                             return (
                               <tr
                                 key={key}
@@ -632,7 +671,11 @@ export const ProductDetailsClient = ({
                                   {label}
                                 </th>
                                 <td className="py-2 text-muted-foreground text-right">
-                                  {formatSpecValue(key, value)}
+                                  {shouldUseBadges ? (
+                                    renderBadges(key, value)
+                                  ) : (
+                                    formatSpecValue(key, value)
+                                  )}
                                 </td>
                               </tr>
                             );

@@ -17,6 +17,11 @@ interface ParameterBadgeProps {
    */
   side?: "left" | "right";
   /**
+   * Type label to show in comparison badges (e.g., "COAX" or "Tank")
+   * Only shown on mobile screens when badges are stacked
+   */
+  typeLabel?: string;
+  /**
    * Optional extra classes for the outer container (e.g. colored backgrounds).
    */
   className?: string;
@@ -33,6 +38,7 @@ export const ParameterBadge = ({
   iconColor = "text-accent",
   variant = "single",
   side = "left",
+  typeLabel,
   className,
   style,
 }: ParameterBadgeProps) => {
@@ -56,20 +62,29 @@ export const ParameterBadge = ({
             : ""
         }`,
         isComparison && "bg-transparent",
-        isComparison && side === "right" && "flex-row-reverse text-right",
+        // Only reverse on medium screens and up (when side-by-side)
+        isComparison && side === "right" && "md:flex-row-reverse md:text-right",
         className
       )}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-1">
         {!isComparison && <Icon className={cn("w-6 h-6", iconColor)} />}
-        <span
-          className={cn(
-            "text-sm font-semibold",
-            isComparison ? "text-white" : "text-muted-foreground"
+        <div className="flex flex-col md:flex-row md:items-center md:gap-2">
+          {/* Type label (COAX/Tank) - shown on mobile, hidden on desktop */}
+          {isComparison && typeLabel && (
+            <span className="text-xs font-bold uppercase mb-1 md:hidden text-white/90">
+              {typeLabel}
+            </span>
           )}
-        >
-          {label}
-        </span>
+          <span
+            className={cn(
+              "text-sm font-semibold",
+              isComparison ? "text-white" : "text-muted-foreground"
+            )}
+          >
+            {label}
+          </span>
+        </div>
       </div>
       <span
         className={cn("text-sm font-semibold", isComparison && "text-white")}
