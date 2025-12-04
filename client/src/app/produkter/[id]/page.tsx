@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ProductDetailsClient } from "./ProductDetailsClient";
 import { getProductById } from "@/lib/products";
 import { siteUrl } from "@/config/site";
@@ -22,26 +23,32 @@ export async function generateMetadata(props: {
     console.warn(`Could not fetch product ${params.id} for metadata:`, error);
   }
   
-  const title = product?.model
-    ? `COAX | ${product.model}`
-    : `COAX | Produkt ${params.id}`;
-  const description =
-    product?.description?.slice(0, 155) ??
-    "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
+  // If product doesn't exist, return 404 metadata
+  if (!product) {
+    return {
+      title: "COAX | Produkt ikke funnet",
+      description: "Produktet du leter etter finnes ikke.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+  
+  const title = `COAX | ${product.model}`;
+  const description = product.description?.slice(0, 155) ?? "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
 
-  const keywords = product?.model
-    ? [
-        `COAX ${product.model}`,
-        "direkte vannvarmer",
-        "tankløs vannvarmer",
-        "elektrisk vannvarmer",
-        product.model,
-      ].filter(Boolean)
-    : ["COAX produkt", "direkte vannvarmer", "tankløs vannvarmer"];
+  const keywords = [
+    `COAX ${product.model}`,
+    "direkte vannvarmer",
+    "tankløs vannvarmer",
+    "elektrisk vannvarmer",
+    product.model,
+  ].filter(Boolean);
 
   // Get the first product image - Firebase images are already full URLs
   // The getProductById function processes images and returns full Firebase Storage URLs
-  const productImage = product?.images?.[0];
+  const productImage = product.images?.[0];
   
   // Firebase Storage URLs are already absolute, so use directly if available
   // Otherwise fall back to default OG image
@@ -84,7 +91,14 @@ export async function generateMetadata(props: {
 const ProductDetailsPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
 
-  return <ProductDetailsClient productId={resolvedParams.id} />;
+  // Check if product exists - if not, return 404
+  const product = await getProductById(resolvedParams.id);
+  
+  if (!product) {
+    notFound();
+  }
+
+  return <ProductDetailsClient productId={resolvedParams.id} fallbackProduct={product} />;
 };
 
 export default ProductDetailsPage;
