@@ -29,13 +29,19 @@ const ScrollUp = () => {
       ref={scrollUpRef}
       href="#"
       className={styles.scrollUp}
-      aria-label="Til toppen"
+      aria-label="Scroll til toppen av siden"
+      onClick={(e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
     >
       <Button
         size="icon"
         className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md border border-border"
+        aria-hidden="true"
+        tabIndex={-1}
       >
-        <ArrowUp className="h-10 w-10" />
+        <ArrowUp className="h-10 w-10" aria-hidden="true" />
       </Button>
     </a>
   );

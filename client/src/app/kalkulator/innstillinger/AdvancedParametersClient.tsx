@@ -13,7 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
@@ -144,7 +144,7 @@ const AdvancedParametersClient = () => {
             Innstillinger
           </Typography>
         </Breadcrumbs>
-        <PageTitile
+        <PageTitle
           title="Innstillinger"
           text="Detaljerte innstillinger for mer nøyaktige beregninger"
         />

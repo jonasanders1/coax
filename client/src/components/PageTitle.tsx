@@ -1,4 +1,4 @@
-const PageTitile = ({ title, text }: { title: string; text: string }) => {
+const PageTitle = ({ title, text }: { title: string; text: string }) => {
   return (
     <div className="text-center my-12 px-4">
       <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-4">
@@ -11,4 +11,5 @@ const PageTitile = ({ title, text }: { title: string; text: string }) => {
   );
 };
 
-export default PageTitile;
+export default PageTitle;
+

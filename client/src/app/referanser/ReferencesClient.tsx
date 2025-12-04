@@ -3,14 +3,14 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import { references } from "@/data/references";
 
 const ReferencesClient = () => {
   return (
     <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
       <div className="mx-auto">
-        <PageTitile
+        <PageTitle
           title="Fornøyde kunder i over 20 år"
           text="COAX leverer varmtvannsløsninger til hytter, boliger, næringsbygg, hoteller og industri. Se hvordan våre energieffektive vannvarmere har redusert kostnader og økt komfort for kunder."
         />
@@ -25,7 +25,7 @@ const ReferencesClient = () => {
                       <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
                         <img
                           src={ref.image}
-                          alt={ref.caption}
+                          alt={`${ref.caption} - ${ref.testimonial.substring(0, 50)}...`}
                           className="w-full h-full object-cover object-center"
                         />
                       </div>
@@ -55,7 +55,7 @@ const ReferencesClient = () => {
               løsningen.
             </p>
             <div className="mt-8">
-              <Button asChild size="lg" className="gap-2">
+              <Button asChild size="lg" className="gap-2" aria-label="Kontakt en ekspert for å snakke om ditt prosjekt">
                 <Link href="/kontakt">Snakk med en ekspert</Link>
               </Button>
             </div>

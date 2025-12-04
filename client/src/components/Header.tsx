@@ -11,11 +11,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useChatBot } from "@/hooks/useChatBot";
+// import { useChatBot } from "@/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
 import Logo from "./Logo";
-import { ModeToggle } from "./ModeToggle";
 import { useEffect, useRef, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ChevronRight } from "lucide-react";
@@ -92,9 +91,7 @@ const Header = () => {
               ))}
           </div>
 
-          {/* <div className="hidden lg:flex items-center gap-2">
-            <ModeToggle />
-          </div> */}
+      
 
           {/* <Button
             className="hidden lg:flex text-white"
@@ -238,10 +235,7 @@ const Header = () => {
                   Snakk med Flux
                 </Button>
               </div> */}
-              {/* <div className="border-t border-border pt-4">
-                <p className="text-sm text-muted-foreground mb-2">Tema</p>
-                <ModeToggle />
-              </div> */}
+           
             </nav>
           </SheetContent>
         </Sheet>

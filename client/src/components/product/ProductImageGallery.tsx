@@ -210,9 +210,9 @@ export const ProductImageGallery = ({
                   className="absolute hidden md:flex left-3 top-1/2 -translate-y-1/2 rounded-full bg-background/70 shadow-md backdrop-blur hover:bg-primary hover:text-primary-foreground"
                   onClick={() => mainApi && mainApi.scrollPrev()}
                   disabled={!canScrollPrev}
+                  aria-label={`Forrige bilde. Bilde ${selectedIndex} av ${mainImages.length}`}
                 >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span className="sr-only">Forrige bilde</span>
+                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
                 </Button>
                 <Button
                   type="button"
@@ -221,11 +221,15 @@ export const ProductImageGallery = ({
                   className="absolute hidden md:flex right-3 top-1/2 -translate-y-1/2 rounded-full bg-background/70 shadow-md backdrop-blur hover:bg-primary hover:text-primary-foreground"
                   onClick={() => mainApi && mainApi.scrollNext()}
                   disabled={!canScrollNext}
+                  aria-label={`Neste bilde. Bilde ${selectedIndex + 2} av ${mainImages.length}`}
                 >
-                  <ChevronRight className="h-4 w-4" />
-                  <span className="sr-only">Neste bilde</span>
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
-                <span className="absolute right-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white">
+                <span 
+                  className="absolute right-3 top-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
                   {selectedIndex + 1} / {mainImages.length}
                 </span>
               </>

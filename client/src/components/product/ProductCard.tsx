@@ -41,15 +41,15 @@ export default function ProductCard({ product }: ProductCardProps) {
                 )}
                 <img
                   src={heroImage}
-                  alt={product.model}
+                  alt={`${product.model} COAX vannvarmer produktbilde`}
                   onLoad={() => setIsImageLoaded(true)}
                   onError={() => setIsImageLoaded(true)}
                   className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
                 />
               </>
             ) : (
-              <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground">
-                <Image className="h-10 w-10" />
+              <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground" role="img" aria-label="Ingen bilde tilgjengelig">
+                <Image className="h-10 w-10" aria-hidden="true" />
               </div>
             )}
           </div>
@@ -75,6 +75,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="flex-1 hover:bg-primary hover:text-primary-foreground"
           variant="outline"
           onClick={(e) => e.stopPropagation()}
+          aria-label={`Les mer om ${product.model} COAX vannvarmer`}
         >
           <Link
             href={`/produkter/${product.id}`}

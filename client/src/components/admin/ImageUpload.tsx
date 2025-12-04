@@ -151,8 +151,9 @@ export default function ImageUpload({
                   size="icon"
                   className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={() => handleRemoveAndDelete(index, imagePath)}
+                  aria-label={`Fjern bilde ${index + 1}`}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-4 w-4" aria-hidden="true" />
                 </Button>
                 <Badge
                   variant="secondary"
@@ -199,9 +200,10 @@ export default function ImageUpload({
             variant="outline"
             asChild
             disabled={uploading}
+            aria-label={uploading ? "Laster opp bilder" : "Last opp nye bilder"}
           >
             <span>
-              <Upload className="mr-2 h-4 w-4" />
+              <Upload className="mr-2 h-4 w-4" aria-hidden="true" />
               {uploading ? "Laster opp..." : "Last opp bilder"}
             </span>
           </Button>

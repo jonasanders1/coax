@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,30 +15,39 @@ import { AlertCircle, CheckCircle, Zap, Droplet, Settings } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { useAppContext } from "@/context/AppContext";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import {
   StructuredData,
   ServiceSchema,
   HowToSchema,
 } from "@/components/StructuredData";
 import { siteUrl } from "@/config/site";
-
-type Recommendation = {
-  id: string;
-  model: string;
-  phase: string;
-  fuse: string;
-  usage: string;
-  minFlow: number;
-  maxFlow: number;
-  matchMax: number;
-  minPowerOption: number;
-};
+import { bucketMethodSteps } from "@/data/modelSelectorData";
+import {
+  formatFlowRange,
+  formatPowerRange,
+  parseFlowValues,
+} from "@/utils/productUtils";
+import {
+  type Recommendation,
+  filterProductsByCategory,
+  createRecommendations,
+  createTableProducts,
+  calculateRecommendationResult,
+} from "@/utils/modelSelectorUtils";
+import {
+  BUCKET_VOLUME_LITERS,
+  BUCKET_VOLUME_ML,
+  DEFAULT_SECONDS,
+  SECONDS_MIN,
+  SECONDS_MAX,
+  FLOW_RATE_DECIMAL_THRESHOLD,
+} from "@/constants/modelSelector";
 
 const ModelSelectorClient = () => {
   const { products, productsLoading, productsError, fetchProducts } =
     useAppContext();
-  const [seconds, setSeconds] = useState<number>(60);
+  const [seconds, setSeconds] = useState<number>(DEFAULT_SECONDS);
   const [result, setResult] = useState<Recommendation | null>(null);
   const [flowRate, setFlowRate] = useState<number | null>(null);
 
@@ -49,202 +58,35 @@ const ModelSelectorClient = () => {
     }
   }, [products, productsLoading, productsError, fetchProducts]);
 
-  // Helper functions
-  const parseFlowValues = (value: string): number[] => {
-    if (!value) return [];
-    const matches = value.match(/[\d]+(?:[.,]\d+)?/g);
-    if (!matches) return [];
-    return matches.map((match) => parseFloat(match.replace(",", ".")));
-  };
-
-  const parsePowerOptions = (powerOptions?: number | number[]): number[] => {
-    if (powerOptions === undefined || powerOptions === null) return [];
-    if (typeof powerOptions === "number") return [powerOptions];
-    if (Array.isArray(powerOptions) && powerOptions.length > 0) {
-      return powerOptions;
-    }
-    return [];
-  };
-
   // Filter products by category "Direkte vannvarmer"
-  const filteredProducts = useMemo(() => {
-    if (!products || products.length === 0) return [];
-    return products.filter(
-      (product) => product.category === "Direkte vannvarmer"
-    );
-  }, [products]);
+  const filteredProducts = useMemo(
+    () => filterProductsByCategory(products, "Direkte vannvarmer"),
+    [products]
+  );
 
   // Recommendations for model selector (based on flow calculation)
-  const recommendations = useMemo<Recommendation[]>(() => {
-    if (!filteredProducts || filteredProducts.length === 0) return [];
-
-    const derived = filteredProducts
-      .map((product) => {
-        const flowEntries = product.specs?.flowRates ?? [];
-        const flowValues = flowEntries
-          .flatMap(parseFlowValues)
-          .filter((num) => !Number.isNaN(num))
-          .sort((a, b) => a - b);
-
-        if (!flowValues.length) {
-          return null;
-        }
-
-        const minFlow = flowValues[0];
-        const maxFlow = flowValues[flowValues.length - 1];
-
-        const powerOptions = parsePowerOptions(product.specs?.powerOptions);
-        const minPowerOption =
-          powerOptions.length > 0 ? Math.min(...powerOptions) : 0;
-
-        const specs = product.specs as
-          | {
-              circuitBreaker?: string | string[];
-              fuseCircuit?: string | string[];
-            }
-          | undefined;
-        const fuseRaw = specs?.circuitBreaker ?? specs?.fuseCircuit;
-        const fuseValue = Array.isArray(fuseRaw)
-          ? fuseRaw.join(", ")
-          : fuseRaw ?? "Ikke spesifisert";
-
-        const usage =
-          product.ideal?.slice(0, 2).join(", ") ?? "Ikke spesifisert";
-
-        return {
-          id: product.id,
-          model: product.model,
-          phase: String(product.specs?.phase ?? "Ikke spesifisert"),
-          fuse: fuseValue,
-          usage,
-          minFlow,
-          maxFlow,
-          matchMax: maxFlow,
-          minPowerOption,
-        } as Recommendation;
-      })
-      .filter((item): item is Recommendation => item !== null)
-      .sort((a, b) => {
-        // Sort by minFlow first, then by minPowerOption
-        if (a.minFlow !== b.minFlow) {
-          return a.minFlow - b.minFlow;
-        }
-        return a.minPowerOption - b.minPowerOption;
-      });
-
-    return derived.map((item, index) => {
-      const next = derived[index + 1];
-      return {
-        ...item,
-        matchMax: next ? next.minFlow : Number.POSITIVE_INFINITY,
-      };
-    });
-  }, [filteredProducts]);
+  const recommendations = useMemo<Recommendation[]>(
+    () => createRecommendations(filteredProducts),
+    [filteredProducts]
+  );
 
   // All products for the table (not filtered by flow)
-  const tableProducts = useMemo(() => {
-    if (!filteredProducts || filteredProducts.length === 0) return [];
-
-    return filteredProducts
-      .map((product) => {
-        const flowEntries = product.specs?.flowRates ?? [];
-        const flowValues = flowEntries
-          .flatMap(parseFlowValues)
-          .filter((num) => !Number.isNaN(num))
-          .sort((a, b) => a - b);
-
-        const powerOptions = parsePowerOptions(product.specs?.powerOptions);
-
-        const specs = product.specs as
-          | {
-              circuitBreaker?: string | string[];
-              fuseCircuit?: string | string[];
-            }
-          | undefined;
-        const fuseRaw = specs?.circuitBreaker ?? specs?.fuseCircuit;
-        const fuseValue = Array.isArray(fuseRaw)
-          ? fuseRaw.join(", ")
-          : fuseRaw ?? "Ikke spesifisert";
-
-        const usage = product.ideal?.join(", ") ?? "Ikke spesifisert";
-
-        return {
-          id: product.id,
-          model: product.model,
-          flowRates: flowEntries.length > 0 ? flowEntries : ["—"],
-          flowValues,
-          powerOptions: powerOptions.length > 0 ? powerOptions : [],
-          phase: String(product.specs?.phase ?? "Ikke spesifisert"),
-          fuse: fuseValue,
-        };
-      })
-      .sort((a, b) => {
-        // Sort by phase first
-        const phaseA = a.phase;
-        const phaseB = b.phase;
-        if (phaseA !== phaseB) {
-          // Convert to numbers for comparison if possible, otherwise string compare
-          const numA = parseInt(phaseA);
-          const numB = parseInt(phaseB);
-          if (!isNaN(numA) && !isNaN(numB)) {
-            return numA - numB;
-          }
-          return phaseA.localeCompare(phaseB);
-        }
-        
-        // Then sort by liter per minute (lowest flow value)
-        const minFlowA = a.flowValues.length > 0 ? a.flowValues[0] : 0;
-        const minFlowB = b.flowValues.length > 0 ? b.flowValues[0] : 0;
-        return minFlowA - minFlowB;
-      });
-  }, [filteredProducts]);
+  const tableProducts = useMemo(
+    () => createTableProducts(filteredProducts),
+    [filteredProducts]
+  );
 
   const calculateRecommendation = () => {
-    if (!recommendations.length) {
+    const lpm = BUCKET_VOLUME_ML / seconds;
+    const result = calculateRecommendationResult(recommendations, lpm);
+
+    if (result) {
+      setResult(result.recommendation);
+      setFlowRate(result.calculatedFlowRate);
+    } else {
       setResult(null);
       setFlowRate(null);
-      return;
     }
-
-    const lpm = 600 / seconds;
-    setFlowRate(Math.round(lpm * 10) / 10);
-
-    // Find all products that meet the flow requirement
-    const matchingProducts = recommendations.filter(
-      (r) => lpm >= r.minFlow && lpm < r.matchMax
-    );
-
-    if (matchingProducts.length === 0) {
-      // If no exact match, use the highest flow product
-      setResult(recommendations[recommendations.length - 1]);
-      return;
-    }
-
-    // Among matching products, select the one with the lowest power option
-    const bestMatch = matchingProducts.reduce((best, current) => {
-      if (current.minPowerOption < best.minPowerOption) {
-        return current;
-      }
-      // If power is equal, prefer the one with lower minFlow
-      if (
-        current.minPowerOption === best.minPowerOption &&
-        current.minFlow < best.minFlow
-      ) {
-        return current;
-      }
-      return best;
-    });
-
-    setResult(bestMatch);
-  };
-
-  const formatFlowRange = (min: number, max: number) => {
-    const format = (value: number) =>
-      Number.isFinite(value) ? value.toFixed(value >= 10 ? 0 : 1) : "∞";
-    if (!Number.isFinite(max) || max === Number.POSITIVE_INFINITY) {
-      return `${format(min)}+ L/min`;
-    }
-    return `${format(min)} - ${format(max)} L/min`;
   };
 
   // Render flow rates as a single badge with range
@@ -266,9 +108,11 @@ const ModelSelectorClient = () => {
     const lowest = flowValues[0];
     const highest = flowValues[flowValues.length - 1];
     
-    // Format numbers: show 0 decimals if >= 10, otherwise 1 decimal
+    // Format numbers: show 0 decimals if >= threshold, otherwise 1 decimal
     const format = (value: number) =>
-      Number.isFinite(value) ? value.toFixed(value >= 10 ? 0 : 1) : "∞";
+      Number.isFinite(value)
+        ? value.toFixed(value >= FLOW_RATE_DECIMAL_THRESHOLD ? 0 : 1)
+        : "∞";
     
     const rangeText = lowest === highest
       ? `${format(lowest)} L/min`
@@ -318,28 +162,7 @@ const ModelSelectorClient = () => {
         description:
           "En enkel metode for å måle vannforbruket ditt og finne riktig COAX-modell",
         url: `${siteUrl}/velg-modell`,
-        steps: [
-          {
-            name: "Ta med deg en 10-liters bøtte i dusjen",
-            text: "Ta med deg en 10-liters bøtte i dusjen",
-          },
-          {
-            name: "Skru på vannet til ønsket dusjtemperatur og trykk",
-            text: "Skru på vannet til ønsket dusjtemperatur og trykk",
-          },
-          {
-            name: "Start tidtaker og fyll bøtta helt opp",
-            text: "Start tidtaker og fyll bøtta helt opp",
-          },
-          {
-            name: "Stopp når bøtta er full og noter antall sekunder",
-            text: "Stopp når bøtta er full og noter antall sekunder",
-          },
-          {
-            name: "Fyll inn tiden i kalkulatoren",
-            text: "Fyll inn tiden under, så regner vi ut riktig modell",
-          },
-        ],
+        steps: bucketMethodSteps,
       }),
     []
   );
@@ -349,7 +172,7 @@ const ModelSelectorClient = () => {
       <StructuredData data={serviceSchema} />
       <StructuredData data={howToSchema} />
       <div className="container mx-auto px-4 max-w-6xl">
-        <PageTitile
+        <PageTitle
           title="Finn riktig COAX-modell med Bøttemetoden"
           text="Den enkleste måten å finne riktig kapasitet på."
         />
@@ -370,7 +193,7 @@ const ModelSelectorClient = () => {
                   <div className="lg:pr-4">
                     <ol className="space-y-2.5 text-sm md:text-base text-muted-foreground list-decimal list-inside ml-1">
                       <li className="pl-1">
-                        Ta med deg en 10-liters bøtte i dusjen
+                        Ta med deg en {BUCKET_VOLUME_LITERS}-liters bøtte i dusjen
                       </li>
                       <li className="pl-1">
                         Skru på vannet til ønsket dusjtemperatur og trykk
@@ -395,7 +218,7 @@ const ModelSelectorClient = () => {
                         htmlFor="seconds"
                         className="text-base mb-4 block font-medium"
                       >
-                        Tid for å fylle 10L bøtte:{" "}
+                        Tid for å fylle {BUCKET_VOLUME_LITERS}L bøtte:{" "}
                         <strong className="text-primary">
                           {seconds} sekunder
                         </strong>
@@ -404,8 +227,8 @@ const ModelSelectorClient = () => {
                         id="seconds"
                         value={[seconds]}
                         onValueChange={(value) => setSeconds(value[0])}
-                        min={40}
-                        max={200}
+                        min={SECONDS_MIN}
+                        max={SECONDS_MAX}
                         step={1}
                         className="w-full"
                       />
@@ -419,6 +242,7 @@ const ModelSelectorClient = () => {
                       size="lg"
                       className="w-full text-base"
                       disabled={isCalculateDisabled}
+                      aria-label={productsLoading ? "Laster produkter" : "Beregn anbefalt COAX modell basert på valgt tid"}
                     >
                       {productsLoading ? "Laster produkter..." : "Finn modell"}
                     </Button>
@@ -475,8 +299,15 @@ const ModelSelectorClient = () => {
                         .filter(Boolean);
                       const flowRangeLabel = formatFlowRange(
                         result.minFlow,
-                        result.matchMax
+                        result.maxFlow
                       );
+                      const powerRangeLabel =
+                        result.minPowerOption > 0 && result.maxPowerOption > 0
+                          ? formatPowerRange(
+                              result.minPowerOption,
+                              result.maxPowerOption
+                            )
+                          : "—";
                       return (
                         <div className="space-y-6">
                           {/* Metrics Grid */}
@@ -500,9 +331,7 @@ const ModelSelectorClient = () => {
                                 </p>
                               </div>
                               <p className="text-xl font-bold text-white">
-                                {result.minPowerOption > 0
-                                  ? `${result.minPowerOption} kW`
-                                  : "—"}
+                                {powerRangeLabel}
                               </p>
                             </div>
                             <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">

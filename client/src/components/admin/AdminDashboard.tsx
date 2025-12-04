@@ -33,7 +33,7 @@ import {
 import { Loader2, Plus, Edit, Trash2, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProductForm from "./ProductForm";
-import PageTitile from "../PageTitile";
+import PageTitle from "../PageTitle";
 import { cn } from "@/lib/utils";
 
 export default function AdminDashboard() {
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted">
       <div className="max-w-7xl mx-auto">
-        <PageTitile
+        <PageTitle
           title="Administrasjon"
           text="Legg til, endre eller slett produkter"
         />

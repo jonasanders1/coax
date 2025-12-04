@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import ContactForm from "@/components/ContactForm";
 import NeedsAssessmentForm from "@/components/NeedsAssessmentForm";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import {
   StructuredData,
   LocalBusinessSchema,
@@ -21,7 +21,7 @@ const ContactClient = () => {
     <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
       <StructuredData data={LocalBusinessSchema()} />
       <div className="container mx-auto px-4">
-        <PageTitile
+        <PageTitle
           title="Ta kontakt med oss"
           text="Vi hjelper deg å velge riktig modell og samarbeider med autoriserte elektrikere og rørleggere for trygg installasjon. Perfekt for bolig, hytte eller større prosjekter."
         />

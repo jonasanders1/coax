@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import { faqs } from "@/data/faq";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -48,7 +48,7 @@ const FAQClient = () => {
     <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
       <StructuredData data={faqSchema} />
       <div className="container mx-auto px-4 max-w-6xl">
-        <PageTitile
+        <PageTitle
           title="Ofte stilte spørsmål om COAX vannvarmere"
           text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
         />

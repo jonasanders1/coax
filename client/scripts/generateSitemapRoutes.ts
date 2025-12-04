@@ -73,7 +73,7 @@ async function generateRoutes() {
     "/kalkulator/innstillinger",
     "/kalkulator/detaljer",
     "/kontakt",
-    // "/takk",
+    "/personvern",
   ];
 
   // Validate Firebase config

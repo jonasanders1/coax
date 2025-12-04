@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { calculatorDescription } from "@/lib/calculator-description";
 import { useTheme } from "@/hooks/useTheme";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
@@ -68,7 +68,7 @@ const CalculationDetailsClient = () => {
           </Link>
           <Typography sx={{ color: "hsl(var(--accent))" }}>Detaljer</Typography>
         </Breadcrumbs>
-        <PageTitile
+        <PageTitle
           title="COAX Forbrukskalkulator - Detaljer"
           text="Omfattende beskrivelse av kalkulatorens forutsetninger, beregninger og begrunnelser"
         />

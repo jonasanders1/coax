@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import ProductsList from "@/components/product/ProductsList";
 import { useAppContext } from "@/context/AppContext";
 import ProductsListSceleton from "@/components/product/ProductsListSceleton";
@@ -16,7 +16,7 @@ const ProductsClient = () => {
 
   return (
     <div className="min-h-screen pt-24 animate-fade-in-up">
-      <PageTitile
+      <PageTitle
         title="Energieffektive COAX vannvarmere"
         text="Velg blant modeller tilpasset både små og store varmtvannsbehov. Våre direkte vannvarmere finnes i både 1-fase og 3-fase varianter, slik at du kan finne den optimale løsningen for ditt el-anlegg og tappemønster."
       />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AdminClient from "./AdminClient";
+import AdminClientWrapper from "./AdminClientWrapper";
 
 export const metadata: Metadata = {
   robots: {
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function AdminPage() {
-  return <AdminClient />;
+  return <AdminClientWrapper />;
 }
 

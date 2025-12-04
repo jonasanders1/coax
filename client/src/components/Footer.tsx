@@ -58,25 +58,27 @@ const Footer = () => {
             <h3 className="font-semibold mb-4 text-foreground">Kontakt</h3>
             <div className="space-y-3">
               <div className="flex items-start gap-2 justify-center md:justify-start">
-                <MapPin className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 text-primary mt-1 flex-shrink-0" aria-hidden="true" />
+                <address className="text-sm text-muted-foreground not-italic">
                   Grønnliveien 13, 3474 Åros
-                </span>
+                </address>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
-                <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                <Phone className="w-4 h-4 text-primary flex-shrink-0" aria-hidden="true" />
                 <a
                   href="tel:+4797732838"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="Ring COAX på telefonnummer 977 32 838"
                 >
                   977 32 838
                 </a>
               </div>
               <div className="flex items-center gap-2 justify-center md:justify-start">
-                <Mail className="w-4 h-4 text-primary flex-shrink-0" />
+                <Mail className="w-4 h-4 text-primary flex-shrink-0" aria-hidden="true" />
                 <a
                   href="mailto:post@coax.no"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="Send e-post til COAX på post@coax.no"
                 >
                   post@coax.no
                 </a>

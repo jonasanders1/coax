@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import PageTitile from "@/components/PageTitile";
+import PageTitle from "@/components/PageTitle";
 import CookieSettingsControls from "@/components/CookieSettingsControls";
 import {
   Card,
@@ -9,12 +9,49 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cookieList } from "@/data/privacyData";
+
+import { siteUrl } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "COAX | Personvern og cookies",
   description:
     "Les hvordan COAX bruker informasjonskapsler, hvordan GA4 håndteres, og hvordan du kan administrere samtykket ditt.",
-  alternates: { canonical: "/personvern" },
+  keywords: [
+    "COAX personvern",
+    "cookie policy",
+    "personvernpolicy",
+    "GDPR",
+    "informasjonskapsler",
+  ],
+  alternates: { canonical: `${siteUrl}/personvern` },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "COAX | Personvern og cookies",
+    description:
+      "Les hvordan COAX bruker informasjonskapsler, hvordan GA4 håndteres, og hvordan du kan administrere samtykket ditt.",
+    url: `${siteUrl}/personvern`,
+    type: "website",
+    siteName: "COAX",
+    images: [
+      {
+        url: `${siteUrl}/ogImage.png`,
+        width: 1200,
+        height: 630,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "COAX | Personvern og cookies",
+    description:
+      "Les hvordan COAX bruker informasjonskapsler og hvordan du kan administrere samtykket ditt.",
+    images: [`${siteUrl}/ogImage.png`],
+  },
 };
 
 type SectionHeaderProps = {
@@ -35,32 +72,11 @@ const SectionHeader = ({ title, description }: SectionHeaderProps) => (
   </div>
 );
 
-const cookieList = [
-  {
-    name: "_ga",
-    provider: "Google",
-    purpose: "Skiller brukere fra hverandre",
-    expiry: "2 år",
-  },
-  {
-    name: "_ga_<container-id>",
-    provider: "Google",
-    purpose: "Vedlikeholder sesjoner og statistikk",
-    expiry: "2 år",
-  },
-  {
-    name: "cookie_consent",
-    provider: "coax.no",
-    purpose: "Lagrer samtykkevalget ditt",
-    expiry: "6–12 måneder",
-  },
-] as const;
-
 const PersonvernPage = () => {
   return (
     <div className="bg-background py-12">
       <div className="container mx-auto max-w-6xl px-4 space-y-16 lg:space-y-20">
-        <PageTitile
+        <PageTitle
           title="Personvern og cookie-innstillinger"
           text="Vi tar personvern og datatrygghet på alvor. Her finner du all informasjonen om hvordan vi bruker informasjonskapsler og hvordan du styrer samtykket ditt."
         />

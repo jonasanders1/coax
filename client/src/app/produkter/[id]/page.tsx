@@ -1,73 +1,82 @@
 import type { Metadata } from "next";
-import productsData from "@/product-details.json";
 import { ProductDetailsClient } from "./ProductDetailsClient";
+import { getProductById } from "@/lib/products";
+import { siteUrl } from "@/config/site";
 
 type Params = {
   id: string;
 };
 
-type StaticProduct = {
-  id: string;
-  name?: string;
-  description?: string;
-  images?: string[];
-};
-
-const staticProducts =
-  (productsData as { products?: StaticProduct[] }).products ?? [];
-
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata(
-  props: {
-    params: Promise<Params>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const params = await props.params;
-  const toAbsoluteUrl = (path: string) =>
-    path.startsWith("http")
-      ? path
-      : `https://coax.jonasanders1.com${path.startsWith("/") ? path : `/${path}`}`;
-  const fallbackProduct = staticProducts.find(
-    (product) => product.id === params.id
-  );
-  const title = fallbackProduct
-    ? `COAX | ${fallbackProduct.name}`
+  
+  // Fetch product from Firebase for accurate metadata
+  let product = null;
+  try {
+    product = await getProductById(params.id);
+  } catch (error) {
+    console.warn(`Could not fetch product ${params.id} for metadata:`, error);
+  }
+  
+  const title = product?.model
+    ? `COAX | ${product.model}`
     : `COAX | Produkt ${params.id}`;
   const description =
-    fallbackProduct?.description?.slice(0, 155) ??
+    product?.description?.slice(0, 155) ??
     "Oppdag detaljer om COAX sine energieffektive vannvarmere.";
+
+  const keywords = product?.model
+    ? [
+        `COAX ${product.model}`,
+        "direkte vannvarmer",
+        "tankløs vannvarmer",
+        "elektrisk vannvarmer",
+        product.model,
+      ].filter(Boolean)
+    : ["COAX produkt", "direkte vannvarmer", "tankløs vannvarmer"];
+
+  // Get the first product image - Firebase images are already full URLs
+  // The getProductById function processes images and returns full Firebase Storage URLs
+  const productImage = product?.images?.[0];
+  
+  // Firebase Storage URLs are already absolute, so use directly if available
+  // Otherwise fall back to default OG image
+  const imageUrl = productImage && (productImage.startsWith("http://") || productImage.startsWith("https://"))
+    ? productImage
+    : `${siteUrl}/ogImage.png`;
 
   return {
     title,
     description,
+    keywords,
     alternates: {
-      canonical: `/produkter/${params.id}`,
+      canonical: `${siteUrl}/produkter/${params.id}`,
     },
     openGraph: {
       title,
       description,
-      url: toAbsoluteUrl(`/produkter/${params.id}`),
+      url: `${siteUrl}/produkter/${params.id}`,
       type: "website",
       siteName: "COAX",
-      images: fallbackProduct?.images?.[0]
-        ? [
-            {
-              url: toAbsoluteUrl(fallbackProduct.images[0]),
-              width: 1200,
-              height: 630,
-              type: "image/png",
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          type: "image/png",
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: fallbackProduct?.images?.[0]
-        ? [toAbsoluteUrl(fallbackProduct.images[0])]
-        : undefined,
+      images: [imageUrl],
     },
   };
 }
@@ -75,10 +84,7 @@ export async function generateMetadata(
 const ProductDetailsPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
 
-  return (
-    <ProductDetailsClient productId={resolvedParams.id} />
-  );
+  return <ProductDetailsClient productId={resolvedParams.id} />;
 };
 
 export default ProductDetailsPage;
-

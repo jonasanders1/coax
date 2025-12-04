@@ -309,7 +309,7 @@ export async function streamChat(
 
     onComplete?.();
   } catch (err) {
-    if (err.name === "AbortError") return;
+    if (err instanceof Error && err.name === "AbortError") return;
     const correlationIdToUse = correlationId || crypto.randomUUID();
 
     // Enhanced error message for debugging

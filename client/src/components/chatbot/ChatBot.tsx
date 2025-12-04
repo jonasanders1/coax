@@ -93,8 +93,9 @@ const ChatBot = () => {
         onClick={openChat}
         size="icon"
         className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md border border-border"
+        aria-label="Åpne chat med Flux assistent"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-6 w-6" aria-hidden="true" />
       </Button>
 
       {/* Chat Dialog */}
@@ -148,15 +149,21 @@ const ChatBot = () => {
                 }
               }}
               disabled={isLoading}
+              aria-label="Skriv melding til Flux assistent"
+              aria-describedby="chat-input-hint"
             />
+            <span id="chat-input-hint" className="sr-only">
+              Trykk Enter for å sende, Shift+Enter for ny linje
+            </span>
             <div className="">
               <Button
                 type="submit"
                 size="icon"
                 disabled={isLoading || !input.trim()}
                 className="bg-primary h-10 aspect-square rounded-lg"
+                aria-label="Send melding til Flux"
               >
-                <Send className="h-5 w-5" />
+                <Send className="h-5 w-5" aria-hidden="true" />
               </Button>
             </div>
           </form>

@@ -9,6 +9,7 @@ import React, {
   useMemo,
   useCallback,
   useRef,
+  useEffect,
 } from "react";
 import { Message, ChatRequest, ErrorResponse } from "@/types/chat";
 import { streamChat } from "@/lib/api";
@@ -32,6 +33,8 @@ const AppContext = createContext<AppState | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
 
+  // Use ref to access current messages without creating dependency
+  const messagesRef = useRef<Message[]>([]);
   const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: "welcome",
@@ -41,6 +44,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       status: "complete",
     },
   ]);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
 
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -127,8 +135,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       let accumulatedText = "";
 
       try {
+        // Use ref to get current messages without dependency
+        const currentMessages = messagesRef.current;
         const payload: ChatRequest = {
-          messages: [...messages, userMessage],
+          messages: [...currentMessages, userMessage],
         };
 
         await streamChat(payload, {
@@ -202,7 +212,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
           },
         });
       } catch (err) {
-        if (err.name !== "AbortError") {
+        // Type guard for AbortError
+        const isAbortError = err instanceof Error && err.name === "AbortError";
+        
+        if (!isAbortError) {
           console.error("Chat error:", err);
           // Create a proper error response for network/unknown errors
           const errorResponse: ErrorResponse = {
@@ -231,7 +244,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         abortControllerRef.current = null;
       }
     },
-    [messages]
+    [] // Empty deps - using ref for messages
   );
 
   const value = useMemo(
