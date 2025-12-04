@@ -32,6 +32,7 @@ import { useChatBot } from "@/hooks/useChatBot";
 import CtaSection from "@/components/chatbot/CtaSection";
 
 import SectionTitle from "@/components/SectionTitle";
+import TechnicalWordDef from "@/components/TechnicalWordDef";
 
 const benefits = [
   {
@@ -440,13 +441,24 @@ const HomePage = () => {
           <div className="space-y-4 mb-12 max-w-6xl mx-auto">
             <p className="text-muted-foreground">
               COAX vannvarmere bruker samme effektive varmeprinsipp i alle
-              modeller, men leveres i ulike watteffekter og for både 1-faset og
-              3-faset (230/400 Volt). Det gjør det enkelt å velge riktig
-              kapasitet etter behov, fra små leiligheter til større boliger. Med
-              direkte vannoppvarming uten tank får du raskt og stabilt
-              varmtvann, samtidig som energi- og vannforbruket reduseres.
-              Systemet gir presis kontroll over forbruk og er plassbesparende,
-              driftssikkert og skalerbart.
+              modeller, men leveres i ulike{" "}
+              <TechnicalWordDef definition="Effekt som vannvarmeren kan levere. Vanligvis angitt i kilowatt (kW).">
+                watteffekter
+              </TechnicalWordDef>{" "}
+              og for både{" "}
+              <TechnicalWordDef definition="Strømtilkobling med én fase. Vanlig i boliger. Har begrenset effekt sammenlignet med 3-faset.">
+                1-faset
+              </TechnicalWordDef>{" "}
+              og{" "}
+              <TechnicalWordDef definition="Strømtilkobling med tre faser. Gir høyere effekt og raskere oppvarming enn 1-faset.">
+                3-faset
+              </TechnicalWordDef>{" "}
+              (230/400 Volt). Det gjør det enkelt å velge riktig kapasitet etter
+              behov, fra små leiligheter til større boliger. Med direkte
+              vannoppvarming uten tank får du raskt og stabilt varmtvann,
+              samtidig som energi- og vannforbruket reduseres. Systemet gir
+              presis kontroll over forbruk og er plassbesparende, driftssikkert
+              og skalerbart.
             </p>
           </div>
 

@@ -55,11 +55,9 @@ import {
 import PageTitile from "@/components/PageTitile";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  StructuredData,
-  ServiceSchema,
-} from "@/components/StructuredData";
+import { StructuredData, ServiceSchema } from "@/components/StructuredData";
 import { siteUrl } from "@/config/site";
+import TechnicalWordDef from "@/components/TechnicalWordDef";
 
 const CustomTooltip = ({
   active,
@@ -524,8 +522,8 @@ const CalculatorClient = () => {
                     kr
                   </p>
                   <p className="text-lg text-white/90">
-                    {results.annualSavingskWh.toFixed(0)} kWh redusert energibruk
-                    per år
+                    {results.annualSavingskWh.toFixed(0)} kWh redusert
+                    energibruk per år
                   </p>
                 </div>
               </div>
@@ -762,16 +760,19 @@ const CalculatorClient = () => {
             <CardContent className="text-muted-foreground space-y-4">
               <p className="md:text-base">
                 Det er vanskelig å gi presise beregninger for
-                vannvarmingsforbruk. COAX vannvarmere er enkle å beregne
-                siden de kun varmer vann når det brukes, mens
-                tankbereder-forbruk avhenger av mange variabler som
-                tankstørrelse, isolasjonskvalitet, plassering, romtemperatur,
-                tappefrekvens og hvor lenge vannet står ubrukt.
+                vannvarmingsforbruk. COAX vannvarmere er enkle å beregne siden
+                de kun varmer vann når det brukes, mens tankbereder-forbruk
+                avhenger av mange variabler som tankstørrelse,
+                isolasjonskvalitet, plassering, romtemperatur, tappefrekvens og
+                hvor lenge vannet står ubrukt.
               </p>
 
               <p className="md:text-base">
                 Kalkulatoren bruker fysikkbaserte formler og realistiske
-                forutsetninger for å gi et representativt estimat. Standby-tap
+                forutsetninger for å gi et representativt estimat.{" "}
+                <TechnicalWordDef definition="Energi som går tapt når en enhet ikke brukes."> 
+                  Standby-tap
+                </TechnicalWordDef>{" "}
                 alene kan variere fra 400-1500 kWh/år for tankbereder, avhengig
                 av alder og installasjonsforhold.
               </p>

@@ -1,5 +1,3 @@
-// Updated comparison page with expanded PROs for COAX
-
 "use client";
 
 import { CheckCircle, XCircle } from "lucide-react";
@@ -11,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PageTitile from "@/components/PageTitile";
@@ -128,7 +126,7 @@ export default function VsPage() {
         <TableBody>
           {comparisonData.map((row, i) => (
             <TableRow key={i}>
-              <TableCell className="font-medium" >{row.category}</TableCell>
+              <TableCell className="font-medium">{row.category}</TableCell>
               <TableCell>
                 <div className="flex items-start gap-2">
                   <XCircle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
