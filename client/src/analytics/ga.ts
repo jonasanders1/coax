@@ -1,6 +1,6 @@
 import ReactGA from "react-ga4";
 
-const MEASUREMENT_ID = "G-VVJPG5SY0Y";
+const MEASUREMENT_ID = "G-HC5YYERVLC";
 const GA_DISABLE_KEY = `ga-disable-${MEASUREMENT_ID}`;
 
 let isInitialized = false;
