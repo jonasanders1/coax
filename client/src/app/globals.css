@@ -29,7 +29,7 @@
     --accent-foreground: 0 0% 100%;
 
     /* Muted - Very light background for subtle elements */
-    --muted: 45 10% 92%; /* More distinct muted background */
+    --muted: 45 10% 90%; /* More distinct muted background */
     --muted-foreground: 215 15% 45%; /* Medium gray for muted text */
 
     /* Status Colors */
@@ -97,72 +97,6 @@
   }
 
   .dark {
-    /* Base Colors - Dark Theme */
-    /* --background: 215 35% 12%;
-    --foreground: 0 0% 95%;
-
-    --card: 215 30% 16%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 215 30% 16%;
-    --popover-foreground: 0 0% 95%;
-
-    --primary: 212 84% 59%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 215 20% 25%;
-    --secondary-foreground: 0 0% 90%;
-
-    --accent: 212 84% 59%;
-    --accent-foreground: 0 0% 100%;
-
-    --muted: 215 25% 18%;
-    --muted-foreground: 0 0% 70%;
-
-    --success: 114 58% 34%;
-    --success-foreground: 0 0% 100%;
-
-    --destructive: 0 70% 55%;
-    --destructive-foreground: 0 0% 100%;
-
-    --info: 200 70% 60%;
-    --info-foreground: 0 0% 100%;
-
-    --border: 215 20% 25%;
-    --input: 215 20% 25%;
-    --ring: var(--primary);
-
-    --gradient-primary: linear-gradient(
-      135deg,
-      hsl(212, 77%, 62%) 100%,
-      hsl(212, 84%, 59%) 100%
-    );
-    --gradient-card: linear-gradient(
-      to bottom,
-      hsl(215 30% 16%),
-      hsl(215 25% 14%)
-    );
-    --gradient-hero: linear-gradient(
-      135deg,
-      hsla(214, 34%, 12%, 0.4) 0%,
-      hsla(216, 29%, 10%, 0.7) 50%,
-      hsla(216, 29%, 10%, 0.8) 100%
-    );
-
-    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4),
-      0 2px 4px -1px hsl(0 0% 0% / 0.3);
-    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5),
-      0 4px 6px -2px hsl(0 0% 0% / 0.4);
-
-    --shadow-card-sm: inset 0 1px 2px hsl(215 30% 24% / 0.6),
-      0 1px 2px hsl(215 35% 8% / 0.5), 0 2px 4px hsl(215 35% 5% / 0.3);
-
-    --shadow-card-md: inset 0 1px 3px hsl(215 30% 24% / 0.7),
-      0 2px 4px hsl(215 35% 8% / 0.6), 0 4px 8px hsl(215 35% 5% / 0.4);
-
-    --shadow-card-lg: inset 0 2px 4px hsl(215 30% 24% / 0.8),
-      0 4px 6px hsl(215 35% 8% / 0.7), 0 8px 16px hsl(215 35% 5% / 0.5); */
     --background: 215 25% 10%; /* Deep blue-gray */
     --foreground: 45 15% 92%; /* Light warm-gray for text */
 

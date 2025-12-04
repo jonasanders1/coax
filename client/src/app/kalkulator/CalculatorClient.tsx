@@ -175,7 +175,7 @@ const CalculatorClient = () => {
   );
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
+    <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
       <StructuredData data={serviceSchema} />
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         <PageTitile

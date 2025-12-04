@@ -31,6 +31,8 @@ import React, { useState, useEffect } from "react";
 import { useChatBot } from "@/hooks/useChatBot";
 import CtaSection from "@/components/chatbot/CtaSection";
 
+import SectionTitle from "@/components/SectionTitle";
+
 const benefits = [
   {
     icon: Zap,
@@ -52,12 +54,12 @@ const benefits = [
 const howItWorksSteps = [
   {
     icon: ShowerHead,
-    title: "1: Åpne kranen",
+    title: "1. Åpne kranen",
     text: "Når vannet begynner å renne, starter COAX automatisk.",
   },
   {
     icon: Zap,
-    title: "Steg 2: Vannet varmes opp",
+    title: "2. Vannet varmes opp",
     text: "Vannet passerer gjennom et sikkert varmeelement som varmer opp til 30–60 °C i sanntid.",
   },
   {
@@ -92,19 +94,19 @@ const customerSegments = [
   {
     id: "cabin-owners",
     title: "For hytter og fritidsboliger",
-    text: "COAX krever minimalt med plass, har enkel installasjon og gir varmtvann uten forvarming. Perfekt for sesongbruk og steder der du ønsker en trygg, vedlikeholdsfri løsning.",
+    text: "COAX passer for både små og store hytter, fra enkle 1-fas installasjoner til kraftigere 3-fas anlegg (230/400 V). Enheten festes flatt på vegg, tar ingen gulvplass og er enkel å montere og demontere ved evt. service. Ingen tank betyr ingen tømming ved sesongavslutning, men systemet kan også tømmes sammen med hevert for rørsystemet. Presis styring av vann og energi gjør COAX ideell for vannsparende armaturer og dusjhoder, samtidig som man kan bruke vannsisterner eller begrensede vanntilførsel uten å miste komfort.",
     image: cabinImage,
   },
   {
     id: "home-owners",
     title: "For boliger og leiligheter",
-    text: "Få raskt og stabilt varmtvann, samtidig som du frigjør gulvplass fra store beredere. Ideelt for moderne hjem som ønsker lavere energibruk og bedre komfort.",
+    text: "COAX vannvarmere leveres i ulike effekter og strålestørrelser, og passer for både 1-fas og 3-fas strøm (230/400 V). Systemet gir raskt og stabilt varmtvann, frigjør gulvplass fra store beredere og gir lavere energibruk. Med presis kontroll av strøm, vann og avløp oppnår moderne hjem bedre komfort og mer effektiv ressursbruk. Nøyaktig styring gjør det også mulig å redusere vannforbruk og oppnå ønsket temperatur selv med lavere l/min i armaturer og dusjhoder.",
     image: homeImage,
   },
   {
     id: "businesses",
     title: "For industri og næringsbygg",
-    text: "Skalerbare løsninger som leverer varmtvann direkte til arbeidsstasjoner, dusjer og kjøkken. Reduser driftskostnadene og øk effektiviteten med driftssikker, tankløs oppvarming.",
+    text: "COAX tilbyr skalerbare løsninger som leverer varmtvann direkte til arbeidsstasjoner, dusjer og storkjøkken. Leveres i ulike effekter og fasetyper, med tankløs, energieffektiv oppvarming. Systemet reduserer driftskostnader, øker effektiviteten og er enkelt å integrere i eksisterende rør- og el-installasjoner. Stabilt, presist og driftssikkert – også for store anlegg med høye krav til kontinuerlig varmtvann.",
     image: industrialImage,
   },
 ];
@@ -114,6 +116,7 @@ const HomePage = () => {
   const router = useRouter();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
+  const autoScrollIntervalRef = React.useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setHasAnimated(true);
@@ -130,12 +133,44 @@ const HomePage = () => {
   useEffect(() => {
     if (!api) return;
 
-    const interval = setInterval(() => {
-      api.scrollNext();
-    }, 8000);
+    let isUserInteracting = false;
 
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      // Only auto-scroll if user is not interacting
+      if (!isUserInteracting) {
+        api.scrollNext();
+      }
+    }, 10000);
+
+    autoScrollIntervalRef.current = interval;
+
+    // Stop auto-scroll when user starts interacting
+    const handlePointerDown = () => {
+      isUserInteracting = true;
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+        autoScrollIntervalRef.current = null;
+      }
+    };
+
+    // Listen for user interactions (drag, swipe, click)
+    api.on("pointerDown", handlePointerDown);
+
+    return () => {
+      if (autoScrollIntervalRef.current) {
+        clearInterval(autoScrollIntervalRef.current);
+        autoScrollIntervalRef.current = null;
+      }
+      api.off("pointerDown", handlePointerDown);
+    };
   }, [api]);
+
+  const stopAutoScroll = () => {
+    if (autoScrollIntervalRef.current) {
+      clearInterval(autoScrollIntervalRef.current);
+      autoScrollIntervalRef.current = null;
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -251,7 +286,7 @@ const HomePage = () => {
 
       {/* Benefits Section */}
       <section className="py-16 bg-muted">
-        <div className="container mx-auto px-4">
+        <div className="container  mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((b, i) => {
               const Icon = b.icon;
@@ -272,68 +307,88 @@ const HomePage = () => {
       </section>
 
       {/* Comparison Section */}
-      <section className="py-16 md:py-24 bg-muted">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl text-foreground">
-              Gammel teknologi vs. Moderne løsning
-            </h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              Se hvor stor forskjell en tankløs vannvarmer kan gjøre i
-              strømforbruk, plass og komfort.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="shadow-card-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl text-foreground">
-                  Tradisjonell Tank
+          <SectionTitle
+            title="Gammel teknologi vs. Moderne løsning"
+            text="Se hvor stor forskjell en tankløs vannvarmer kan gjøre i strømforbruk, plass og komfort."
+          />
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            {/* Traditional Tank Card */}
+            <Card
+              className="shadow-lg overflow-hidden relative"
+              style={{ background: "var(--gradient-destructive)" }}
+            >
+              {/* Decorative elements */}
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-2xl text-white">
+                  Tradisjonell tankbereder
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-4">
+              <CardContent className="relative z-10">
+                <div className="grid gap-4">
                   {comparison.traditional.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <item.icon className="w-6 h-6 text-destructive/80 shrink-0" />
-                      <span>{item.text}</span>
-                    </li>
+                    <div
+                      key={index}
+                      className="grid grid-cols-[auto_1fr] gap-3 items-start"
+                    >
+                      <item.icon className="w-6 h-6 text-white/90 shrink-0 mt-0.5" />
+                      <span className="text-white/90 leading-relaxed">
+                        {item.text}
+                      </span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </CardContent>
             </Card>
-            <Card className="shadow-card-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl text-foreground">
-                  COAX Tankløs
+
+            {/* COAX Card */}
+            <Card
+              className="shadow-lg overflow-hidden relative"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              {/* Decorative elements */}
+              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-2xl text-white">
+                  COAX vannvarmer
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-4">
+              <CardContent className="relative z-10">
+                <div className="grid gap-4">
                   {comparison.coax.map((item, index) => (
-                    <li key={index} className="flex items-center gap-3">
-                      <item.icon className="w-6 h-6 text-success/80 shrink-0" />
-                      <span>{item.text}</span>
-                    </li>
+                    <div
+                      key={index}
+                      className="grid grid-cols-[auto_1fr] gap-3 items-start"
+                    >
+                      <item.icon className="w-6 h-6 text-white/90 shrink-0 mt-0.5" />
+                      <span className="text-white/90 leading-relaxed">
+                        {item.text}
+                      </span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </section>
-      <section className="py-16 md:py-24 bg-background">
+
+      <section className="py-16 md:py-24 bg-muted">
         <div className="container max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl text-foreground">
-              Hvordan fungerer COAX?
-            </h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              Smart, effektiv og umiddelbar vannoppvarming – forklart i tre steg
-            </p>
-          </div>
+          <SectionTitle
+            title="Hvordan fungerer COAX?"
+            text="Smart, effektiv og umiddelbar vannoppvarming – forklart i tre steg"
+          />
           <div className="relative max-w-2xl mx-auto">
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-primary/20"></div>{" "}
-            {/* Vertical line */}
             {howItWorksSteps.map((step, index) => {
               const Icon = step.icon;
               const isEven = index % 2 === 0;
@@ -354,16 +409,20 @@ const HomePage = () => {
                 >
                   <div
                     className={`w-1/2 ${
-                      isEven ? "pr-8 text-right" : "pl-8 text-left"
+                      isEven
+                        ? "pr-4 md:pr-8 text-left md:text-center text-sm md:text-base"
+                        : "pl-4 md:pl-8 text-left md:text-center text-sm md:text-base"
                     }`}
                   >
-                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                    <h3 className="text-base md:text-xl font-bold mb-2">
+                      {step.title}
+                    </h3>
                     <p className="text-muted-foreground">{step.text}</p>
                   </div>
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center z-10">
-                    <Icon className="w-6 h-6 text-primary-foreground" />
+                  <div className="w-8 h-8 md:w-12 md:h-12 aspect-square bg-primary rounded-full flex items-center justify-center z-10 flex-shrink-0">
+                    <Icon className="w-4 h-4 md:w-6 md:h-6 text-primary-foreground" />
                   </div>
-                  <div className="w-1/2"></div> {/* Spacer */}
+                  <div className="w-1/2"></div>
                 </motion.div>
               );
             })}
@@ -374,44 +433,111 @@ const HomePage = () => {
       {/* Customer Segments Carousel */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container max-w-6xl mx-auto px-4">
-          <Carousel
-            opts={{
-              loop: true,
-            }}
-            className="w-full"
-            setApi={setApi}
-          >
-            <CarouselContent>
-              {customerSegments.map((segment) => (
-                <CarouselItem key={segment.id}>
-                  <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                    <div className="relative aspect-video w-full rounded-lg overflow-hidden">
-                      {segment.image && (
-                        <img
-                          src={segment.image.src}
-                          alt={segment.title}
-                          className="w-full h-full object-cover object-center"
-                        />
-                      )}
+          <SectionTitle
+            title="COAX – fleksibel varmtvannsløsning for alle typer bygg"
+            text="Fra små hytter til moderne hjem og næringsbygg – COAX er utviklet for et bredt spekter av kunder og bruksområder."
+          />
+          <div className="space-y-4 mb-12 max-w-6xl mx-auto">
+            <p className="text-muted-foreground">
+              COAX vannvarmere bruker samme effektive varmeprinsipp i alle
+              modeller, men leveres i ulike watteffekter og for både 1-faset og
+              3-faset (230/400 Volt). Det gjør det enkelt å velge riktig
+              kapasitet etter behov, fra små leiligheter til større boliger. Med
+              direkte vannoppvarming uten tank får du raskt og stabilt
+              varmtvann, samtidig som energi- og vannforbruket reduseres.
+              Systemet gir presis kontroll over forbruk og er plassbesparende,
+              driftssikkert og skalerbart.
+            </p>
+          </div>
+
+          {/* Stacked layout for medium screens and smaller */}
+          <div className="lg:hidden space-y-8 md:space-y-12">
+            {customerSegments.map((segment) => (
+              <div key={segment.id} className="space-y-4">
+                <div className="relative aspect-video w-full rounded-lg overflow-hidden shadow-lg">
+                  {segment.image && (
+                    <img
+                      src={segment.image.src}
+                      alt={segment.title}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-foreground">
+                    {segment.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {segment.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel for large screens */}
+          <div className="hidden lg:block">
+            <Carousel
+              opts={{
+                loop: true,
+                dragFree: false,
+                containScroll: "trimSnaps",
+              }}
+              className="w-[calc(100%-100px)] mx-auto"
+              setApi={setApi}
+            >
+              <CarouselContent>
+                {customerSegments.map((segment) => (
+                  <CarouselItem key={segment.id}>
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                      <div className="relative aspect-video w-full rounded-lg overflow-hidden shadow-lg">
+                        {segment.image && (
+                          <img
+                            src={segment.image.src}
+                            alt={segment.title}
+                            className="w-full h-full object-cover object-center"
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-2xl lg:text-3xl font-bold mb-2 lg:mb-4 text-foreground">
+                          {segment.title}
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {segment.text}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl md:text-3xl text-foreground">
-                        {segment.title}
-                      </h3>
-                      <p className="mt-2 md:mt-4 text-muted-foreground">
-                        {segment.text}
-                      </p>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-[-50px] hidden xl:inline-flex hover:bg-primary hover:text-primary-foreground" />
-            <CarouselNext className="right-[-50px] hidden xl:inline-flex hover:bg-primary hover:text-primary-foreground" />
-          </Carousel>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious
+                className="left-[-50px] hidden lg:inline-flex bg-primary text-primary-foreground hover:bg-primary/80"
+                onClick={(e) => {
+                  stopAutoScroll();
+                  // The default scrollPrev will be called via the component's built-in onClick
+                  // We need to manually trigger it since we're overriding onClick
+                  if (api) {
+                    api.scrollPrev();
+                  }
+                }}
+              />
+              <CarouselNext
+                className="right-[-50px] hidden lg:inline-flex bg-primary text-primary-foreground hover:bg-primary/80"
+                onClick={(e) => {
+                  stopAutoScroll();
+                  // The default scrollNext will be called via the component's built-in onClick
+                  // We need to manually trigger it since we're overriding onClick
+                  if (api) {
+                    api.scrollNext();
+                  }
+                }}
+              />
+            </Carousel>
+          </div>
         </div>
       </section>
-{/* 
+      {/* 
       <div className="container px-4 max-w-6xl mx-auto">
         <CtaSection isHeader={false} />
       </div> */}

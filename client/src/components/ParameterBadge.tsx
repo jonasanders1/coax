@@ -67,7 +67,12 @@ export const ParameterBadge = ({
         className
       )}
     >
-      <div className="flex items-center gap-2 flex-1">
+      <div
+        className={cn(
+          "flex items-center gap-2 flex-1",
+          isComparison && `${side === "right" ? "lg:flex-row-reverse" : ""}`
+        )}
+      >
         {!isComparison && <Icon className={cn("w-6 h-6", iconColor)} />}
         <div className="flex flex-col md:flex-row md:items-center md:gap-2">
           {/* Type label (COAX/Tank) - shown on mobile, hidden on desktop */}

@@ -13,6 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle, Zap, Droplet, Settings } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { useAppContext } from "@/context/AppContext";
 import PageTitile from "@/components/PageTitile";
 import {
@@ -175,12 +176,26 @@ const ModelSelectorClient = () => {
           powerOptions: powerOptions.length > 0 ? powerOptions : [],
           phase: String(product.specs?.phase ?? "Ikke spesifisert"),
           fuse: fuseValue,
-          usage,
         };
       })
       .sort((a, b) => {
-        // Sort by model name
-        return a.model.localeCompare(b.model);
+        // Sort by phase first
+        const phaseA = a.phase;
+        const phaseB = b.phase;
+        if (phaseA !== phaseB) {
+          // Convert to numbers for comparison if possible, otherwise string compare
+          const numA = parseInt(phaseA);
+          const numB = parseInt(phaseB);
+          if (!isNaN(numA) && !isNaN(numB)) {
+            return numA - numB;
+          }
+          return phaseA.localeCompare(phaseB);
+        }
+        
+        // Then sort by liter per minute (lowest flow value)
+        const minFlowA = a.flowValues.length > 0 ? a.flowValues[0] : 0;
+        const minFlowB = b.flowValues.length > 0 ? b.flowValues[0] : 0;
+        return minFlowA - minFlowB;
       });
   }, [filteredProducts]);
 
@@ -232,15 +247,54 @@ const ModelSelectorClient = () => {
     return `${format(min)} - ${format(max)} L/min`;
   };
 
-  const formatFlowRates = (flowRates: string[]): string => {
-    if (flowRates.length === 0 || flowRates[0] === "—") return "—";
-    return flowRates.join(", ");
+  // Render flow rates as a single badge with range
+  const renderFlowRates = (flowRates: string[]) => {
+    if (flowRates.length === 0 || flowRates[0] === "—") {
+      return <span className="text-muted-foreground">—</span>;
+    }
+    
+    // Parse all numeric values from flow rates
+    const flowValues = flowRates
+      .flatMap(parseFlowValues)
+      .filter((num) => !Number.isNaN(num))
+      .sort((a, b) => a - b);
+    
+    if (flowValues.length === 0) {
+      return <span className="text-muted-foreground">—</span>;
+    }
+    
+    const lowest = flowValues[0];
+    const highest = flowValues[flowValues.length - 1];
+    
+    // Format numbers: show 0 decimals if >= 10, otherwise 1 decimal
+    const format = (value: number) =>
+      Number.isFinite(value) ? value.toFixed(value >= 10 ? 0 : 1) : "∞";
+    
+    const rangeText = lowest === highest
+      ? `${format(lowest)} L/min`
+      : `${format(lowest)} - ${format(highest)} L/min`;
+    
+    return (
+      <Badge variant="primary" className="text-sm">
+        {rangeText}
+      </Badge>
+    );
   };
 
-  const formatPowerOptions = (powerOptions: number[]): string => {
-    if (powerOptions.length === 0) return "—";
-    if (powerOptions.length === 1) return `${powerOptions[0]} kW`;
-    return `${powerOptions.join(", ")} kW`;
+  // Render power options as badges
+  const renderPowerOptions = (powerOptions: number[]) => {
+    if (powerOptions.length === 0) {
+      return <span className="text-muted-foreground">—</span>;
+    }
+    return (
+      <div className="flex flex-wrap gap-2">
+        {powerOptions.map((power, index) => (
+          <Badge key={index} variant="primary" className="text-sm">
+            {power} kW
+          </Badge>
+        ))}
+      </div>
+    );
   };
 
   const isCalculateDisabled =
@@ -492,7 +546,7 @@ const ModelSelectorClient = () => {
             </div>
           </CardContent>
         </Card>
-
+              
         <Card>
           <CardHeader>
             <CardTitle>Produkttabell</CardTitle>
@@ -508,29 +562,27 @@ const ModelSelectorClient = () => {
               >
                 <colgroup>
                   <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
                   <col style={{ width: "20%" }} />
-                  <col style={{ width: "18%" }} />
-                  <col style={{ width: "8%" }} />
                   <col style={{ width: "40%" }} />
                 </colgroup>
                 <thead>
                   <tr className="border-b">
                     <th className="text-left p-3 whitespace-nowrap">Modell</th>
+                    <th className="text-left p-3 whitespace-nowrap">Fase</th>
                     <th className="text-left p-3 whitespace-nowrap">
                       Liter per minutt
                     </th>
                     <th className="text-left p-3 whitespace-nowrap">
                       Effekt (kW)
                     </th>
-                    <th className="text-left p-3 whitespace-nowrap">Fase</th>
-                    <th className="text-left p-3">Brukseksempler</th>
                   </tr>
                 </thead>
                 <tbody>
                   {productsLoading ? (
                     <tr>
                       <td
-                        colSpan={5}
+                        colSpan={4}
                         className="p-4 text-center text-muted-foreground"
                       >
                         Laster produkter...
@@ -543,24 +595,21 @@ const ModelSelectorClient = () => {
                         className="border-b bg-background hover:bg-muted"
                       >
                         <td className="p-3 font-semibold">{product.model}</td>
-                        <td className="p-3">
-                          {formatFlowRates(product.flowRates)}
-                        </td>
-                        <td className="p-3 whitespace-nowrap">
-                          {formatPowerOptions(product.powerOptions)}
-                        </td>
                         <td className="p-3 whitespace-nowrap">
                           {product.phase}
                         </td>
-                        <td className="p-3 text-muted-foreground">
-                          {product.usage}
+                        <td className="p-3">
+                          {renderFlowRates(product.flowRates)}
+                        </td>
+                        <td className="p-3">
+                          {renderPowerOptions(product.powerOptions)}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
-                        colSpan={5}
+                        colSpan={4}
                         className="p-4 text-center text-muted-foreground"
                       >
                         Ingen produktdata tilgjengelig.

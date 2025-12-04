@@ -109,7 +109,7 @@ const AdvancedParametersClient = () => {
   ]);
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-background animate-fade-in-up">
+    <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
       <StructuredData data={breadcrumbSchema} />
       <div className="container max-w-6xl mx-auto px-4 space-y-6">
         <Breadcrumbs
