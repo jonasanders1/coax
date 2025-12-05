@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Script from "next/script";
 import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/Header";
@@ -84,6 +85,8 @@ export const metadata: Metadata = {
   },
 };
 
+const MEASUREMENT_ID = "G-HC5YYERVLC";
+
 export default function RootLayout({
   children,
 }: {
@@ -92,6 +95,24 @@ export default function RootLayout({
   return (
     <html lang="nb">
       <body>
+        {/* Google Analytics 4 - gtag.js script for compatibility with Google Tag Assistant */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${MEASUREMENT_ID}', {
+              'send_page_view': false,
+              'anonymize_ip': true
+            });
+            // Disable GA until consent is given
+            window['ga-disable-${MEASUREMENT_ID}'] = true;
+          `}
+        </Script>
         <StructuredData data={OrganizationSchema()} />
         <StructuredData data={WebSiteSchema()} />
         <Providers>
