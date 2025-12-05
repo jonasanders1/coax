@@ -105,12 +105,13 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+            // Disable GA until consent is given
+            window['ga-disable-${MEASUREMENT_ID}'] = true;
+            // Configure gtag but don't send page_view yet (will be sent after consent)
             gtag('config', '${MEASUREMENT_ID}', {
               'send_page_view': false,
               'anonymize_ip': true
             });
-            // Disable GA until consent is given
-            window['ga-disable-${MEASUREMENT_ID}'] = true;
           `}
         </Script>
         <StructuredData data={OrganizationSchema()} />
