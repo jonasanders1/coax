@@ -257,15 +257,17 @@ export default function NeedsAssessmentForm() {
                   <button
                     key={option}
                     type="button"
-                    onClick={() =>
-                      handleCheckboxChange("applicationArea", option)
-                    }
+                    onClick={(e) => {
+                      handleCheckboxChange("applicationArea", option);
+                      // Remove focus after click to prevent focus state from interfering
+                      e.currentTarget.blur();
+                    }}
                     className={cn(
                       "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
                       "min-h-[44px] min-w-[44px] touch-manipulation",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       isSelected
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm focus:border-primary focus:bg-primary focus:text-primary-foreground"
                         : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
                       "active:scale-[0.98]"
                     )}
@@ -424,13 +426,17 @@ export default function NeedsAssessmentForm() {
                   <button
                     key={point}
                     type="button"
-                    onClick={() => handleCheckboxChange("usagePoints", point)}
+                    onClick={(e) => {
+                      handleCheckboxChange("usagePoints", point);
+                      // Remove focus after click to prevent focus state from interfering
+                      e.currentTarget.blur();
+                    }}
                     className={cn(
                       "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
                       "min-h-[44px] min-w-[44px] touch-manipulation",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       isSelected
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm focus:border-primary focus:bg-primary focus:text-primary-foreground"
                         : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
                       "active:scale-[0.98]"
                     )}
