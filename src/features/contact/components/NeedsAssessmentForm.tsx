@@ -257,17 +257,29 @@ export default function NeedsAssessmentForm() {
                   <button
                     key={option}
                     type="button"
+                    data-selected={isSelected}
                     onClick={(e) => {
                       handleCheckboxChange("applicationArea", option);
-                      // Remove focus after click to prevent focus state from interfering
-                      e.currentTarget.blur();
+                      // Blur immediately after state update
+                      const target = e.currentTarget;
+                      setTimeout(() => {
+                        if (target && document.body.contains(target)) {
+                          target.blur();
+                        }
+                      }, 0);
+                    }}
+                    onMouseDown={(e) => {
+                      // Prevent focus on mobile touch devices
+                      if (window.matchMedia("(pointer: coarse)").matches) {
+                        e.preventDefault();
+                      }
                     }}
                     className={cn(
                       "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
                       "min-h-[44px] min-w-[44px] touch-manipulation",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       isSelected
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm focus:border-primary focus:bg-primary focus:text-primary-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
                       "active:scale-[0.98]"
                     )}
@@ -426,17 +438,29 @@ export default function NeedsAssessmentForm() {
                   <button
                     key={point}
                     type="button"
+                    data-selected={isSelected}
                     onClick={(e) => {
                       handleCheckboxChange("usagePoints", point);
-                      // Remove focus after click to prevent focus state from interfering
-                      e.currentTarget.blur();
+                      // Blur immediately after state update
+                      const target = e.currentTarget;
+                      setTimeout(() => {
+                        if (target && document.body.contains(target)) {
+                          target.blur();
+                        }
+                      }, 0);
+                    }}
+                    onMouseDown={(e) => {
+                      // Prevent focus on mobile touch devices
+                      if (window.matchMedia("(pointer: coarse)").matches) {
+                        e.preventDefault();
+                      }
                     }}
                     className={cn(
                       "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
                       "min-h-[44px] min-w-[44px] touch-manipulation",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                       isSelected
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm focus:border-primary focus:bg-primary focus:text-primary-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
                       "active:scale-[0.98]"
                     )}

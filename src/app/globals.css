@@ -351,12 +351,33 @@ html {
   opacity: 0.8;
 }
 
-/* Disable hover effects on small screens for option buttons in NeedsAssessmentForm */
+/* Disable hover and focus effects on mobile for option buttons - only active/inactive states */
 @media (max-width: 768px) {
-  /* Hover effects disabled on mobile - buttons use active state only */
+  /* Disable hover completely on mobile */
   button[type="button"].touch-manipulation:hover {
     background-color: inherit !important;
     color: inherit !important;
     border-color: inherit !important;
+  }
+  
+  /* Disable focus completely on mobile - buttons should only show active/inactive state */
+  button[type="button"].touch-manipulation:focus {
+    outline: none !important;
+    background-color: inherit !important;
+    color: inherit !important;
+    border-color: inherit !important;
+  }
+  
+  /* Ensure selected state always shows, regardless of focus */
+  button[type="button"].touch-manipulation[data-selected="true"] {
+    background-color: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    border-color: hsl(var(--primary)) !important;
+  }
+  
+  button[type="button"].touch-manipulation[data-selected="true"]:focus {
+    background-color: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    border-color: hsl(var(--primary)) !important;
   }
 }
