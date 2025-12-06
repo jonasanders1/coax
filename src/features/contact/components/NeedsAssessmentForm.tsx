@@ -250,23 +250,33 @@ export default function NeedsAssessmentForm() {
             {header}
 
             <div className="flex flex-wrap gap-2">
-              {APPLICATION_AREAS.map((option) => (
-                <Button
-                  key={option}
-                  type="button"
-                  variant={
-                    (formData.applicationArea ?? []).includes(option)
-                      ? "default"
-                      : "outline"
-                  }
-                  onClick={() =>
-                    handleCheckboxChange("applicationArea", option)
-                  }
-                  className="h-auto border border-border px-4 py-2"
-                >
-                  {option}
-                </Button>
-              ))}
+              {APPLICATION_AREAS.map((option) => {
+                const isSelected = (formData.applicationArea ?? []).includes(option);
+                return (
+                  <Button
+                    key={option}
+                    type="button"
+                    variant={isSelected ? "default" : "outline"}
+                    onClick={() =>
+                      handleCheckboxChange("applicationArea", option)
+                    }
+                    className="h-auto border border-border px-4 py-2"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                    onTouchEnd={(e) => {
+                      // Clear any hover state on mobile after touch
+                      const target = e.currentTarget;
+                      setTimeout(() => {
+                        target.blur();
+                      }, 0);
+                    }}
+                  >
+                    {option}
+                  </Button>
+                );
+              })}
             </div>
 
             <div>
@@ -404,21 +414,31 @@ export default function NeedsAssessmentForm() {
             {header}
 
             <div className="flex flex-wrap gap-2">
-              {USAGE_POINTS.map((point) => (
-                <Button
-                  key={point}
-                  type="button"
-                  variant={
-                    (formData.usagePoints ?? []).includes(point)
-                      ? "default"
-                      : "outline"
-                  }
-                  onClick={() => handleCheckboxChange("usagePoints", point)}
-                  className="h-auto border border-border px-4 py-2"
-                >
-                  {point}
-                </Button>
-              ))}
+              {USAGE_POINTS.map((point) => {
+                const isSelected = (formData.usagePoints ?? []).includes(point);
+                return (
+                  <Button
+                    key={point}
+                    type="button"
+                    variant={isSelected ? "default" : "outline"}
+                    onClick={() => handleCheckboxChange("usagePoints", point)}
+                    className="h-auto border border-border px-4 py-2"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                    onTouchEnd={(e) => {
+                      // Clear any hover state on mobile after touch
+                      const target = e.currentTarget;
+                      setTimeout(() => {
+                        target.blur();
+                      }, 0);
+                    }}
+                  >
+                    {point}
+                  </Button>
+                );
+              })}
             </div>
 
             <div>

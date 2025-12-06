@@ -7,8 +7,12 @@ import { useAppContext } from "@/shared/context/AppContext";
 import ProductsListSceleton from "@/features/products/components/ProductsListSceleton";
 
 const ProductsClient = () => {
-  const { products, productsLoading, productsError, fetchProducts } =
-    useAppContext();
+  const {
+    products,
+    productsLoading,
+    productsError,
+    fetchProducts,
+  } = useAppContext();
 
   useEffect(() => {
     fetchProducts();

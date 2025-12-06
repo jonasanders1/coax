@@ -16,6 +16,7 @@ import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
 import { getAllProducts } from "@/features/products/lib/products";
 import type { Product } from "@/shared/types/product";
+import { getAllFaqs, type FaqCategory } from "@/features/faq/lib/faqs";
 
 interface AppState {
   messages: Message[];
@@ -26,6 +27,10 @@ interface AppState {
   productsLoading: boolean;
   productsError: Error | null;
   fetchProducts: () => Promise<void>;
+  faqs: FaqCategory[];
+  faqsLoading: boolean;
+  faqsError: Error | null;
+  fetchFaqs: () => Promise<void>;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
@@ -55,9 +60,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Products state
   const [products, setProducts] = useState<Product[]>([]);
-  const [productsLoading, setProductsLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState<boolean>(false);
   const [productsError, setProductsError] = useState<Error | null>(null);
   const productsFetchedRef = useRef(false);
+  // FAQs state
+  const [faqs, setFaqs] = useState<FaqCategory[]>([]);
+  const [faqsLoading, setFaqsLoading] = useState(false);
+  const [faqsError, setFaqsError] = useState<Error | null>(null);
+  const faqsFetchedRef = useRef(false);
 
   const fetchProducts = useCallback(async () => {
     // Only fetch if products haven't been loaded yet
@@ -91,7 +101,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       setProducts(sortedProducts);
     } catch (error) {
-      const err = error instanceof Error ? error : new Error("Failed to fetch products");
+      const err =
+        error instanceof Error ? error : new Error("Failed to fetch products");
       setProductsError(err);
       console.error("Error fetching products:", error);
       // Reset ref on error so user can retry
@@ -148,7 +159,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             if (chunk.type === "token") {
               // Accumulate text in closure variable (not reading from React state)
               accumulatedText += chunk.token;
-              
+
               // Update state with accumulated text (following documentation pattern)
               setMessages((prev) =>
                 prev.map((m) =>
@@ -214,13 +225,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         // Type guard for AbortError
         const isAbortError = err instanceof Error && err.name === "AbortError";
-        
+
         if (!isAbortError) {
           console.error("Chat error:", err);
           // Create a proper error response for network/unknown errors
           const errorResponse: ErrorResponse = {
             type: "error",
-            error: err instanceof Error ? err.message : "En uventet feil oppstod. Prøv igjen senere.",
+            error:
+              err instanceof Error
+                ? err.message
+                : "En uventet feil oppstod. Prøv igjen senere.",
             error_code: "NETWORK_ERROR",
             correlation_id: correlationId,
             timestamp: new Date().toISOString(),
@@ -247,6 +261,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [] // Empty deps - using ref for messages
   );
 
+  const fetchFaqs = useCallback(async () => {
+    // Only fetch if FAQs haven't been loaded yet
+    if (faqsFetchedRef.current || faqsLoading) {
+      return;
+    }
+
+    faqsFetchedRef.current = true;
+    setFaqsLoading(true);
+    setFaqsError(null);
+    try {
+      const fetchedFaqs = await getAllFaqs();
+      setFaqs(fetchedFaqs);
+    } catch (error) {
+      const err =
+        error instanceof Error ? error : new Error("Failed to fetch FAQs");
+      setFaqsError(err);
+      console.error("Error fetching FAQs:", error);
+      // Reset ref on error so user can retry
+      faqsFetchedRef.current = false;
+    } finally {
+      setFaqsLoading(false);
+    }
+  }, [faqsLoading]);
+
   const value = useMemo(
     () => ({
       messages,
@@ -257,10 +295,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
       productsLoading,
       productsError,
       fetchProducts,
+      faqs,
+      faqsLoading,
+      faqsError,
+      fetchFaqs,
     }),
-    [messages, sendMessage, isLoading, products, productsLoading, productsError, fetchProducts]
+    [
+      messages,
+      sendMessage,
+      isLoading,
+      products,
+      productsLoading,
+      setProductsLoading,
+      productsError,
+      fetchProducts,
+      faqs,
+      faqsLoading,
+      faqsError,
+      fetchFaqs,
+    ]
   );
-
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 

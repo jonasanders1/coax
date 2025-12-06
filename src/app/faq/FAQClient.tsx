@@ -10,7 +10,7 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Search } from "lucide-react";
 import PageTitle from "@/shared/components/common/PageTitle";
-import { getAllFaqs, type FaqCategory } from "@/features/faq/lib/faqs";
+import type { FaqCategory } from "@/features/faq/lib/faqs";
 import Link from "next/link";
 import { Button } from "@/shared/components/ui/button";
 import CtaSection from "@/features/chatbot/components/CtaSection";
@@ -18,29 +18,21 @@ import {
   StructuredData,
   FAQPageSchema,
 } from "@/shared/components/common/StructuredData";
-import { Loading } from "@/shared/components/ui/loading";
+import { useAppContext } from "@/shared/context/AppContext";
+import FaqListSkeleton from "@/features/faq/components/FaqListSkeleton";
 
 const FAQClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [faqs, setFaqs] = useState<FaqCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const {
+    faqs,
+    faqsLoading,
+    faqsError,
+    fetchFaqs,
+  } = useAppContext();
 
   useEffect(() => {
-    async function fetchFaqs() {
-      try {
-        setLoading(true);
-        setError(null);
-        const fetchedFaqs = await getAllFaqs();
-        setFaqs(fetchedFaqs);
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to load FAQs"));
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchFaqs();
-  }, []);
+  }, [fetchFaqs]);
 
   const filteredFaqs = faqs
     .map((category) => ({
@@ -64,45 +56,6 @@ const FAQClient = () => {
     return FAQPageSchema(allFaqs);
   }, [faqs]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <PageTitle
-            title="Ofte stilte spørsmål om COAX vannvarmere"
-            text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
-          />
-          <div className="flex items-center justify-center py-16">
-            <Loading text="Laster spørsmål..." size="lg" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <PageTitle
-            title="Ofte stilte spørsmål om COAX vannvarmere"
-            text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
-          />
-          <div className="flex flex-col items-center justify-center py-16 gap-4">
-            <p className="text-destructive text-center">
-              Kunne ikke laste spørsmål. Prøv å oppdatere siden.
-            </p>
-            <Button
-              onClick={() => window.location.reload()}
-              variant="outline"
-            >
-              Prøv igjen
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
@@ -129,61 +82,79 @@ const FAQClient = () => {
           </div>
         </div>
 
-        <div className="space-y-8">
-          {filteredFaqs.map((category, idx) => (
-            <div key={idx}>
-              <h2 className="text-2xl font-bold text-foreground mb-4">
-                {category.category}
-              </h2>
-              <Accordion type="multiple" className="space-y-2">
-                {category.questions.map((faq, qIdx) => (
-                  <AccordionItem
-                    key={faq.id || qIdx}
-                    value={`${idx}-${qIdx}`}
-                    className="border rounded-lg px-4 bg-card"
-                  >
-                    <AccordionTrigger className="text-left hover:no-underline text-lg">
-                      <span className="font-semibold">{faq.question}</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-sm md:text-lg leading-relaxed">
-                      {faq.contentSegments ? (
-                        <p>
-                          <>
-                            {faq.answer}{" "}
-                            {faq.contentSegments.map((segment, segmentIdx) =>
-                              segment.kind === "text" ? (
-                                <span key={`text-${segmentIdx}`}>
-                                  {segment.value}
-                                </span>
-                              ) : (
-                                <Link
-                                  key={`link-${segmentIdx}`}
-                                  href={segment.to}
-                                  className="text-primary underline font-medium"
-                                >
-                                  {segment.value}
-                                </Link>
-                              )
-                            )}
-                          </>
-                        </p>
-                      ) : (
-                        <p>{faq.answer}</p>
-                      )}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          ))}
-        </div>
-
-        {filteredFaqs.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              Ingen spørsmål matcher søket ditt.
+        {faqsLoading ? (
+          <FaqListSkeleton />
+        ) : faqsError ? (
+          <div className="flex flex-col items-center justify-center py-16 gap-4">
+            <p className="text-destructive text-center">
+              Kunne ikke laste spørsmål. Prøv å oppdatere siden.
             </p>
+            <Button
+              onClick={() => window.location.reload()}
+              variant="outline"
+            >
+              Prøv igjen
+            </Button>
           </div>
+        ) : (
+          <>
+            {filteredFaqs.length === 0 && searchTerm.trim() !== "" ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">
+                  Ingen spørsmål matcher søket ditt.
+                </p>
+              </div>
+            ) : filteredFaqs.length > 0 ? (
+              <div className="space-y-8">
+                {filteredFaqs.map((category, idx) => (
+                  <div key={idx}>
+                    <h2 className="text-2xl font-bold text-foreground mb-4">
+                      {category.category}
+                    </h2>
+                    <Accordion type="multiple" className="space-y-2">
+                      {category.questions.map((faq, qIdx) => (
+                        <AccordionItem
+                          key={faq.id || qIdx}
+                          value={`${idx}-${qIdx}`}
+                          className="border rounded-lg px-4 bg-card"
+                        >
+                          <AccordionTrigger className="text-left hover:no-underline text-lg">
+                            <span className="font-semibold">{faq.question}</span>
+                          </AccordionTrigger>
+                          <AccordionContent className="text-muted-foreground text-sm md:text-lg leading-relaxed">
+                            {faq.contentSegments ? (
+                              <p>
+                                <>
+                                  {faq.answer}{" "}
+                                  {faq.contentSegments.map((segment, segmentIdx) =>
+                                    segment.kind === "text" ? (
+                                      <span key={`text-${segmentIdx}`}>
+                                        {segment.value}
+                                      </span>
+                                    ) : (
+                                      <Link
+                                        key={`link-${segmentIdx}`}
+                                        href={segment.to}
+                                        className="text-primary underline font-medium"
+                                      >
+                                        {segment.value}
+                                      </Link>
+                                    )
+                                  )}
+                                </>
+                              </p>
+                            ) : (
+                              <p>{faq.answer}</p>
+                            )}
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </>
         )}
 
         <div className="mt-12 bg-muted rounded-lg p-8 text-center">
