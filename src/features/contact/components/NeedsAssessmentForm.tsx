@@ -260,17 +260,10 @@ export default function NeedsAssessmentForm() {
                     onClick={() =>
                       handleCheckboxChange("applicationArea", option)
                     }
-                    className="h-auto border border-border px-4 py-2"
+                    className="h-auto border border-border px-4 py-2 md:hover:bg-primary md:hover:text-primary-foreground"
                     style={{
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
-                    }}
-                    onTouchEnd={(e) => {
-                      // Clear any hover state on mobile after touch
-                      const target = e.currentTarget;
-                      setTimeout(() => {
-                        target.blur();
-                      }, 0);
                     }}
                   >
                     {option}
@@ -422,17 +415,10 @@ export default function NeedsAssessmentForm() {
                     type="button"
                     variant={isSelected ? "default" : "outline"}
                     onClick={() => handleCheckboxChange("usagePoints", point)}
-                    className="h-auto border border-border px-4 py-2"
+                    className="h-auto border border-border px-4 py-2 md:hover:bg-primary md:hover:text-primary-foreground"
                     style={{
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
-                    }}
-                    onTouchEnd={(e) => {
-                      // Clear any hover state on mobile after touch
-                      const target = e.currentTarget;
-                      setTimeout(() => {
-                        target.blur();
-                      }, 0);
                     }}
                   >
                     {point}

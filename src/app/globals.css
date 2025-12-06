@@ -351,10 +351,9 @@ html {
   opacity: 0.8;
 }
 
-/* Prevent hover state from persisting on touch devices for option buttons */
-@media (hover: none) and (pointer: coarse) {
-  button[type="button"].h-auto:hover {
-    /* Reset hover styles on touch devices - button should reflect its actual variant state */
+/* Disable hover effects on small screens for option buttons in NeedsAssessmentForm */
+@media (max-width: 768px) {
+  button[type="button"].h-auto.border.border-border:hover {
     background-color: inherit !important;
     color: inherit !important;
     border-color: inherit !important;
