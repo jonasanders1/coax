@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-12-06T15:57:27.253Z",
+  "correlationId": "69fc6be7-7560-41e0-aed1-7edcf98958d7",
+  "userQuery": "hei",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-06T15:57:19.859Z"
+      },
+      {
+        "id": "user-1765036642441",
+        "role": "user",
+        "content": "hei",
+        "timestamp": "2025-12-06T15:57:22.441Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "error",
+    "error": {
+      "type": "error",
+      "error": "HTTP 404",
+      "error_code": "NETWORK_ERROR",
+      "correlation_id": "69fc6be7-7560-41e0-aed1-7edcf98958d7",
+      "timestamp": "2025-12-06T15:57:27.253Z",
+      "details": {
+        "service": "network"
+      }
+    },
+    "originalError": "HTTP 404"
+  }
+}

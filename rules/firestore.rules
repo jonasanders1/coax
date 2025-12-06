@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Products collection
+    match /products/{productId} {
+      // Allow anyone to read products
+      allow read: if true;
+      
+      // Allow authenticated users to create and update products
+      // But NOT delete (as per requirements)
+      allow create: if request.auth != null;
+      allow update: if request.auth != null;
+      allow delete: if false; // Explicitly deny delete for all users
+    }
+    
+    // FAQs collection
+    match /faqs/{faqId} {
+      // Allow anyone to read FAQs
+      allow read: if true;
+      
+      // Allow authenticated users to create, update, and delete FAQs
+      allow create: if request.auth != null;
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null;
+    }
+    
+    // Default deny rule for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

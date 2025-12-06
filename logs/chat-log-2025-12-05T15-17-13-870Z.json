@@ -1,0 +1,195 @@
+{
+  "timestamp": "2025-12-05T15:17:13.808Z",
+  "correlationId": "08033520-1fc4-4db2-9893-36ae3a9741e7",
+  "userQuery": "forklar konflikten mellom nasistene og jødene under 2. verdenskrig",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T15:15:34.177Z"
+      },
+      {
+        "id": "user-1764947736047",
+        "role": "user",
+        "content": "Var Epstein en pedofil?",
+        "timestamp": "2025-12-05T15:15:36.047Z"
+      },
+      {
+        "id": "assistant-1764947740",
+        "role": "assistant",
+        "content": "Beklager, jeg har ikke nok kontekst til å svare på spørsmålet \"Var Epstein en pedofil?\". Spørsmålet står uten relevant bakgrunnsinformasjon fra den foregående samtalen. For å kunne gi et meningsfullt svar, trenger jeg mer informasjon om hva som ble diskutert tidligere eller hva som er årsaken til dette spørsmålet. Jeg kan bare svare på spørsmål som er direkte relatert til COAX og våre produkter basert på den gitte konteksten.",
+        "timestamp": "2025-12-05T15:15:40.642392+00:00"
+      },
+      {
+        "id": "user-1764947829989",
+        "role": "user",
+        "content": "forklar konflikten mellom nasistene og jødene under 2. verdenskrig",
+        "timestamp": "2025-12-05T15:17:09.989Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764947833",
+      "role": "assistant",
+      "content": "Beklager, jeg kan bare svare på spørsmål om COAX og våre vannvarmere. Jeg har ikke informasjon om konflikten mellom nasistene og jødene under 2. verdenskrig.",
+      "timestamp": "2025-12-05T15:17:13.763496+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_para_0_0",
+        "score": 0.1618,
+        "text": "En teknisk og informativ sammenligning\n\nDette dokumentet beskriver de viktigste forskjellene mellom:\n- COAX direkte vannvarmere (tankløse, gjennomstrømningsvarmere)\n- Tradisjonelle varmtvannstanker (m...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 1,
+          "section_index": 0,
+          "paragraph_index": 0,
+          "header_level": 1,
+          "section_title": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "parent_chunk_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_section_0",
+          "parent_section_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_section_0",
+          "source_document": "documents/coax-vs-tank.md",
+          "document_title": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "document_slug": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank",
+          "token_count": 102,
+          "ingestion_timestamp": "2025-11-21T22:36:41.533839Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "comparison",
+          "section": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "tags": "vannvarmer,COAX,tankløs,energieffektiv,sammenligning",
+          "summary": "Dokumentet gir en teknisk og informativ sammenligning mellom COAX direkte vannvarmere og tradisjonelle varmtvannstanker, med fokus på energieffektivitet, plassbesparelse og hygieniske fordeler.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,tankløs,sammenligning,energieffektiv",
+          "user_intent": "comparison",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_section_0",
+        "score": 0.1486,
+        "text": "# COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank\n\nEn teknisk og informativ sammenligning\n\nDette dokumentet beskriver de viktigste forskjellene mellom:\n- COAX direkte vannvarmere (tankløse, gje...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 0,
+          "section_index": 0,
+          "header_level": 1,
+          "section_title": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "source_document": "documents/coax-vs-tank.md",
+          "document_title": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "document_slug": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank",
+          "token_count": 118,
+          "ingestion_timestamp": "2025-11-21T22:36:41.533839Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "comparison",
+          "section": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "tags": "vannvarmer,COAX,tankløs,energieffektiv,sammenligning",
+          "summary": "Dokumentet gir en teknisk og informativ sammenligning mellom COAX direkte vannvarmere og tradisjonelle varmtvannstanker, med fokus på energieffektivitet, plassbesparelse og hygieniske fordeler.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,tankløs,energieffektiv,sammenligning",
+          "user_intent": "comparison",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_69",
+        "score": 0.14,
+        "text": "#### E2 - Jordfeil / Lekkasjstrøm\n\n- **Årsak:** Feil på jording eller lekkasjestrøm detektert\n- **Løsning:**\n  - Slå av sikringskursen\n  - Kontakt autorisert elektriker\n  - Ikke bruk varmeren før feil...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 116,
+          "section_index": 69,
+          "header_level": 4,
+          "section_title": "E2 - Jordfeil / Lekkasjstrøm",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 62,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T14:25:30Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "E2 - Jordfeil / Lekkasjstrøm",
+          "tags": "jordfeil,lekkasjestrøm,COAX,XFJ-3,installasjon",
+          "summary": "Denne seksjonen beskriver årsaken til jordfeil eller lekkasjestrøm i COAX XFJ-3 vannvarmer og gir løsninger for hvordan man skal håndtere situasjonen. Det anbefales å kontakte en autorisert elektriker og ikke bruke varmeren før feilen er utbedret.",
+          "priority": "High",
+          "keywords": "jordfeil,lekkasjestrøm,installasjon,COAX,XFJ-3",
+          "user_intent": "troubleshooting",
+          "product_references": "XFJ-3",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_para_69_0",
+        "score": 0.134,
+        "text": "- **Årsak:** Feil på jording eller lekkasjestrøm detektert\n- **Løsning:**\n  - Slå av sikringskursen\n  - Kontakt autorisert elektriker\n  - Ikke bruk varmeren før feilen er utbedret",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 117,
+          "section_index": 69,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "E2 - Jordfeil / Lekkasjstrøm",
+          "parent_chunk_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_69",
+          "parent_section_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_69",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 52,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T14:25:30Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "E2 - Jordfeil / Lekkasjstrøm",
+          "tags": "vannvarmer,COAX,XFJ-3,jordfeil,lekkasjestrøm,installasjon",
+          "summary": "Denne seksjonen beskriver hva du skal gjøre hvis det oppdages feil på jording eller lekkasjestrøm i COAX XFJ-3 vannvarmer. Det anbefales å slå av sikringskursen og kontakte en autorisert elektriker før varmeren brukes igjen.",
+          "priority": "High",
+          "keywords": "jordfeil,lekkasjestrøm,installasjon,COAX,XFJ-3",
+          "user_intent": "troubleshooting",
+          "product_references": "XFJ-3",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_13",
+        "score": 0.1213,
+        "text": "#### 2. Andrevalg: Bad/vaskerom\n\n- Fordel med sluk i rommet\n- Mulig å betjene flere tappesteder",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 21,
+          "section_index": 13,
+          "header_level": 4,
+          "section_title": "2. Andrevalg: Bad/vaskerom",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 28,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T14:25:30Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "Andrevalg: Bad/vaskerom",
+          "tags": "vannvarmer,COAX,installasjon,sluk,tappesteder",
+          "summary": "Denne seksjonen beskriver fordelene ved å installere en tankløs vannvarmer i bad eller vaskerom, inkludert muligheten for å betjene flere tappesteder og viktigheten av sluk i rommet.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,installasjon",
+          "user_intent": "installation_guide",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

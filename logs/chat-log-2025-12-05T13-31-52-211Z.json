@@ -1,0 +1,190 @@
+{
+  "timestamp": "2025-12-05T13:31:52.178Z",
+  "correlationId": "5943850c-d00c-4b12-ad7f-5de0d167f1d6",
+  "userQuery": "Hva er forskjellen på XFJ-3 og JNE-3?",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T13:31:39.790Z"
+      },
+      {
+        "id": "user-1764941505092",
+        "role": "user",
+        "content": "Hva er forskjellen på XFJ-3 og JNE-3?",
+        "timestamp": "2025-12-05T13:31:45.092Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764941512",
+      "role": "assistant",
+      "content": "XFJ-3 og JNE-3 er to ulike modeller av COAX direkte vannvarmere:\n\nXFJ-3 er en 3-fase 400V modell som leveres med effekter fra 12 kW til 24 kW. Den har dimensjoner på 375×260×90 mm og kan levere mellom 5 og 12 liter varmtvann per minutt.\n\nJNE-3 er også en 3-fase 400V modell, men med et enda bredere effektspenn fra 9 kW til 24 kW. JNE-3 er litt større med mål på 488×282×102 mm, og kan levere mellom 5 og 12 liter varmtvann per minutt.\n\nBegge modellene er svært energieffektive, med over 96% energieffektivitet. De leverer øyeblikkelig varmtvann uten lagringstank, og har avanserte sikkerhetsfunksjoner for trygg bruk.\n\nHvis du trenger mer informasjon om forskjellene eller ønsker hjelp til å velge riktig modell, kan du ta kontakt med COAX AS på [coax.no](https://coax.no) eller ved å ringe deres kundeservice.",
+      "timestamp": "2025-12-05T13:31:52.108540+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "product_spec_xfj_3",
+        "score": 0.2998,
+        "text": "XFJ-3 - Komplett spesifikasjoner\n==================================================\nProduktserie: direkte vannvarmer\nFase: 3-fase\nSpenning: 400V\n\nTekniske spesifikasjoner:\nEffektutvalg: 12, 15, 18, 21...",
+        "metadata": {
+          "chunk_type": "product_spec",
+          "chunk_index": 5,
+          "section_title": "XFJ-3 Spesifikasjoner",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 414,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "model_id": "xfj-3",
+          "display_name": "XFJ-3",
+          "power_kw": [
+            "12.0",
+            "15.0",
+            "18.0",
+            "21.0",
+            "24.0"
+          ],
+          "dimensions_mm": "375×260×90",
+          "flow_rate_lpm": [
+            "5.0",
+            "7.0",
+            "8.0",
+            "10.0",
+            "12.0"
+          ],
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_para_9_0",
+        "score": 0.288,
+        "text": "XFJ-3: ---",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 16,
+          "section_index": 9,
+          "paragraph_index": 0,
+          "header_level": 3,
+          "section_title": "Tekniske spesifikasjoner (XFJ-3 modeller)",
+          "parent_chunk_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_9",
+          "parent_section_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_9",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 3,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "Tekniske spesifikasjoner (XFJ-3 modeller)",
+          "tags": "vannvarmer,COAX,XFJ-3,energieffektiv,installasjon",
+          "summary": "XFJ-3 er en tankløs elektrisk vannvarmer fra COAX, designet for energieffektiv direkte oppvarming. Den er ideell for hytter, leiligheter og industri, og tilbyr plassbesparende løsninger med minimalt vedlikehold.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,XFJ-3,energieffektiv,tankløs",
+          "user_intent": "product_specification",
+          "product_references": "XFJ-3",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_9",
+        "score": 0.2772,
+        "text": "### Tekniske spesifikasjoner (XFJ-3 modeller)\n\n---",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 15,
+          "section_index": 9,
+          "header_level": 3,
+          "section_title": "Tekniske spesifikasjoner (XFJ-3 modeller)",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 15,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "Tekniske spesifikasjoner (XFJ-3 modeller)",
+          "tags": "vannvarmer,COAX,XFJ-3,energieffektiv,installasjon",
+          "summary": "Denne seksjonen gir detaljerte tekniske spesifikasjoner for COAX XFJ-3 tankløse vannvarmere, inkludert informasjon om energieffektivitet, installasjon og vedlikehold.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,XFJ-3,energieffektiv,installasjon",
+          "user_intent": "product_specification",
+          "product_references": "XFJ-3",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "product_overview_direkte_vannvarmer",
+        "score": 0.2698,
+        "text": "DIREKTE VANNVARMER produktserie\n\nTilgjengelige modeller: 5\n- JNE-3 (9-24 kW)\n- KJE-55 (5.5 kW)\n- RW-1 (7.5-9 kW)\n- XFJ-2 (5-13 kW)\n- XFJ-3 (12-24 kW)\n\nOpplev neste generasjons varmtvannskomfort med JN...",
+        "metadata": {
+          "chunk_type": "product_overview",
+          "chunk_index": 0,
+          "section_title": "DIREKTE VANNVARMER Oversikt",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 134,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      },
+      {
+        "node_id": "product_spec_xfj_2",
+        "score": 0.2464,
+        "text": "XFJ-2 - Komplett spesifikasjoner\n==================================================\nProduktserie: direkte vannvarmer\nFase: 1-fase\nSpenning: 230V\n\nTekniske spesifikasjoner:\nEffektutvalg: 5, 7, 9, 11, 1...",
+        "metadata": {
+          "chunk_type": "product_spec",
+          "chunk_index": 4,
+          "section_title": "XFJ-2 Spesifikasjoner",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 436,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "model_id": "xfj-2",
+          "display_name": "XFJ-2",
+          "power_kw": [
+            "5.0",
+            "7.0",
+            "9.0",
+            "11.0",
+            "13.0"
+          ],
+          "dimensions_mm": "396x220x88",
+          "flow_rate_lpm": [
+            "3.0",
+            "4.0",
+            "5.0",
+            "6.0",
+            "7.0"
+          ],
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      }
+    ]
+  }
+}

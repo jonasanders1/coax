@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Product images: products/{productId}/image{number}.webp
+    match /products/{productId}/{fileName} {
+      // Allow anyone to read/download images
+      allow read: if true;
+      
+      // Allow authenticated users to upload images
+      // But NOT delete (as per requirements)
+      allow write: if request.auth != null;
+      allow delete: if false; // Explicitly deny delete for all users
+    }
+    
+    // Default deny rule for any other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

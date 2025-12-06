@@ -1,8 +1,0 @@
-__pycache__
-.env
-.env.prod
-.env.development
-coax-chroma_db
-venv
-.venv
-app.log

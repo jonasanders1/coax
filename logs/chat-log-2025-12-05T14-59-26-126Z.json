@@ -1,0 +1,180 @@
+{
+  "timestamp": "2025-12-05T14:59:26.097Z",
+  "correlationId": "361ffb13-24f0-4f88-8750-89ce2e768f85",
+  "userQuery": "Hvordan kontakte coax",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T14:59:03.218Z"
+      },
+      {
+        "id": "user-1764946754927",
+        "role": "user",
+        "content": "Hvordan kontakte coax",
+        "timestamp": "2025-12-05T14:59:14.927Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764946766",
+      "role": "assistant",
+      "content": "Du kan kontakte COAX på følgende måter:\n\n- **E-post:** post@coax.no\n- **Telefon:** 977 32 838\n- **Adresse:** Grønnliveien 13, 3474 Åros",
+      "timestamp": "2025-12-05T14:59:26.048851+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_faq_para_21_0",
+        "score": 0.3579,
+        "text": "Ta kontakt med oss, så hjelper vi deg gjerne!",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 38,
+          "section_index": 21,
+          "paragraph_index": 0,
+          "header_level": 3,
+          "section_title": "Fikk du ikke svar på ditt spørsmål?",
+          "parent_chunk_id": "coax_faq_section_21",
+          "parent_section_id": "coax_faq_section_21",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 13,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Kontakt",
+          "tags": "kontakt,COAX,service,hjelp",
+          "summary": "COAX oppfordrer brukere til å ta kontakt for hjelp med spørsmål om deres tankløse vannvarmere. De tilbyr støtte og veiledning.",
+          "priority": "Low",
+          "keywords": "kontakt,COAX,hjelp",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_21",
+        "score": 0.3374,
+        "text": "### Fikk du ikke svar på ditt spørsmål?\n\nTa kontakt med oss, så hjelper vi deg gjerne!",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 37,
+          "section_index": 21,
+          "header_level": 3,
+          "section_title": "Fikk du ikke svar på ditt spørsmål?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 25,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Fikk du ikke svar på ditt spørsmål?",
+          "tags": "kontakt,COAX,FAQ,hjelp",
+          "summary": "Denne seksjonen oppfordrer brukere til å ta kontakt for hjelp dersom de ikke finner svar på spørsmålene sine angående COAXs produkter.",
+          "priority": "Low",
+          "keywords": "kontakt,hjelp,COAX",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_0",
+        "score": 0.3089,
+        "text": "### Ofte stilte spørsmål (FAQ)\n\nFinn svar på dine spørsmål om COAX vannvarmere",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 0,
+          "section_index": 0,
+          "header_level": 3,
+          "section_title": "Ofte stilte spørsmål (FAQ)",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 23,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ",
+          "tags": "vannvarmer,COAX,FAQ,energieffektiv,installasjon",
+          "summary": "Denne seksjonen gir svar på ofte stilte spørsmål om COAX tankløse elektriske vannvarmere, inkludert informasjon om energieffektivitet, installasjon og vedlikehold.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,installasjon,vedlikehold",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_5",
+        "score": 0.2978,
+        "text": "## Kontaktinformasjon\n\n- **E-post:** post@coax.no\n- **Telefon:** 977 32 838\n- **Adresse:** Grønnliveien 13, 3474 Åros",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 10,
+          "section_index": 5,
+          "header_level": 2,
+          "section_title": "Kontaktinformasjon",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 34,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "Kontaktinformasjon",
+          "tags": "kontakt,COAX,vannvarmer,service,informasjon",
+          "summary": "Denne seksjonen inneholder kontaktinformasjon for COAX, inkludert e-post, telefonnummer og adresse. Dette er nyttig for kunder som ønsker å komme i kontakt med produsenten for spørsmål eller support.",
+          "priority": "Low",
+          "keywords": "kontakt,COAX,vannvarmer",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_86",
+        "score": 0.295,
+        "text": "### COAX AS\n\n- **Adresse:** Grønnliveien 13, 3474 Åros, Norge\n- **Organisasjonsnummer:** 966 708 468\n- **Telefon:** +47 31 28 64 60\n- **Service:** +47 97 73 28 38\n- **E-post:** post@coax.no",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 144,
+          "section_index": 86,
+          "header_level": 3,
+          "section_title": "COAX AS",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 54,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T14:25:30Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "COAX AS",
+          "tags": "kontaktinfo,COAX,vannvarmer,service,adresse",
+          "summary": "COAX AS er en produsent av tankløse elektriske vannvarmere med adresse i Åros, Norge. Selskapet tilbyr service og kontaktmuligheter for kunder som ønsker mer informasjon om deres produkter.",
+          "priority": "Low",
+          "keywords": "COAX,kontaktinfo,vannvarmer",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

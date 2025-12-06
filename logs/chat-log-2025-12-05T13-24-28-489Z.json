@@ -1,0 +1,213 @@
+{
+  "timestamp": "2025-12-05T13:24:28.417Z",
+  "correlationId": "d6e37557-51a8-4401-a1eb-3abcd589b75f",
+  "userQuery": "Har XFJ-3 24 kW?",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T12:43:47.584Z"
+      },
+      {
+        "id": "user-1764939084434",
+        "role": "user",
+        "content": "Hvordan finne riktig modell?",
+        "timestamp": "2025-12-05T12:51:24.434Z"
+      },
+      {
+        "id": "assistant-1764939096",
+        "role": "assistant",
+        "content": "Bruk vår [modellvelger](/velg-modell) for å finne riktig COAX-modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modeller ved hjelp av Bøttemetoden. Ta kontakt hvis du trenger hjelp til å vurdere løsningen.",
+        "timestamp": "2025-12-05T12:51:36.038920+00:00"
+      },
+      {
+        "id": "user-1764940924010",
+        "role": "user",
+        "content": "Hvordan regne ut effektbehovet mitt?",
+        "timestamp": "2025-12-05T13:22:04.010Z"
+      },
+      {
+        "id": "assistant-1764940935",
+        "role": "assistant",
+        "content": "For å beregne ditt effektbehov for å finne riktig COAX-modell, kan du bruke følgende formel:\n\n$$P = Q \\times (T_{\\text{ut}} - T_{\\text{inn}}) \\times \\frac{4186}{60}$$\n\nHvor:\n- **P** er effektbehovet i watt\n- **Q** er vannmengden i liter per minutt\n- **$T_{\\text{ut}}$** er ønsket utløpstemperatur i °C\n- **$T_{\\text{inn}}$** er inntakstemperatur i °C\n\nFor eksempel, hvis du har:\n- Vannmengde **Q = 7 L/min**\n- Ønsket utløpstemperatur **$T_{\\text{ut}} = 38 °C$** \n- Inntakstemperatur **$T_{\\text{inn}} = 10 °C$**\n\nKan du beregne effektbehovet slik:\n$$P = 7 \\times (38 - 10) \\times \\frac{4186}{60} = 13\\,675\\ \\text{W} \\quad (\\approx 13{,}7\\ \\text{kW})$$\n\nBasert på dette effektbehovet kan du bruke [COAX modellselector](https://coax.no/modellselector) for å finne den riktige COAX-modellen for dine behov.",
+        "timestamp": "2025-12-05T13:22:15.394570+00:00"
+      },
+      {
+        "id": "user-1764941059861",
+        "role": "user",
+        "content": "Har XFJ-3 24 kW?",
+        "timestamp": "2025-12-05T13:24:19.861Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764941068",
+      "role": "assistant",
+      "content": "Ja, COAX-modellen XFJ-3 er tilgjengelig med en effekt på 24 kW. Ifølge produktspesifikasjonene har XFJ-3 et effektutvalg fra 12 kW til 24 kW, hvor 24 kW er den høyeste effektvarianten.",
+      "timestamp": "2025-12-05T13:24:28.353607+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_faq_section_12",
+        "score": 0.3507,
+        "text": "#### Hva er energieffektiviteten til COAX?\n\nCOAX har en typisk virkningsgrad på opptil 97 %, noe som betyr at nesten all energien brukes til å varme opp vannet. Til sammenligning har tradisjonelle var...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 21,
+          "section_index": 12,
+          "header_level": 4,
+          "section_title": "Hva er energieffektiviteten til COAX?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 91,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Energiforbruk",
+          "tags": "vannvarmer,COAX,energieffektivitet,virkningsgrad,oppvarming",
+          "summary": "COAX vannvarmere har en virkningsgrad på opptil 97 %, noe som sikrer at nesten all energien brukes effektivt til oppvarming av vann. Dette står i kontrast til tradisjonelle varmtvannstanker som lider av betydelig varmetap.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektivitet,virkningsgrad",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "product_spec_xfj_3",
+        "score": 0.3468,
+        "text": "XFJ-3 - Komplett spesifikasjoner\n==================================================\nProduktserie: direkte vannvarmer\nFase: 3-fase\nSpenning: 400V\n\nTekniske spesifikasjoner:\nEffektutvalg: 12, 15, 18, 21...",
+        "metadata": {
+          "chunk_type": "product_spec",
+          "chunk_index": 5,
+          "section_title": "XFJ-3 Spesifikasjoner",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 414,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "model_id": "xfj-3",
+          "display_name": "XFJ-3",
+          "power_kw": [
+            "12.0",
+            "15.0",
+            "18.0",
+            "21.0",
+            "24.0"
+          ],
+          "dimensions_mm": "375×260×90",
+          "flow_rate_lpm": [
+            "5.0",
+            "7.0",
+            "8.0",
+            "10.0",
+            "12.0"
+          ],
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_9",
+        "score": 0.3452,
+        "text": "### Effektivitet",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 16,
+          "section_index": 9,
+          "header_level": 3,
+          "section_title": "Effektivitet",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 5,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Effektivitet",
+          "tags": "vannvarmer,COAX,energieffektiv,installasjon,vedlikehold",
+          "summary": "COAX tilbyr tankløse elektriske vannvarmere som er energieffektive og plassbesparende. Disse vannvarmerne gir direkte oppvarming og minimerer risikoen for legionella, samtidig som de sparer strøm, vann og plass.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,tankløs,installasjon",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_para_21_0",
+        "score": 0.3445,
+        "text": "- Typisk 2 kW.  \n- Lav effekt men kontinuerlig drift over tid.  \n- Effekt velges etter antall brukere og tankvolum.\n\n---",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 37,
+          "section_index": 21,
+          "paragraph_index": 0,
+          "header_level": 2,
+          "section_title": "9.2 Tankbereder",
+          "parent_chunk_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_section_21",
+          "parent_section_id": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank_section_21",
+          "source_document": "documents/coax-vs-tank.md",
+          "document_title": "COAX Direkte Vannvarmer vs Tradisjonell Varmtvannstank",
+          "document_slug": "coax_direkte_vannvarmer_vs_tradisjonell_varmtvannstank",
+          "token_count": 35,
+          "ingestion_timestamp": "2025-11-21T22:36:41.533839Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "comparison",
+          "section": "9.2 Tankbereder",
+          "tags": "vannvarmer,COAX,tankløs,effekt,brukere",
+          "summary": "COAXs tankløse vannvarmere har typisk en effekt på 2 kW, som gir lav effekt men kontinuerlig drift over tid. Valg av effekt avhenger av antall brukere og ønsket tankvolum.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,tankløs,effekt,brukere",
+          "user_intent": "comparison",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_formel_utregning_og_forklaring_effektbehov_for_vannoppvarming_section_13",
+        "score": 0.3399,
+        "text": "## Enhetskontroll\n\nW = (kg/s) × (J/kg°C) × °C  \nW = J/s\n\nDette bekrefter at formelen gir effekt i watt (energi per tid), som er korrekt for oppvarmingsbehov.",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 24,
+          "section_index": 13,
+          "header_level": 2,
+          "section_title": "Enhetskontroll",
+          "source_document": "documents/effektbehov.md",
+          "document_title": "Komplett formel, utregning og forklaring: Effektbehov for vannoppvarming",
+          "document_slug": "komplett_formel_utregning_og_forklaring_effektbehov_for_vannoppvarming",
+          "token_count": 45,
+          "ingestion_timestamp": "2025-11-21T22:36:41.537403Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "calculation_guide",
+          "section": "Enhetskontroll",
+          "tags": "vannvarmer,COAX,effektbehov,oppvarming,energieffektivitet",
+          "summary": "Denne seksjonen beskriver formelen for beregning av effektbehov for vannoppvarming, som bekrefter at effekt måles i watt. Dette er relevant for tankløse vannvarmere fra COAX.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,effektbehov,oppvarming,energieffektivitet",
+          "user_intent": "product_specification",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      }
+    ]
+  }
+}

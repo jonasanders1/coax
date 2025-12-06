@@ -1,0 +1,13 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": [
+    {
+      "bucket": "coax-2bb33.firebasestorage.app",
+      "rules": "storage.rules"
+    }
+  ]
+}
+

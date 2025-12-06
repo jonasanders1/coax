@@ -1,0 +1,207 @@
+{
+  "timestamp": "2025-12-05T13:48:27.840Z",
+  "correlationId": "d3875f17-7b4a-4d79-8d7f-aa542c35fdd1",
+  "userQuery": "Jeg mente JNE-3 og KJE-55...",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T13:47:09.265Z"
+      },
+      {
+        "id": "user-1764942448539",
+        "role": "user",
+        "content": "Hvor mye kan jeg spare mec COAX",
+        "timestamp": "2025-12-05T13:47:28.539Z"
+      },
+      {
+        "id": "assistant-1764942453",
+        "role": "assistant",
+        "content": "COAX tankløse vannvarmere kan gi deg 20–40 % lavere strømforbruk til varmtvann sammenlignet med tradisjonelle varmtvannstanker. Dette skyldes at COAX kun varmer opp vannet når det faktisk brukes, noe som reduserer både standby-forbruk og varmetap. \n\nDu kan bruke vår [sparekalkulator](/kalkulator) for å beregne hvor mye du kan spare basert på ditt forbruksmønster og antall tappesteder. Hvis du trenger hjelp til å vurdere løsningen, er du velkommen til å ta kontakt med oss.",
+        "timestamp": "2025-12-05T13:47:33.657620+00:00"
+      },
+      {
+        "id": "user-1764942472347",
+        "role": "user",
+        "content": "Hva er forskjellene på JNF-3 og KJE-55?",
+        "timestamp": "2025-12-05T13:47:52.347Z"
+      },
+      {
+        "id": "assistant-1764942477",
+        "role": "assistant",
+        "content": "Jeg beklager, men jeg har ikke informasjon om en COAX-modell som heter JNF-3. Konteksten viser derimot informasjon om modellen KJE-55:\n\nKJE-55 er en kompakt, moderne og svært effektiv direkte vannvarmer fra COAX. Noen av de viktigste forskjellene sammenlignet med andre COAX-modeller er:\n\n- Effekt: KJE-55 har en effekt på 5.5 kW\n- Fase og spenning: KJE-55 er en 1-fase 230V modell\n- Dimensjoner: KJE-55 har dimensjoner på 226x78x196 mm\n- Liter per minutt: KJE-55 leverer 3 liter varmtvann per minutt\n\nHvis du leter etter en annen COAX-modell, kan du bruke vår [modellvelger](/velg-modell) for å finne den som passer best til dine behov. Ta gjerne kontakt hvis du trenger ytterligere hjelp.",
+        "timestamp": "2025-12-05T13:47:57.456639+00:00"
+      },
+      {
+        "id": "user-1764942501077",
+        "role": "user",
+        "content": "Jeg mente JNE-3 og KJE-55...",
+        "timestamp": "2025-12-05T13:48:21.077Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764942507",
+      "role": "assistant",
+      "content": "JNE-3 og KJE-55 er to ulike modeller i COAXs produktserie for direkte vannvarmere:\n\nJNE-3:\n- Har et effektutvalg fra 9 kW til 24 kW\n- Er en 3-fase 400V modell\n- Leverer mellom 5 og 12 liter varmtvann per minutt\n- Har dimensjoner på 488x282x102 mm\n\nKJE-55:\n- Har en effekt på 5.5 kW\n- Er en 1-fase 230V modell \n- Leverer 3 liter varmtvann per minutt\n- Har dimensjoner på 226x78x196 mm\n\nHovedforskjellene er altså effekt, strømforsyning og kapasitet. JNE-3 er en kraftigere modell beregnet for større boliger eller næringsbygg, mens KJE-55 er en mer kompakt modell for mindre punktoppvarmingsbehov.\n\nHvis du trenger hjelp til å velge riktig modell, kan du bruke vår [modellvelger](/velg-modell) eller ta kontakt med oss.",
+      "timestamp": "2025-12-05T13:48:27.738687+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "product_overview_direkte_vannvarmer",
+        "score": 0.4196,
+        "text": "DIREKTE VANNVARMER produktserie\n\nTilgjengelige modeller: 5\n- JNE-3 (9-24 kW)\n- KJE-55 (5.5 kW)\n- RW-1 (7.5-9 kW)\n- XFJ-2 (5-13 kW)\n- XFJ-3 (12-24 kW)\n\nOpplev neste generasjons varmtvannskomfort med JN...",
+        "metadata": {
+          "chunk_type": "product_overview",
+          "chunk_index": 0,
+          "section_title": "DIREKTE VANNVARMER Oversikt",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 134,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_13",
+        "score": 0.3832,
+        "text": "#### Hvordan finner jeg riktig COAX-modell?\n\nBruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modell...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 23,
+          "section_index": 13,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 82,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Denne seksjonen gir veiledning om hvordan man finner den riktige COAX-modellen basert på vannforbruk og effektbehov ved hjelp av Bøttemetoden. Brukeren oppfordres til å kontakte COAX for ytterligere hjelp.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "product_spec_kje_55",
+        "score": 0.382,
+        "text": "KJE-55 - Komplett spesifikasjoner\n==================================================\nProduktserie: direkte vannvarmer\nFase: 1-fase\nSpenning: 230V\n\nTekniske spesifikasjoner:\nEffekt: 5.5 kW\nNominell str...",
+        "metadata": {
+          "chunk_type": "product_spec",
+          "chunk_index": 2,
+          "section_title": "KJE-55 Spesifikasjoner",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 808,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "model_id": "kje-55",
+          "display_name": "KJE-55",
+          "power_kw": [
+            "5.5"
+          ],
+          "dimensions_mm": "226x78x196",
+          "flow_rate_lpm": [
+            "3.0"
+          ],
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_13_0",
+        "score": 0.3496,
+        "text": "Bruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modeller ved hjelp av Bøttemetoden. Ta kontakt hvis...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 24,
+          "section_index": 13,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "parent_chunk_id": "coax_faq_section_13",
+          "parent_section_id": "coax_faq_section_13",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 70,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Bruk vår modellvelger for å finne riktig COAX-modell basert på ditt vannforbruk og effektbehov. Siden gir veiledning ved hjelp av Bøttemetoden, og du kan kontakte oss for hjelp med vurderingen.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger,effektbehov,Bøttemetoden",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "product_spec_jne_3",
+        "score": 0.3406,
+        "text": "JNE-3 - Komplett spesifikasjoner\n==================================================\nProduktserie: direkte vannvarmer\nFase: 3-fase\nSpenning: 400V\n\nTekniske spesifikasjoner:\nEffektutvalg: 9, 12, 15, 18,...",
+        "metadata": {
+          "chunk_type": "product_spec",
+          "chunk_index": 1,
+          "section_title": "JNE-3 Spesifikasjoner",
+          "source_document": "firestore",
+          "document_title": "COAX Produkter",
+          "document_slug": "products",
+          "token_count": 811,
+          "ingestion_timestamp": "2025-12-05T12:38:01Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": "no",
+          "content_type": "product_specification",
+          "product_line": "direkte vannvarmer",
+          "model_id": "jne-3",
+          "display_name": "JNE-3",
+          "power_kw": [
+            "9.0",
+            "12.0",
+            "15.0",
+            "18.0",
+            "21.0",
+            "24.0"
+          ],
+          "dimensions_mm": "488x282x102",
+          "flow_rate_lpm": [
+            "5.0",
+            "7.0",
+            "8.0",
+            "10.0",
+            "12.0"
+          ],
+          "priority": "High",
+          "user_intent": "product_specification"
+        }
+      }
+    ]
+  }
+}

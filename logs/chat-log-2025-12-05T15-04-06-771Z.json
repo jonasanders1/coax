@@ -1,0 +1,204 @@
+{
+  "timestamp": "2025-12-05T15:04:06.743Z",
+  "correlationId": "c01572d4-6023-4be9-be26-62f5252e30a6",
+  "userQuery": "List alle vannvarmere coax tilbyr",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T15:01:13.280Z"
+      },
+      {
+        "id": "user-1764946881812",
+        "role": "user",
+        "content": "Hvor kan jeg kontakte coax?",
+        "timestamp": "2025-12-05T15:01:21.812Z"
+      },
+      {
+        "id": "assistant-1764946894",
+        "role": "assistant",
+        "content": "Du kan kontakte COAX på følgende måter:\n\n- **E-post:** post@coax.no\n- **Telefon:** 977 32 838\n- **Adresse:** Grønnliveien 13, 3474 Åros\n\nCOAX oppfordrer brukere til å ta kontakt for hjelp med spørsmål om deres tankløse vannvarmere. De tilbyr støtte og veiledning.",
+        "timestamp": "2025-12-05T15:01:34.454602+00:00"
+      },
+      {
+        "id": "user-1764947004805",
+        "role": "user",
+        "content": "Hvilke produkter tilbyr coax?",
+        "timestamp": "2025-12-05T15:03:24.805Z"
+      },
+      {
+        "id": "assistant-1764947011",
+        "role": "assistant",
+        "content": "COAX tilbyr en rekke modeller av tankløse elektriske vannvarmere. Basert på informasjonen i konteksten ser vi at de har følgende produkter:\n\n- **CX3-1 Kokende vann**: En 3-i-1 kjøkkenarmaturen som gir kokende, varmt og kaldt vann direkte fra én kran.\n\nI tillegg nevnes at COAX har over 20 års erfaring med å levere løsninger for boliger, hytter, industri og yrkesbygg. De tilbyr sertifiserte produkter med robust design og omfattende kundestøtte for å hjelpe kunder med å velge riktig modell.\n\nHvis du trenger mer informasjon om de spesifikke produktmodellene COAX tilbyr, kan du besøke [produktsiden på deres nettsted](/produkter).",
+        "timestamp": "2025-12-05T15:03:31.534165+00:00"
+      },
+      {
+        "id": "user-1764947039862",
+        "role": "user",
+        "content": "List alle vannvarmere coax tilbyr",
+        "timestamp": "2025-12-05T15:03:59.862Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764947046",
+      "role": "assistant",
+      "content": "COAX tilbyr tankløse elektriske vannvarmere som varmer vann direkte ved behov. Noen av fordelene med COAXs vannvarmere er:\n\n- **Energieffektivitet:** De er 97 % effektive og bruker kun strøm når vannet tappes.\n- **Plassbesparelse:** Kompakt design uten tank, enkle å montere nær tappesteder.\n- **Hygiene:** Direkte oppvarming av friskt vann minimerer risiko for bakterievekst.\n- **Allsidighet:** Løsninger for boliger, hytter, industri og yrkesbygg.\n\nCOAX har over 20 års erfaring med å levere disse innovative vannvarmerne, og tilbyr omfattende kundestøtte for å velge riktig modell basert på dine behov.",
+      "timestamp": "2025-12-05T15:04:06.700509+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_0",
+        "score": 0.6928,
+        "text": "# COAX – Plassbesparende og energieffektive vannvarmere uten tank\n\nCOAX tilbyr et moderne alternativ til tradisjonelle tankberedere med revolusjonerende elektriske vannvarmere som varmer vann direkte ...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 0,
+          "section_index": 0,
+          "header_level": 1,
+          "section_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 276,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "tags": "vannvarmer,COAX,energieffektiv,plasserbesparende,hygienisk",
+          "summary": "COAX tilbyr moderne tankløse elektriske vannvarmere som varmer vann direkte ved behov, noe som gir en energieffektiv og plassbesparende løsning for både boliger og industri. Disse vannvarmerne er hygieniske og reduserer både strøm- og vannforbruk.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,energieffektiv,plassbesparende,hygienisk",
+          "user_intent": "general_info",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_para_0_0",
+        "score": 0.6544,
+        "text": "COAX tilbyr et moderne alternativ til tradisjonelle tankberedere med revolusjonerende elektriske vannvarmere som varmer vann direkte ved behov, uten lagringstank. Dette gir en energieffektiv, miljøven...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 1,
+          "section_index": 0,
+          "paragraph_index": 0,
+          "header_level": 1,
+          "section_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "parent_chunk_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_0",
+          "parent_section_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_0",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 257,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "tags": "vannvarmer,COAX,energieffektiv,plasserbesparende,hygienisk",
+          "summary": "COAX tilbyr moderne tankløse elektriske vannvarmere som varmer vann direkte ved behov, noe som gir en energieffektiv og plassbesparende løsning for både boliger og industri. Disse vannvarmerne er hygieniske og reduserer både strøm- og vannforbruk.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,energieffektiv,plasserbesparende,hygienisk",
+          "user_intent": "general_info",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_2",
+        "score": 0.6263,
+        "text": "## Fordeler ved COAX vannvarmere\n\n- **Energieffektivitet:** 97 % effektivitet, kun oppvarming ved bruk.\n- **Plassbesparelse:** Kompakt design frigjør gulvplass, ideell for små rom.\n- **Miljøvennlig:**...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 4,
+          "section_index": 2,
+          "header_level": 2,
+          "section_title": "Fordeler ved COAX vannvarmere",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 133,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "Fordeler ved COAX vannvarmere",
+          "tags": "vannvarmer,COAX,energieffektiv,plassbesparende,hygienisk",
+          "summary": "COAX vannvarmere tilbyr høy energieffektivitet med 97 % effektivitet og et kompakt design som sparer plass. De gir hygienisk, direkte oppvarming av vann uten risiko for bakterievekst, og er enkle å installere og vedlikeholde.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,plassbesparende,hygienisk",
+          "user_intent": "general_info",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_1",
+        "score": 0.6017,
+        "text": "## Hvordan fungerer COAX vannvarmere?\n\nCOAX vannvarmere varmer vann direkte når kranen åpnes, ved hjelp av nøyaktige, elektronisk styrte varmeelementer. Når kranen stenges, slås varmeren helt av, noe ...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 2,
+          "section_index": 1,
+          "header_level": 2,
+          "section_title": "Hvordan fungerer COAX vannvarmere?",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 190,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "Hvordan fungerer COAX vannvarmere?",
+          "tags": "vannvarmer,COAX,energieffektiv,tankløs,installasjon",
+          "summary": "COAX vannvarmere varmer vann direkte ved åpning av kranen, noe som gir minimal energiforbruk og ingen varmetap fra lagringstank. De har et kompakt design, er vedlikeholdsfri og har lang levetid takket være rustfrie varmeelementer.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,tankløs,installasjon",
+          "user_intent": "general_info",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_86",
+        "score": 0.5539,
+        "text": "### COAX AS\n\n- **Adresse:** Grønnliveien 13, 3474 Åros, Norge\n- **Organisasjonsnummer:** 966 708 468\n- **Telefon:** +47 31 28 64 60\n- **Service:** +47 97 73 28 38\n- **E-post:** post@coax.no",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 144,
+          "section_index": 86,
+          "header_level": 3,
+          "section_title": "COAX AS",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 54,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T14:25:30Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "COAX AS",
+          "tags": "kontaktinfo,COAX,vannvarmer,service,adresse",
+          "summary": "COAX AS er en produsent av tankløse elektriske vannvarmere med adresse i Åros, Norge. Selskapet tilbyr service og kontaktmuligheter for kunder som ønsker mer informasjon om deres produkter.",
+          "priority": "Low",
+          "keywords": "COAX,kontaktinfo,vannvarmer",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

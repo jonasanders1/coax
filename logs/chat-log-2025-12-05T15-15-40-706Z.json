@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-12-05T15:15:40.689Z",
+  "correlationId": "eaa93408-4f5d-4b63-8ae1-071b0176c6be",
+  "userQuery": "Var Epstein en pedofil?",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T15:15:34.177Z"
+      },
+      {
+        "id": "user-1764947736047",
+        "role": "user",
+        "content": "Var Epstein en pedofil?",
+        "timestamp": "2025-12-05T15:15:36.047Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764947740",
+      "role": "assistant",
+      "content": "Beklager, jeg har ikke nok kontekst til å svare på spørsmålet \"Var Epstein en pedofil?\". Spørsmålet står uten relevant bakgrunnsinformasjon fra den foregående samtalen. For å kunne gi et meningsfullt svar, trenger jeg mer informasjon om hva som ble diskutert tidligere eller hva som er årsaken til dette spørsmålet. Jeg kan bare svare på spørsmål som er direkte relatert til COAX og våre produkter basert på den gitte konteksten.",
+      "timestamp": "2025-12-05T15:15:40.642392+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_faq_section_21",
+        "score": 0.1478,
+        "text": "### Fikk du ikke svar på ditt spørsmål?\n\nTa kontakt med oss, så hjelper vi deg gjerne!",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 37,
+          "section_index": 21,
+          "header_level": 3,
+          "section_title": "Fikk du ikke svar på ditt spørsmål?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 25,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Fikk du ikke svar på ditt spørsmål?",
+          "tags": "kontakt,COAX,FAQ,hjelp",
+          "summary": "Denne seksjonen oppfordrer brukere til å ta kontakt for hjelp dersom de ikke finner svar på spørsmålene sine angående COAXs produkter.",
+          "priority": "Low",
+          "keywords": "kontakt,hjelp,COAX",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_15",
+        "score": 0.1454,
+        "text": "#### Er vannet trygt å drikke?\n\nJa. COAX gir deg alltid friskt og rent varmtvann direkte fra vannledningen, uten lagring i tank. Dette eliminerer risikoen for bakterievekst og dårlig smak som ofte kan...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 26,
+          "section_index": 15,
+          "header_level": 4,
+          "section_title": "Er vannet trygt å drikke?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 87,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Er vannet trygt å drikke?",
+          "tags": "vannvarmer,COAX,trygt vann,hygienisk,legionella",
+          "summary": "COAXs tankløse vannvarmere leverer alltid friskt og rent varmtvann direkte fra vannledningen, noe som reduserer risikoen for bakterievekst og dårlig smak. Dette gir hygienisk og behagelig varmtvann hver gang.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,hygienisk,legionella,tankløs",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_15_0",
+        "score": 0.1337,
+        "text": "Ja. COAX gir deg alltid friskt og rent varmtvann direkte fra vannledningen, uten lagring i tank. Dette eliminerer risikoen for bakterievekst og dårlig smak som ofte kan forekomme i varmtvannstanker. R...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 27,
+          "section_index": 15,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Er vannet trygt å drikke?",
+          "parent_chunk_id": "coax_faq_section_15",
+          "parent_section_id": "coax_faq_section_15",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 78,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Er vannet trygt å drikke?",
+          "tags": "vannvarmer,COAX,hygienisk,legionella,friskt vann",
+          "summary": "COAX vannvarmere leverer alltid friskt og rent varmtvann direkte fra vannledningen, uten lagring i tank. Dette reduserer risikoen for bakterievekst og gir hygienisk, oksygenrikt vann.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,hygienisk,legionella,friskt vann",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_20",
+        "score": 0.1317,
+        "text": "#### Trenger COAX vedlikehold?\n\nCOAX er i praksis vedlikeholdsfri under normal bruk. Det finnes ingen tank som må tømmes eller renses, og ingen bevegelige deler som slites. I områder med svært hardt v...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 35,
+          "section_index": 20,
+          "header_level": 4,
+          "section_title": "Trenger COAX vedlikehold?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 90,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Trenger COAX vedlikehold?",
+          "tags": "vannvarmer,COAX,vedlikehold,energieffektiv,installasjon",
+          "summary": "COAX vannvarmere er i praksis vedlikeholdsfri under normal bruk, men det anbefales å få en elektriker til å kontrollere anlegget hvert 2–3 år i områder med hardt vann for optimal drift.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,vedlikehold",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_20_0",
+        "score": 0.1298,
+        "text": "COAX er i praksis vedlikeholdsfri under normal bruk. Det finnes ingen tank som må tømmes eller renses, og ingen bevegelige deler som slites. I områder med svært hardt vann kan det likevel være lurt å ...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 36,
+          "section_index": 20,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Trenger COAX vedlikehold?",
+          "parent_chunk_id": "coax_faq_section_20",
+          "parent_section_id": "coax_faq_section_20",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 81,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Vedlikehold",
+          "tags": "vannvarmer,COAX,vedlikehold,energieffektiv,installasjon",
+          "summary": "COAX vannvarmere er i praksis vedlikeholdsfri under normal bruk, uten behov for tømming eller rensing av tank. Det anbefales imidlertid å få en elektriker til å kontrollere anlegget hvert 2–3 år i områder med hardt vann for optimal drift.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,vedlikehold",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

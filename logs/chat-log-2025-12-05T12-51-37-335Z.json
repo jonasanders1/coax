@@ -1,0 +1,180 @@
+{
+  "timestamp": "2025-12-05T12:51:36.104Z",
+  "correlationId": "64d8da2a-b192-4957-b69b-290c48ca475f",
+  "userQuery": "Hvordan finne riktig modell?",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T12:43:47.584Z"
+      },
+      {
+        "id": "user-1764939084434",
+        "role": "user",
+        "content": "Hvordan finne riktig modell?",
+        "timestamp": "2025-12-05T12:51:24.434Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764939096",
+      "role": "assistant",
+      "content": "Bruk vår [modellvelger](/velg-modell) for å finne riktig COAX-modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modeller ved hjelp av Bøttemetoden. Ta kontakt hvis du trenger hjelp til å vurdere løsningen.",
+      "timestamp": "2025-12-05T12:51:36.038920+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_faq_section_13",
+        "score": 0.4441,
+        "text": "#### Hvordan finner jeg riktig COAX-modell?\n\nBruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modell...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 23,
+          "section_index": 13,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 82,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Denne seksjonen gir veiledning om hvordan man finner den riktige COAX-modellen basert på vannforbruk og effektbehov ved hjelp av Bøttemetoden. Brukeren oppfordres til å kontakte COAX for ytterligere hjelp.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_13_0",
+        "score": 0.4134,
+        "text": "Bruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modeller ved hjelp av Bøttemetoden. Ta kontakt hvis...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 24,
+          "section_index": 13,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "parent_chunk_id": "coax_faq_section_13",
+          "parent_section_id": "coax_faq_section_13",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 70,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Bruk vår modellvelger for å finne riktig COAX-modell basert på ditt vannforbruk og effektbehov. Siden gir veiledning ved hjelp av Bøttemetoden, og du kan kontakte oss for hjelp med vurderingen.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger,effektbehov,Bøttemetoden",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_3",
+        "score": 0.2775,
+        "text": "#### Kan jeg bruke COAX i helårsbolig?\n\nAbsolutt. Våre 3-fasemodeller (for eksempel XFJ-3-serien) er laget for helårsbruk i boliger med dusj, kjøkken og vaskerom. De gir jevn og stabil varmtvannsforsy...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 5,
+          "section_index": 3,
+          "header_level": 4,
+          "section_title": "Kan jeg bruke COAX i helårsbolig?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 93,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Kan jeg bruke COAX i helårsbolig?",
+          "tags": "vannvarmer,COAX,helårsbolig,3-faset,installasjon",
+          "summary": "COAXs 3-fasemodeller, som XFJ-3-serien, er designet for helårsbruk i boliger med dusj, kjøkken og vaskerom, og gir en stabil varmtvannsforsyning uten behov for stor bereder. Riktig modell bør velges basert på vannforbruk og elektrisk tilgang.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,helårsbolig,3-faset,installasjon",
+          "user_intent": "faq",
+          "product_references": "XFJ-3",
+          "is_faq": true,
+          "technical_complexity": "Medium"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_21",
+        "score": 0.2685,
+        "text": "### Fikk du ikke svar på ditt spørsmål?\n\nTa kontakt med oss, så hjelper vi deg gjerne!",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 37,
+          "section_index": 21,
+          "header_level": 3,
+          "section_title": "Fikk du ikke svar på ditt spørsmål?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 25,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Fikk du ikke svar på ditt spørsmål?",
+          "tags": "kontakt,COAX,FAQ,hjelp",
+          "summary": "Denne seksjonen oppfordrer brukere til å ta kontakt for hjelp dersom de ikke finner svar på sine spørsmål om COAXs produkter.",
+          "priority": "Low",
+          "keywords": "kontakt,hjelp,COAX",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer_section_86",
+        "score": 0.268,
+        "text": "### COAX AS\n\n- **Adresse:** Grønnliveien 13, 3474 Åros, Norge\n- **Organisasjonsnummer:** 966 708 468\n- **Telefon:** +47 31 28 64 60\n- **Service:** +47 97 73 28 38\n- **E-post:** post@coax.no",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 144,
+          "section_index": 86,
+          "header_level": 3,
+          "section_title": "COAX AS",
+          "source_document": "documents/installation.md",
+          "document_title": "Komplett installasjon- og bruksguide for COAX XFJ-3 vannvarmer",
+          "document_slug": "komplett_installasjon_og_bruksguide_for_coax_xfj_3_vannvarmer",
+          "token_count": 54,
+          "ingestion_timestamp": "2025-11-21T22:36:41.536322Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "installation_guide",
+          "section": "COAX AS",
+          "tags": "kontaktinfo,COAX,service,adresse,organisasjonsnummer",
+          "summary": "COAX AS er en produsent av tankløse elektriske vannvarmere med adresse i Åros, Norge. Selskapet tilbyr service og kontaktinformasjon for kunder som ønsker mer informasjon om deres produkter.",
+          "priority": "Low",
+          "keywords": "COAX,kontaktinfo,service",
+          "user_intent": "contact",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

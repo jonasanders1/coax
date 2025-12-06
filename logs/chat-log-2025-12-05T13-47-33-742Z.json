@@ -1,0 +1,183 @@
+{
+  "timestamp": "2025-12-05T13:47:33.716Z",
+  "correlationId": "9d59907d-37da-4f3d-9989-3eb98aa63852",
+  "userQuery": "Hvor mye kan jeg spare mec COAX",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T13:47:09.265Z"
+      },
+      {
+        "id": "user-1764942448539",
+        "role": "user",
+        "content": "Hvor mye kan jeg spare mec COAX",
+        "timestamp": "2025-12-05T13:47:28.539Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764942453",
+      "role": "assistant",
+      "content": "COAX tankløse vannvarmere kan gi deg 20–40 % lavere strømforbruk til varmtvann sammenlignet med tradisjonelle varmtvannstanker. Dette skyldes at COAX kun varmer opp vannet når det faktisk brukes, noe som reduserer både standby-forbruk og varmetap. \n\nDu kan bruke vår [sparekalkulator](/kalkulator) for å beregne hvor mye du kan spare basert på ditt forbruksmønster og antall tappesteder. Hvis du trenger hjelp til å vurdere løsningen, er du velkommen til å ta kontakt med oss.",
+      "timestamp": "2025-12-05T13:47:33.657620+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "coax_faq_section_10",
+        "score": 0.4228,
+        "text": "#### Hvor mye energi sparer jeg med COAX?\n\nCOAX varmer kun vannet når du faktisk bruker det. I motsetning til en tradisjonell varmtvannstank som holder vannet varmt døgnet rundt, reduserer du både sta...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 17,
+          "section_index": 10,
+          "header_level": 4,
+          "section_title": "Hvor mye energi sparer jeg med COAX?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 138,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Energiforbruk",
+          "tags": "vannvarmer,COAX,energieffektiv,standby-forbruk,varmetap",
+          "summary": "COAX tankløse vannvarmere varmer kun vannet når det brukes, noe som reduserer standby-forbruk og varmetap. Brukere rapporterer om 20–40 % lavere strømforbruk til varmtvann sammenlignet med tradisjonelle varmtvannstanker.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,strømsparing,varmetap",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_10_0",
+        "score": 0.3826,
+        "text": "COAX varmer kun vannet når du faktisk bruker det. I motsetning til en tradisjonell varmtvannstank som holder vannet varmt døgnet rundt, reduserer du både standby-forbruk og varmetap. Mange brukere opp...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 18,
+          "section_index": 10,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Hvor mye energi sparer jeg med COAX?",
+          "parent_chunk_id": "coax_faq_section_10",
+          "parent_section_id": "coax_faq_section_10",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 125,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ - Energiforbruk",
+          "tags": "vannvarmer,COAX,energieffektiv,standby-forbruk,sparekalkulator",
+          "summary": "COAXs tankløse vannvarmere varmer kun vannet når det brukes, noe som reduserer standby-forbruk og varmetap. Brukere rapporterer om 20–40 % lavere strømforbruk til varmtvann, avhengig av bruksmønster.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,strømsparing,tankløs",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_19_0",
+        "score": 0.3771,
+        "text": "Pris for installasjon varierer avhengig av plassering, eksisterende el-anlegg og rørføringer. Kostnaden er som regel lavere enn ved installasjon av tradisjonell varmtvannstank, siden systemet er mindr...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 34,
+          "section_index": 19,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Hva koster installasjonen?",
+          "parent_chunk_id": "coax_faq_section_19",
+          "parent_section_id": "coax_faq_section_19",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 87,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hva koster installasjonen?",
+          "tags": "installasjon,COAX,vannvarmer,pris,FAQ",
+          "summary": "Kostnaden for installasjon av COAX tankløse vannvarmere varierer avhengig av plassering og eksisterende el-anlegg. Generelt er kostnaden lavere enn for tradisjonelle varmtvannstanker, da systemet er mindre og enklere å installere.",
+          "priority": "High",
+          "keywords": "installasjon,COAX,vannvarmer,kostnad,el-anlegg",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_19",
+        "score": 0.3638,
+        "text": "#### Hva koster installasjonen?\n\nPris for installasjon varierer avhengig av plassering, eksisterende el-anlegg og rørføringer. Kostnaden er som regel lavere enn ved installasjon av tradisjonell varmtv...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 33,
+          "section_index": 19,
+          "header_level": 4,
+          "section_title": "Hva koster installasjonen?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 97,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hva koster installasjonen?",
+          "tags": "installasjon,COAX,vannvarmer,tradisjonell varmtvannstank,kostnad",
+          "summary": "Kostnaden for installasjon av COAX tankløse vannvarmere varierer avhengig av plassering og eksisterende el-anlegg. Generelt er kostnaden lavere enn for tradisjonelle varmtvannstanker, da systemet er mindre og enklere å installere.",
+          "priority": "High",
+          "keywords": "installasjon,COAX,vannvarmer",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank_section_0",
+        "score": 0.3234,
+        "text": "# COAX – Plassbesparende og energieffektive vannvarmere uten tank\n\nCOAX tilbyr et moderne alternativ til tradisjonelle tankberedere med revolusjonerende elektriske vannvarmere som varmer vann direkte ...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 0,
+          "section_index": 0,
+          "header_level": 1,
+          "section_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "source_document": "documents/coax-info.md",
+          "document_title": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "document_slug": "coax_plassbesparende_og_energieffektive_vannvarmere_uten_tank",
+          "token_count": 276,
+          "ingestion_timestamp": "2025-11-21T22:36:41.535327Z",
+          "chunk_created_at": "2025-12-05T12:38:01Z",
+          "language": false,
+          "content_type": "general_info",
+          "section": "COAX – Plassbesparende og energieffektive vannvarmere uten tank",
+          "tags": "vannvarmer,COAX,energieffektiv,plasserbesparende,hygienisk",
+          "summary": "COAX tilbyr moderne tankløse elektriske vannvarmere som varmer vann direkte ved behov, noe som gir en energieffektiv og plassbesparende løsning for både boliger og industri. Disse vannvarmerne er hygieniske og reduserer både strøm- og vannforbruk.",
+          "priority": "Medium",
+          "keywords": "vannvarmer,COAX,energieffektiv,plassbesparende,hygienisk",
+          "user_intent": "general_info",
+          "product_references": "",
+          "is_faq": false,
+          "technical_complexity": "Low"
+        }
+      }
+    ]
+  }
+}

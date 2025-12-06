@@ -1,0 +1,174 @@
+{
+  "timestamp": "2025-12-05T15:06:25.738Z",
+  "correlationId": "0b583aea-05dd-477e-a75d-145c2af0bc2a",
+  "userQuery": "Vis COAX sine produkter",
+  "request": {
+    "messages": [
+      {
+        "id": "welcome",
+        "role": "assistant",
+        "content": "Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.",
+        "timestamp": "2025-12-05T15:06:05.218Z"
+      },
+      {
+        "id": "user-1764947177109",
+        "role": "user",
+        "content": "Vis COAX sine produkter",
+        "timestamp": "2025-12-05T15:06:17.109Z"
+      }
+    ]
+  },
+  "response": {
+    "type": "stream",
+    "message": {
+      "id": "assistant-1764947185",
+      "role": "assistant",
+      "content": "COAX tilbyr en rekke modeller av tankløse elektriske vannvarmere:\n\n**Produktserier:**\n- **XFJ-serie:** Kompakte og effektive modeller fra 9 kW til 24 kW, tilgjengelig i ulike spenninger og faser.\n- **KJE-serie:** Kraftige modeller fra 18 kW til 36 kW, egnet for større boliger, hytter og næringsbygg.\n- **ARMATUR:** 3-i-1 kjøkkenarmatur som gir kokende, varmt og kaldt vann direkte fra én kran.\n\nAlle COAXs produkter er designet for å være energieffektive, plassbesparende og hygieniske. De minimerer risikoen for legionella ved å varme vannet direkte uten lagring.\n\nDu kan lese mer om de ulike modellene og deres spesifikasjoner på [produktsidene våre](/produkter).",
+      "timestamp": "2025-12-05T15:06:25.693029+00:00"
+    },
+    "metadata": [
+      {
+        "node_id": "navigation_map_entry_website-map_md_1",
+        "score": 0.3819,
+        "text": "## Produkter\n\n**Type:** Produktoversikt\n**Formål:** Liste over alle modeller med kort info (pris, modellnavn) og lenker til detaljsider. En forenklet liste for rask navigering.\n\n**Lenke:** https://coa...",
+        "metadata": {
+          "chunk_type": "navigation_map_entry",
+          "chunk_index": 1,
+          "source_document": "website-map.md",
+          "document_title": "COAX Website Navigation Map",
+          "token_count": 135,
+          "ingestion_timestamp": "2025-12-05T11:42:13.432010Z",
+          "language": "no",
+          "content_type": "navigation",
+          "page_title": "Produkter",
+          "page_url": "https://coax.jonasanders1.com/produkter",
+          "page_path": "produkter",
+          "page_slug": "produkter",
+          "page_type": "Produktoversikt",
+          "page_category": "product",
+          "keywords": "pris,produkter,modell",
+          "query_patterns": "produkter,modeller,vannvarmer modeller",
+          "is_navigation": true,
+          "priority": "High",
+          "user_intent": "navigation"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_13",
+        "score": 0.3724,
+        "text": "#### Hvordan finner jeg riktig COAX-modell?\n\nBruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modell...",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 23,
+          "section_index": 13,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 82,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Denne seksjonen gir veiledning om hvordan man finner den riktige COAX-modellen basert på vannforbruk og effektbehov ved hjelp av Bøttemetoden. Brukeren oppfordres til å kontakte COAX for ytterligere hjelp.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_para_13_0",
+        "score": 0.3509,
+        "text": "Bruk vår [modellvelger](/velg-modell) for å finne riktig modell basert på ditt vannforbruk og effektbehov. Siden hjelper deg med å velge mellom våre modeller ved hjelp av Bøttemetoden. Ta kontakt hvis...",
+        "metadata": {
+          "chunk_type": "paragraph",
+          "chunk_index": 24,
+          "section_index": 13,
+          "paragraph_index": 0,
+          "header_level": 4,
+          "section_title": "Hvordan finner jeg riktig COAX-modell?",
+          "parent_chunk_id": "coax_faq_section_13",
+          "parent_section_id": "coax_faq_section_13",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 70,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "Hvordan finner jeg riktig COAX-modell?",
+          "tags": "vannvarmer,COAX,modellvelger,Bøttemetoden,effektbehov",
+          "summary": "Bruk vår modellvelger for å finne riktig COAX-modell basert på ditt vannforbruk og effektbehov. Siden gir veiledning ved hjelp av Bøttemetoden, og du kan kontakte oss for hjelp med vurderingen.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,modellvelger",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "coax_faq_section_0",
+        "score": 0.338,
+        "text": "### Ofte stilte spørsmål (FAQ)\n\nFinn svar på dine spørsmål om COAX vannvarmere",
+        "metadata": {
+          "chunk_type": "section",
+          "chunk_index": 0,
+          "section_index": 0,
+          "header_level": 3,
+          "section_title": "Ofte stilte spørsmål (FAQ)",
+          "source_document": "https://coax.jonasanders1.com/fag",
+          "document_title": "COAX FAQ",
+          "document_slug": "coax_faq",
+          "token_count": 23,
+          "ingestion_timestamp": "2025-11-24 10:00:00+00:00",
+          "chunk_created_at": "2025-12-05T14:25:29Z",
+          "language": false,
+          "content_type": "FAW",
+          "section": "FAQ",
+          "tags": "vannvarmer,COAX,FAQ,energieffektiv,installasjon",
+          "summary": "Denne seksjonen gir svar på ofte stilte spørsmål om COAX tankløse elektriske vannvarmere, inkludert informasjon om energieffektivitet, installasjon og vedlikehold.",
+          "priority": "High",
+          "keywords": "vannvarmer,COAX,energieffektiv,installasjon,vedlikehold",
+          "user_intent": "faq",
+          "product_references": "",
+          "is_faq": true,
+          "technical_complexity": "Low"
+        }
+      },
+      {
+        "node_id": "navigation_map_entry_website-map_md_2",
+        "score": 0.3373,
+        "text": "## FAQ\n\n**Type:** FAQ-samling\n**Formål:** Besvarer vanlige spørsmål om bruksområder, el-krav, effektivitet, vannkvalitet, montering og vedlikehold. Inkluderer lenker til kalkulator og kontakt.\n\n**Lenk...",
+        "metadata": {
+          "chunk_type": "navigation_map_entry",
+          "chunk_index": 2,
+          "source_document": "website-map.md",
+          "document_title": "COAX Website Navigation Map",
+          "token_count": 120,
+          "ingestion_timestamp": "2025-12-05T11:42:13.432010Z",
+          "language": "no",
+          "content_type": "navigation",
+          "page_title": "FAQ",
+          "page_url": "https://coax.jonasanders1.com/faq",
+          "page_path": "faq",
+          "page_slug": "faq",
+          "page_type": "FAQ-samling",
+          "page_category": "faq",
+          "keywords": "faq,effekt,kontakt,kalkulator",
+          "query_patterns": "ofte stilte spørsmål,faq,spørsmål om,hva er,hvordan fungerer",
+          "is_navigation": true,
+          "priority": "High",
+          "user_intent": "navigation"
+        }
+      }
+    ]
+  }
+}
