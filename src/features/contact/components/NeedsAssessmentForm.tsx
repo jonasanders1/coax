@@ -9,9 +9,10 @@ import { Button } from "@/shared/components/ui/button";
 import { Slider } from "@/shared/components/ui/slider";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/shared/hooks/use-toast";
-import { Loader, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { isValidEmail } from "@/shared/utils/inputValidation";
 import { useFormInput } from "@/hooks/useFormInput";
+import { cn } from "@/shared/lib/utils";
 import ContactFields from "@/features/contact/components/ContactFields";
 import FilterSelect from "@/features/contact/components/FilterSelect";
 import NeedsAssessmentFormHeader from "@/features/contact/components/NeedsAssessmentFormHeader";
@@ -249,25 +250,35 @@ export default function NeedsAssessmentForm() {
           <div className="space-y-6">
             {header}
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {APPLICATION_AREAS.map((option) => {
                 const isSelected = (formData.applicationArea ?? []).includes(option);
                 return (
-                  <Button
+                  <button
                     key={option}
                     type="button"
-                    variant={isSelected ? "default" : "outline"}
                     onClick={() =>
                       handleCheckboxChange("applicationArea", option)
                     }
-                    className="h-auto border border-border px-4 py-2 md:hover:bg-primary md:hover:text-primary-foreground"
+                    className={cn(
+                      "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
+                      "min-h-[44px] min-w-[44px] touch-manipulation",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      isSelected
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
+                      "active:scale-[0.98]"
+                    )}
                     style={{
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
                     }}
                   >
-                    {option}
-                  </Button>
+                    {isSelected && (
+                      <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    )}
+                    <span>{option}</span>
+                  </button>
                 );
               })}
             </div>
@@ -406,23 +417,33 @@ export default function NeedsAssessmentForm() {
           <div className="space-y-6">
             {header}
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {USAGE_POINTS.map((point) => {
                 const isSelected = (formData.usagePoints ?? []).includes(point);
                 return (
-                  <Button
+                  <button
                     key={point}
                     type="button"
-                    variant={isSelected ? "default" : "outline"}
                     onClick={() => handleCheckboxChange("usagePoints", point)}
-                    className="h-auto border border-border px-4 py-2 md:hover:bg-primary md:hover:text-primary-foreground"
+                    className={cn(
+                      "relative inline-flex items-center justify-center gap-2 rounded-lg border-2 px-4 py-2.5 text-sm font-medium transition-all duration-200",
+                      "min-h-[44px] min-w-[44px] touch-manipulation",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      isSelected
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        : "border-border bg-background text-foreground hover:border-primary/50 hover:bg-muted/50",
+                      "active:scale-[0.98]"
+                    )}
                     style={{
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
                     }}
                   >
-                    {point}
-                  </Button>
+                    {isSelected && (
+                      <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    )}
+                    <span>{point}</span>
+                  </button>
                 );
               })}
             </div>

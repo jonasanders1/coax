@@ -353,7 +353,8 @@ html {
 
 /* Disable hover effects on small screens for option buttons in NeedsAssessmentForm */
 @media (max-width: 768px) {
-  button[type="button"].h-auto.border.border-border:hover {
+  /* Hover effects disabled on mobile - buttons use active state only */
+  button[type="button"].touch-manipulation:hover {
     background-color: inherit !important;
     color: inherit !important;
     border-color: inherit !important;
