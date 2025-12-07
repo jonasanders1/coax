@@ -49,6 +49,7 @@ import {
   EASING_CURVE,
 } from "@/constants/animations";
 import { CAROUSEL_AUTO_SCROLL_INTERVAL } from "@/constants/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HomePage = () => {
   const { openChat } = useChatBot();
@@ -56,6 +57,7 @@ const HomePage = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
   const autoScrollIntervalRef = React.useRef<NodeJS.Timeout | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setHasAnimated(true);
@@ -306,14 +308,15 @@ const HomePage = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed",
+          // Use 'fixed' only on desktop - mobile browsers don't support it well
+          backgroundAttachment: isMobile ? "scroll" : "fixed",
         }}
       >
         {/* Subtle gradient overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-muted/80 via-muted/60 to-muted/80 pointer-events-none" />
         <div className="container max-w-6xl mx-auto px-4 relative z-10">
           <SectionTitle
-            className="dark:text-white text-foreground"
+            className="text-black"
             title="Avansert teknologi for optimal ytelse"
             text="COAX er bygget med teknologi som sikrer høy effekt, sikkerhet og lang levetid."
           />
