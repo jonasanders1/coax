@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import cabinImage from "@/assets/cabin-water-heater.png";
-import homeImage from "@/assets/home-water-heater.png";
+import homeImage from "@/assets/home-water-heater.webp";
 import industrialImage from "@/assets/industrial-water-heater.png";
 
 export type Benefit = {
@@ -57,6 +57,37 @@ export const howItWorksSteps: HowItWorksStep[] = [
     title: "Steg 3: Steng kranen",
     text: "COAX slår seg av umiddelbart. Ingen unødig strømbruk – kun rent varmtvann når du trenger det.",
   },
+];
+
+export const securityData = [
+  {
+    item: "Unikt frontdeksel, sprutsikkert, korrosjonsbestandig og aldringsbestandig.",
+  },
+  {
+    item: "Benytter et lukket krets oppvarmingssystem, gir umiddelbart varmt vann med lavt varmetap, og isolasjonsmateriale som helt skiller vann og strøm.",
+  },
+  {
+    item: "Flerlags oppvarmingskammer med lang sirkulerende vannkanal, hindrer kalkdannelse og gir lang levetid.",
+  },
+  {
+    item: "Beskyttelse mot elektrisk lekkasje, skåldingsbeskyttelse, overtrykk- og overopphetingsbeskyttelse. Full isolasjon mellom vann og strøm.",
+  },
+  {
+    item: "Direkte temperaturinnstilling med automatisk termostat – vanntemperaturen holdes konstant.",
+  },
+  { item: "IP25 vanntett." },
+  {
+    item: "LED skjerm som viser driftsstatus, inn- og utløpstemperatur, vann- og strømforbruk.",
+  },
+  { item: "Automatisk feildeteksjon – årsaken vises automatisk ved feil." },
+];
+
+export const tecnologyData = [
+  { item: "Nikkel-krom varmerørlselement" },
+  { item: "Isolert varmeledende magnesiumpulver" },
+  { item: "Varmerør i rustfritt stål" },
+  { item: "Vannkanal i rustfritt stål" },
+  { item: "Støpegods i aluminiums–magnesiumlegering" },
 ];
 
 export type ComparisonItem = {
@@ -117,4 +148,3 @@ export const customerSegments: CustomerSegment[] = [
     image: industrialImage,
   },
 ];
-

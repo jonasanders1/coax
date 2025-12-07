@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
-import { Card, CardContent } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -29,7 +34,10 @@ import {
   howItWorksSteps,
   comparison,
   customerSegments,
+  tecnologyData,
+  securityData,
 } from "@/features/home/data/homeData";
+import tecnologyImage from "@/assets/technology.webp";
 import {
   ANIMATION_DURATION,
   ANIMATION_DELAY_INITIAL,
@@ -287,8 +295,156 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Technology Section */}
+      <section
+        className="py-16 md:py-24 relative overflow-hidden"
+        style={{
+          backgroundImage: `
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)),
+            url(${tecnologyImage.src})
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        {/* Subtle gradient overlay for better readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80 pointer-events-none" />
+        <div className="container max-w-6xl mx-auto px-4 relative z-10">
+          <SectionTitle
+            className="dark:text-white text-foreground"
+            title="Avansert teknologi for optimal ytelse"
+            text="COAX er bygget med teknologi som sikrer høy effekt, sikkerhet og lang levetid."
+          />
+
+          <div className="mt-8 md:mt-12 gap-4 md:gap-6 grid grid-cols-1 md:grid-cols-2 auto-rows-auto">
+            {/* Row 1: Image - top left */}
+            <motion.div
+              initial={{ opacity: 0, x: -ANIMATION_OFFSET_Y_SMALL }}
+              animate={
+                hasAnimated
+                  ? {
+                      opacity: 1,
+                      x: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_INITIAL,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
+                  : {}
+              }
+              className="relative w-full rounded-xl overflow-hidden order-1"
+            >
+              <div className="relative w-full" style={{ display: "block" }}>
+                <Image
+                  src={tecnologyImage}
+                  alt="COAX teknologi og varmeenhet"
+                  className="w-full h-full object-cover rounded-xl"
+                  priority
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "block",
+                  }}
+                  // width={1200}
+                  // height={900}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                />
+              </div>
+            </motion.div>
+
+            {/* Row 1: Technology Data - top right */}
+            <motion.div
+              initial={{ opacity: 0, x: ANIMATION_OFFSET_Y_SMALL }}
+              animate={
+                hasAnimated
+                  ? {
+                      opacity: 1,
+                      x: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_INITIAL + 0.1,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
+                  : {}
+              }
+              className="order-2 md:order-2"
+            >
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle>
+                    Vermerens elementer
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="list-decimal pl-4 md:pl-6 space-y-2 border-b pb-3">
+                    {tecnologyData.map((item, itemIndex) => (
+                      <li
+                        key={itemIndex}
+                        className="text-muted-foreground list-decimal text-sm md:text-base leading-relaxed"
+                      >
+                        <span>{item.item}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="mt-3 md:mt-4">
+                    <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                      Dette gir tryggere bruk, høyere energieffektivitet, lavere
+                      driftskostnader, mer stabil temperatur og bedre
+                      varmeeffekt, samtidig som risikoen for tørrkoking
+                      reduseres, komponentenes levetid forlenges, og vedlikehold
+                      blir enklere.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Row 2: Security Data - bottom spanning both columns */}
+            <motion.div
+              initial={{ opacity: 0, y: ANIMATION_OFFSET_Y_SMALL }}
+              animate={
+                hasAnimated
+                  ? {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_INITIAL + 0.2,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
+                  : {}
+              }
+              className="col-span-1 md:col-span-2 order-3 mt-4 md:mt-0"
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sikkerhetsfunksjoner</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ol className="list-disc pl-4 md:pl-6 space-y-2 md:space-y-3">
+                    {securityData.map((item, itemIndex) => (
+                      <li
+                        key={itemIndex}
+                        className="text-muted-foreground list-disc text-sm md:text-base leading-relaxed"
+                      >
+                        <span>{item.item}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Customer Segments Carousel */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-background ">
         <div className="container max-w-6xl mx-auto px-4">
           <SectionTitle
             title="COAX – fleksibel varmtvannsløsning for alle typer bygg"
