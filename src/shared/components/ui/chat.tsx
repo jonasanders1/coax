@@ -219,7 +219,7 @@ export function Chat({
   );
 
   return (
-    <ChatContainer className={className}>
+    <ChatContainer className={`${className} bg-background`}>
       {isEmpty && append && suggestions ? (
         <PromptSuggestions
           label="Hva kan jeg hjelpe deg med?"
@@ -277,8 +277,7 @@ export function ChatMessages({
       ref={containerRef}
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}
-   
-    >  
+    >
       <div className="max-w-full [grid-column:1/1] [grid-row:1/1] relative z-10">
         {children}
       </div>
