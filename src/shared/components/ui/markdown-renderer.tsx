@@ -254,16 +254,20 @@ function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
   // can't verify prop compatibility across all element types at compile time.
   // react-markdown expects Components to match specific prop types, but we're
   // creating a generic wrapper that works with any HTML element.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Component = React.forwardRef<any, { node?: unknown; [key: string]: unknown }>(
+  const Component = React.forwardRef<HTMLElement, { node?: unknown; [key: string]: unknown }>(
     ({ node, ...props }, ref) => {
+      // Type assertion needed: Tag is a union of all HTML element types,
+      // and we can't verify prop compatibility at compile time
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const TagComponent = Tag as any;
       return <TagComponent ref={ref} className={classes} {...props} />;
     }
-  ) as any;
+  );
   Component.displayName = Tag;
-  return Component;
+  // Type assertion needed: react-markdown's Components type expects specific
+  // prop types for each element, but our generic wrapper can't satisfy all of them
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return Component as any;
 }
 
 export default MarkdownRenderer
