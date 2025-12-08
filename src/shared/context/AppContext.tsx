@@ -11,7 +11,8 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import { Message, ChatRequest, ErrorResponse } from "@/shared/types/chat";
+import { type Message, type MessagePart } from "@/shared/components/ui/chat-message";
+import { ApiMessage, ChatRequest, ErrorResponse } from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
 import { getAllProducts } from "@/features/products/lib/products";
@@ -35,6 +36,76 @@ interface AppState {
 
 const AppContext = createContext<AppState | undefined>(undefined);
 
+// Convert Chat Message to API Message format (serialize Date to ISO string)
+function toApiMessage(msg: Message): ApiMessage {
+  const roleStr = String(msg.role);
+  const role: "user" | "assistant" | "system" =
+    roleStr === "user" || roleStr === "assistant" || roleStr === "system"
+      ? (roleStr as "user" | "assistant" | "system")
+      : "user";
+  
+  return {
+    id: msg.id,
+    role,
+    content: msg.content,
+    createdAt: msg.createdAt?.toISOString(),
+    correlation_id: undefined,
+  };
+}
+
+// Convert API Message to Chat Message format (parse ISO string to Date)
+function toChatMessage(msg: ApiMessage): Message {
+  // Convert API parts to Chat Message parts
+  const chatParts: MessagePart[] = [];
+  
+  if (msg.parts) {
+    for (const part of msg.parts) {
+      if (part.type === "reasoning") {
+        chatParts.push({ type: "reasoning", reasoning: part.reasoning });
+      } else if (part.type === "text") {
+        chatParts.push({ type: "text", text: part.text });
+      } else if (part.type === "tool-invocation") {
+        // Convert API tool invocation to Chat Message tool invocation
+        const toolInv = part.toolInvocation;
+        if (toolInv.state === "result") {
+          chatParts.push({
+            type: "tool-invocation",
+            toolInvocation: {
+              state: "result",
+              toolName: toolInv.toolName,
+              result: toolInv.result || {},
+            },
+          });
+        } else if (toolInv.state === "call") {
+          chatParts.push({
+            type: "tool-invocation",
+            toolInvocation: {
+              state: "call",
+              toolName: toolInv.toolName,
+            },
+          });
+        } else if (toolInv.state === "partial-call") {
+          chatParts.push({
+            type: "tool-invocation",
+            toolInvocation: {
+              state: "partial-call",
+              toolName: toolInv.toolName,
+            },
+          });
+        }
+      }
+    }
+  }
+
+  return {
+    id: msg.id,
+    role: msg.role as "user" | "assistant",
+    content: msg.content,
+    createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
+    parts: chatParts && chatParts.length > 0 ? chatParts : undefined,
+  };
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
 
@@ -45,8 +116,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       id: "welcome",
       role: "assistant",
       content: greetingsMessageContent,
-      timestamp: new Date().toISOString(),
-      status: "complete",
+      createdAt: new Date(),
     },
   ]);
 
@@ -119,8 +189,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         id: `user-${Date.now()}`,
         role: "user",
         content,
-        timestamp: new Date().toISOString(),
-        correlation_id: correlationId,
+        createdAt: new Date(),
       };
       setMessages((prev) => [...prev, userMessage]);
       setIsLoading(true);
@@ -136,66 +205,159 @@ export function AppProvider({ children }: { children: ReactNode }) {
         id: assistantId,
         role: "assistant",
         content: "",
-        timestamp: new Date().toISOString(),
-        status: "writing" as const,
+        createdAt: new Date(),
       };
       setMessages((prev) => [...prev, assistantPlaceholder]);
 
-      // Accumulate text in closure variable (following documentation pattern)
-      // This avoids React state batching issues and ensures reliable streaming
+      // Accumulate text and reasoning in closure variables
       let accumulatedText = "";
+      let accumulatedReasoning = "";
 
       try {
         // Use ref to get current messages without dependency
         const currentMessages = messagesRef.current;
+        // Convert to API format for the request
+        const apiMessages = currentMessages.map(toApiMessage);
+        const apiUserMessage = toApiMessage(userMessage);
         const payload: ChatRequest = {
-          messages: [...currentMessages, userMessage],
+          messages: [...apiMessages, apiUserMessage],
         };
 
         await streamChat(payload, {
           signal: controller.signal,
           correlationId: correlationId,
           onMessage: (chunk: SSEEvent) => {
-            if (chunk.type === "token") {
-              // Accumulate text in closure variable (not reading from React state)
-              accumulatedText += chunk.token;
-
-              // Update state with accumulated text (following documentation pattern)
+            if (chunk.type === "reasoning") {
+              // Accumulate reasoning text
+              accumulatedReasoning = chunk.reasoning;
+              // Update message with reasoning part
               setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantId
-                    ? {
-                        ...m,
-                        content: accumulatedText, // Use closure variable, not m.content
-                        status: "writing" as const,
-                      }
-                    : m
-                )
+                prev.map((m) => {
+                  if (m.id !== assistantId) return m;
+                  
+                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
+                  
+                  // Add reasoning part if we have reasoning
+                  if (accumulatedReasoning) {
+                    parts.push({
+                      type: "reasoning",
+                      reasoning: accumulatedReasoning,
+                    });
+                  }
+                  
+                  // Add text part if we have text
+                  if (accumulatedText) {
+                    parts.push({
+                      type: "text",
+                      text: accumulatedText,
+                    });
+                  }
+                  
+                  return {
+                    ...m,
+                    parts: parts.length > 0 ? parts : undefined,
+                    content: accumulatedText || "",
+                  };
+                })
+              );
+            } else if (chunk.type === "token") {
+              accumulatedText += chunk.token;
+              // Update message with both reasoning and text parts
+              setMessages((prev) =>
+                prev.map((m) => {
+                  if (m.id !== assistantId) return m;
+                  
+                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
+                  
+                  // Add reasoning part if we have reasoning
+                  if (accumulatedReasoning) {
+                    parts.push({
+                      type: "reasoning",
+                      reasoning: accumulatedReasoning,
+                    });
+                  }
+                  
+                  // Add text part with accumulated text
+                  if (accumulatedText) {
+                    parts.push({
+                      type: "text",
+                      text: accumulatedText,
+                    });
+                  }
+                  
+                  return {
+                    ...m,
+                    parts: parts.length > 0 ? parts : undefined,
+                    content: accumulatedText,
+                  };
+                })
               );
             } else if (chunk.type === "done") {
-              // Use done event's content (which should be complete), fallback to accumulated
-              const finalContent = chunk.message.content || accumulatedText;
-              setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantId
-                    ? {
-                        ...chunk.message,
-                        status: "complete" as const,
-                        content: finalContent,
-                      }
-                    : m
-                )
-              );
+              // Convert API message to Chat message format
+              const completedMessage = toChatMessage(chunk.message);
+              
+              // Build parts array from API message or accumulated data
+              const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
+              
+              if (chunk.message.parts) {
+                // Use parts from API if available
+                const chatParts = chunk.message.parts.map((part) => {
+                  if (part.type === "reasoning") {
+                    return { type: "reasoning" as const, reasoning: part.reasoning };
+                  } else if (part.type === "text") {
+                    return { type: "text" as const, text: part.text };
+                  }
+                  return null;
+                }).filter((p): p is { type: "reasoning"; reasoning: string } | { type: "text"; text: string } => p !== null);
+                
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          content: completedMessage.content || accumulatedText,
+                          createdAt: completedMessage.createdAt,
+                          parts: chatParts.length > 0 ? chatParts : undefined,
+                        }
+                      : m
+                  )
+                );
+              } else {
+                // Fallback: build parts from accumulated data
+                if (accumulatedReasoning) {
+                  parts.push({
+                    type: "reasoning",
+                    reasoning: accumulatedReasoning,
+                  });
+                }
+                if (accumulatedText) {
+                  parts.push({
+                    type: "text",
+                    text: accumulatedText,
+                  });
+                }
+                
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId
+                      ? {
+                          ...m,
+                          content: completedMessage.content || accumulatedText,
+                          createdAt: completedMessage.createdAt,
+                          parts: parts.length > 0 ? parts : undefined,
+                        }
+                      : m
+                  )
+                );
+              }
             } else if (chunk.type === "error") {
               console.error("Streaming error:", chunk);
-              // Store full error object as JSON string for proper error display
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId
                     ? {
                         ...m,
-                        content: JSON.stringify(chunk),
-                        status: "complete" as const,
+                        content: `Error: ${chunk.error}`,
                       }
                     : m
                 )
@@ -204,14 +366,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
           },
           onError: (error) => {
             console.error("Streaming error:", error);
-            // Store full error object as JSON string for proper error display
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === assistantId
                   ? {
                       ...m,
-                      content: JSON.stringify(error),
-                      status: "complete" as const,
+                      content: `Error: ${error.error}`,
                     }
                   : m
               )
@@ -247,8 +407,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
               m.id === assistantId
                 ? {
                     ...m,
-                    content: JSON.stringify(errorResponse),
-                    status: "complete" as const,
+                    content: `Error: ${errorResponse.error}`,
                   }
                 : m
             )

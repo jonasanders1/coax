@@ -8,10 +8,17 @@ import {
   createErrorResponse,
 } from "@/shared/types/chat";
 
-type ApiResponse = 
-  | { type: 'stream'; message: ApiMessage | null; metadata: unknown[] | null }
-  | { type: 'error'; error: ErrorResponse; status?: number; statusText?: string; errorData?: unknown; originalError?: string }
-  | { type: 'response'; message: ApiMessage }
+type ApiResponse =
+  | { type: "stream"; message: ApiMessage | null; metadata: unknown[] | null }
+  | {
+      type: "error";
+      error: ErrorResponse;
+      status?: number;
+      statusText?: string;
+      errorData?: unknown;
+      originalError?: string;
+    }
+  | { type: "response"; message: ApiMessage }
   | null;
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -44,7 +51,6 @@ async function logChatToFile(
       response: apiResponse || null,
     };
 
-    console.log("📝 Attempting to log chat:", { correlationId, userQuery });
 
     // Call the logging API route
     const response = await fetch("/api/log-chat", {
@@ -66,7 +72,6 @@ async function logChatToFile(
     }
 
     const result = await response.json().catch(() => null);
-    console.log("✅ Chat logged successfully:", result);
   } catch (err) {
     // Log error but don't interrupt the main flow
     console.error("❌ Error logging chat to file:", err);
@@ -99,15 +104,15 @@ export async function postChat(
     body: JSON.stringify(payload),
     signal,
   });
-  
+
   const responseData = await handleResponse<ChatResponse>(res);
-  
+
   // Log the chat request and response
   await logChatToFile(payload, correlationId, {
     type: "response",
     message: responseData.message,
   });
-  
+
   return responseData;
 }
 
@@ -128,7 +133,6 @@ export async function streamChat(
   { onMessage, onError, onComplete, signal, correlationId }: StreamChatOptions
 ): Promise<void> {
   const correlationIdToUse = correlationId || crypto.randomUUID();
-  console.log("🌐 API_BASE_URL:", API_BASE_URL);
   // Validate configuration before making request
   if (!API_BASE_URL) {
     const error = createErrorResponse(
@@ -153,18 +157,6 @@ export async function streamChat(
       // Note: correlation_id is client-side only, not sent to API
     })),
   };
-
-  console.log("🌐 Making API request:", {
-    url: apiUrl,
-
-    correlationId: correlationIdToUse,
-    payload: apiPayload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "text/event-stream",
-      "X-Correlation-ID": correlationIdToUse,
-    },
-  });
 
   try {
     const res = await fetch(apiUrl, {
@@ -197,7 +189,7 @@ export async function streamChat(
             timestamp?: string;
             details?: { service: string };
           };
-          
+
           const apiError: ErrorResponse = {
             type: "error",
             error: errorObj.error,
@@ -206,14 +198,14 @@ export async function streamChat(
             timestamp: errorObj.timestamp || new Date().toISOString(),
             details: errorObj.details || { service: "api" },
           };
-          
+
           // Log the error response
           await logChatToFile(payload, correlationIdToUse, {
             type: "error",
             error: apiError,
             status: res.status,
           });
-          
+
           onError?.(apiError);
           return;
         }
@@ -229,7 +221,7 @@ export async function streamChat(
         correlationIdToUse,
         "api"
       );
-      
+
       // Log the error response
       await logChatToFile(payload, correlationIdToUse, {
         type: "error" as const,
@@ -238,7 +230,7 @@ export async function streamChat(
         statusText: res.statusText,
         errorData,
       });
-      
+
       throw new Error(txt || `HTTP ${res.status}`);
     }
 
@@ -266,13 +258,13 @@ export async function streamChat(
 
         try {
           const data = JSON.parse(jsonStr) as SSEEvent;
-          
+
           // Only capture the "done" event which contains the final message
           if (data.type === "done") {
             finalMessage = data.message;
             metadata = data.metadata;
           }
-          
+
           onMessage(data);
         } catch (err) {
           console.error("Error parsing SSE message:", err, "Raw:", jsonStr);
@@ -286,13 +278,13 @@ export async function streamChat(
       if (jsonStr) {
         try {
           const data = JSON.parse(jsonStr) as SSEEvent;
-          
+
           // Only capture the "done" event which contains the final message
           if (data.type === "done") {
             finalMessage = data.message;
             metadata = data.metadata;
           }
-          
+
           onMessage(data);
         } catch (err) {
           console.error("Error parsing final SSE message:", err);
@@ -338,14 +330,14 @@ export async function streamChat(
       correlationIdToUse,
       "network"
     );
-    
+
     // Log the error response
     await logChatToFile(payload, correlationIdToUse, {
       type: "error",
       error: errorResponse,
       originalError: err instanceof Error ? err.message : String(err),
     });
-    
+
     onError?.(errorResponse);
   }
 }

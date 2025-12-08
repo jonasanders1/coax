@@ -250,8 +250,9 @@ const COMPONENTS = {
 }
 
 function withClass(Tag: keyof JSX.IntrinsicElements, classes: string) {
-  const Component = ({ node, ...props }: React.ComponentPropsWithoutRef<typeof Tag> & { node?: unknown }) => (
-    <Tag className={classes} {...props} />
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const Component = ({ node, ...props }: { node?: unknown; [key: string]: any }) => (
+    <Tag className={classes} {...(props as any)} />
   )
   Component.displayName = Tag
   return Component
