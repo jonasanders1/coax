@@ -22,7 +22,7 @@ export interface ApiToolInvocationPart {
   toolInvocation: {
     state: "partial-call" | "call" | "result";
     toolName: string;
-    result?: any;
+    result?: Record<string, unknown>;
   };
 }
 

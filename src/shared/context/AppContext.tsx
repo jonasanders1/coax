@@ -306,7 +306,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isLoading,
       products,
       productsLoading,
-      setProductsLoading,
       productsError,
       fetchProducts,
       faqs,
