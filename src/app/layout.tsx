@@ -147,7 +147,7 @@ export default function RootLayout({
               <MainContentWrapper>{children}</MainContentWrapper>
             </main>
             <Footer />
-            <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end justify-end">
+            <div className="fixed bottom-6 right-3 md:right-6 z-50 flex flex-col gap-2 items-end justify-end">
               <ScrollUp />
               <ChatDemo />
             </div>

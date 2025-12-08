@@ -28,7 +28,7 @@ function handleRateResponse(
   toast.success(
     rating === "thumbs-up"
       ? "Takk for tilbakemeldingen! 👍"
-      : "Takk for tilbakemeldingen! Vi jobber med å forbedre oss. 👎"
+      : "Takk! Vi jobber med å forbedre oss. 👎"
   );
 
   // Example: You could send this to your analytics or backend

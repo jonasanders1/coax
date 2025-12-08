@@ -8,7 +8,7 @@ type UseCopyToClipboardProps = {
 
 export function useCopyToClipboard({
   text,
-  copyMessage = "Copied to clipboard!",
+  copyMessage = "Kopiert til utklippstavlen!",
 }: UseCopyToClipboardProps) {
   const [isCopied, setIsCopied] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -28,7 +28,7 @@ export function useCopyToClipboard({
         }, 2000)
       })
       .catch(() => {
-        toast.error("Failed to copy to clipboard.")
+        toast.error("Kunne ikke kopiere til utklippstavlen.")
       })
   }, [text, copyMessage])
 
