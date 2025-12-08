@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import Header from "@/shared/components/layout/Header";
 import Footer from "@/shared/components/layout/Footer";
 import ScrollUp from "@/shared/components/common/ScrollUp";
-// import ChatBot from "@/features/chatbot/components/ChatBot";
+import  {ChatDemo } from "@/features/chatbot/components/Chatbot2";
 import CookieConsent from "@/shared/components/common/CookieConsent";
 import { MainContentWrapper } from "@/shared/components/common/MainContentWrapper";
 import { siteUrl } from "@/config/site";
@@ -94,8 +94,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="nb">
-      <body>
+    <html lang="nb" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('coax-ui-theme') || 'system';
+                  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  const resolvedTheme = theme === 'system' ? systemTheme : theme;
+                  document.documentElement.classList.remove('light', 'dark');
+                  document.documentElement.classList.add(resolvedTheme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body suppressHydrationWarning>
         {/* Google Analytics 4 - gtag.js script for compatibility with Google Tag Assistant */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
@@ -132,7 +149,7 @@ export default function RootLayout({
             <Footer />
             <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end justify-end">
               <ScrollUp />
-              {/* <ChatBot /> */}
+              <ChatDemo />
             </div>
             <Suspense fallback={null}>
               <CookieConsent />

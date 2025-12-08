@@ -1,20 +1,49 @@
+import { type Message } from "@/shared/components/ui/chat-message";
+
+// Use the Chat component's Message format throughout
+export type { Message };
+
+// Legacy type for backward compatibility with older components
 export type MessageStatus = 'writing' | 'complete';
 
-export interface Message {
+// API representation of message parts
+export interface ApiReasoningPart {
+  type: "reasoning";
+  reasoning: string;
+}
+
+export interface ApiTextPart {
+  type: "text";
+  text: string;
+}
+
+export interface ApiToolInvocationPart {
+  type: "tool-invocation";
+  toolInvocation: {
+    state: "partial-call" | "call" | "result";
+    toolName: string;
+    result?: any;
+  };
+}
+
+export type ApiMessagePart = ApiReasoningPart | ApiTextPart | ApiToolInvocationPart;
+
+// For API requests, we serialize Date to ISO string
+export interface ApiMessage {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
-  timestamp: string;
-  status?: MessageStatus;
+  createdAt?: string; // ISO string for API
   correlation_id?: string;
+  parts?: ApiMessagePart[]; // Support for structured message parts
 }
 
 export interface ChatRequest {
-  messages: Message[];
+  messages: ApiMessage[];
 }
 
 export interface ChatResponse {
-  message: Message;
+  message: ApiMessage;
 }
 
 export interface ErrorResponse {
@@ -51,10 +80,16 @@ export interface TokenEvent {
   token: string;
 }
 
+export interface ReasoningEvent {
+  type: 'reasoning';
+  reasoning: string; // The reasoning text chunk (can be accumulated)
+  messageId?: string; // Optional: ID of the message this reasoning belongs to
+}
+
 export interface DoneEvent {
   type: 'done';
-  message: Message;
+  message: ApiMessage;
   metadata: unknown[];
 }
 
-export type SSEEvent = ErrorResponse | TokenEvent | DoneEvent;
+export type SSEEvent = ErrorResponse | TokenEvent | ReasoningEvent | DoneEvent;

@@ -19,7 +19,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/20 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -82,7 +82,24 @@ const SheetContent = React.forwardRef<
         <SheetOverlay />
         <SheetPrimitive.Content
           ref={ref}
-          className={cn(sheetVariants({ side }), className)}
+          className={cn(
+            // Mobile styles (full screen, bottom sheet-like)
+            "fixed inset-0 md:inset-auto z-50 flex flex-col w-full h-full md:max-w-3xl md:max-h-[700px] border bg-background shadow-lg duration-200 outline-none",
+            // Mobile animations
+            "data-[state=open]:animate-in data-[state=closed]:animate-out",
+            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            // Mobile enter/exit animations (slide up/down)
+            "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+            "md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-top-[48%]",
+            // Desktop styles (centered)
+            "md:left-[50%] md:top-[50%] md:translate-x-[-50%] md:translate-y-[-50%]",
+            // Desktop animations (zoom and fade)
+            "md:data-[state=closed]:zoom-out-95 md:data-[state=open]:zoom-in-95",
+            "md:data-[state=closed]:slide-out-to-left-1/2 md:data-[state=open]:slide-in-from-left-1/2",
+            // Rounded corners on desktop
+            "md:rounded-lg",
+            className
+          )}
           {...props}
         >
           {children}

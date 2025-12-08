@@ -4,14 +4,14 @@ import {
   ChatResponse,
   ErrorResponse,
   SSEEvent,
-  Message,
+  ApiMessage,
   createErrorResponse,
 } from "@/shared/types/chat";
 
 type ApiResponse = 
-  | { type: 'stream'; message: Message | null; metadata: unknown[] | null }
+  | { type: 'stream'; message: ApiMessage | null; metadata: unknown[] | null }
   | { type: 'error'; error: ErrorResponse; status?: number; statusText?: string; errorData?: unknown; originalError?: string }
-  | { type: 'response'; message: Message }
+  | { type: 'response'; message: ApiMessage }
   | null;
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -38,7 +38,7 @@ async function logChatToFile(
           id: msg.id,
           role: msg.role,
           content: msg.content,
-          timestamp: msg.timestamp,
+          createdAt: msg.createdAt,
         })),
       },
       response: apiResponse || null,
@@ -149,8 +149,8 @@ export async function streamChat(
       id: msg.id,
       role: msg.role,
       content: msg.content,
-      timestamp: msg.timestamp,
-      // Note: correlation_id and status are client-side only, not sent to API
+      createdAt: msg.createdAt,
+      // Note: correlation_id is client-side only, not sent to API
     })),
   };
 
@@ -247,7 +247,7 @@ export async function streamChat(
 
     const decoder = new TextDecoder();
     let buffer = "";
-    let finalMessage: Message | null = null;
+    let finalMessage: ApiMessage | null = null;
     let metadata: unknown[] | null = null;
 
     while (true) {
