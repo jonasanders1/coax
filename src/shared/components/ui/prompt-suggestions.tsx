@@ -10,7 +10,7 @@ export function PromptSuggestions({
   suggestions,
 }: PromptSuggestionsProps) {
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 max-w-xl mx-auto">
+    <div className="flex flex-col items-center justify-center space-y-4 max-w-xl mx-auto px-2 md:p-0">
       <h2 className="text-center text-2xl font-bold">{label}</h2>
       <div className="flex flex-col md:flex-row gap-3 text-sm">
         {suggestions.map((suggestion) => (

@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import Header from "@/shared/components/layout/Header";
 import Footer from "@/shared/components/layout/Footer";
 import ScrollUp from "@/shared/components/common/ScrollUp";
-import  {ChatDemo } from "@/features/chatbot/components/Chatbot2";
+import  {ChatDemo } from "@/features/chatbot/components/Chatbot3";
 import CookieConsent from "@/shared/components/common/CookieConsent";
 import { MainContentWrapper } from "@/shared/components/common/MainContentWrapper";
 import { siteUrl } from "@/config/site";

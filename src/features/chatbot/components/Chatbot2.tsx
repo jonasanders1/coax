@@ -68,12 +68,8 @@ export function ChatDemo(props: ChatDemoProps) {
           <MessageCircle />
         </Button>
       </SheetTrigger>
-      <SheetContent
-        className="p-0 flex flex-col h-full max-h-full overflow-hidden"
-      >
-        <SheetHeader
-          className={`shrink-0 bg-background ${cn("p-4")}`}
-        >
+      <SheetContent>
+        <SheetHeader className={`shrink-0 bg-background ${cn("p-4")}`}>
           <SheetTitle>Flux assistent</SheetTitle>
           <SheetDescription className="sr-only">
             Snakk med assistenten for å få hjelp om produkter og valg av modell.

@@ -239,7 +239,7 @@ export function Chat({
       ) : null}
 
       <ChatForm
-        className="px-4 pt-2"
+        className="p-4 md:px-2"
         isPending={isGenerating || isTyping}
         handleSubmit={handleSubmit}
       >
