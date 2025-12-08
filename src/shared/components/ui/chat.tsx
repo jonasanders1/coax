@@ -266,7 +266,7 @@ export function ChatMessages({
   const {
     containerRef,
     scrollToBottom,
-    handleScroll,
+    handleScrollDown,
     shouldAutoScroll,
     handleTouchStart,
   } = useAutoScroll([messages]);
@@ -275,7 +275,7 @@ export function ChatMessages({
     <div
       className="grid grid-cols-1 overflow-y-auto min-h-0 bg-background"
       ref={containerRef}
-      onScroll={handleScroll}
+      onScroll={handleScrollDown}
       onTouchStart={handleTouchStart}
     >
       <div className="max-w-full [grid-column:1/1] [grid-row:1/1] relative z-10">

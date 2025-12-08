@@ -37,13 +37,24 @@ export function useAutoScroll(dependencies: React.DependencyList) {
     }
   }, []);
 
-  const handleScroll = useCallback(() => {
+  const handleScrollDown = useCallback(() => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
 
       const distanceFromBottom = Math.abs(
         scrollHeight - scrollTop - clientHeight
       );
+
+      // Ignore very small scroll changes (likely from taps/clicks, not actual scrolling)
+      const scrollDelta = previousScrollTop.current !== null
+        ? Math.abs(scrollTop - previousScrollTop.current)
+        : 0;
+
+      // Only process if there's meaningful scroll movement
+      if (scrollDelta < 2 && previousScrollTop.current !== null) {
+        // Very small change, likely just a tap - don't update state
+        return;
+      }
 
       const isScrollingUp = previousScrollTop.current !== null
         ? scrollTop < previousScrollTop.current
@@ -72,7 +83,9 @@ export function useAutoScroll(dependencies: React.DependencyList) {
   }, []);
 
   const handleTouchStart = useCallback(() => {
-    setShouldAutoScroll(false);
+    // Don't immediately disable auto-scroll on touch start
+    // Only disable if user actually scrolls (handled in handleScrollDown)
+    // This prevents the button from appearing on simple taps
   }, []);
 
   // Initialize previous scroll position
@@ -98,7 +111,7 @@ export function useAutoScroll(dependencies: React.DependencyList) {
   return {
     containerRef,
     scrollToBottom,
-    handleScroll,
+    handleScrollDown,
     shouldAutoScroll,
     handleTouchStart,
   };
