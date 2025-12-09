@@ -74,6 +74,16 @@ export function createErrorResponse(
   };
 }
 
+/**
+ * Determines if an ErrorResponse represents a warning (non-critical) or an actual error.
+ * Warnings are informational messages that don't prevent the application from functioning,
+ * such as rate limit notifications.
+ */
+export function isWarning(error: ErrorResponse): boolean {
+  // Rate limit errors are warnings - they're informational and have retry_after
+  return error.error_code === "RATE_LIMIT_EXCEEDED";
+}
+
 
 export interface TokenEvent {
   type: 'token';

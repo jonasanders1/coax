@@ -12,7 +12,7 @@ import React, {
   useEffect,
 } from "react";
 import { type Message, type MessagePart } from "@/shared/components/ui/chat-message";
-import { ApiMessage, ChatRequest, ErrorResponse } from "@/shared/types/chat";
+import { ApiMessage, ChatRequest, ErrorResponse, isWarning } from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
 import { getAllProducts } from "@/features/products/lib/products";
@@ -352,12 +352,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
               }
             } else if (chunk.type === "error") {
               console.error("Streaming error:", chunk);
+              const isWarningError = isWarning(chunk);
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId
                     ? {
                         ...m,
-                        content: `Error: ${chunk.error}`,
+                        content: chunk.error,
+                        isError: !isWarningError,
+                        isWarning: isWarningError,
+                        retryAfter: chunk.details?.retry_after,
                       }
                     : m
                 )
@@ -366,12 +370,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
           },
           onError: (error) => {
             console.error("Streaming error:", error);
+            const isWarningError = isWarning(error);
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === assistantId
                   ? {
                       ...m,
-                      content: `Error: ${error.error}`,
+                      content: error.error,
+                      isError: !isWarningError,
+                      isWarning: isWarningError,
+                      retryAfter: error.details?.retry_after,
                     }
                   : m
               )
@@ -402,12 +410,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
               service: "network",
             },
           };
+          const isWarningError = isWarning(errorResponse);
           setMessages((prev) =>
             prev.map((m) =>
               m.id === assistantId
                 ? {
                     ...m,
-                    content: `Error: ${errorResponse.error}`,
+                    content: errorResponse.error,
+                    isError: !isWarningError,
+                    isWarning: isWarningError,
                   }
                 : m
             )

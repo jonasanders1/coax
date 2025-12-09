@@ -23,7 +23,7 @@ function handleRateResponse(
   rating: "thumbs-up" | "thumbs-down"
 ) {
   // TODO: Send rating to your backend/analytics
-  console.log(`Rating message ${messageId}: ${rating}`);
+  // console.log(`Rating message ${messageId}: ${rating}`);
 
   toast.success(
     rating === "thumbs-up"

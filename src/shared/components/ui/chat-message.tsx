@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { motion } from "framer-motion";
-import { Ban, ChevronRight, Code2, Loader2, Terminal } from "lucide-react";
+import { AlertTriangle, Ban, ChevronRight, Code2, Loader2, Terminal } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import {
@@ -19,6 +19,14 @@ const chatBubbleVariants = cva(
       isUser: {
         true: "rounded-lg border border-primary bg-primary text-primary-foreground shadow-md",
         false: "rounded-lg border border-muted bg-muted text-foreground shadow-md",
+      },
+      isError: {
+        true: "rounded-lg border border-destructive/50 bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive shadow-md",
+        false: "",
+      },
+      isWarning: {
+        true: "rounded-lg border border-yellow-500/50 bg-yellow-500/10 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-400 shadow-md",
+        false: "",
       },
       animation: {
         none: "",
@@ -128,12 +136,32 @@ export interface Message {
   experimental_attachments?: Attachment[];
   toolInvocations?: ToolInvocation[];
   parts?: MessagePart[]; // Array of parts: reasoning, text, tool-invocation, etc.
+  isError?: boolean; // Flag to indicate this is an error message
+  isWarning?: boolean; // Flag to indicate this is a warning message (non-critical)
+  retryAfter?: number; // Retry after time in seconds (for rate limit warnings)
 }
 
 export interface ChatMessageProps extends Message {
   showTimeStamp?: boolean;
   animation?: Animation;
   actions?: React.ReactNode;
+}
+
+// Helper function to format retry_after time in seconds to human-readable format
+function formatRetryAfter(seconds: number): string {
+  if (seconds < 60) {
+    return `${seconds} ${seconds === 1 ? "sekund" : "sekunder"}`;
+  } else if (seconds < 3600) {
+    const minutes = Math.floor(seconds / 60);
+    return `${minutes} ${minutes === 1 ? "minutt" : "minutter"}`;
+  } else {
+    const hours = Math.floor(seconds / 3600);
+    const remainingMinutes = Math.floor((seconds % 3600) / 60);
+    if (remainingMinutes === 0) {
+      return `${hours} ${hours === 1 ? "time" : "timer"}`;
+    }
+    return `${hours} ${hours === 1 ? "time" : "timer"} og ${remainingMinutes} ${remainingMinutes === 1 ? "minutt" : "minutter"}`;
+  }
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
@@ -145,6 +173,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   actions,
   toolInvocations,
   parts,
+  isError = false,
+  isWarning = false,
+  retryAfter,
 }) => {
   const isUser = role === "user";
 
@@ -165,7 +196,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       <div
         className={cn("flex flex-col", isUser ? "items-end" : "items-start")}
       >
-        <div className={cn(chatBubbleVariants({ isUser, animation }))}>
+        <div className={cn(chatBubbleVariants({ isUser, isError, isWarning, animation }))}>
           <MarkdownRenderer>{content}</MarkdownRenderer>
         </div>
 
@@ -195,7 +226,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             )}
             key={`text-${index}`}
           >
-            <div className={cn(chatBubbleVariants({ isUser, animation }))}>
+            <div className={cn(chatBubbleVariants({ isUser, isError, isWarning, animation }))}>
               <MarkdownRenderer>{part.text}</MarkdownRenderer>
               {actions ? (
                 <div className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-muted p-1 text-foreground opacity-0 transition-opacity group-hover/message:opacity-100">
@@ -237,8 +268,31 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   return (
     <div className={cn("flex flex-col", isUser ? "items-end" : "items-start")}>
-      <div className={cn(chatBubbleVariants({ isUser, animation }))}>
-        <MarkdownRenderer>{content}</MarkdownRenderer>
+      <div className={cn(chatBubbleVariants({ isUser, isError, isWarning, animation }))}>
+        {isError ? (
+          <div className="flex items-start gap-2">
+            <Ban className="h-4 w-4 mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <div className="font-semibold mb-1">Feil oppstod</div>
+              <div>{content}</div>
+            </div>
+          </div>
+        ) : isWarning ? (
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <div className="font-semibold mb-1">Advarsel</div>
+              <div>{content}</div>
+              {retryAfter !== undefined && retryAfter > 0 && (
+                <div className="mt-2 text-xs opacity-80">
+                  Prøv igjen om {formatRetryAfter(retryAfter)}.
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <MarkdownRenderer>{content}</MarkdownRenderer>
+        )}
         {actions ? (
           <div className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-muted p-1 text-foreground opacity-0 transition-opacity group-hover/message:opacity-100">
             {actions}

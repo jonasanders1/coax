@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { type Message, type MessagePart } from "@/shared/components/ui/chat-message";
-import { ApiMessage, ChatRequest } from "@/shared/types/chat";
+import { ApiMessage, ChatRequest, isWarning } from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
 
@@ -291,12 +291,16 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
               setStatus("idle");
               abortControllerRef.current = null;
             } else if (chunk.type === "error") {
+              const isWarningError = isWarning(chunk);
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === assistantId
                     ? {
                         ...m,
-                        content: `Error: ${chunk.error}`,
+                        content: chunk.error,
+                        isError: !isWarningError,
+                        isWarning: isWarningError,
+                        retryAfter: chunk.details?.retry_after,
                       }
                     : m
                 )
@@ -306,12 +310,16 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
             }
           },
           onError: (error) => {
+            const isWarningError = isWarning(error);
             setMessages((prev) =>
               prev.map((m) =>
                 m.id === assistantId
                   ? {
                       ...m,
-                      content: `Error: ${error.error}`,
+                      content: error.error,
+                      isError: !isWarningError,
+                      isWarning: isWarningError,
+                      retryAfter: error.details?.retry_after,
                     }
                   : m
               )
@@ -327,12 +335,15 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
       } catch (error) {
         const isAbortError = error instanceof Error && error.name === "AbortError";
         if (!isAbortError) {
+          // Network errors are always errors, not warnings
           setMessages((prev) =>
             prev.map((m) =>
               m.id === assistantId
                 ? {
                     ...m,
-                    content: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+                    content: error instanceof Error ? error.message : "Unknown error",
+                    isError: true,
+                    isWarning: false,
                   }
                 : m
             )

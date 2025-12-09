@@ -31,6 +31,11 @@ async function logChatToFile(
   correlationId: string,
   apiResponse?: ApiResponse
 ): Promise<void> {
+  // Skip logging in production (Vercel)
+  if (process.env.NODE_ENV === "production") {
+    return;
+  }
+
   try {
     // Extract user query (last user message)
     const userMessages = payload.messages.filter((msg) => msg.role === "user");
@@ -187,7 +192,7 @@ export async function streamChat(
             error_code: string;
             correlation_id?: string;
             timestamp?: string;
-            details?: { service: string };
+            details?: { service: string; retry_after?: number };
           };
 
           const apiError: ErrorResponse = {
@@ -213,10 +218,11 @@ export async function streamChat(
         // Not JSON, try text
       }
 
-      // Fallback to text error
+      // Fallback to text error - preserve full error details
       const txt = await res.text().catch(() => "");
+      const errorMessage = txt || `HTTP ${res.status}: ${res.statusText || "Unknown error"}`;
       const errorResponseObj = createErrorResponse(
-        txt || `HTTP ${res.status}`,
+        errorMessage,
         "HTTP_ERROR",
         correlationIdToUse,
         "api"
@@ -231,7 +237,8 @@ export async function streamChat(
         errorData,
       });
 
-      throw new Error(txt || `HTTP ${res.status}`);
+      onError?.(errorResponseObj);
+      return;
     }
 
     const reader = res.body?.getReader();
@@ -304,16 +311,20 @@ export async function streamChat(
     if (err instanceof Error && err.name === "AbortError") return;
     const correlationIdToUse = correlationId || crypto.randomUUID();
 
-    // Enhanced error message for debugging
+    // Preserve detailed error information
     let errorMessage = "En feil oppstod ved kommunikasjon med serveren.";
     let errorCode = "NETWORK_ERROR";
 
     if (err instanceof Error) {
+      // Preserve the full error message instead of simplifying it
+      errorMessage = err.message;
+      
       if (err.message.includes("Failed to fetch")) {
-        errorMessage = "Kunne ikke koble til server.";
         errorCode = "CONNECTION_ERROR";
-      } else {
-        errorMessage = err.message;
+        // Provide more context for connection errors
+        errorMessage = `Kunne ikke koble til server. ${err.message}`;
+      } else if (err.message.includes("NetworkError") || err.message.includes("network")) {
+        errorCode = "NETWORK_ERROR";
       }
 
       console.error("❌ Network error:", {
@@ -322,6 +333,9 @@ export async function streamChat(
         correlationId: correlationIdToUse,
         error: err,
       });
+    } else {
+      // For non-Error objects, convert to string but preserve details
+      errorMessage = String(err);
     }
 
     const errorResponse = createErrorResponse(
@@ -331,11 +345,12 @@ export async function streamChat(
       "network"
     );
 
-    // Log the error response
+    // Log the error response with full details
     await logChatToFile(payload, correlationIdToUse, {
       type: "error",
       error: errorResponse,
       originalError: err instanceof Error ? err.message : String(err),
+      errorData: err instanceof Error ? { stack: err.stack } : undefined,
     });
 
     onError?.(errorResponse);
