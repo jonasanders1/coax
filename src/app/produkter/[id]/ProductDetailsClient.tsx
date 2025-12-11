@@ -102,7 +102,7 @@ const shouldDisplayAsBadges = (key: string, value: unknown): boolean => {
   if (!Array.isArray(value) || value.length === 0) {
     return false;
   }
-  
+
   // Exclude fields with special formatting
   const excludedKeys = ["dimensions", "temperatureRange"];
   return !excludedKeys.includes(key);
@@ -115,11 +115,12 @@ const renderBadges = (key: string, value: unknown): React.ReactNode => {
   }
 
   const unit = getUnitForKey(key);
-  
+
   return (
     <div className="flex flex-wrap gap-2 justify-end">
       {value.map((item, index) => {
-        const displayValue = typeof item === "number" ? item.toString() : String(item);
+        const displayValue =
+          typeof item === "number" ? item.toString() : String(item);
         const badgeText = unit ? `${displayValue}${unit}` : displayValue;
         return (
           <Badge key={index} variant="primary" className="text-sm">
@@ -145,9 +146,7 @@ const formatSpecValue = (key: string, value: unknown): string => {
     // Temperature range as "min - max °C" instead of "min, max °C"
     if (key === "temperatureRange") {
       const numericValues = value
-        .map((v) =>
-          typeof v === "number" ? v : parseFloat(String(v))
-        )
+        .map((v) => (typeof v === "number" ? v : parseFloat(String(v))))
         .filter((v) => !Number.isNaN(v));
       if (!numericValues.length) return "";
       const text = `${numericValues[0]}${
@@ -595,7 +594,7 @@ export const ProductDetailsClient = ({
 
         <section className="grid grid-cols-1 gap-10">
           <div className="lg:col-span-2 space-y-8">
-            <Accordion type="multiple" className="border-none">
+            <Accordion type="single" collapsible className="border-none">
               {features && features.length > 0 && (
                 <AccordionItem value="features">
                   <AccordionTrigger className="text-base md:text-lg font-semibold">
@@ -669,7 +668,9 @@ export const ProductDetailsClient = ({
                               "certifications",
                             ] as const
                           ).map((key) => {
-                            const value = (specs as Record<string, unknown>)[key];
+                            const value = (specs as Record<string, unknown>)[
+                              key
+                            ];
                             if (
                               value === undefined ||
                               value === null ||
@@ -681,8 +682,11 @@ export const ProductDetailsClient = ({
                             }
 
                             const label = SPEC_LABELS[key] ?? key;
-                            const shouldUseBadges = shouldDisplayAsBadges(key, value);
-                            
+                            const shouldUseBadges = shouldDisplayAsBadges(
+                              key,
+                              value
+                            );
+
                             return (
                               <tr
                                 key={key}
@@ -692,11 +696,9 @@ export const ProductDetailsClient = ({
                                   {label}
                                 </th>
                                 <td className="py-2 text-muted-foreground text-right">
-                                  {shouldUseBadges ? (
-                                    renderBadges(key, value)
-                                  ) : (
-                                    formatSpecValue(key, value)
-                                  )}
+                                  {shouldUseBadges
+                                    ? renderBadges(key, value)
+                                    : formatSpecValue(key, value)}
                                 </td>
                               </tr>
                             );

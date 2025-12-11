@@ -56,7 +56,6 @@ async function logChatToFile(
       response: apiResponse || null,
     };
 
-
     // Call the logging API route
     const response = await fetch("/api/log-chat", {
       method: "POST",
@@ -96,19 +95,55 @@ async function handleResponse<T>(res: Response): Promise<T> {
 
 export async function postChat(
   payload: ChatRequest,
-  signal?: AbortSignal
+  options?: {
+    signal?: AbortSignal;
+    conversationId?: string | null;
+    onConversationId?: (conversationId: string) => void;
+  }
 ): Promise<ChatResponse> {
   const correlationId = crypto.randomUUID();
+  const { signal, conversationId, onConversationId } = options || {};
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+
+  // Add X-Conversation-ID header if provided (optional - backend generates if not sent)
+  if (conversationId) {
+    headers["X-Conversation-ID"] = conversationId;
+  }
+
+  // Prepare payload - make IDs and timestamps optional (backend generates them)
+  const apiPayload: ChatRequest = {
+    messages: payload.messages.map((msg): ApiMessage => {
+      const apiMsg: ApiMessage = {
+        role: msg.role,
+        content: msg.content,
+      };
+      // Include id and createdAt only if they exist (optional - backend generates them)
+      if (msg.id) {
+        apiMsg.id = msg.id;
+      }
+      if (msg.createdAt) {
+        apiMsg.createdAt = msg.createdAt;
+      }
+      return apiMsg;
+    }),
+  };
 
   const res = await fetch(`${API_BASE_URL}/chat`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payload),
+    headers,
+    body: JSON.stringify(apiPayload),
     signal,
   });
+
+  // Capture conversation ID from response headers (backend generates it if not sent)
+  const responseConversationId = res.headers.get("X-Conversation-ID");
+  if (responseConversationId && onConversationId) {
+    onConversationId(responseConversationId);
+  }
 
   const responseData = await handleResponse<ChatResponse>(res);
 
@@ -131,13 +166,16 @@ export interface StreamChatOptions {
   onComplete?: () => void;
   signal?: AbortSignal;
   correlationId?: string;
+  conversationId?: string | null;
+  onConversationId?: (conversationId: string) => void; // Callback when conversation ID is received from backend
 }
 
 export async function streamChat(
   payload: ChatRequest,
-  { onMessage, onError, onComplete, signal, correlationId }: StreamChatOptions
+  { onMessage, onError, onComplete, signal, correlationId, conversationId, onConversationId }: StreamChatOptions
 ): Promise<void> {
   const correlationIdToUse = correlationId || crypto.randomUUID();
+
   // Validate configuration before making request
   if (!API_BASE_URL) {
     const error = createErrorResponse(
@@ -152,28 +190,49 @@ export async function streamChat(
 
   const apiUrl = `${API_BASE_URL}/chat`;
 
-  // Prepare payload - ensure messages only include required fields for API
+  // Prepare payload - backend generates IDs and timestamps automatically if not provided
+  // We include them if available (for backward compatibility), but they're optional
   const apiPayload: ChatRequest = {
-    messages: payload.messages.map((msg) => ({
-      id: msg.id,
-      role: msg.role,
-      content: msg.content,
-      createdAt: msg.createdAt,
-      // Note: correlation_id is client-side only, not sent to API
-    })),
+    messages: payload.messages.map((msg): ApiMessage => {
+      const apiMsg: ApiMessage = {
+        role: msg.role,
+        content: msg.content,
+      };
+      // Include id and createdAt only if they exist (optional - backend generates them)
+      if (msg.id) {
+        apiMsg.id = msg.id;
+      }
+      if (msg.createdAt) {
+        apiMsg.createdAt = msg.createdAt;
+      }
+      return apiMsg;
+    }),
   };
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "text/event-stream",
+    "X-Correlation-ID": correlationIdToUse,
+  };
+
+  // Add X-Conversation-ID header if provided
+  if (conversationId) {
+    headers["X-Conversation-ID"] = conversationId;
+  }
 
   try {
     const res = await fetch(apiUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "text/event-stream",
-        "X-Correlation-ID": correlationIdToUse,
-      },
+      headers,
       body: JSON.stringify(apiPayload),
       signal,
     });
+
+    // Capture conversation ID from response headers (backend generates it if not sent)
+    const responseConversationId = res.headers.get("X-Conversation-ID");
+    if (responseConversationId && onConversationId) {
+      onConversationId(responseConversationId);
+    }
 
     if (!res.ok) {
       // Try to parse error response from API
@@ -220,7 +279,8 @@ export async function streamChat(
 
       // Fallback to text error - preserve full error details
       const txt = await res.text().catch(() => "");
-      const errorMessage = txt || `HTTP ${res.status}: ${res.statusText || "Unknown error"}`;
+      const errorMessage =
+        txt || `HTTP ${res.status}: ${res.statusText || "Unknown error"}`;
       const errorResponseObj = createErrorResponse(
         errorMessage,
         "HTTP_ERROR",
@@ -318,12 +378,15 @@ export async function streamChat(
     if (err instanceof Error) {
       // Preserve the full error message instead of simplifying it
       errorMessage = err.message;
-      
+
       if (err.message.includes("Failed to fetch")) {
         errorCode = "CONNECTION_ERROR";
         // Provide more context for connection errors
         errorMessage = `Kunne ikke koble til server. ${err.message}`;
-      } else if (err.message.includes("NetworkError") || err.message.includes("network")) {
+      } else if (
+        err.message.includes("NetworkError") ||
+        err.message.includes("network")
+      ) {
         errorCode = "NETWORK_ERROR";
       }
 

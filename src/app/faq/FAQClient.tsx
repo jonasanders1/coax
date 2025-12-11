@@ -23,12 +23,7 @@ import FaqListSkeleton from "@/features/faq/components/FaqListSkeleton";
 
 const FAQClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const {
-    faqs,
-    faqsLoading,
-    faqsError,
-    fetchFaqs,
-  } = useAppContext();
+  const { faqs, faqsLoading, faqsError, fetchFaqs } = useAppContext();
 
   useEffect(() => {
     fetchFaqs();
@@ -56,7 +51,6 @@ const FAQClient = () => {
     return FAQPageSchema(allFaqs);
   }, [faqs]);
 
-
   return (
     <div className="min-h-screen pt-24 pb-16 animate-fade-in-up">
       <StructuredData data={faqSchema} />
@@ -66,7 +60,7 @@ const FAQClient = () => {
           text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
         />
 
-        {/* <CtaSection isHeader={true} /> */}
+        <CtaSection isHeader={true} />
 
         <div className="mb-8">
           <div className="relative">
@@ -89,10 +83,7 @@ const FAQClient = () => {
             <p className="text-destructive text-center">
               Kunne ikke laste spørsmål. Prøv å oppdatere siden.
             </p>
-            <Button
-              onClick={() => window.location.reload()}
-              variant="outline"
-            >
+            <Button onClick={() => window.location.reload()} variant="outline">
               Prøv igjen
             </Button>
           </div>
@@ -111,7 +102,7 @@ const FAQClient = () => {
                     <h2 className="text-2xl font-bold text-foreground mb-4">
                       {category.category}
                     </h2>
-                    <Accordion type="multiple" className="space-y-2">
+                    <Accordion type="single" collapsible className="space-y-2">
                       {category.questions.map((faq, qIdx) => (
                         <AccordionItem
                           key={faq.id || qIdx}
@@ -119,32 +110,61 @@ const FAQClient = () => {
                           className="border rounded-lg px-4 bg-card"
                         >
                           <AccordionTrigger className="text-left hover:no-underline text-lg">
-                            <span className="font-semibold">{faq.question}</span>
+                            <span className="font-semibold">
+                              {faq.question}
+                            </span>
                           </AccordionTrigger>
                           <AccordionContent className="text-muted-foreground text-sm md:text-lg leading-relaxed">
                             {faq.contentSegments ? (
-                              <p>
-                                <>
-                                  {faq.answer}{" "}
-                                  {faq.contentSegments.map((segment, segmentIdx) =>
-                                    segment.kind === "text" ? (
-                                      <span key={`text-${segmentIdx}`}>
-                                        {segment.value}
-                                      </span>
-                                    ) : (
-                                      <Link
-                                        key={`link-${segmentIdx}`}
-                                        href={segment.to}
-                                        className="text-primary underline font-medium"
-                                      >
-                                        {segment.value}
-                                      </Link>
-                                    )
+                              <div className="space-y-2">
+                                {/* Split answer by double newlines to preserve paragraph spacing */}
+                                {faq.answer
+                                  .split(/\n\n+/)
+                                  .map(
+                                    (paragraph, paraIdx) =>
+                                      paragraph.trim() && (
+                                        <p key={`para-${paraIdx}`}>
+                                          {paragraph.trim()}
+                                        </p>
+                                      )
                                   )}
-                                </>
-                              </p>
+                                {/* Render content segments */}
+                                <p>
+                                  {faq.contentSegments.map(
+                                    (segment, segmentIdx) =>
+                                      segment.kind === "text" ? (
+                                        <span
+                                          key={`text-${segmentIdx}`}
+                                          className=""
+                                        >
+                                          {segment.value}
+                                        </span>
+                                      ) : (
+                                        <Link
+                                          key={`link-${segmentIdx}`}
+                                          href={segment.to}
+                                          className="text-primary underline font-medium"
+                                        >
+                                          {segment.value}
+                                        </Link>
+                                      )
+                                  )}
+                                </p>
+                              </div>
                             ) : (
-                              <p>{faq.answer}</p>
+                              <div className="space-y-3">
+                                {/* Split answer by double newlines to preserve paragraph spacing */}
+                                {faq.answer
+                                  .split(/\n\n+/)
+                                  .map(
+                                    (paragraph, paraIdx) =>
+                                      paragraph.trim() && (
+                                        <p key={`para-${paraIdx}`}>
+                                          {paragraph.trim()}
+                                        </p>
+                                      )
+                                  )}
+                              </div>
                             )}
                           </AccordionContent>
                         </AccordionItem>

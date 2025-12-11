@@ -107,7 +107,8 @@ const ContactClient = () => {
                 </div>
               </CardContent>
             </Card>
-            {/* <Card
+
+            <Card
               className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
             >
@@ -116,7 +117,7 @@ const ContactClient = () => {
               <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
               <CardHeader className="pb-2">
                 <CardTitle className="text-white m-0 p-0">
-                  Snakk med Flux
+                  Snakk med Coax-AI
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -132,7 +133,7 @@ const ContactClient = () => {
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <MessageCircle className="h-5 w-5" />
-                    Snakk med Flux
+                    Snakk med Coax-AI
                   </span>
                   <span
                     className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -140,7 +141,8 @@ const ContactClient = () => {
                   ></span>
                 </Button>
               </CardContent>
-            </Card> */}
+            </Card>
+            
           </div>
         </div>
         <div className="mt-12 max-w-6xl mx-auto">

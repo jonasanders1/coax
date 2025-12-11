@@ -8,7 +8,7 @@ import {
   type ReactElement,
 } from "react";
 import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react";
-
+import Link from "next/link";
 import { cn } from "@/shared/lib/utils";
 import { useAutoScroll } from "@/hooks/use-auto-scroll";
 import { Button } from "@/shared/components/ui/button";
@@ -17,6 +17,8 @@ import { CopyButton } from "@/shared/components/ui/copy-button";
 import { MessageInput } from "@/shared/components/ui/message-input";
 import { MessageList } from "@/shared/components/ui/message-list";
 import { PromptSuggestions } from "@/shared/components/ui/prompt-suggestions";
+import { useCookieConsent } from "@/hooks/useCookieConsent";
+import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
 
 // Mock messages for demo/testing purposes
 export const MOCK_MESSAGES: Message[] = [
@@ -24,7 +26,7 @@ export const MOCK_MESSAGES: Message[] = [
     id: "1",
     role: "assistant",
     content:
-      "Hei! Jeg er Flux, din digitale assistent. Hvordan kan jeg hjelpe deg i dag?",
+      "Hei! Jeg er COAX-AI, din digitale assistent. Hvordan kan jeg hjelpe deg i dag?",
     createdAt: new Date(Date.now() - 300000), // 5 minutes ago
   },
   {
@@ -79,8 +81,36 @@ export function Chat({
   onRateResponse,
   setMessages,
 }: ChatProps) {
+  const { hasChatbotConsent, hydrated: consentHydrated } = useCookieConsent();
+  const { closeChat } = useChatBot();
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
+
+  // Wrap handleSubmit to block if chatbot consent is denied
+  const wrappedHandleSubmit = useCallback(
+    (
+      event?: { preventDefault?: () => void },
+      options?: { experimental_attachments?: FileList }
+    ) => {
+      if (!consentHydrated || !hasChatbotConsent()) {
+        event?.preventDefault?.();
+        return;
+      }
+      handleSubmit(event, options);
+    },
+    [handleSubmit, consentHydrated, hasChatbotConsent]
+  );
+
+  // Wrap append to block if chatbot consent is denied
+  const wrappedAppend = useCallback(
+    (message: { role: "user"; content: string }) => {
+      if (!consentHydrated || !hasChatbotConsent()) {
+        return;
+      }
+      append?.(message);
+    },
+    [append, consentHydrated, hasChatbotConsent]
+  );
   // Show typing indicator when:
   // 1. We're generating (isGenerating is true)
   // 2. Last message is from assistant
@@ -220,10 +250,14 @@ export function Chat({
 
   return (
     <ChatContainer className={`${className} bg-background`}>
-      {isEmpty && append && suggestions ? (
+      {isEmpty &&
+      append &&
+      suggestions &&
+      consentHydrated &&
+      hasChatbotConsent() ? (
         <PromptSuggestions
           label="Hva kan jeg hjelpe deg med?"
-          append={append}
+          append={wrappedAppend}
           suggestions={suggestions}
         />
       ) : null}
@@ -238,20 +272,62 @@ export function Chat({
         </ChatMessages>
       ) : null}
 
-      <ChatForm
-        className="p-4 md:px-2"
-        isPending={isGenerating || isTyping}
-        handleSubmit={handleSubmit}
-      >
-        {({ files, setFiles }) => (
-          <MessageInput
-            value={input}
-            onChange={handleInputChange}
-            stop={handleStop}
-            isGenerating={isGenerating}
-          />
-        )}
-      </ChatForm>
+      {/* Block chat if chatbot consent is denied */}
+      {consentHydrated && !hasChatbotConsent() ? (
+        <div className="flex items-center justify-center flex-1 min-h-0">
+          <div className="mx-auto max-w-xl px-4 py-8 w-full">
+            <div className="rounded-lg border border-border bg-muted/50 p-6 text-center space-y-4">
+              <p className="text-base font-medium text-foreground">
+                Chatbot-tjenesten krever ditt samtykke
+              </p>
+              <p className="text-sm text-muted-foreground">
+                For å bruke chatbot-tjenesten må du tillate behandling av
+                meldinger.{" "}
+                <Link
+                  href="/personvern"
+                  className="text-primary underline font-medium"
+                  onClick={() => {
+                    closeChat();
+                  }}
+                >
+                  Les mer om hvordan vi behandler data
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <ChatForm
+            className="p-4 md:px-3 md:pb-1"
+            isPending={isGenerating || isTyping}
+            handleSubmit={wrappedHandleSubmit}
+          >
+            {({ files, setFiles }) => (
+              <MessageInput
+                value={input}
+                onChange={handleInputChange}
+                stop={handleStop}
+                isGenerating={isGenerating}
+                disabled={!consentHydrated || !hasChatbotConsent()}
+              />
+            )}
+          </ChatForm>
+          <div className="mx-auto max-w-4xl px-3 pb-2">
+            <p className="text-xs text-muted-foreground">
+              COAX-AI kan gjøre feil. Sjekk viktig informasjon eller{" "}
+              <Link
+                href="/kontakt"
+                className="text-primary underline font-medium"
+              >
+                kontakt oss
+              </Link>{" "}
+              direkte.
+            </p>
+          </div>
+        </>
+      )}
     </ChatContainer>
   );
 }

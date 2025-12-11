@@ -11,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shared/components/ui/accordion";
-// import { useChatBot } from "@/hooks/useChatBot";
+import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
 import { navItems } from "@/navItems";
 import { useAppStore } from "@/store/appStore";
 import Logo from "@/shared/components/layout/Logo";
@@ -26,7 +26,7 @@ const Header = () => {
   const toggleMobileMenu = useAppStore((s) => s.toggleMobileMenu);
   const [isSmall, setIsSmall] = useState(false);
   const frameRequested = useRef(false);
-  // const { openChat } = useChatBot();
+  const { openChat } = useChatBot();
 
   const isActive = (path: string) => pathname === path;
 
@@ -93,16 +93,16 @@ const Header = () => {
 
       
 
-          {/* <Button
+          <Button
             className="hidden lg:flex text-white"
             style={{ background: 'var(--gradient-primary)' }}
             onClick={openChat}
             size="sm"
             variant="default"
           >
-            Snakk med Flux
+            Snakk med COAX-AI
             <MessageCircle className="h-5 w-5" />
-          </Button> */}
+          </Button> 
 
           {/* Mobile Menu Button */}
 
@@ -221,10 +221,10 @@ const Header = () => {
                   </Link>
                 );
               })}
-              {/* <div className="border-t border-border pt-4">
+              <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
-                  className="w-full mt-2"
+                  className="w-full mt-2 text-base font-medium"
                   style={{ background: 'var(--gradient-primary)' }}
                   onClick={() => {
                     openChat();
@@ -232,9 +232,9 @@ const Header = () => {
                   }}
                 >
                   <MessageCircle className="h-5 w-5" />
-                  Snakk med Flux
+                  Snakk med COAX-AI
                 </Button>
-              </div> */}
+              </div>
            
             </nav>
           </SheetContent>

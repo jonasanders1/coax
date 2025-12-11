@@ -11,13 +11,22 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import { type Message, type MessagePart } from "@/shared/components/ui/chat-message";
-import { ApiMessage, ChatRequest, ErrorResponse, isWarning } from "@/shared/types/chat";
+import {
+  type Message,
+  type MessagePart,
+} from "@/shared/components/ui/chat-message";
+import {
+  ApiMessage,
+  ChatRequest,
+  ErrorResponse,
+  isWarning,
+} from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
 import { getAllProducts } from "@/features/products/lib/products";
 import type { Product } from "@/shared/types/product";
 import { getAllFaqs, type FaqCategory } from "@/features/faq/lib/faqs";
+import { useConversationId } from "@/hooks/useConversationId";
 
 interface AppState {
   messages: Message[];
@@ -43,7 +52,7 @@ function toApiMessage(msg: Message): ApiMessage {
     roleStr === "user" || roleStr === "assistant" || roleStr === "system"
       ? (roleStr as "user" | "assistant" | "system")
       : "user";
-  
+
   return {
     id: msg.id,
     role,
@@ -57,7 +66,7 @@ function toApiMessage(msg: Message): ApiMessage {
 function toChatMessage(msg: ApiMessage): Message {
   // Convert API parts to Chat Message parts
   const chatParts: MessagePart[] = [];
-  
+
   if (msg.parts) {
     for (const part of msg.parts) {
       if (part.type === "reasoning") {
@@ -98,7 +107,9 @@ function toChatMessage(msg: ApiMessage): Message {
   }
 
   return {
-    id: msg.id,
+    id:
+      msg.id ||
+      `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
     role: msg.role as "user" | "assistant",
     content: msg.content,
     createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
@@ -107,7 +118,10 @@ function toChatMessage(msg: ApiMessage): Message {
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er Flux, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
+  const greetingsMessageContent = `Hei! Velkommen til COAX. Jeg er COAX-AI, din digitale assistent. Jeg kan hjelpe deg med å svare på spørsmål om produktene våre.`;
+
+  // Get conversation ID for message storage (backend generates it, we just track it)
+  const { conversationId, setConversationId } = useConversationId();
 
   // Use ref to access current messages without creating dependency
   const messagesRef = useRef<Message[]>([]);
@@ -185,11 +199,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const sendMessage = useCallback(
     async (content: string, correlationId: string) => {
       // 1. Optimistic user message
+      // Create user message with proper metadata (id, timestamp)
       const userMessage: Message = {
-        id: `user-${Date.now()}`,
+        id: `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         role: "user",
         content,
-        createdAt: new Date(),
+        createdAt: new Date(), // ISO timestamp will be converted in toApiMessage
       };
       setMessages((prev) => [...prev, userMessage]);
       setIsLoading(true);
@@ -226,6 +241,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await streamChat(payload, {
           signal: controller.signal,
           correlationId: correlationId,
+          conversationId, // Pass existing conversation ID (optional - backend generates if not sent)
+          onConversationId: setConversationId, // Capture conversation ID from backend response
           onMessage: (chunk: SSEEvent) => {
             if (chunk.type === "reasoning") {
               // Accumulate reasoning text
@@ -234,9 +251,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
               setMessages((prev) =>
                 prev.map((m) => {
                   if (m.id !== assistantId) return m;
-                  
-                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-                  
+
+                  const parts: Array<
+                    | { type: "reasoning"; reasoning: string }
+                    | { type: "text"; text: string }
+                  > = [];
+
                   // Add reasoning part if we have reasoning
                   if (accumulatedReasoning) {
                     parts.push({
@@ -244,7 +264,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                       reasoning: accumulatedReasoning,
                     });
                   }
-                  
+
                   // Add text part if we have text
                   if (accumulatedText) {
                     parts.push({
@@ -252,7 +272,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                       text: accumulatedText,
                     });
                   }
-                  
+
                   return {
                     ...m,
                     parts: parts.length > 0 ? parts : undefined,
@@ -266,9 +286,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
               setMessages((prev) =>
                 prev.map((m) => {
                   if (m.id !== assistantId) return m;
-                  
-                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-                  
+
+                  const parts: Array<
+                    | { type: "reasoning"; reasoning: string }
+                    | { type: "text"; text: string }
+                  > = [];
+
                   // Add reasoning part if we have reasoning
                   if (accumulatedReasoning) {
                     parts.push({
@@ -276,7 +299,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                       reasoning: accumulatedReasoning,
                     });
                   }
-                  
+
                   // Add text part with accumulated text
                   if (accumulatedText) {
                     parts.push({
@@ -284,7 +307,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                       text: accumulatedText,
                     });
                   }
-                  
+
                   return {
                     ...m,
                     parts: parts.length > 0 ? parts : undefined,
@@ -295,21 +318,35 @@ export function AppProvider({ children }: { children: ReactNode }) {
             } else if (chunk.type === "done") {
               // Convert API message to Chat message format
               const completedMessage = toChatMessage(chunk.message);
-              
+
               // Build parts array from API message or accumulated data
-              const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-              
+              const parts: Array<
+                | { type: "reasoning"; reasoning: string }
+                | { type: "text"; text: string }
+              > = [];
+
               if (chunk.message.parts) {
                 // Use parts from API if available
-                const chatParts = chunk.message.parts.map((part) => {
-                  if (part.type === "reasoning") {
-                    return { type: "reasoning" as const, reasoning: part.reasoning };
-                  } else if (part.type === "text") {
-                    return { type: "text" as const, text: part.text };
-                  }
-                  return null;
-                }).filter((p): p is { type: "reasoning"; reasoning: string } | { type: "text"; text: string } => p !== null);
-                
+                const chatParts = chunk.message.parts
+                  .map((part) => {
+                    if (part.type === "reasoning") {
+                      return {
+                        type: "reasoning" as const,
+                        reasoning: part.reasoning,
+                      };
+                    } else if (part.type === "text") {
+                      return { type: "text" as const, text: part.text };
+                    }
+                    return null;
+                  })
+                  .filter(
+                    (
+                      p
+                    ): p is
+                      | { type: "reasoning"; reasoning: string }
+                      | { type: "text"; text: string } => p !== null
+                  );
+
                 setMessages((prev) =>
                   prev.map((m) =>
                     m.id === assistantId
@@ -336,7 +373,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     text: accumulatedText,
                   });
                 }
-                
+
                 setMessages((prev) =>
                   prev.map((m) =>
                     m.id === assistantId

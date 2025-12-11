@@ -90,7 +90,7 @@ export function ChatDemo(props: ChatDemoProps) {
           "transition-all duration-200",
           isOpen && "opacity-0 pointer-events-none"
         )}
-        aria-label="Åpne chat med Flux assistent"
+        aria-label="Åpne chat med COAX-AI"
       >
         <MessageCircle className="h-6 w-6" aria-hidden="true" />
       </Button>
@@ -99,7 +99,7 @@ export function ChatDemo(props: ChatDemoProps) {
       {isOpen && (
         <div
           className={cn(
-            "fixed inset-0 z-50 flex flex-col bg-black/20 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            "fixed inset-0 z-50 flex flex-col bg-black/70 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 
             // Mobile: full screen from bottom
             "md:items-center md:justify-center md:p-4",
@@ -108,7 +108,7 @@ export function ChatDemo(props: ChatDemoProps) {
           )}
           role="dialog"
           aria-modal="true"
-          aria-label="Flux assistent chat"
+          aria-label="COAX-AI assistent chat"
         >
           {/* Backdrop - click to close on mobile */}
           <div
@@ -122,7 +122,7 @@ export function ChatDemo(props: ChatDemoProps) {
             className={cn(
               "relative flex flex-col w-full h-full md:rounded-lg md:overflow-hidden",
               // Desktop: rounded card with max width
-              "md:h-[90vh] md:max-w-2xl md:rounded-lg md:shadow-2xl",
+              "md:h-[80vh] md:max-w-4xl md:rounded-lg md:shadow-2xl",
               // Mobile: full screen
               "bg-background",
               // Animation
@@ -131,7 +131,7 @@ export function ChatDemo(props: ChatDemoProps) {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b shrink-0 bg-background">
-              <h2 className="text-lg font-semibold">Flux assistent</h2>
+              <h2 className="text-lg font-semibold">COAX-AI</h2>
               <Button
                 onClick={closeChat}
                 size="icon"

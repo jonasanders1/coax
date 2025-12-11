@@ -1,11 +1,13 @@
+"use client";
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { navItems } from "@/navItems";
 import Logo from "./Logo";
+import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
 
 const Footer = () => {
 
-
+  const { openChat } = useChatBot();
   return (
     <footer className="bg-muted border-t border-border">
       <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -41,15 +43,15 @@ const Footer = () => {
                   {item.label}
                 </Link>
               ))}
-              {/* <button
+              <button
                 className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
                 onClick={() => {
                   openChat();
                 }}
               >
                 <MessageCircle className="h-4 w-4" />
-                Flux
-              </button> */}
+                COAX-AI
+              </button>
             </nav>
           </div>
 

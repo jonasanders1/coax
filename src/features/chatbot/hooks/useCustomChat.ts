@@ -5,6 +5,7 @@ import { type Message, type MessagePart } from "@/shared/components/ui/chat-mess
 import { ApiMessage, ChatRequest, isWarning } from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
+import { useConversationId } from "@/hooks/useConversationId";
 
 type ChatStatus = "idle" | "submitted" | "streaming";
 
@@ -99,6 +100,9 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
   const [status, setStatus] = useState<ChatStatus>("idle");
   const abortControllerRef = useRef<AbortController | null>(null);
   const messagesRef = useRef<Message[]>(initialMessagesValue);
+  
+  // Get conversation ID for message storage (backend generates it, we just track it)
+  const { conversationId, setConversationId } = useConversationId();
 
   // Keep ref in sync with state
   messagesRef.current = messages;
@@ -122,11 +126,12 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
     async (contentToSubmit: string) => {
       if (!contentToSubmit.trim() || status !== "idle") return;
 
+      // Create user message with proper metadata (id, timestamp)
       const userMessage: Message = {
-        id: `user-${Date.now()}`,
+        id: `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         role: "user",
         content: contentToSubmit.trim(),
-        createdAt: new Date(),
+        createdAt: new Date(), // ISO timestamp will be converted in toApiMessage
       };
 
       const assistantId = `assistant-${Date.now()}`;
@@ -162,6 +167,8 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
         await streamChat(payload, {
           signal: controller.signal,
           correlationId,
+          conversationId, // Pass existing conversation ID (optional - backend generates if not sent)
+          onConversationId: setConversationId, // Capture conversation ID from backend response
           onMessage: (chunk: SSEEvent) => {
             if (chunk.type === "reasoning") {
               // Accumulate reasoning text

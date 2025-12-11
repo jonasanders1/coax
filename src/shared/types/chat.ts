@@ -29,11 +29,12 @@ export interface ApiToolInvocationPart {
 export type ApiMessagePart = ApiReasoningPart | ApiTextPart | ApiToolInvocationPart;
 
 // For API requests, we serialize Date to ISO string
+// Backend generates id and createdAt automatically if not provided
 export interface ApiMessage {
-  id: string;
+  id?: string; // Optional - backend generates if not provided
   role: "user" | "assistant" | "system";
   content: string;
-  createdAt?: string; // ISO string for API
+  createdAt?: string; // Optional - backend generates if not provided (ISO string for API)
   correlation_id?: string;
   parts?: ApiMessagePart[]; // Support for structured message parts
 }

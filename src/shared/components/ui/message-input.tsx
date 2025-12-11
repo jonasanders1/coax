@@ -42,7 +42,7 @@ type MessageInputProps =
   | MessageInputWithAttachmentsProps;
 
 export function MessageInput({
-  placeholder = "Spør Flux...",
+  placeholder = "Spør COAX-AI...",
   className,
   onKeyDown: onKeyDownProp,
   submitOnEnter = true,

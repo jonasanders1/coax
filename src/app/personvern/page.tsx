@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { cookieList } from "@/data/privacyData";
 
 import { siteUrl } from "@/config/site";
 
@@ -126,9 +125,95 @@ const PersonvernPage = () => {
             </div>
           </section>
 
-          <section className="space-y-8 lg:space-y-10">
+          <section
+            id="chatbot"
+            className="space-y-8 lg:space-y-10 scroll-mt-20"
+          >
             <SectionHeader
-              title="2. Hvordan vi bruker Google Analytics 4"
+              title="2. AI-chatbot og databehandling"
+              description="Informasjon om hvordan meldinger til vår chatbot behandles, lagres og anonymiseres."
+            />
+            <div className="grid gap-6 lg:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Behandling av chatbot-meldinger</CardTitle>
+                  <CardDescription>Automatisk behandling</CardDescription>
+                </CardHeader>
+                <CardContent className="text-muted-foreground space-y-3">
+                  <p>
+                    Meldinger du sender til vår chatbot behandles av en
+                    AI-tjeneste (LLM) som er hostet hos Amazon Web Services
+                    (AWS) i USA (us-east-1). Dette er nødvendig for å generere
+                    svar på spørsmålene dine.
+                  </p>
+                  <p>
+                    Behandlingen skjer automatisk når du sender en melding, og
+                    er nødvendig for at chatbot-tjenesten skal fungere.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lagring og anonymisering</CardTitle>
+                  <CardDescription>Opptil 90 dager</CardDescription>
+                </CardHeader>
+                <CardContent className="text-muted-foreground space-y-3">
+                  <p>
+                    Meldingene lagres anonymt i opptil 90 dager i AWS DynamoDB
+                    for kvalitetskontroll og forbedring av tjenesten. Ingen
+                    personopplysninger eller identifiserbar informasjon samles
+                    inn eller lagres.
+                  </p>
+                  <p>
+                    Alle meldinger anonymiseres umiddelbart, og det er ikke
+                    mulig å knytte meldingene til deg som person.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Rettlig grunnlag</CardTitle>
+                </CardHeader>
+                <CardContent className="text-muted-foreground space-y-3">
+                  <p>
+                    Behandlingen er nødvendig for å levere chatbot-tjenesten du
+                    ber om når du sender en melding. Dette er i tråd med
+                    personopplysningsloven artikkel 6 (1) bokstav b (utførelse
+                    av avtale).
+                  </p>
+                  <p>
+                    Siden meldingene anonymiseres og ingen personopplysninger
+                    behandles, er dette en transparent prosess som ikke krever
+                    eget samtykke utover bruken av tjenesten.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Dine rettigheter</CardTitle>
+                </CardHeader>
+                <CardContent className="text-muted-foreground">
+                  <ul className="list-disc space-y-1 pl-5">
+                    <li>
+                      Du har rett til å vite at meldingene behandles hos AWS
+                    </li>
+                    <li>
+                      Du kan når som helst velge å ikke bruke chatbot-tjenesten
+                    </li>
+                    <li>
+                      Alle meldinger anonymiseres og kan ikke spores tilbake til
+                      deg
+                    </li>
+                    <li>Data slettes automatisk etter 90 dager</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <section id="ga4" className="space-y-8 lg:space-y-10 scroll-mt-20">
+            <SectionHeader
+              title="3. Hvordan vi bruker Google Analytics 4"
               description="Dette er informasjonen vi samler inn, hvordan den lagres, og hvilke rettigheter du har når det gjelder analyseverktøyet vårt."
             />
             <div className="grid gap-6 lg:grid-cols-2">
