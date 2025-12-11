@@ -85,7 +85,7 @@ function toChatMessage(msg: ApiMessage): Message {
   }
 
   return {
-    id: msg.id,
+    id: msg.id || `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
     role: msg.role as "user" | "assistant",
     content: msg.content,
     createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
