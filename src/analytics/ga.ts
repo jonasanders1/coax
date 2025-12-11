@@ -19,10 +19,20 @@ declare global {
 }
 
 export const initGA = () => {
-  if (isInitialized) return;
-  
-  // Enable GA tracking
+  // Enable GA tracking first
   setGADisabled(false);
+  
+  // If already initialized, just reconfigure gtag to ensure tracking is enabled
+  if (isInitialized) {
+    if (typeof window !== "undefined" && window.gtag) {
+      // Reconfigure gtag to enable tracking
+      window.gtag("config", MEASUREMENT_ID, {
+        send_page_view: true,
+        anonymize_ip: true,
+      });
+    }
+    return;
+  }
   
   // Initialize react-ga4 (uses gtag under the hood)
   ReactGA.initialize(MEASUREMENT_ID);
@@ -46,6 +56,8 @@ export const initGA = () => {
 
 export const disableGA = () => {
   setGADisabled(true);
+  // Note: We don't reset isInitialized here because ReactGA.initialize should only be called once
+  // The disable flag will prevent tracking even if initialized
 };
 
 export const logPageView = (path: string) => {

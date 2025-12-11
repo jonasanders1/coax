@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { type Message, type MessagePart } from "@/shared/components/ui/chat-message";
+import {
+  type Message,
+  type MessagePart,
+} from "@/shared/components/ui/chat-message";
 import { ApiMessage, ChatRequest, isWarning } from "@/shared/types/chat";
 import { streamChat } from "@/shared/lib/api";
 import { SSEEvent } from "@/shared/types/chat";
@@ -12,7 +15,9 @@ type ChatStatus = "idle" | "submitted" | "streaming";
 interface UseCustomChatReturn {
   messages: Message[];
   input: string;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleInputChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   handleSubmit: (
     event?: { preventDefault?: () => void },
     options?: { experimental_attachments?: FileList }
@@ -30,7 +35,7 @@ function toApiMessage(msg: Message): ApiMessage {
     roleStr === "user" || roleStr === "assistant" || roleStr === "system"
       ? (roleStr as "user" | "assistant" | "system")
       : "user";
-  
+
   return {
     id: msg.id,
     role,
@@ -44,7 +49,7 @@ function toApiMessage(msg: Message): ApiMessage {
 function toChatMessage(msg: ApiMessage): Message {
   // Convert API parts to Chat Message parts
   const chatParts: MessagePart[] = [];
-  
+
   if (msg.parts) {
     for (const part of msg.parts) {
       if (part.type === "reasoning") {
@@ -85,7 +90,9 @@ function toChatMessage(msg: ApiMessage): Message {
   }
 
   return {
-    id: msg.id || `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+    id:
+      msg.id ||
+      `msg-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
     role: msg.role as "user" | "assistant",
     content: msg.content,
     createdAt: msg.createdAt ? new Date(msg.createdAt) : new Date(),
@@ -93,14 +100,16 @@ function toChatMessage(msg: ApiMessage): Message {
   };
 }
 
-export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn {
+export function useCustomChat(
+  initialMessages?: Message[]
+): UseCustomChatReturn {
   const initialMessagesValue = initialMessages || [];
   const [messages, setMessages] = useState<Message[]>(initialMessagesValue);
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<ChatStatus>("idle");
   const abortControllerRef = useRef<AbortController | null>(null);
   const messagesRef = useRef<Message[]>(initialMessagesValue);
-  
+
   // Get conversation ID for message storage (backend generates it, we just track it)
   const { conversationId, setConversationId } = useConversationId();
 
@@ -177,9 +186,12 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
               setMessages((prev) =>
                 prev.map((m) => {
                   if (m.id !== assistantId) return m;
-                  
-                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-                  
+
+                  const parts: Array<
+                    | { type: "reasoning"; reasoning: string }
+                    | { type: "text"; text: string }
+                  > = [];
+
                   // Add reasoning part if we have reasoning
                   if (accumulatedReasoning) {
                     parts.push({
@@ -187,7 +199,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                       reasoning: accumulatedReasoning,
                     });
                   }
-                  
+
                   // Add text part if we have text
                   if (accumulatedText) {
                     parts.push({
@@ -195,7 +207,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                       text: accumulatedText,
                     });
                   }
-                  
+
                   return {
                     ...m,
                     parts: parts.length > 0 ? parts : undefined,
@@ -210,9 +222,12 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
               setMessages((prev) =>
                 prev.map((m) => {
                   if (m.id !== assistantId) return m;
-                  
-                  const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-                  
+
+                  const parts: Array<
+                    | { type: "reasoning"; reasoning: string }
+                    | { type: "text"; text: string }
+                  > = [];
+
                   // Add reasoning part if we have reasoning
                   if (accumulatedReasoning) {
                     parts.push({
@@ -220,7 +235,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                       reasoning: accumulatedReasoning,
                     });
                   }
-                  
+
                   // Add text part with accumulated text
                   if (accumulatedText) {
                     parts.push({
@@ -228,7 +243,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                       text: accumulatedText,
                     });
                   }
-                  
+
                   return {
                     ...m,
                     parts: parts.length > 0 ? parts : undefined,
@@ -239,21 +254,35 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
             } else if (chunk.type === "done") {
               // Convert API message to Chat message format
               const completedMessage = toChatMessage(chunk.message);
-              
+
               // Build parts array from API message or accumulated data
-              const parts: Array<{ type: "reasoning"; reasoning: string } | { type: "text"; text: string }> = [];
-              
+              const parts: Array<
+                | { type: "reasoning"; reasoning: string }
+                | { type: "text"; text: string }
+              > = [];
+
               if (chunk.message.parts) {
                 // Use parts from API if available
-                const chatParts = chunk.message.parts.map((part) => {
-                  if (part.type === "reasoning") {
-                    return { type: "reasoning" as const, reasoning: part.reasoning };
-                  } else if (part.type === "text") {
-                    return { type: "text" as const, text: part.text };
-                  }
-                  return null;
-                }).filter((p): p is { type: "reasoning"; reasoning: string } | { type: "text"; text: string } => p !== null);
-                
+                const chatParts = chunk.message.parts
+                  .map((part) => {
+                    if (part.type === "reasoning") {
+                      return {
+                        type: "reasoning" as const,
+                        reasoning: part.reasoning,
+                      };
+                    } else if (part.type === "text") {
+                      return { type: "text" as const, text: part.text };
+                    }
+                    return null;
+                  })
+                  .filter(
+                    (
+                      p
+                    ): p is
+                      | { type: "reasoning"; reasoning: string }
+                      | { type: "text"; text: string } => p !== null
+                  );
+
                 setMessages((prev) =>
                   prev.map((m) =>
                     m.id === assistantId
@@ -280,7 +309,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                     text: accumulatedText,
                   });
                 }
-                
+
                 setMessages((prev) =>
                   prev.map((m) =>
                     m.id === assistantId
@@ -294,7 +323,7 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
                   )
                 );
               }
-              
+
               setStatus("idle");
               abortControllerRef.current = null;
             } else if (chunk.type === "error") {
@@ -340,7 +369,8 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
           },
         });
       } catch (error) {
-        const isAbortError = error instanceof Error && error.name === "AbortError";
+        const isAbortError =
+          error instanceof Error && error.name === "AbortError";
         if (!isAbortError) {
           // Network errors are always errors, not warnings
           setMessages((prev) =>
@@ -348,7 +378,8 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
               m.id === assistantId
                 ? {
                     ...m,
-                    content: error instanceof Error ? error.message : "Unknown error",
+                    content:
+                      error instanceof Error ? error.message : "Unknown error",
                     isError: true,
                     isWarning: false,
                   }
@@ -396,4 +427,3 @@ export function useCustomChat(initialMessages?: Message[]): UseCustomChatReturn 
     setMessages,
   };
 }
-
