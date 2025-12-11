@@ -8,7 +8,7 @@ import { MessageCircle, X } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
 import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type ChatDemoProps = {
   initialMessages?: Message[];
@@ -52,6 +52,7 @@ export function ChatDemo(props: ChatDemoProps) {
   } = useCustomChat(props.initialMessages);
 
   const isLoading = status === "submitted" || status === "streaming";
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle escape key to close chat
   useEffect(() => {
@@ -67,15 +68,75 @@ export function ChatDemo(props: ChatDemoProps) {
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, closeChat]);
 
-  // Prevent body scroll when chat is open
+  // Prevent body scroll when chat is open (mobile-friendly)
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+
+    // Save current scroll position
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const html = document.documentElement;
+
+    // Lock scroll on mobile - use position fixed to prevent iOS Safari scroll
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    
+    // Also set on html for better compatibility
+    html.style.overflow = "hidden";
+
+    // Prevent touchmove on background (iOS Safari fix)
+    const preventTouchMove = (e: TouchEvent) => {
+      // Allow touchmove inside the chat container
+      const target = e.target as HTMLElement;
+      const chatContainer = target.closest('[data-chatbot-dialog]');
+      if (!chatContainer) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("touchmove", preventTouchMove, { passive: false });
+
     return () => {
-      document.body.style.overflow = "";
+      // Restore scroll position
+      body.style.position = "";
+      body.style.top = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      html.style.overflow = "";
+      
+      // Restore scroll position
+      window.scrollTo(0, scrollY);
+      
+      document.removeEventListener("touchmove", preventTouchMove);
+    };
+  }, [isOpen]);
+
+  // Handle mobile keyboard - scroll input into view when keyboard appears
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // On mobile, when input is focused, ensure it's visible above keyboard
+    const handleFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "TEXTAREA" || target.tagName === "INPUT") {
+        // Small delay to allow keyboard to appear
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 300);
+      }
+    };
+
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.addEventListener("focusin", handleFocus);
+    }
+
+    return () => {
+      if (chatContainer) {
+        chatContainer.removeEventListener("focusin", handleFocus);
+      }
     };
   }, [isOpen]);
 
@@ -100,15 +161,17 @@ export function ChatDemo(props: ChatDemoProps) {
         <div
           className={cn(
             "fixed inset-0 z-50 flex flex-col bg-black/70 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-
             // Mobile: full screen from bottom
             "md:items-center md:justify-center md:p-4",
             // Animation
-            "animate-in fade-in-0 duration-200"
+            "animate-in fade-in-0 duration-200",
+            // Identifier for CSS targeting
+            "coax-chatbot-dialog"
           )}
           role="dialog"
           aria-modal="true"
           aria-label="COAX-AI assistent chat"
+          data-chatbot-dialog
         >
           {/* Backdrop - click to close on mobile */}
           <div
@@ -119,6 +182,7 @@ export function ChatDemo(props: ChatDemoProps) {
 
           {/* Chat container */}
           <div
+            ref={chatContainerRef}
             className={cn(
               "relative flex flex-col w-full h-full md:rounded-lg md:overflow-hidden",
               // Desktop: rounded card with max width
@@ -126,8 +190,14 @@ export function ChatDemo(props: ChatDemoProps) {
               // Mobile: full screen
               "bg-background",
               // Animation
-              "animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300"
+              "animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300",
+              // Better touch handling
+              "touch-pan-y"
             )}
+            onClick={(e) => {
+              // Prevent closing when clicking inside the chat container
+              e.stopPropagation();
+            }}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b shrink-0 bg-background">

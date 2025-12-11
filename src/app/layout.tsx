@@ -86,6 +86,14 @@ export const metadata: Metadata = {
   },
 };
 
+// Viewport configuration to prevent zoom on input focus (mobile)
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5, // Allow pinch zoom but prevent auto-zoom on input focus
+  userScalable: true,
+};
+
 const MEASUREMENT_ID = "G-HC5YYERVLC";
 
 export default function RootLayout({

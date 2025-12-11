@@ -417,3 +417,40 @@ html {
     border-color: hsl(var(--primary)) !important;
   }
 }
+
+/* Mobile chatbot improvements */
+@layer base {
+  /* Prevent zoom on input focus in chatbot (iOS Safari) */
+  @media (max-width: 768px) {
+    /* Ensure inputs in chatbot have minimum font size to prevent zoom */
+    [data-chatbot-dialog] textarea,
+    [data-chatbot-dialog] input[type="text"],
+    [data-chatbot-dialog] input[type="email"],
+    [data-chatbot-dialog] input[type="tel"] {
+      font-size: 16px !important;
+    }
+
+    /* Better touch targets for mobile */
+    [data-chatbot-dialog] button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Prevent text selection on mobile for better touch UX */
+    [data-chatbot-dialog] {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+
+    /* Allow text selection in message content */
+    [data-chatbot-dialog] [class*="chat-bubble"],
+    [data-chatbot-dialog] [class*="markdown"],
+    [data-chatbot-dialog] p,
+    [data-chatbot-dialog] li,
+    [data-chatbot-dialog] span:not(button span) {
+      -webkit-touch-callout: default;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+  }
+}

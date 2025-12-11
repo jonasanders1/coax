@@ -300,7 +300,7 @@ export function Chat({
       ) : (
         <>
           <ChatForm
-            className="p-4 md:px-3 md:pb-1"
+            className="p-4 md:px-3 pb-0 md:pb-2"
             isPending={isGenerating || isTyping}
             handleSubmit={wrappedHandleSubmit}
           >
@@ -314,16 +314,9 @@ export function Chat({
               />
             )}
           </ChatForm>
-          <div className="mx-auto max-w-4xl px-3 pb-2">
-            <p className="text-xs text-muted-foreground">
-              COAX-AI kan gjøre feil. Sjekk viktig informasjon eller{" "}
-              <Link
-                href="/kontakt"
-                className="text-primary underline font-medium"
-              >
-                kontakt oss
-              </Link>{" "}
-              direkte.
+          <div className="mx-auto max-w-4xl">
+            <p className="text-xs text-muted-foreground px-3 pb-4 md:pb-2">
+              COAX-AI kan ta feil. Sjekk viktig informasjon.
             </p>
           </div>
         </>
