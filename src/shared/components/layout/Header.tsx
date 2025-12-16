@@ -92,7 +92,7 @@ const Header = () => {
           </div>
 
       
-
+{/* 
           <Button
             className="hidden lg:flex text-white"
             style={{ background: 'var(--gradient-primary)' }}
@@ -102,7 +102,7 @@ const Header = () => {
           >
             Snakk med COAX-AI
             <MessageCircle className="h-5 w-5" />
-          </Button> 
+          </Button>  */}
 
           {/* Mobile Menu Button */}
 

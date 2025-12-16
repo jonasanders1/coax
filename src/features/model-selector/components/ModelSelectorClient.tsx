@@ -272,7 +272,7 @@ const ModelSelectorClient = () => {
                         step={1}
                         className="w-full"
                       />
-                      <div className="flex flex-col gap-1 sm:flex-row sm:justify-between text-xs sm:text-sm text-muted-foreground">
+                      <div className="flex gap-1 flex-row justify-between text-sm text-muted-foreground">
                         <span>Høy strøm</span>
                         <span>Lav strøm</span>
                       </div>

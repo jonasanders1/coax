@@ -54,7 +54,7 @@ const ContactClient = () => {
           </div>
 
           <div className="space-y-6">
-            <Card>
+            <Card variant="base">
               <CardHeader>
                 <CardTitle>Kontaktinformasjon</CardTitle>
               </CardHeader>
@@ -97,7 +97,7 @@ const ContactClient = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card variant="base">
               <CardHeader>
                 <CardTitle>Åpningstider</CardTitle>
               </CardHeader>
@@ -150,7 +150,7 @@ const ContactClient = () => {
           </div>
         </div>
         <div className="mt-12 max-w-6xl mx-auto">
-          <Card>
+          <Card variant="base">
             <CardContent className="p-0">
               <div className="w-full h-[400px] rounded-lg overflow-hidden">
                 <iframe

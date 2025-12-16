@@ -19,7 +19,7 @@ export type NavItem = {
 };
 
 export const navItems: NavItem[] = [
-  { path: "/", label: "Hjem", icon: Home, header: true },
+  { path: "/", label: "Hjem", icon: Home, header: false },
   { path: "/produkter", label: "Produkter", icon: Package, header: true },
   {
     path: "/velg-modell",

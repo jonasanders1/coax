@@ -50,6 +50,7 @@ import {
 } from "@/constants/animations";
 import { CAROUSEL_AUTO_SCROLL_INTERVAL } from "@/constants/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getAverageWaterPrices } from "@/shared/lib/api";
 
 const HomePage = () => {
   const { openChat } = useChatBot();
@@ -61,6 +62,7 @@ const HomePage = () => {
 
   useEffect(() => {
     setHasAnimated(true);
+    getAverageWaterPrices();
   }, []);
 
   useEffect(() => {
@@ -238,7 +240,7 @@ const HomePage = () => {
             {benefits.map((b, i) => {
               const Icon = b.icon;
               return (
-                <Card key={i}>
+                <Card key={i} variant="base">
                   <CardContent className="pt-6 text-center">
                     <div
                       className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto"
@@ -298,22 +300,7 @@ const HomePage = () => {
       </section>
 
       {/* Technology Section */}
-      <section
-        className="py-16 md:py-24 relative overflow-hidden"
-        style={{
-          backgroundImage: `
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)),
-            url(${tecnologyImage.src})
-          `,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          // Use 'fixed' only on desktop - mobile browsers don't support it well
-          backgroundAttachment: isMobile ? "scroll" : "fixed",
-        }}
-      >
-        {/* Subtle gradient overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-muted/80 via-muted/60 to-muted/80 pointer-events-none" />
+      <section className="py-16 md:py-24 relative overflow-hidden">
         <div className="container max-w-6xl mx-auto px-4 relative z-10">
           <SectionTitle
             className="text-black"
@@ -376,11 +363,9 @@ const HomePage = () => {
               }
               className="order-2 md:order-2"
             >
-              <Card className="h-full">
+              <Card className="h-full" variant="default">
                 <CardHeader>
-                  <CardTitle>
-                    Vermerens elementer
-                  </CardTitle>
+                  <CardTitle>Vermerens elementer</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ol className="list-decimal pl-4 md:pl-6 space-y-2 border-b pb-3">
@@ -424,7 +409,7 @@ const HomePage = () => {
               }
               className="col-span-1 md:col-span-2 order-3 mt-4 md:mt-0"
             >
-              <Card>
+              <Card variant="default">
                 <CardHeader>
                   <CardTitle>Sikkerhetsfunksjoner</CardTitle>
                 </CardHeader>
@@ -559,7 +544,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      
+
       <div className="container px-4 max-w-6xl mx-auto bg-background">
         <CtaSection isHeader={false} />
       </div>

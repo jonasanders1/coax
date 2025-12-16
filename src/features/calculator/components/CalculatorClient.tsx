@@ -42,6 +42,7 @@ import {
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Button } from "@/shared/components/ui/button";
 import { ParameterBadge } from "@/features/calculator/components/ParameterBadge";
+import { ComparisonCard } from "@/features/calculator/components/ComparisonCard";
 import {
   CalculationParams,
   CalculationResults,
@@ -52,9 +53,11 @@ import {
 import PageTitle from "@/shared/components/common/PageTitle";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { StructuredData, ServiceSchema } from "@/shared/components/common/StructuredData";
+import {
+  StructuredData,
+  ServiceSchema,
+} from "@/shared/components/common/StructuredData";
 import { siteUrl } from "@/config/site";
-
 
 const CustomTooltip = ({
   active,
@@ -178,8 +181,166 @@ const CalculatorClient = () => {
           text="Se hvor mye energi, vann og penger du kan spare ved å bytte fra tradisjonell varmtvannstank til en direkte vannvarmer fra COAX"
         />
 
+        <section className="mt-12 space-y-6">
+          {/* Savings Hero Card */}
+          <Card
+            className="shadow-lg overflow-hidden relative"
+            style={{ background: "var(--gradient-success)" }}
+          >
+            {/* Decorative elements */}
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
+            <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
+            <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+
+            <CardContent className="pt-8 pb-8 relative z-10">
+              <div className="text-center space-y-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-2">
+                  <TrendingDown className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white/90 mb-2">
+                    Din totale årlige besparelse med COAX
+                  </p>
+                  <p className="text-5xl md:text-6xl font-bold text-white mb-1">
+                    {results.totalAnnualSavingsNOK.toLocaleString("no-NO", {
+                      maximumFractionDigits: 0,
+                    })}{" "}
+                    kr
+                  </p>
+                  <p className="text-lg text-white/90">
+                    {results.annualSavingskWh.toFixed(0)} kWh redusert
+                    energibruk per år
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Comparison Cards */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <ComparisonCard
+              title="COAX vannvarmer"
+              description="Energieffektiv og desentralisert løsning"
+              gradientStyle="var(--gradient-primary)"
+              results={{
+                totalCostPerYearNOK: results.totalTanklessCostPerYearNOK,
+                energyCostPerYearNOK: results.tanklessCostPerYearNOK,
+                waterCostPerYearNOK: results.tanklessWaterCostPerYearNOK,
+                kwhPerYear: results.tanklesskWhPerYear,
+                dailyVolume: results.dailyVolumeTankless,
+                waitWaterWastePerYear: results.dailyWaitWaterWasteTankless
+                  ? results.dailyWaitWaterWasteTankless * 365
+                  : 0,
+              }}
+            />
+            <ComparisonCard
+              title="Tradisjonell tankbereder"
+              description="Konvensjonell sentralisert løsning"
+              gradientStyle="var(--gradient-destructive)"
+              results={{
+                totalCostPerYearNOK: results.totalTankCostPerYearNOK,
+                energyCostPerYearNOK: results.tankCostPerYearNOK,
+                waterCostPerYearNOK: results.tankWaterCostPerYearNOK,
+                kwhPerYear: results.tankkWhPerYear,
+                dailyVolume: results.dailyVolumeTank,
+                waitWaterWastePerYear: results.dailyWaitWaterWasteTank
+                  ? results.dailyWaitWaterWasteTank * 365
+                  : 0,
+              }}
+            />
+          </div>
+
+          {/* Chart */}
+          <section className="space-y-4 pt-4">
+            <div>
+              <h2 className="text-2xl font-bold">Visuell sammenligning</h2>
+              <p className="text-muted-foreground">
+                Årlig energibruk og kostnad side om side
+              </p>
+            </div>
+
+            <div className="w-full h-[350px] md:h-[500px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{ bottom: 20, top: 20, left: 20, right: 20 }}
+                  barCategoryGap="20%"
+                >
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fontSize: 14, fontWeight: 500 }}
+                    axisLine={{ strokeWidth: 1 }}
+                  />
+                  <YAxis
+                    yAxisId="left"
+                    orientation="left"
+                    label={{
+                      value: "kWh",
+                      angle: -90,
+                      position: "insideLeft",
+                      style: { textAnchor: "middle", fontSize: 12 },
+                    }}
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={(value) =>
+                      `${value.toLocaleString("no-NO")}`
+                    }
+                  />
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    label={{
+                      value: "kr",
+                      angle: 90,
+                      position: "insideRight",
+                      style: { textAnchor: "middle", fontSize: 12 },
+                    }}
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={(value) =>
+                      `${value.toLocaleString("no-NO")}`
+                    }
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar yAxisId="left" dataKey="Årlig kWh" radius={[4, 4, 0, 0]}>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-kwh-${index}`} fill={COLORS[index]} />
+                    ))}
+                  </Bar>
+                  <Bar
+                    yAxisId="right"
+                    dataKey="Årlig kostnad (kr)"
+                    radius={[4, 4, 0, 0]}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-cost-${index}`}
+                        fill={COLORS[index]}
+                        opacity={0.7}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Custom Legend */}
+            <div className="flex items-center justify-center gap-8 pb-2 m-0">
+              {chartData.map((entry, index) => (
+                <div key={index} className="flex items-center gap-1">
+                  <div
+                    className="w-4 h-4 rounded-sm shadow-sm"
+                    style={{ backgroundColor: COLORS[index] }}
+                  />
+                  <span className="text-sm font-medium text-foreground">
+                    {entry.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </section>
+
         {/* Default Parameters Display */}
-        <Card className="mb-8 shadow-card-md">
+        <Card className="mb-8 shadow-card-md" variant="default">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -462,7 +623,7 @@ const CalculatorClient = () => {
         </Card>
 
         {/* Parameter Customization Card */}
-        <Card className="shadow-lg border-2">
+        <Card className="shadow-lg border-2" variant="default">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <div className="flex-1">
@@ -492,262 +653,9 @@ const CalculatorClient = () => {
         </Card>
 
         {/* Results Section */}
-        <div className="mt-12 space-y-6">
-          {/* Savings Hero Card */}
-          <Card
-            className="shadow-lg overflow-hidden relative"
-            style={{ background: "var(--gradient-success)" }}
-          >
-            {/* Decorative elements */}
-            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
-            <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
-            <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
-
-            <CardContent className="pt-8 pb-8 relative z-10">
-              <div className="text-center space-y-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-2">
-                  <TrendingDown className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-white/90 mb-2">
-                    Din årlige besparelse med COAX
-                  </p>
-                  <p className="text-5xl md:text-6xl font-bold text-white mb-1">
-                    {results.annualSavingsNOK.toLocaleString("no-NO", {
-                      maximumFractionDigits: 0,
-                    })}{" "}
-                    kr
-                  </p>
-                  <p className="text-lg text-white/90">
-                    {results.annualSavingskWh.toFixed(0)} kWh redusert
-                    energibruk per år
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Comparison Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* COAX Card */}
-            <Card
-              className="shadow-lg overflow-hidden relative"
-              style={{ background: "var(--gradient-primary)" }}
-            >
-              {/* Decorative elements */}
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
-              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
-              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
-
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  COAX vannvarmer
-                </CardTitle>
-                <CardDescription className="text-white/90">
-                  Energieffektiv og desentralisert løsning
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-2 space-y-6 relative z-10">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <DollarSign className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Årlig kostnad</p>
-                  </div>
-                  <p className="text-3xl font-bold text-white">
-                    {results.tanklessCostPerYearNOK.toLocaleString("no-NO", {
-                      maximumFractionDigits: 0,
-                    })}{" "}
-                    kr
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Zap className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Årlig energibruk</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.tanklesskWhPerYear.toFixed(0)} kWh
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Droplet className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Daglig forbruk</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.dailyVolumeTankless.toFixed(0)} liter
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Droplet className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Ventevann tap</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.dailyWaitWaterWasteTankless
-                      ? (results.dailyWaitWaterWasteTankless * 365).toFixed(0)
-                      : "0"}{" "}
-                    liter/år
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tank Card */}
-            <Card
-              className="shadow-lg overflow-hidden relative"
-              style={{ background: "var(--gradient-destructive)" }}
-            >
-              {/* Decorative elements */}
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
-              <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
-              <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
-
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-white">
-                  Tradisjonell tankbereder
-                </CardTitle>
-                <CardDescription className="text-white/90">
-                  Konvensjonell sentralisert løsning
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-2 space-y-6 relative z-10">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <DollarSign className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Årlig kostnad</p>
-                  </div>
-                  <p className="text-3xl font-bold text-white">
-                    {results.tankCostPerYearNOK.toLocaleString("no-NO", {
-                      maximumFractionDigits: 0,
-                    })}{" "}
-                    kr
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Zap className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Årlig energibruk</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.tankkWhPerYear.toFixed(0)} kWh
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Droplet className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Daglig forbruk</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.dailyVolumeTank.toFixed(0)} liter
-                  </p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Droplet className="w-5 h-5 text-white" />
-                    <p className="text-sm text-white/90">Ventevann tap</p>
-                  </div>
-                  <p className="text-2xl font-semibold text-white">
-                    {results.dailyWaitWaterWasteTank
-                      ? (results.dailyWaitWaterWasteTank * 365).toFixed(0)
-                      : "0"}{" "}
-                    liter/år
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Chart */}
-          <section className="space-y-4 pt-4">
-            <div>
-              <h2 className="text-2xl font-bold">Visuell sammenligning</h2>
-              <p className="text-muted-foreground">
-                Årlig energibruk og kostnad side om side
-              </p>
-            </div>
-
-            <div className="w-full h-[350px] md:h-[500px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
-                  margin={{ bottom: 20, top: 20, left: 20, right: 20 }}
-                  barCategoryGap="20%"
-                >
-                  <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fontSize: 14, fontWeight: 500 }}
-                    axisLine={{ strokeWidth: 1 }}
-                  />
-                  <YAxis
-                    yAxisId="left"
-                    orientation="left"
-                    label={{
-                      value: "kWh",
-                      angle: -90,
-                      position: "insideLeft",
-                      style: { textAnchor: "middle", fontSize: 12 },
-                    }}
-                    tick={{ fontSize: 12 }}
-                    tickFormatter={(value) =>
-                      `${value.toLocaleString("no-NO")}`
-                    }
-                  />
-                  <YAxis
-                    yAxisId="right"
-                    orientation="right"
-                    label={{
-                      value: "kr",
-                      angle: 90,
-                      position: "insideRight",
-                      style: { textAnchor: "middle", fontSize: 12 },
-                    }}
-                    tick={{ fontSize: 12 }}
-                    tickFormatter={(value) =>
-                      `${value.toLocaleString("no-NO")}`
-                    }
-                  />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Bar yAxisId="left" dataKey="Årlig kWh" radius={[4, 4, 0, 0]}>
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-kwh-${index}`} fill={COLORS[index]} />
-                    ))}
-                  </Bar>
-                  <Bar
-                    yAxisId="right"
-                    dataKey="Årlig kostnad (kr)"
-                    radius={[4, 4, 0, 0]}
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell
-                        key={`cell-cost-${index}`}
-                        fill={COLORS[index]}
-                        opacity={0.7}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            {/* Custom Legend */}
-            <div className="flex items-center justify-center gap-8 pb-2 m-0">
-              {chartData.map((entry, index) => (
-                <div key={index} className="flex items-center gap-1">
-                  <div
-                    className="w-4 h-4 rounded-sm shadow-sm"
-                    style={{ backgroundColor: COLORS[index] }}
-                  />
-                  <span className="text-sm font-medium text-foreground">
-                    {entry.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-
+        <div className="">
           {/* Info Card */}
-          <Card className="shadow-lg">
+          <Card className="shadow-lg" variant="base">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Info className="w-5 h-5 text-primary" />
@@ -766,7 +674,8 @@ const CalculatorClient = () => {
 
               <div className="md:text-base">
                 Kalkulatoren bruker fysikkbaserte formler og realistiske
-                forutsetninger for å gi et representativt estimat. Standby-tap alene kan variere fra 400-1500 kWh/år for tankbereder, avhengig
+                forutsetninger for å gi et representativt estimat. Standby-tap
+                alene kan variere fra 400-1500 kWh/år for tankbereder, avhengig
                 av alder og installasjonsforhold.
               </div>
 

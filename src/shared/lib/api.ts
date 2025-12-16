@@ -172,7 +172,15 @@ export interface StreamChatOptions {
 
 export async function streamChat(
   payload: ChatRequest,
-  { onMessage, onError, onComplete, signal, correlationId, conversationId, onConversationId }: StreamChatOptions
+  {
+    onMessage,
+    onError,
+    onComplete,
+    signal,
+    correlationId,
+    conversationId,
+    onConversationId,
+  }: StreamChatOptions
 ): Promise<void> {
   const correlationIdToUse = correlationId || crypto.randomUUID();
 
@@ -418,4 +426,589 @@ export async function streamChat(
 
     onError?.(errorResponse);
   }
+}
+
+// SSB API types for water pricing
+export interface WaterPriceData {
+  municipalities: Record<
+    string,
+    {
+      name: string;
+      waterPrice: number | null; // kr per m³
+      wastewaterPrice: number | null; // kr per m³
+    }
+  >;
+  averages: {
+    waterPrice: number | null;
+    wastewaterPrice: number | null;
+  };
+  metadata: {
+    year: string;
+    totalMunicipalities: number;
+    source: string;
+  };
+}
+
+interface SSBWaterPriceResponse {
+  value?: (number | null)[];
+  dimension?: {
+    KOKkommuneregion0000?: {
+      category?: {
+        index?: Record<string, number>;
+        label?: Record<string, string>;
+      };
+    };
+    ContentsCode?: {
+      category?: {
+        index?: Record<string, number>;
+        label?: Record<string, string>;
+      };
+    };
+  };
+  size?: number[];
+}
+
+// Gebyrsats per m3 vann – ekskl mva. (kr) - Price per m³ delivered water
+// Gebyrsats per m3 avløp – ekskl. mva. (kr) - Price per m³ wastewater
+export async function getWaterPrices(): Promise<WaterPriceData> {
+  const query = {
+    query: [
+      {
+        code: "KOKkommuneregion0000",
+        selection: {
+          filter: "agg_single:KOGkommuneregion000005402",
+          values: [
+            "3101",
+            "3103",
+            "3105",
+            "3107",
+            "3110",
+            "3112",
+            "3114",
+            "3116",
+            "3118",
+            "3120",
+            "3122",
+            "3124",
+            "3201",
+            "3203",
+            "3205",
+            "3207",
+            "3209",
+            "3212",
+            "3214",
+            "3216",
+            "3218",
+            "3220",
+            "3222",
+            "3224",
+            "3226",
+            "3228",
+            "3230",
+            "3232",
+            "3234",
+            "3236",
+            "3238",
+            "3240",
+            "3242",
+            "0301",
+            "3401",
+            "3403",
+            "3405",
+            "3407",
+            "3411",
+            "3412",
+            "3413",
+            "3414",
+            "3415",
+            "3416",
+            "3417",
+            "3418",
+            "3419",
+            "3420",
+            "3421",
+            "3422",
+            "3423",
+            "3424",
+            "3425",
+            "3426",
+            "3427",
+            "3428",
+            "3429",
+            "3430",
+            "3431",
+            "3432",
+            "3433",
+            "3434",
+            "3435",
+            "3436",
+            "3437",
+            "3438",
+            "3439",
+            "3440",
+            "3441",
+            "3442",
+            "3443",
+            "3446",
+            "3447",
+            "3448",
+            "3449",
+            "3450",
+            "3451",
+            "3452",
+            "3453",
+            "3454",
+            "3301",
+            "3303",
+            "3305",
+            "3310",
+            "3312",
+            "3314",
+            "3316",
+            "3318",
+            "3320",
+            "3322",
+            "3324",
+            "3326",
+            "3328",
+            "3330",
+            "3332",
+            "3334",
+            "3336",
+            "3338",
+            "3901",
+            "3903",
+            "3905",
+            "3907",
+            "3909",
+            "3911",
+            "4001",
+            "4003",
+            "4005",
+            "4010",
+            "4012",
+            "4014",
+            "4016",
+            "4018",
+            "4020",
+            "4022",
+            "4024",
+            "4026",
+            "4028",
+            "4030",
+            "4032",
+            "4034",
+            "4036",
+            "4201",
+            "4202",
+            "4203",
+            "4204",
+            "4205",
+            "4206",
+            "4207",
+            "4211",
+            "4212",
+            "4213",
+            "4214",
+            "4215",
+            "4216",
+            "4217",
+            "4218",
+            "4219",
+            "4220",
+            "4221",
+            "4222",
+            "4223",
+            "4224",
+            "4225",
+            "4226",
+            "4227",
+            "4228",
+            "1101",
+            "1103",
+            "1106",
+            "1108",
+            "1111",
+            "1112",
+            "1114",
+            "1119",
+            "1120",
+            "1121",
+            "1122",
+            "1124",
+            "1127",
+            "1130",
+            "1133",
+            "1134",
+            "1135",
+            "1144",
+            "1145",
+            "1146",
+            "1149",
+            "1151",
+            "1160",
+            "4601",
+            "4602",
+            "4611",
+            "4612",
+            "4613",
+            "4614",
+            "4615",
+            "4616",
+            "4617",
+            "4618",
+            "4619",
+            "4620",
+            "4621",
+            "4622",
+            "4623",
+            "4624",
+            "4625",
+            "4626",
+            "4627",
+            "4628",
+            "4629",
+            "4630",
+            "4631",
+            "4632",
+            "4633",
+            "4634",
+            "4635",
+            "4636",
+            "4637",
+            "4638",
+            "4639",
+            "4640",
+            "4641",
+            "4642",
+            "4643",
+            "4644",
+            "4645",
+            "4646",
+            "4647",
+            "4648",
+            "4649",
+            "4650",
+            "4651",
+            "1505",
+            "1506",
+            "1508",
+            "1511",
+            "1514",
+            "1515",
+            "1516",
+            "1517",
+            "1520",
+            "1525",
+            "1528",
+            "1531",
+            "1532",
+            "1535",
+            "1539",
+            "1547",
+            "1554",
+            "1557",
+            "1560",
+            "1563",
+            "1566",
+            "1573",
+            "1576",
+            "1577",
+            "1578",
+            "1579",
+            "1580",
+            "5001",
+            "5006",
+            "5007",
+            "5014",
+            "5020",
+            "5021",
+            "5022",
+            "5025",
+            "5026",
+            "5027",
+            "5028",
+            "5029",
+            "5031",
+            "5032",
+            "5033",
+            "5034",
+            "5035",
+            "5036",
+            "5037",
+            "5038",
+            "5041",
+            "5042",
+            "5043",
+            "5044",
+            "5045",
+            "5046",
+            "5047",
+            "5049",
+            "5052",
+            "5053",
+            "5054",
+            "5055",
+            "5056",
+            "5057",
+            "5058",
+            "5059",
+            "5060",
+            "5061",
+            "1804",
+            "1806",
+            "1811",
+            "1812",
+            "1813",
+            "1815",
+            "1816",
+            "1818",
+            "1820",
+            "1822",
+            "1824",
+            "1825",
+            "1826",
+            "1827",
+            "1828",
+            "1832",
+            "1833",
+            "1834",
+            "1835",
+            "1836",
+            "1837",
+            "1838",
+            "1839",
+            "1840",
+            "1841",
+            "1845",
+            "1848",
+            "1851",
+            "1853",
+            "1856",
+            "1857",
+            "1859",
+            "1860",
+            "1865",
+            "1866",
+            "1867",
+            "1868",
+            "1870",
+            "1871",
+            "1874",
+            "1875",
+            "5501",
+            "5503",
+            "5510",
+            "5512",
+            "5514",
+            "5516",
+            "5518",
+            "5520",
+            "5522",
+            "5524",
+            "5526",
+            "5528",
+            "5530",
+            "5532",
+            "5534",
+            "5536",
+            "5538",
+            "5540",
+            "5542",
+            "5544",
+            "5546",
+            "5601",
+            "5603",
+            "5605",
+            "5607",
+            "5610",
+            "5612",
+            "5614",
+            "5616",
+            "5618",
+            "5620",
+            "5622",
+            "5624",
+            "5626",
+            "5628",
+            "5630",
+            "5632",
+            "5634",
+            "5636",
+            "2111",
+            "EAK",
+            "EAKUO",
+          ],
+        },
+      },
+      {
+        code: "ContentsCode",
+        selection: {
+          filter: "item",
+          values: ["KOSvannk30000", "KOSavlopk30000"], // Water and wastewater prices
+        },
+      },
+      {
+        code: "Tid",
+        selection: {
+          filter: "item",
+          values: ["2025"],
+        },
+      },
+    ],
+    response: {
+      format: "json-stat2",
+    },
+  };
+
+  try {
+    const res = await fetch("https://data.ssb.no/api/v0/no/table/12842", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(query),
+    });
+
+    if (!res.ok) {
+      throw new Error(`SSB API error: ${res.status} ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    
+    // Parse the response to extract water and wastewater prices
+    // Data structure: value array is flat, ordered by [municipality, contentCode, year]
+    const municipalities = data.dimension?.KOKkommuneregion0000?.category;
+    const contentCodes = data.dimension?.ContentsCode?.category;
+    const values = data.value || [];
+    
+    if (!municipalities || !contentCodes) {
+      throw new Error("Invalid data structure from SSB API");
+    }
+    
+    const municipalityIndex = municipalities.index || {};
+    const municipalityLabels = municipalities.label || {};
+    const contentCodeIndex = contentCodes.index || {};
+    const contentCodeLabels = contentCodes.label || {};
+    
+    // Get indices for water and wastewater
+    const waterIndex = contentCodeIndex["KOSvannk30000"];
+    const wastewaterIndex = contentCodeIndex["KOSavlopk30000"];
+    
+    // Calculate dimensions
+    const numMunicipalities = data.size?.[0] || 0;
+    const numContentCodes = data.size?.[1] || 0;
+    const numYears = data.size?.[2] || 0;
+    
+    // Reorganize data: { municipalityCode: { name, waterPrice, wastewaterPrice } }
+    const organizedData: Record<
+      string,
+      {
+        name: string;
+        waterPrice: number | null; // kr per m³
+        wastewaterPrice: number | null; // kr per m³
+      }
+    > = {};
+    
+    // Parse values array
+    // Formula: valueIndex = municipalityIndex * (numContentCodes * numYears) + contentCodeIndex * numYears + yearIndex
+    for (const [municipalityCode, municipalityIdx] of Object.entries(
+      municipalityIndex
+    )) {
+      const municipalityName = municipalityLabels[municipalityCode] || municipalityCode;
+      
+      // Calculate indices in the value array
+      const waterValueIdx =
+        (municipalityIdx as number) * (numContentCodes * numYears) +
+        (waterIndex as number) * numYears +
+        0; // year index (only 2025)
+      
+      const wastewaterValueIdx =
+        (municipalityIdx as number) * (numContentCodes * numYears) +
+        (wastewaterIndex as number) * numYears +
+        0; // year index (only 2025)
+      
+      const waterPrice = values[waterValueIdx] ?? null;
+      const wastewaterPrice = values[wastewaterValueIdx] ?? null;
+      
+      organizedData[municipalityCode] = {
+        name: municipalityName,
+        waterPrice: typeof waterPrice === "number" ? waterPrice : null,
+        wastewaterPrice:
+          typeof wastewaterPrice === "number" ? wastewaterPrice : null,
+      };
+    }
+    
+    // Calculate averages (excluding null values)
+    const validWaterPrices = Object.values(organizedData)
+      .map((d) => d.waterPrice)
+      .filter((p): p is number => p !== null);
+    const validWastewaterPrices = Object.values(organizedData)
+      .map((d) => d.wastewaterPrice)
+      .filter((p): p is number => p !== null);
+    
+    const averageWaterPrice =
+      validWaterPrices.length > 0
+        ? validWaterPrices.reduce((a, b) => a + b, 0) / validWaterPrices.length
+        : null;
+    const averageWastewaterPrice =
+      validWastewaterPrices.length > 0
+        ? validWastewaterPrices.reduce((a, b) => a + b, 0) /
+          validWastewaterPrices.length
+        : null;
+    
+    const result = {
+      municipalities: organizedData,
+      averages: {
+        waterPrice: averageWaterPrice,
+        wastewaterPrice: averageWastewaterPrice,
+      },
+      metadata: {
+        year: "2025",
+        totalMunicipalities: Object.keys(organizedData).length,
+        source: "SSB (Statistisk sentralbyrå)",
+      },
+    };
+    
+    console.log("Organized Water Price Data:", result);
+    console.log("Average Water Price (kr/m³):", averageWaterPrice);
+    console.log("Average Wastewater Price (kr/m³):", averageWastewaterPrice);
+    
+    return result;
+  } catch (error) {
+    console.error("Error fetching water prices:", error);
+    console.warn("Falling back to hard-coded average prices");
+    
+    // Fallback to hard-coded averages if API fails completely
+    const fallbackAverages = {
+      waterPrice: 22.735632183908052,
+      wastewaterPrice: 26.506017191977115,
+    };
+    
+    // Return fallback structure with empty municipalities but valid averages
+    return {
+      municipalities: {},
+      averages: fallbackAverages,
+      metadata: {
+        year: "2025",
+        totalMunicipalities: 0,
+        source: "Fallback (SSB API unavailable)",
+      },
+    };
+  }
+}
+
+// Get average water and wastewater prices across all municipalities
+export async function getAverageWaterPrices() {
+  const data = await getWaterPrices();
+  return {
+    averageWaterPrice: data.averages.waterPrice,
+    averageWastewaterPrice: data.averages.wastewaterPrice,
+  };
+}
+
+// Get prices for a specific municipality by code
+export async function getWaterPricesByMunicipality(municipalityCode: string) {
+  const data = await getWaterPrices();
+  return data.municipalities[municipalityCode] || null;
 }

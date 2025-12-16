@@ -22,6 +22,8 @@ import {
   BreadcrumbListSchema,
 } from "@/shared/components/common/StructuredData";
 import { siteUrl } from "@/config/site";
+import { getWaterPrices, type WaterPriceData } from "@/shared/lib/api";
+import { MunicipalitySelect } from "@/features/calculator/components/MunicipalitySelect";
 
 // Helper to serialize params to URL
 function paramsToSearchParams(params: CalculationParams): URLSearchParams {
@@ -62,11 +64,56 @@ function searchParamsToParams(
 const AdvancedParametersClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [waterPriceData, setWaterPriceData] = useState<WaterPriceData | null>(null);
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string | null>(null);
+  const [waterPricesLoading, setWaterPricesLoading] = useState(true);
+  
   const [params, setParams] = useState<CalculationParams>(() => {
     if (!searchParams) return DEFAULT_PARAMS;
     const urlParams = searchParamsToParams(searchParams);
     return { ...DEFAULT_PARAMS, ...urlParams };
   });
+
+  // Fetch water prices on mount
+  useEffect(() => {
+    const fetchWaterPrices = async () => {
+      try {
+        setWaterPricesLoading(true);
+        const data = await getWaterPrices();
+        setWaterPriceData(data);
+        
+        // If averages are available, use them as default
+        if (data.averages.waterPrice && data.averages.wastewaterPrice) {
+          setParams((prev) => ({
+            ...prev,
+            waterPricePerM3: data.averages.waterPrice!,
+            wastewaterPricePerM3: data.averages.wastewaterPrice!,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to fetch water prices:", error);
+        // Fallback is already handled in getWaterPrices()
+      } finally {
+        setWaterPricesLoading(false);
+      }
+    };
+
+    fetchWaterPrices();
+  }, []);
+
+  // Update params when municipality is selected
+  useEffect(() => {
+    if (!selectedMunicipality || !waterPriceData?.municipalities) return;
+
+    const municipality = waterPriceData.municipalities[selectedMunicipality];
+    if (municipality) {
+      setParams((prev) => ({
+        ...prev,
+        waterPricePerM3: municipality.waterPrice ?? prev.waterPricePerM3,
+        wastewaterPricePerM3: municipality.wastewaterPrice ?? prev.wastewaterPricePerM3,
+      }));
+    }
+  }, [selectedMunicipality, waterPriceData]);
 
   const updateParam = (
     key: keyof CalculationParams,
@@ -149,12 +196,22 @@ const AdvancedParametersClient = () => {
           text="Detaljerte innstillinger for mer nøyaktige beregninger"
         />
 
-        <Card className="shadow-lg">
+        <Card className="shadow-lg" variant="default">
           <CardHeader className="pb-4 border-b">
             <CardTitle className="text-2xl">Innstillinger</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-6">
+              {/* Municipality Selector */}
+              <div className="pb-4 border-b">
+                <MunicipalitySelect
+                  waterPriceData={waterPriceData}
+                  selectedMunicipality={selectedMunicipality}
+                  onSelect={setSelectedMunicipality}
+                  disabled={waterPricesLoading}
+                />
+              </div>
+
               {/* Household Parameters */}
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Husholdning</h3>

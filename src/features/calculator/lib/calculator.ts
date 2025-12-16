@@ -22,6 +22,8 @@ export interface CalculationParams {
   insulatedPipes: boolean;
   tankWaitTimeSec: number;
   tankStorageTempC: number;
+  waterPricePerM3: number; // kr per m³ delivered water
+  wastewaterPricePerM3: number; // kr per m³ wastewater
 }
 
 export interface CalculationResults {
@@ -41,6 +43,12 @@ export interface CalculationResults {
   tankCostPerYearNOK: number;
   annualSavingskWh: number;
   annualSavingsNOK: number;
+  // Water cost fields
+  tanklessWaterCostPerYearNOK: number;
+  tankWaterCostPerYearNOK: number;
+  totalTanklessCostPerYearNOK: number; // energy + water
+  totalTankCostPerYearNOK: number; // energy + water
+  totalAnnualSavingsNOK: number; // energy + water combined
 }
 
 export const DEFAULT_PARAMS: CalculationParams = {
@@ -65,6 +73,8 @@ export const DEFAULT_PARAMS: CalculationParams = {
   insulatedPipes: false, // Common
   tankWaitTimeSec: 10.0, // Tank
   tankStorageTempC: 65.0, // Tank
+  waterPricePerM3: 22.74, // Average from SSB (kr/m³)
+  wastewaterPricePerM3: 26.51, // Average from SSB (kr/m³)
 };
 
 export const PARAM_BOUNDS: Record<
@@ -92,6 +102,8 @@ export const PARAM_BOUNDS: Record<
   insulatedPipes: null, // boolean, no bounds
   tankWaitTimeSec: { min: 5, max: 45, default: 10 },
   tankStorageTempC: { min: 55, max: 75, default: 65 },
+  waterPricePerM3: { min: 0, max: 100, default: 22.74 },
+  wastewaterPricePerM3: { min: 0, max: 100, default: 26.51 },
 };
 
 /**
@@ -209,9 +221,33 @@ export function calculateResults(
   const tanklessCostPerYearNOK = tanklesskWhPerYear * params.strømprisNOKPerkWh;
   const tankCostPerYearNOK = tankkWhPerYear * params.strømprisNOKPerkWh;
 
-  // Calculate savings
+  // Calculate savings (energy only)
   const annualSavingskWh = tankkWhPerYear - tanklesskWhPerYear;
   const annualSavingsNOK = tankCostPerYearNOK - tanklessCostPerYearNOK;
+
+  // Calculate water consumption in m³ per year
+  // Total water = daily consumption + wait water waste
+  const annualWaterVolumeTanklessM3 =
+    ((dailyVolumeTankless + dailyWaitWaterWasteTankless) * 365) / 1000;
+  const annualWaterVolumeTankM3 =
+    ((dailyVolumeTank + dailyWaitWaterWasteTank) * 365) / 1000;
+
+  // Calculate water costs (water price + wastewater price per m³)
+  const tanklessWaterCostPerYearNOK =
+    annualWaterVolumeTanklessM3 *
+    (params.waterPricePerM3 + params.wastewaterPricePerM3);
+  const tankWaterCostPerYearNOK =
+    annualWaterVolumeTankM3 *
+    (params.waterPricePerM3 + params.wastewaterPricePerM3);
+
+  // Calculate total costs (energy + water)
+  const totalTanklessCostPerYearNOK =
+    tanklessCostPerYearNOK + tanklessWaterCostPerYearNOK;
+  const totalTankCostPerYearNOK = tankCostPerYearNOK + tankWaterCostPerYearNOK;
+
+  // Calculate total savings (energy + water)
+  const totalAnnualSavingsNOK =
+    totalTankCostPerYearNOK - totalTanklessCostPerYearNOK;
 
   return {
     dusjerPerDagTotal,
@@ -236,6 +272,22 @@ export function calculateResults(
     tankCostPerYearNOK,
     annualSavingskWh,
     annualSavingsNOK,
+    // Water costs
+    tanklessWaterCostPerYearNOK: isNaN(tanklessWaterCostPerYearNOK)
+      ? 0
+      : tanklessWaterCostPerYearNOK,
+    tankWaterCostPerYearNOK: isNaN(tankWaterCostPerYearNOK)
+      ? 0
+      : tankWaterCostPerYearNOK,
+    totalTanklessCostPerYearNOK: isNaN(totalTanklessCostPerYearNOK)
+      ? 0
+      : totalTanklessCostPerYearNOK,
+    totalTankCostPerYearNOK: isNaN(totalTankCostPerYearNOK)
+      ? 0
+      : totalTankCostPerYearNOK,
+    totalAnnualSavingsNOK: isNaN(totalAnnualSavingsNOK)
+      ? 0
+      : totalAnnualSavingsNOK,
   };
 }
 
@@ -267,3 +319,5 @@ export function validateAndSanitizeParam(
 
   return { [key]: sanitizedValue } as Partial<CalculationParams>;
 }
+
+

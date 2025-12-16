@@ -56,7 +56,11 @@ export default {
   			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
+  				foreground: 'hsl(var(--card-foreground))',
+  				elevated: 'hsl(var(--card-elevated))',
+  				'elevated-foreground': 'hsl(var(--card-elevated-foreground))',
+  				base: 'hsl(var(--card-base))',
+  				'base-foreground': 'hsl(var(--card-base-foreground))'
   			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
