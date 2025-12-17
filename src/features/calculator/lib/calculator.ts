@@ -98,7 +98,7 @@ export const PARAM_BOUNDS: Record<
   washbasinDurationSec: { min: 5, max: 30, default: 10 },
   pipeLengthTanklessM: { min: 0.5, max: 10, default: 2 },
   pipeLengthTankM: { min: 5, max: 20, default: 10 },
-  ambientTempC: { min: 15, max: 25, default: 20 },
+  ambientTempC: { min: 10, max: 25, default: 20 },
   insulatedPipes: null, // boolean, no bounds
   tankWaitTimeSec: { min: 5, max: 45, default: 10 },
   tankStorageTempC: { min: 55, max: 75, default: 65 },
@@ -318,6 +318,38 @@ export function validateAndSanitizeParam(
   );
 
   return { [key]: sanitizedValue } as Partial<CalculationParams>;
+}
+
+/**
+ * Checks if the current parameters differ from default parameters
+ * @param params - Current calculation parameters
+ * @returns true if any parameter differs from defaults, false otherwise
+ */
+export function hasCustomParams(params: CalculationParams): boolean {
+  const EPSILON = 0.0001; // Small epsilon for floating-point comparison
+
+  for (const key in DEFAULT_PARAMS) {
+    const paramKey = key as keyof CalculationParams;
+    const currentValue = params[paramKey];
+    const defaultValue = DEFAULT_PARAMS[paramKey];
+
+    // Handle boolean values
+    if (typeof defaultValue === "boolean") {
+      if (currentValue !== defaultValue) {
+        return true;
+      }
+      continue;
+    }
+
+    // Handle numeric values with epsilon comparison
+    if (typeof defaultValue === "number" && typeof currentValue === "number") {
+      if (Math.abs(currentValue - defaultValue) > EPSILON) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 

@@ -36,9 +36,12 @@ import {
   Info,
   Settings,
   Zap,
+  RotateCcw,
+  X,
 } from "lucide-react";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
 import { ParameterBadge } from "@/features/calculator/components/ParameterBadge";
 import { ComparisonCard } from "@/features/calculator/components/ComparisonCard";
 import {
@@ -47,6 +50,7 @@ import {
   DEFAULT_PARAMS,
   calculateResults,
   validateAndSanitizeParam,
+  hasCustomParams,
 } from "@/features/calculator/lib/calculator";
 import PageTitle from "@/shared/components/common/PageTitle";
 import { useRouter } from "next/navigation";
@@ -117,9 +121,17 @@ const CalculatorClient = () => {
 
   // Update params when URL changes (e.g., returning from settings page)
   useEffect(() => {
-    if (!searchParams) return;
+    if (!searchParams) {
+      setParams(DEFAULT_PARAMS);
+      return;
+    }
     const urlParams = searchParamsToParams(searchParams);
-    setParams((prev) => ({ ...DEFAULT_PARAMS, ...prev, ...urlParams }));
+    // If no URL params, reset to defaults; otherwise merge with defaults
+    if (Object.keys(urlParams).length === 0) {
+      setParams(DEFAULT_PARAMS);
+    } else {
+      setParams((prev) => ({ ...DEFAULT_PARAMS, ...prev, ...urlParams }));
+    }
   }, [searchParams]);
 
   const results = useMemo<CalculationResults>(() => {
@@ -168,6 +180,15 @@ const CalculatorClient = () => {
     []
   );
 
+  const isUsingCustomParams = useMemo(() => {
+    return hasCustomParams(params);
+  }, [params]);
+
+  const handleResetToDefaults = () => {
+    setParams(DEFAULT_PARAMS);
+    router.replace("/kalkulator");
+  };
+
   return (
     <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
       <StructuredData data={serviceSchema} />
@@ -187,6 +208,26 @@ const CalculatorClient = () => {
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
             <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
             <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+
+            {/* Custom Parameters Badge */}
+            {isUsingCustomParams && (
+              <div className="absolute top-4 right-4 z-20">
+                <Badge
+                  variant="default"
+                  className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30 gap-1.5 pr-1"
+                >
+                  <Settings className="h-3 w-3" />
+                  <span className="text-xs">Tilpasset</span>
+                  <button
+                    onClick={handleResetToDefaults}
+                    className="ml-1 hover:bg-destructive/50 rounded-full p-0.5 transition-colors"
+                    aria-label="Tilbakestill til standard"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              </div>
+            )}
 
             <CardContent className="pt-8 pb-8 relative z-10">
               <div className="text-center space-y-4">
@@ -340,9 +381,17 @@ const CalculatorClient = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-lg">
-                  Standard forutsetninger
-                </CardTitle>
+                <div className="flex items-center gap-2 mb-2">
+                  <CardTitle className="text-lg">
+                    Standard forutsetninger
+                  </CardTitle>
+                  {isUsingCustomParams && (
+                    <Badge variant="outline" className="text-xs">
+                      <Settings className="h-3 w-3 mr-1" />
+                      Tilpasset
+                    </Badge>
+                  )}
+                </div>
                 <CardDescription className="text-sm md:text-base text-muted-foreground">
                   Kalkulatoren bruker realistiske standardverdier for
                   energibruk, vannforbruk og temperatur. Disse kan justeres for
@@ -435,13 +484,13 @@ const CalculatorClient = () => {
                       icon={Droplet}
                       iconColor="text-blue-500"
                       label="Vannpris (kr/m³)"
-                      value={`${params.waterPricePerM3} kr/m³`}
+                      value={`${params.waterPricePerM3.toFixed(2)} kr/m³`}
                     />
                     <ParameterBadge
                       icon={Droplet}
                       iconColor="text-blue-500"
                       label="Avløp"
-                      value={`${params.wastewaterPricePerM3} kr/m³`}
+                      value={`${params.wastewaterPricePerM3.toFixed(2)} kr/m³`}
                     />
                   </>
                 )}
@@ -643,17 +692,17 @@ const CalculatorClient = () => {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <div className="flex-1">
                 <h3 className="text-xl font-semibold mb-2">
-                  Vil du justere parametrene?
+                  {isUsingCustomParams
+                    ? "Du bruker tilpassede parametere"
+                    : "Vil du justere parametrene?"}
                 </h3>
                 <p className="text-muted-foreground">
-                  Du kan tilpasse alle beregningsparametere for å få en mer
-                  nøyaktig beregning basert på dine spesifikke behov og forhold.
-                  Det er enkelt å renge ut forbruket til en COAX vannvarmer. Det
-                  er derimot ikke så enkelt å renge ut forbruket til en
-                  tankbereder da den avhenger av en rekke faktorer.
+                  {isUsingCustomParams
+                    ? "Du har endret på parameterene og ser et tilpasset resultat."
+                    : "Du kan tilpasse alle beregningsparametere for å få en mer nøyaktig beregning basert på dine spesifikke behov og forhold. Det er enkelt å renge ut forbruket til en COAX vannvarmer. Det er derimot ikke så enkelt å renge ut forbruket til en tankbereder da den avhenger av en rekke faktorer."}
                 </p>
               </div>
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex flex-col md:flex-row gap-2">
                 <Button
                   onClick={() => router.push("/kalkulator/innstillinger")}
                   size="lg"
@@ -662,6 +711,17 @@ const CalculatorClient = () => {
                   <Settings className="w-4 h-4 mr-2" />
                   Innstillinger
                 </Button>
+                {isUsingCustomParams && (
+                  <Button
+                    onClick={handleResetToDefaults}
+                    size="lg"
+                    variant="outline"
+                    className="group w-full md:w-auto"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Tilbakestill
+                  </Button>
+                )}
               </div>
             </div>
           </CardContent>

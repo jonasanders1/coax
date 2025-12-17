@@ -62,7 +62,7 @@ const ContactClient = () => {
                 <div className="flex gap-3">
                   <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <div className="font-semibold mb-1">Adresse</div>
+                    <div className="font-semibold mb-1">Kontoradresse</div>
                     <div className="text-sm text-muted-foreground">
                       Grønnliveien 13, 3474 Åros, Norge
                     </div>
@@ -72,7 +72,7 @@ const ContactClient = () => {
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <div className="font-semibold mb-1">Telefon</div>
+                    <div className="font-semibold mb-1">Servicetelefon</div>
                     <a
                       href="tel:+4797732838"
                       className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -147,24 +147,24 @@ const ContactClient = () => {
                 </Button>
               </CardContent>
             </Card> */}
+            <div className="mt-12 max-w-6xl mx-auto">
+              <Card variant="base">
+                <CardContent className="p-0">
+                  <div className="w-full h-[250px] rounded-lg overflow-hidden">
+                    <iframe
+                      title="Kart - Grønnliveien 13, 3474 Åros"
+                      src="https://www.google.com/maps?q=Grønnliveien%2013,%203474%20Åros&output=embed"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="eager"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
-        <div className="mt-12 max-w-6xl mx-auto">
-          <Card variant="base">
-            <CardContent className="p-0">
-              <div className="w-full h-[400px] rounded-lg overflow-hidden">
-                <iframe
-                  title="Kart - Grønnliveien 13, 3474 Åros"
-                  src="https://www.google.com/maps?q=Grønnliveien%2013,%203474%20Åros&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="eager"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
