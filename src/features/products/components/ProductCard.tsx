@@ -48,7 +48,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                 />
               </>
             ) : (
-              <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground" role="img" aria-label="Ingen bilde tilgjengelig">
+              <div
+                className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground"
+                role="img"
+                aria-label="Ingen bilde tilgjengelig"
+              >
                 <Image className="h-10 w-10" aria-hidden="true" />
               </div>
             )}
@@ -72,8 +76,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Button
           asChild
           size="sm"
-          className="flex-1 hover:bg-primary hover:text-primary-foreground"
-          variant="outline"
+          className="flex-1"
+          variant="default"
           onClick={(e) => e.stopPropagation()}
           aria-label={`Les mer om ${product.model} COAX vannvarmer`}
         >

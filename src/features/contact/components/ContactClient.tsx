@@ -112,7 +112,7 @@ const ContactClient = () => {
                 </div>
               </CardContent>
             </Card>
-
+            {/* 
             <Card
               className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
@@ -146,7 +146,7 @@ const ContactClient = () => {
                   ></span>
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
         <div className="mt-12 max-w-6xl mx-auto">

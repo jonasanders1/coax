@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import Header from "@/shared/components/layout/Header";
 import Footer from "@/shared/components/layout/Footer";
 import ScrollUp from "@/shared/components/common/ScrollUp";
-import  {ChatDemo } from "@/features/chatbot/components/Chatbot3";
+// import  {ChatDemo } from "@/features/chatbot/components/Chatbot3";
 import CookieConsent from "@/shared/components/common/CookieConsent";
 import { MainContentWrapper } from "@/shared/components/common/MainContentWrapper";
 import { siteUrl } from "@/config/site";
@@ -157,7 +157,7 @@ export default function RootLayout({
             <Footer />
             <div className="fixed bottom-6 right-3 md:right-6 z-50 flex flex-col gap-2 items-end justify-end">
               <ScrollUp />
-              <ChatDemo />
+              {/* <ChatDemo /> */}
             </div>
             <Suspense fallback={null}>
               <CookieConsent />

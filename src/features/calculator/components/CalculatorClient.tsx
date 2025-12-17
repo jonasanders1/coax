@@ -34,8 +34,6 @@ import {
   Timer,
   ChevronRight,
   Info,
-  ChevronDown,
-  ChevronUp,
   Settings,
   Zap,
 } from "lucide-react";
@@ -107,8 +105,6 @@ function searchParamsToParams(
 }
 
 const CalculatorClient = () => {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showAllDefaults, setShowAllDefaults] = useState(false);
@@ -359,7 +355,7 @@ const CalculatorClient = () => {
             <h3 className="text-base font-semibold mb-3 text-muted-foreground">
               Felles parametere
             </h3>
-            <div className="space-y-6">
+            <div className="space-y-6 relative">
               {/* Common Parameters Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <ParameterBadge
@@ -369,22 +365,17 @@ const CalculatorClient = () => {
                   value={`${params.minPerDusj} min`}
                 />
                 <ParameterBadge
+                  icon={DollarSign}
+                  label="Strømpris"
+                  iconColor="text-yellow-500"
+                  value={`${params.strømprisNOKPerkWh} kr/kWh`}
+                />
+                <ParameterBadge
                   icon={Timer}
                   iconColor="text-green-500"
                   label="Håndvask varighet"
                   value={`${params.washbasinDurationSec}s`}
-                />
-                <ParameterBadge
-                  icon={Timer}
-                  iconColor="text-green-500"
-                  label="Kjøkkenvask varighet"
-                  value={`${params.kitchenDurationSec}s`}
-                />
-                <ParameterBadge
-                  icon={Thermometer}
-                  label="Innløp"
-                  iconColor="text-blue-500"
-                  value={`${params.inletTempC}°C`}
+                  className="hidden md:flex"
                 />
                 <ParameterBadge
                   icon={Flame}
@@ -393,11 +384,20 @@ const CalculatorClient = () => {
                   value={`${params.targetTempC}°C`}
                 />
                 <ParameterBadge
-                  icon={DollarSign}
-                  label="Strømpris"
-                  iconColor="text-yellow-500"
-                  value={`${params.strømprisNOKPerkWh} kr/kWh`}
+                  icon={Timer}
+                  iconColor="text-green-500"
+                  label="Kjøkkenvask varighet"
+                  value={`${params.kitchenDurationSec}s`}
+                  className="hidden md:flex"
                 />
+                <ParameterBadge
+                  icon={Thermometer}
+                  label="Innløp"
+                  iconColor="text-blue-500"
+                  value={`${params.inletTempC}°C`}
+                  className="hidden md:flex"
+                />
+
                 {showAllDefaults && (
                   <>
                     <ParameterBadge
@@ -431,7 +431,22 @@ const CalculatorClient = () => {
                       label="Kjøkken vask per pers./dag"
                       value={params.kitchenUsesPerPersonPerDay}
                     />
+                    <ParameterBadge
+                      icon={Droplet}
+                      iconColor="text-blue-500"
+                      label="Vannpris (kr/m³)"
+                      value={`${params.waterPricePerM3} kr/m³`}
+                    />
+                    <ParameterBadge
+                      icon={Droplet}
+                      iconColor="text-blue-500"
+                      label="Avløp"
+                      value={`${params.wastewaterPricePerM3} kr/m³`}
+                    />
                   </>
+                )}
+                {!showAllDefaults && (
+                  <div className="bg-gradient-to-t from-card to-transparent absolute bottom-0 left-0 w-full h-[60px]" />
                 )}
               </div>
 

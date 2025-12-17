@@ -82,7 +82,7 @@ export function ChatDemo(props: ChatDemoProps) {
     body.style.top = `-${scrollY}px`;
     body.style.width = "100%";
     body.style.overflow = "hidden";
-    
+
     // Also set on html for better compatibility
     html.style.overflow = "hidden";
 
@@ -90,13 +90,15 @@ export function ChatDemo(props: ChatDemoProps) {
     const preventTouchMove = (e: TouchEvent) => {
       // Allow touchmove inside the chat container
       const target = e.target as HTMLElement;
-      const chatContainer = target.closest('[data-chatbot-dialog]');
+      const chatContainer = target.closest("[data-chatbot-dialog]");
       if (!chatContainer) {
         e.preventDefault();
       }
     };
 
-    document.addEventListener("touchmove", preventTouchMove, { passive: false });
+    document.addEventListener("touchmove", preventTouchMove, {
+      passive: false,
+    });
 
     return () => {
       // Restore scroll position
@@ -105,10 +107,10 @@ export function ChatDemo(props: ChatDemoProps) {
       body.style.width = "";
       body.style.overflow = "";
       html.style.overflow = "";
-      
+
       // Restore scroll position
       window.scrollTo(0, scrollY);
-      
+
       document.removeEventListener("touchmove", preventTouchMove);
     };
   }, [isOpen]);
@@ -147,7 +149,7 @@ export function ChatDemo(props: ChatDemoProps) {
         onClick={openChat}
         size="icon"
         className={cn(
-          "md:h-12 md:w-12 h-10 w-10 rounded-full shadow-lg border border-border",
+          "md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md",
           "transition-all duration-200",
           isOpen && "opacity-0 pointer-events-none"
         )}

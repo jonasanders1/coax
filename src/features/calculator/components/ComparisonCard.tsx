@@ -39,7 +39,6 @@ export function ComparisonCard({
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
       <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
       <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
-
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-white">
           {title}
@@ -48,7 +47,7 @@ export function ComparisonCard({
           {description}
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-4 relative z-10 space-y-4">
+      <CardContent className="relative z-10 space-y-4">
         {/* Total Cost - Full Width */}
         <div className="bg-black/10 backdrop-blur-sm rounded-lg p-4 borde">
           <div className="flex items-center gap-2 mb-2">

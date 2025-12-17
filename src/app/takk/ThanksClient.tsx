@@ -28,13 +28,13 @@ const ThanksClient = () => {
           Tusen takk for din henvendelse!
         </h1>
         <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-          Vi har mottatt meldingen din og vil svare så snart vi kan.
+          Vi har mottatt meldingen og vil svare så snart vi kan.
         </p>
         <div className="space-y-3">
           <Button asChild className="w-full" size="lg">
             <Link href="/">Tilbake til forsiden</Link>
           </Button>
-          <p className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-2">
+          {/* <p className="flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-2">
             <span>Har du spørsmål i mellomtiden?</span>
             <button
               onClick={handleChatClick}
@@ -44,7 +44,7 @@ const ThanksClient = () => {
               <MessageSquareText className="mr-1 h-4 w-4 transition-transform group-hover:scale-110" />
               {isNavigating ? "Åpner..." : "Snakk med Coax-AI"}
             </button>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

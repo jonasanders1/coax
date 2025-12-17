@@ -545,9 +545,9 @@ const HomePage = () => {
         </div>
       </section>
 
-      <div className="container px-4 max-w-6xl mx-auto bg-background">
+      {/* <div className="container px-4 max-w-6xl mx-auto bg-background">
         <CtaSection isHeader={false} />
-      </div>
+      </div> */}
     </div>
   );
 };

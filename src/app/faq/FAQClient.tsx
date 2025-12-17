@@ -60,7 +60,7 @@ const FAQClient = () => {
           text="Finn svar på alt fra installasjon og el-krav til effektivitet, vannkvalitet og bruksområder."
         />
 
-        <CtaSection isHeader={true} />
+        {/* <CtaSection isHeader={true} /> */}
 
         <div className="mb-8">
           <div className="relative">

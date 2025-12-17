@@ -37,7 +37,7 @@ const ScrollUp = () => {
     >
       <Button
         size="icon"
-        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md border border-border"
+        className="md:h-12 md:w-12 h-10 w-10 rounded-full shadow-md"
         aria-hidden="true"
         tabIndex={-1}
       >

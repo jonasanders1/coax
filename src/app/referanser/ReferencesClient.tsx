@@ -25,7 +25,10 @@ const ReferencesClient = () => {
                       <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
                         <img
                           src={ref.image}
-                          alt={`${ref.caption} - ${ref.testimonial.substring(0, 50)}...`}
+                          alt={`${ref.caption} - ${ref.testimonial.substring(
+                            0,
+                            50
+                          )}...`}
                           className="w-full h-full object-cover object-center"
                         />
                       </div>
@@ -44,27 +47,9 @@ const ReferencesClient = () => {
             </div>
           </div>
         </section>
-
-        <section className="py-16 md:py-24 bg-muted text-foreground">
-          <div className="container max-w-6xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold">
-              Se hvordan COAX passer inn i ditt prosjekt.
-            </h2>
-            <p className="mt-4 max-w-xl mx-auto text-lg text-muted-foreground">
-              Klar for å oppgradere? Vi hjelper deg med å finne den beste
-              løsningen.
-            </p>
-            <div className="mt-8">
-              <Button asChild size="lg" className="gap-2" aria-label="Kontakt en ekspert for å snakke om ditt prosjekt">
-                <Link href="/kontakt">Snakk med en ekspert</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
       </div>
     </div>
   );
 };
 
 export default ReferencesClient;
-

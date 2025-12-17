@@ -33,7 +33,7 @@ const CtaSection = ({ isHeader }: CtaSectionProps) => {
                 spørsmål – 24/7!
               </p>
             </div>
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <Button
                 onClick={() => openChat()}
                 size="lg"
