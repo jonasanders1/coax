@@ -106,17 +106,57 @@ export const PARAM_BOUNDS: Record<
   wastewaterPricePerM3: { min: 0, max: 100, default: 26.51 },
 };
 
+// Physical constants used in calculations
+const SPECIFIC_HEAT_WH_PER_L_C = 1.162; // Wh per liter per °C
+const PIPE_CAPACITY_L_PER_M = 0.15; // Liters per meter for typical 15mm pipe
+const COAX_WAIT_TIME_SEC = 2; // Fixed wait time for COAX water heater
+
+/**
+ * Asserts that all provided values are finite numbers
+ * @throws Error if any value is not finite
+ */
+function assertFinite(...values: number[]): void {
+  if (values.some((v) => !Number.isFinite(v))) {
+    throw new Error("Invalid calculation input: non-finite values detected");
+  }
+}
+
 /**
  * Calculates energy consumption and costs for both tankless (COAX) and tank water heaters
- * @param params - Calculation parameters
+ * @param params - Calculation parameters (must be validated and sanitized)
  * @returns Calculation results including energy usage, costs, and savings
+ * @throws Error if any input parameter is not a finite number
  */
 export function calculateResults(
   params: CalculationParams
 ): CalculationResults {
+  // Guard: Assert all numeric parameters are finite
+  assertFinite(
+    params.antallPersoner,
+    params.dusjerPerPersonPerDag,
+    params.minPerDusj,
+    params.tanklessEfficiency,
+    params.tankEfficiency,
+    params.standbyTapTankkWhPerYear,
+    params.strømprisNOKPerkWh,
+    params.inletTempC,
+    params.targetTempC,
+    params.flowRateLPerMinTankless,
+    params.flowRateLPerMinTank,
+    params.kitchenUsesPerPersonPerDay,
+    params.kitchenDurationSec,
+    params.washbasinUsesPerPersonPerDay,
+    params.washbasinDurationSec,
+    params.pipeLengthTanklessM,
+    params.pipeLengthTankM,
+    params.ambientTempC,
+    params.tankWaitTimeSec,
+    params.tankStorageTempC,
+    params.waterPricePerM3,
+    params.wastewaterPricePerM3
+  );
+
   const deltaT = params.targetTempC - params.inletTempC;
-  const specificHeat = 1.162; // Wh/L/°C
-  const pipeCapacity = 0.15; // L/m for typical 15mm pipe
   const insulatedFactor = params.insulatedPipes ? 0.5 : 1;
 
   const dusjerPerDagTotal =
@@ -142,7 +182,7 @@ export function calculateResults(
     params.flowRateLPerMinTankless;
   const extraVolumeTankless =
     totalUsesPerDay *
-    (params.pipeLengthTanklessM * pipeCapacity * insulatedFactor);
+    (params.pipeLengthTanklessM * PIPE_CAPACITY_L_PER_M * insulatedFactor);
   const dailyVolumeTankless =
     showerVolumeTankless +
     kitchenVolumeTankless +
@@ -161,7 +201,8 @@ export function calculateResults(
     (params.washbasinDurationSec / 60) *
     params.flowRateLPerMinTank;
   const extraVolumeTank =
-    totalUsesPerDay * (params.pipeLengthTankM * pipeCapacity * insulatedFactor);
+    totalUsesPerDay *
+    (params.pipeLengthTankM * PIPE_CAPACITY_L_PER_M * insulatedFactor);
   const dailyVolumeTank =
     showerVolumeTank +
     kitchenVolumeTank +
@@ -169,26 +210,13 @@ export function calculateResults(
     extraVolumeTank;
 
   // Calculate wait time water waste
-  // COAX: Fixed 2 seconds wait time
-  const coaxWaitTimeSec = 3;
-  const tankWaitTimeSec = params.tankWaitTimeSec ?? 20; // Default to 20 if undefined
-
-  // Ensure all values are valid numbers
-  const validTotalUses = isNaN(totalUsesPerDay) ? 0 : totalUsesPerDay;
-  const validFlowRateTankless = isNaN(params.flowRateLPerMinTankless)
-    ? 0
-    : params.flowRateLPerMinTankless;
-  const validFlowRateTank = isNaN(params.flowRateLPerMinTank)
-    ? 0
-    : params.flowRateLPerMinTank;
-  const validTankWaitTime = isNaN(tankWaitTimeSec) ? 20 : tankWaitTimeSec;
-
+  // COAX: Fixed wait time (3 seconds)
   const dailyWaitWaterWasteTankless =
-    validTotalUses * (coaxWaitTimeSec / 60) * validFlowRateTankless;
+    totalUsesPerDay * (COAX_WAIT_TIME_SEC / 60) * params.flowRateLPerMinTankless;
 
   // Tank: Adjustable wait time
   const dailyWaitWaterWasteTank =
-    validTotalUses * (validTankWaitTime / 60) * validFlowRateTank;
+    totalUsesPerDay * (params.tankWaitTimeSec / 60) * params.flowRateLPerMinTank;
 
   // Calculate annual water savings
   const annualWaterSavingsLiters =
@@ -196,7 +224,8 @@ export function calculateResults(
 
   // Calculate energy consumption for tankless
   const tanklessEnergyDailyWh =
-    (dailyVolumeTankless * specificHeat * deltaT) / params.tanklessEfficiency;
+    (dailyVolumeTankless * SPECIFIC_HEAT_WH_PER_L_C * deltaT) /
+    params.tanklessEfficiency;
   const tanklesskWhPerDay = tanklessEnergyDailyWh / 1000;
   const tanklesskWhPerYear = tanklesskWhPerDay * 365;
 
@@ -209,10 +238,17 @@ export function calculateResults(
 
   // Energy to heat the required hot water volume to storage temperature
   const tankEnergyDailyWh =
-    (requiredHotWaterVolume * specificHeat * storageDeltaT) /
+    (requiredHotWaterVolume * SPECIFIC_HEAT_WH_PER_L_C * storageDeltaT) /
     params.tankEfficiency;
   const tankkWhPerDay = tankEnergyDailyWh / 1000;
-  const standbyAdjustment = 1 + (20 - params.ambientTempC) / 10;
+
+  // Standby heat loss adjustment based on ambient temperature
+  // Heuristic: Lower ambient temp = higher heat loss
+  // Clamped to reasonable range (0.7 to 1.3) to prevent negative or extreme values
+  const standbyAdjustment = Math.max(
+    0.7,
+    Math.min(1.3, 1 + (20 - params.ambientTempC) / 20)
+  );
   const standbyYearAdjusted =
     params.standbyTapTankkWhPerYear * standbyAdjustment;
   const tankkWhPerYear = tankkWhPerDay * 365 + standbyYearAdjusted;
@@ -254,15 +290,9 @@ export function calculateResults(
     minPerDagTotal,
     dailyVolumeTankless,
     dailyVolumeTank,
-    dailyWaitWaterWasteTankless: isNaN(dailyWaitWaterWasteTankless)
-      ? 0
-      : dailyWaitWaterWasteTankless,
-    dailyWaitWaterWasteTank: isNaN(dailyWaitWaterWasteTank)
-      ? 0
-      : dailyWaitWaterWasteTank,
-    annualWaterSavingsLiters: isNaN(annualWaterSavingsLiters)
-      ? 0
-      : annualWaterSavingsLiters,
+    dailyWaitWaterWasteTankless,
+    dailyWaitWaterWasteTank,
+    annualWaterSavingsLiters,
     deltaT,
     tanklesskWhPerDay,
     tankkWhPerDay,
@@ -273,21 +303,11 @@ export function calculateResults(
     annualSavingskWh,
     annualSavingsNOK,
     // Water costs
-    tanklessWaterCostPerYearNOK: isNaN(tanklessWaterCostPerYearNOK)
-      ? 0
-      : tanklessWaterCostPerYearNOK,
-    tankWaterCostPerYearNOK: isNaN(tankWaterCostPerYearNOK)
-      ? 0
-      : tankWaterCostPerYearNOK,
-    totalTanklessCostPerYearNOK: isNaN(totalTanklessCostPerYearNOK)
-      ? 0
-      : totalTanklessCostPerYearNOK,
-    totalTankCostPerYearNOK: isNaN(totalTankCostPerYearNOK)
-      ? 0
-      : totalTankCostPerYearNOK,
-    totalAnnualSavingsNOK: isNaN(totalAnnualSavingsNOK)
-      ? 0
-      : totalAnnualSavingsNOK,
+    tanklessWaterCostPerYearNOK,
+    tankWaterCostPerYearNOK,
+    totalTanklessCostPerYearNOK,
+    totalTankCostPerYearNOK,
+    totalAnnualSavingsNOK,
   };
 }
 
@@ -351,5 +371,3 @@ export function hasCustomParams(params: CalculationParams): boolean {
 
   return false;
 }
-
-
