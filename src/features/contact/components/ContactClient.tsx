@@ -23,96 +23,107 @@ const ContactClient = () => {
   const [formType, setFormType] = useState<"general" | "needs">("general");
   const { openChat } = useChatBot();
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-muted animate-fade-in-up">
+    <div className="min-h-screen pt-24 animate-fade-in-up">
       <StructuredData data={LocalBusinessSchema()} />
-      <div className="container mx-auto px-4">
-        <PageTitle
-          title="Ta kontakt med oss"
-          text="Vi hjelper deg å velge riktig modell og samarbeider med autoriserte elektrikere og rørleggere for trygg installasjon. Perfekt for bolig, hytte eller større prosjekter."
-        />
+      <PageTitle
+        title="Ta kontakt med oss"
+        text="Vi hjelper deg å velge riktig modell og samarbeider med autoriserte elektrikere og rørleggere for trygg installasjon. Perfekt for bolig, hytte eller større prosjekter."
+      />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex gap-2">
-              <Button
-                variant={formType === "general" ? "default" : "outline"}
-                onClick={() => setFormType("general")}
-                className="flex-1 hover:text-white border-none"
-              >
-                Generell forespørsel
-              </Button>
-              <Button
-                variant={formType === "needs" ? "default" : "outline"}
-                onClick={() => setFormType("needs")}
-                className="flex-1 hover:text-white border-none"
-              >
-                Behovsvurdering
-              </Button>
+      <section className="py-16 md:py-24 bg-muted">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="lg:col-span-2 space-y-4">
+              <div className="flex gap-2">
+                <Button
+                  variant={formType === "general" ? "default" : "outline"}
+                  onClick={() => setFormType("general")}
+                  className="flex-1 "
+                >
+                  Generell forespørsel
+                </Button>
+                <Button
+                  variant={formType === "needs" ? "default" : "outline"}
+                  onClick={() => setFormType("needs")}
+                  className="flex-1"
+                >
+                  Behovsvurdering
+                </Button>
+              </div>
+
+              {formType === "general" ? (
+                <ContactForm />
+              ) : (
+                <NeedsAssessmentForm />
+              )}
             </div>
 
-            {formType === "general" ? <ContactForm /> : <NeedsAssessmentForm />}
-          </div>
-
-          <div className="space-y-6">
-            <Card variant="base">
-              <CardHeader>
-                <CardTitle>Kontaktinformasjon</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-3">
-                  <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <div className="font-semibold mb-1">Kontoradresse</div>
-                    <div className="text-sm text-muted-foreground">
-                      Grønnliveien 13, 3474 Åros, Norge
+            <div className="space-y-6">
+              <Card variant="base">
+                <CardHeader>
+                  <CardTitle>Kontaktinformasjon</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex gap-3">
+                    <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold mb-1">Kontoradresse</div>
+                      <div className="text-sm text-muted-foreground">
+                        Grønnliveien 13, 3474 Åros, Norge
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <div className="font-semibold mb-1">Servicetelefon</div>
-                    <a
-                      href="tel:+4797732838"
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      977 32 838
-                    </a>
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold mb-1">Servicetelefon</div>
+                      <a
+                        href="tel:+4797732838"
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        977 32 838
+                      </a>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <div className="font-semibold mb-1">E-post</div>
-                    <a
-                      href="mailto:post@coax.no"
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      post@coax.no
-                    </a>
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold mb-1">E-post</div>
+                      <a
+                        href="mailto:post@coax.no"
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        post@coax.no
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            <Card variant="base">
-              <CardHeader>
-                <CardTitle>Åpningstider</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Mandag - Fredag</span>
-                  <span className="font-semibold">08:00 - 16:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Lørdag - Søndag</span>
-                  <span className="font-semibold text-destructive">Stengt</span>
-                </div>
-              </CardContent>
-            </Card>
-            {/* 
+              <Card variant="base">
+                <CardHeader>
+                  <CardTitle>Åpningstider</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      Mandag - Fredag
+                    </span>
+                    <span className="font-semibold">08:00 - 16:00</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      Lørdag - Søndag
+                    </span>
+                    <span className="font-semibold text-destructive">
+                      Stengt
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+              {/* 
             <Card
               className="relative overflow-hidden shadow-none"
               style={{ background: "var(--gradient-primary)" }}
@@ -147,26 +158,27 @@ const ContactClient = () => {
                 </Button>
               </CardContent>
             </Card> */}
-            <div className="mt-12 max-w-6xl mx-auto">
-              <Card variant="base">
-                <CardContent className="p-0">
-                  <div className="w-full h-[250px] rounded-lg overflow-hidden">
-                    <iframe
-                      title="Kart - Grønnliveien 13, 3474 Åros"
-                      src="https://www.google.com/maps?q=Grønnliveien%2013,%203474%20Åros&output=embed"
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      loading="eager"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mt-12 max-w-6xl mx-auto">
+                <Card variant="base">
+                  <CardContent className="p-0">
+                    <div className="w-full h-[250px] rounded-lg overflow-hidden">
+                      <iframe
+                        title="Kart - Grønnliveien 13, 3474 Åros"
+                        src="https://www.google.com/maps?q=Grønnliveien%2013,%203474%20Åros&output=embed"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        loading="eager"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

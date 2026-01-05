@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth, type Auth } from "firebase/auth";
+import { getAnalytics, type Analytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -35,3 +36,17 @@ if (typeof window !== "undefined") {
 }
 
 export const auth = authInstance as Auth;
+
+/**
+ * Initialize Firebase Analytics only in the browser.
+ *
+ * This follows the same pattern as Auth to avoid Node/ts-node scripts
+ * failing when Analytics is not configured, while keeping Analytics
+ * fully available in the client app.
+ */
+let analyticsInstance: Analytics | undefined;
+if (typeof window !== "undefined") {
+  analyticsInstance = getAnalytics(app);
+}
+
+export const firebaseAnalytics = analyticsInstance as Analytics;

@@ -22,189 +22,13 @@ import Link from "next/link";
 import { ProductImageGallery } from "@/features/products/components/ProductImageGallery";
 import { absoluteUrl } from "@/config/site";
 import { cn } from "@/shared/lib/utils";
-
-const SPEC_LABELS: Record<string, string> = {
-  color: "Farge",
-  phase: "Fase",
-  voltage: "Spenning (V)",
-  powerOptions: "Effektalternativer (kW)",
-  current: "Strøm (A)",
-  flowRates: "Vannstrøm (L/min)",
-  circuitBreaker: "Sikringskrav",
-  recommendedConnectionWire: "Anbefalt kabeltykkelse (mm²)",
-  safetyClass: "Beskyttelsesklasse",
-  temperatureRange: "Temperaturområde (°C)",
-  overheatProtection: "Overopphetingsvern (°C)",
-  thermalCutoff: "Termisk utkobling (°C)",
-  workingPressure: "Arbeidstrykk",
-  dimensions: "Mål (H×B×D mm)",
-  efficiency: "Energieffektivitet (%)",
-  weight: "Vekt (kg)",
-  minWaterFlowActivation: "Min. vannmengde for aktivering",
-  pipeConnection: "Rørtilkobling",
-  material: "Materiale",
-  tankCapacity: "Tankkapasitet (L)",
-  compressor: "Kompressor",
-  pipeSize: "Anbefalt rørdimensjon",
-  productSize: "Produktstørrelse (mm)",
-  giftBoxSize: "Gaveeske størrelse (mm)",
-  packageSize: "Emballasjestørrelse (mm)",
-  certifications: "Sertifiseringer",
-};
-
-// Helper function to get the unit for a spec key
-const getUnitForKey = (key: string): string | null => {
-  switch (key) {
-    case "flowRates":
-      return " L/min";
-    case "powerOptions":
-      return " kW";
-    case "overheatProtection":
-      return " °C";
-    case "thermalCutoff":
-      return " °C";
-    case "workingPressure":
-      return null;
-    case "temperatureRange":
-      return " °C";
-    case "current":
-      return " A";
-    case "recommendedConnectionWire":
-      return " mm²";
-    case "voltage":
-      return " V";
-    case "weight":
-      return " kg";
-    case "tankCapacity":
-      return " L";
-    case "phase":
-      return "-fase";
-    case "efficiency":
-      return " %";
-    default:
-      return null;
-  }
-};
-
-// Helper function to extract numeric value from a string or number
-const extractNumericValue = (value: string | number): string => {
-  const numValue = typeof value === "number" ? value : parseFloat(value);
-  if (!isNaN(numValue)) {
-    return numValue.toString();
-  }
-  return String(value);
-};
-
-// Helper function to check if a field should be displayed as badges
-// Exclude fields that have special formatting (dimensions, temperatureRange)
-const shouldDisplayAsBadges = (key: string, value: unknown): boolean => {
-  // Only use badges for arrays
-  if (!Array.isArray(value) || value.length === 0) {
-    return false;
-  }
-
-  // Exclude fields with special formatting
-  const excludedKeys = ["dimensions", "temperatureRange"];
-  return !excludedKeys.includes(key);
-};
-
-// Helper function to render badges for array values
-const renderBadges = (key: string, value: unknown): React.ReactNode => {
-  if (!Array.isArray(value) || value.length === 0) {
-    return null;
-  }
-
-  const unit = getUnitForKey(key);
-
-  return (
-    <div className="flex flex-wrap gap-2 justify-end">
-      {value.map((item, index) => {
-        const displayValue =
-          typeof item === "number" ? item.toString() : String(item);
-        const badgeText = unit ? `${displayValue}${unit}` : displayValue;
-        return (
-          <Badge key={index} variant="primary" className="text-sm">
-            {badgeText}
-          </Badge>
-        );
-      })}
-    </div>
-  );
-};
-
-// Helper function to format values with appropriate units
-const formatSpecValue = (key: string, value: unknown): string => {
-  // Handle arrays - group values and add unit once at the end
-  if (Array.isArray(value)) {
-    const unit = getUnitForKey(key);
-
-    // Handle dimensions specially (can be "100x200x300" format)
-    if (key === "dimensions") {
-      return value.map((v) => formatSpecValue(key, v)).join(", ");
-    }
-
-    // Temperature range as "min - max °C" instead of "min, max °C"
-    if (key === "temperatureRange") {
-      const numericValues = value
-        .map((v) => (typeof v === "number" ? v : parseFloat(String(v))))
-        .filter((v) => !Number.isNaN(v));
-      if (!numericValues.length) return "";
-      const text = `${numericValues[0]}${
-        numericValues.length > 1
-          ? ` - ${numericValues[numericValues.length - 1]}`
-          : ""
-      }`;
-      return unit ? `${text}${unit}` : text;
-    }
-
-    // For other arrays, extract numeric values and add unit once
-    if (unit) {
-      const numericValues = value.map((v) => extractNumericValue(v));
-      return `${numericValues.join(", ")}${unit}`;
-    }
-
-    // For keys without units, just join with commas
-    return value.join(", ");
-  }
-
-  // Normalize numbers to strings
-  if (typeof value === "number") {
-    value = value.toString();
-  }
-
-  // Handle dimensions specially (can be "100x200x300" format)
-  if (key === "dimensions") {
-    // Check if it's already formatted with separators
-    const str = String(value);
-    if (str.includes("×") || str.includes("x") || str.includes("X")) {
-      // Split by any separator, trim, and join with proper formatting
-      const parts = str
-        .split(/[×xX]/)
-        .map((part) => part.trim())
-        .filter((part) => part.length > 0);
-      return `${parts.join(" × ")} mm`;
-    }
-    // If it's a single number, add mm
-    const numValue = parseFloat(String(value));
-    if (!isNaN(numValue)) {
-      return `${String(value)} mm`;
-    }
-    return String(value);
-  }
-
-  const numValue = parseFloat(String(value));
-  if (isNaN(numValue)) {
-    return String(value); // Return as-is if not a number
-  }
-
-  // Add units based on spec key
-  const unit = getUnitForKey(key);
-  if (unit) {
-    return `${value}${unit}`;
-  }
-
-  return String(value);
-};
+import {
+  formatSpecValue,
+  getUnitForKey,
+  getSpecLabel,
+  shouldDisplayAsBadges,
+  formatSpecForBadges,
+} from "@/features/products/utils/productUtils";
 
 type ProductDetailsClientProps = {
   productId: string;
@@ -405,7 +229,7 @@ export const ProductDetailsClient = ({
                       : "bg-yellow-100 text-yellow-800"
                   )}
                 >
-                  {inStock ? "På lager" : "Ikke på lager"}
+                  {inStock ? "På lager" : "Kommer snart"}
                 </span>
               </div>
               <div className="flex items-baseline gap-2">
@@ -579,13 +403,13 @@ export const ProductDetailsClient = ({
                     : "bg-yellow-100 text-yellow-800"
                 )}
               >
-                {inStock ? "På lager" : "Ikke på lager"}
+                {inStock ? "På lager" : "Kommer snart"}
               </span>
             </div>
             <p className="text-muted-foreground text-sm md:text-base">
               {inStock
-                ? "Dette produktet er for øyeblikket på lager og kan bestilles."
-                : "Dette produktet er ikke på lager. Ta kontakt for estimert leveringstid."}
+                ? `${name} er for øyeblikket på lager og kan bestilles.`
+                : `${name} er et helt nytt produkt og kommer snart på lager. Ta kontakt for estimert leveringstid.`}
             </p>
           </div>
         </section>
@@ -681,7 +505,7 @@ export const ProductDetailsClient = ({
                               return null;
                             }
 
-                            const label = SPEC_LABELS[key] ?? key;
+                            const label = getSpecLabel(key);
                             const shouldUseBadges = shouldDisplayAsBadges(
                               key,
                               value
@@ -696,9 +520,24 @@ export const ProductDetailsClient = ({
                                   {label}
                                 </th>
                                 <td className="py-2 text-muted-foreground text-right">
-                                  {shouldUseBadges
-                                    ? renderBadges(key, value)
-                                    : formatSpecValue(key, value)}
+                                  {shouldUseBadges ? (
+                                    <div className="flex flex-wrap gap-2 justify-end">
+                                      {formatSpecForBadges(
+                                        key,
+                                        value as unknown[]
+                                      ).map((badgeText, index) => (
+                                        <Badge
+                                          key={index}
+                                          variant="primary"
+                                          className="text-sm"
+                                        >
+                                          {badgeText}
+                                        </Badge>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    formatSpecValue(key, value)
+                                  )}
                                 </td>
                               </tr>
                             );

@@ -3,8 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
-import { Menu, MessageCircle } from "lucide-react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/shared/components/ui/sheet";
+import { Menu, MessageCircle, Phone } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/shared/components/ui/sheet";
 import {
   Accordion,
   AccordionContent,
@@ -57,10 +63,12 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md transition-all 0.2s ease-out ${isSmall ? "shadow-md" : ""}`}>
-      <nav
-        className="container mx-auto px-4 py-2 max-w-6xl"
-      >
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md transition-all 0.2s ease-out ${
+        isSmall ? "shadow-md" : ""
+      }`}
+    >
+      <nav className="container mx-auto px-4 py-2 max-w-6xl">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-tight">
@@ -91,8 +99,7 @@ const Header = () => {
               ))}
           </div>
 
-      
-{/* 
+          {/* 
           <Button
             className="hidden lg:flex text-white"
             style={{ background: 'var(--gradient-primary)' }}
@@ -104,17 +111,18 @@ const Header = () => {
             <MessageCircle className="h-5 w-5" />
           </Button>  */}
 
-          {/* Mobile Menu Button */}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden hover:bg-primary hover:text-white"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            <Menu size={24} />
-          </Button>
+          {/* Mobile Menu Button and Phone */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-primary hover:text-white"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+            >
+              <Menu size={24} />
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -129,7 +137,9 @@ const Header = () => {
                 <SheetTitle>Hovedmeny</SheetTitle>
               </VisuallyHidden>
               <VisuallyHidden>
-                <SheetDescription>Navigasjon for nettstedet og tema-innstillinger</SheetDescription>
+                <SheetDescription>
+                  Navigasjon for nettstedet og tema-innstillinger
+                </SheetDescription>
               </VisuallyHidden>
               <Link href="/" className="flex flex-col leading-tight">
                 <Logo className="w-30" />
@@ -162,7 +172,10 @@ const Header = () => {
                         >
                           <span className="inline-flex items-center gap-3">
                             {item.icon ? (
-                              <item.icon className="h-5 w-5" aria-hidden="true" />
+                              <item.icon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
                             ) : null}
                             {item.label}
                           </span>
@@ -221,11 +234,11 @@ const Header = () => {
                   </Link>
                 );
               })}
-              <div className="border-t border-border pt-4">
+              {/* <div className="border-t border-border pt-4">
                 <Button
                   size="lg"
                   className="w-full mt-2 text-base font-medium"
-                  style={{ background: 'var(--gradient-primary)' }}
+                  style={{ background: "var(--gradient-primary)" }}
                   onClick={() => {
                     openChat();
                     setMobileMenuOpen(false);
@@ -234,8 +247,7 @@ const Header = () => {
                   <MessageCircle className="h-5 w-5" />
                   Snakk med COAX-AI
                 </Button>
-              </div>
-           
+              </div> */}
             </nav>
           </SheetContent>
         </Sheet>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Image } from "lucide-react";
+import { Badge } from "@/shared/components/ui/badge";
 import { useState, useEffect } from "react";
 import {
   Card,
@@ -24,6 +25,17 @@ export default function ProductCard({ product }: ProductCardProps) {
     setIsImageLoaded(false);
   }, [heroImage]);
 
+  // Extract specs for display
+  const phase = product.specs?.phase;
+  const powerOptions = product.specs?.powerOptions;
+
+  // Format power display
+  const powerDisplay = Array.isArray(powerOptions)
+    ? `${powerOptions[0]}-${powerOptions[powerOptions.length - 1]} kW`
+    : powerOptions
+    ? `${powerOptions} kW`
+    : null;
+
   return (
     <Card
       key={product.id}
@@ -32,6 +44,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0">
         <Link href={`/produkter/${product.id}`} className="block">
           <div className="relative aspect-square w-full">
+            <div className="absolute top-2 right-2 z-10 flex flex-col gap-2">
+              {phase && (
+                <Badge variant="primary" className="text-xs font-semibold">
+                  {phase}-fase
+                </Badge>
+              )}
+              {powerDisplay && (
+                <Badge variant="secondary" className="text-xs font-semibold ">
+                  {powerDisplay}
+                </Badge>
+              )}
+            </div>
             {heroImage ? (
               <>
                 {!isImageLoaded && (
@@ -65,7 +89,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </CardTitle>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl md:text-3xl font-semibold">
-            {product.priceFrom} kr
+            Fra {product.priceFrom} kr
           </span>
           <span className="text-xs md:text-sm text-muted-foreground">
             (inkl. mva)

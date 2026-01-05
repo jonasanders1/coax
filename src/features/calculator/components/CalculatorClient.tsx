@@ -61,15 +61,28 @@ import {
 } from "@/shared/components/common/StructuredData";
 import { siteUrl } from "@/config/site";
 
+const COLORS = ["hsl(var(--primary))", "#ef4444"];
+
 const CustomTooltip = ({
   active,
   payload,
   label,
 }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
+    // Get color based on entry name (COAX = primary, Tank = red)
+    const getColorForEntry = (entryName: string) => {
+      return entryName === "Tank" ? COLORS[1] : COLORS[0];
+    };
+    
     return (
       <div className="rounded-lg border bg-card p-3 shadow-lg">
-        <p className="font-semibold mb-2">{label}</p>
+        <div className="flex items-center gap-2 mb-2">
+          <div
+            className="w-4 h-4 rounded-sm shadow-sm"
+            style={{ backgroundColor: getColorForEntry(label) }}
+          />
+          <p className="font-semibold">{label}</p>
+        </div>
         {payload.map((entry, index) => (
           <p key={index} className="text-sm" style={{ color: entry.color }}>
             {`${entry.name}: ${entry.value?.toLocaleString("no-NO", {
@@ -166,8 +179,6 @@ const CalculatorClient = () => {
       },
     ];
   }, [results]);
-
-  const COLORS = ["hsl(var(--primary))", "#ef4444"];
 
   const serviceSchema = useMemo(
     () =>

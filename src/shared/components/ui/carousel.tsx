@@ -221,4 +221,76 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
 );
 CarouselNext.displayName = "CarouselNext";
 
-export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext };
+const CarouselIndicators = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    onIndicatorClick?: () => void;
+  }
+>(({ className, onIndicatorClick, ...props }, ref) => {
+  const { api } = useCarousel();
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setScrollSnaps(api.scrollSnapList());
+
+    const onSelect = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    };
+
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
+  const scrollTo = React.useCallback(
+    (index: number) => {
+      api?.scrollTo(index);
+      // Call the callback to stop auto-scroll when user interacts
+      if (onIndicatorClick) {
+        onIndicatorClick();
+      }
+    },
+    [api, onIndicatorClick]
+  );
+
+  if (scrollSnaps.length <= 1) {
+    return null; // Don't show indicators if there's only one slide
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={cn("flex justify-center gap-2 mt-6", className)}
+      {...props}
+    >
+      {scrollSnaps.map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          className={cn(
+            "h-4 w-4 rounded-full transition-all",
+            index === selectedIndex
+              ? "bg-primary w-8"
+              : "bg-primary/30 hover:bg-primary/50 w-4"
+          )}
+          onClick={() => scrollTo(index)}
+          aria-label={`Go to slide ${index + 1}`}
+          aria-current={index === selectedIndex ? "true" : undefined}
+        />
+      ))}
+    </div>
+  );
+});
+CarouselIndicators.displayName = "CarouselIndicators";
+
+export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselIndicators };

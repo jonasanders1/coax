@@ -4,15 +4,28 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shared/components/ui/table";
 import { Button } from "@/shared/components/ui/button";
 import { Slider } from "@/shared/components/ui/slider";
 import { Label } from "@/shared/components/ui/label";
 import { AlertCircle, CheckCircle, Zap, Droplet, Settings } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/shared/components/ui/alert";
 import { Badge } from "@/shared/components/ui/badge";
 import { useAppContext } from "@/shared/context/AppContext";
 import PageTitle from "@/shared/components/common/PageTitle";
@@ -27,7 +40,11 @@ import { bucketMethodSteps } from "@/features/model-selector/data/modelSelectorD
 import {
   formatFlowRange,
   formatPowerRange,
-  parseFlowValues,
+  formatSpecValue,
+  extractFlowRange,
+  getSpecLabel,
+  shouldDisplayAsBadges,
+  formatSpecForBadges,
 } from "@/features/products/utils/productUtils";
 import {
   type Recommendation,
@@ -42,7 +59,6 @@ import {
   DEFAULT_SECONDS,
   SECONDS_MIN,
   SECONDS_MAX,
-  FLOW_RATE_DECIMAL_THRESHOLD,
 } from "@/features/model-selector/constants/modelSelector";
 
 const ModelSelectorClient = () => {
@@ -92,33 +108,14 @@ const ModelSelectorClient = () => {
 
   // Render flow rates as a single badge with range
   const renderFlowRates = (flowRates: string[]) => {
-    if (flowRates.length === 0 || flowRates[0] === "—") {
+    const range = extractFlowRange(flowRates);
+    
+    if (!range) {
       return <span className="text-muted-foreground">—</span>;
     }
-    
-    // Parse all numeric values from flow rates
-    const flowValues = flowRates
-      .flatMap(parseFlowValues)
-      .filter((num) => !Number.isNaN(num))
-      .sort((a, b) => a - b);
-    
-    if (flowValues.length === 0) {
-      return <span className="text-muted-foreground">—</span>;
-    }
-    
-    const lowest = flowValues[0];
-    const highest = flowValues[flowValues.length - 1];
-    
-    // Format numbers: show 0 decimals if >= threshold, otherwise 1 decimal
-    const format = (value: number) =>
-      Number.isFinite(value)
-        ? value.toFixed(value >= FLOW_RATE_DECIMAL_THRESHOLD ? 0 : 1)
-        : "∞";
-    
-    const rangeText = lowest === highest
-      ? `${format(lowest)} L/min`
-      : `${format(lowest)} - ${format(highest)} L/min`;
-    
+
+    const rangeText = formatFlowRange(range.min, range.max);
+
     return (
       <Badge variant="primary" className="text-sm">
         {rangeText}
@@ -233,7 +230,8 @@ const ModelSelectorClient = () => {
                   <div className="lg:pr-4">
                     <ol className="space-y-2.5 text-sm md:text-base text-muted-foreground list-decimal list-inside ml-1">
                       <li className="pl-1">
-                        Ta med deg en {BUCKET_VOLUME_LITERS}-liters bøtte i dusjen
+                        Ta med deg en {BUCKET_VOLUME_LITERS}-liters bøtte i
+                        dusjen
                       </li>
                       <li className="pl-1">
                         Skru på vannet til ønsket dusjtemperatur og trykk
@@ -282,26 +280,15 @@ const ModelSelectorClient = () => {
                       size="lg"
                       className="w-full text-base"
                       disabled={isCalculateDisabled}
-                      aria-label={productsLoading ? "Laster produkter" : "Beregn anbefalt COAX modell basert på valgt tid"}
+                      aria-label={
+                        productsLoading
+                          ? "Laster produkter"
+                          : "Beregn anbefalt COAX modell basert på valgt tid"
+                      }
                     >
                       {productsLoading ? "Laster produkter..." : "Finn modell"}
                     </Button>
 
-                    <Alert
-                      variant="default"
-                      className="shadow-card-md border border-red-400 bg-red-50 dark:border-red-600 dark:bg-red-950/70"
-                    >
-                      <AlertTitle className="font-bold text-red-900 dark:text-red-100 flex items-center gap-2">
-                        <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
-                        Viktig informasjon
-                      </AlertTitle>
-                      <AlertDescription className="mt-1 font-medium leading-relaxed text-red-900 dark:text-red-100">
-                        <p>
-                          Kontakt alltid en elektriker for en vurdering av ditt
-                          elektriske anlegg.
-                        </p>
-                      </AlertDescription>
-                    </Alert>
                     {productsError ? (
                       <p className="text-sm text-destructive">
                         Kunne ikke laste produkter. Prøv igjen senere.
@@ -311,111 +298,188 @@ const ModelSelectorClient = () => {
                 </div>
               </div>
 
-              {result && flowRate && (
-                <Card
-                  className="shadow-lg overflow-hidden relative"
-                  style={{ background: "var(--gradient-primary)" }}
-                >
-                  {/* Decorative elements */}
-                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"></div>
-                  <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-white/10"></div>
-                  <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
+              {result &&
+                flowRate &&
+                (() => {
+                  // Find the full product data
+                  const product = filteredProducts.find(
+                    (p) => p.id === result.id
+                  );
+                  const productImage = product?.images?.[0];
+                  const specs = product?.specs;
+                  
+                  // Get values using consistent formatting
+                  const phaseValue = specs?.phase !== undefined 
+                    ? formatSpecValue("phase", specs.phase)
+                    : `${result.phase}-fase`;
+                  
+                  // Flow rates: use specs if available, otherwise format from result
+                  const flowRatesRaw = specs?.flowRates && specs.flowRates.length > 0
+                    ? specs.flowRates
+                    : null;
+                  const flowRatesFormatted = flowRatesRaw
+                    ? null // Will format based on shouldDisplayAsBadges
+                    : formatFlowRange(result.minFlow, result.maxFlow);
+                  
+                  // Power options: use specs if available, otherwise format from result
+                  const powerOptionsRaw = specs?.powerOptions
+                    ? specs.powerOptions
+                    : null;
+                  const powerOptionsFormatted = powerOptionsRaw
+                    ? null // Will format based on shouldDisplayAsBadges
+                    : (result.minPowerOption > 0 && result.maxPowerOption > 0
+                      ? formatPowerRange(result.minPowerOption, result.maxPowerOption)
+                      : "—");
+                  
+                  const dimensionsValue = specs?.dimensions
+                    ? formatSpecValue("dimensions", specs.dimensions)
+                    : "—";
+                  
+                  const usageItems = result.usage
+                    .split(",")
+                    .map((item) => item.trim())
+                    .filter(Boolean);
 
-                  <CardHeader className="relative z-10">
-                    <CardTitle className="flex items-center gap-2 text-white text-2xl">
-                      <CheckCircle className="h-6 w-6" />
-                      {result.model}
-                    </CardTitle>
-                    <CardDescription className="text-white/90 text-base mt-2">
-                      Beregnet vannmengde:{" "}
-                      <span className="font-semibold">{flowRate} L/min</span>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-4 relative z-10">
-                    {(() => {
-                      const usageItems = result.usage
-                        .split(",")
-                        .map((item) => item.trim())
-                        .filter(Boolean);
-                      const flowRangeLabel = formatFlowRange(
-                        result.minFlow,
-                        result.maxFlow
-                      );
-                      const powerRangeLabel =
-                        result.minPowerOption > 0 && result.maxPowerOption > 0
-                          ? formatPowerRange(
-                              result.minPowerOption,
-                              result.maxPowerOption
-                            )
-                          : "—";
-                      return (
-                        <div className="space-y-6">
-                          {/* Metrics Grid */}
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Droplet className="w-5 h-5 text-white" />
-                                <p className="text-sm text-white/90 font-medium">
-                                  Strålestørrelse
-                                </p>
-                              </div>
-                              <p className="text-xl font-bold text-white">
-                                {flowRangeLabel}
-                              </p>
-                            </div>
-                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Zap className="w-5 h-5 text-white" />
-                                <p className="text-sm text-white/90 font-medium">
-                                  Effekt
-                                </p>
-                              </div>
-                              <p className="text-xl font-bold text-white">
-                                {powerRangeLabel}
-                              </p>
-                            </div>
-                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Settings className="w-5 h-5 text-white" />
-                                <p className="text-sm text-white/90 font-medium">
-                                  Fase
-                                </p>
-                              </div>
-                              <p className="text-xl font-bold text-white">
-                                {result.phase}
-                              </p>
-                            </div>
-                          </div>
+                  return (
+                    <div className="space-y-6 border-t border-border pt-6">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-2xl font-bold">Anbefaling</h3>
+                        </div>
+                        <p className="text-muted-foreground">
+                          Basert på din vannmengde:{" "}
+                          <span className="font-semibold text-primary">
+                            {flowRate} L/min
+                          </span>
+                        </p>
+                      </div>
 
-                          {/* Usage Items */}
-                          {usageItems.length > 0 && (
-                            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                              <p className="text-sm font-semibold text-white mb-3">
-                                Ideell for:
-                              </p>
-                              <div className="flex flex-wrap gap-2">
-                                {usageItems.map((item) => (
-                                  <span
-                                    key={item}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 text-sm text-white font-medium"
-                                  >
-                                    <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                                    {item}
-                                  </span>
-                                ))}
-                              </div>
+                      <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8">
+                        {/* Product Image */}
+                        <div className="w-full md:w-fit md:h-full">
+                          {productImage && (
+                            <div className="relative aspect-square w-full max-w-[320px] md:w-auto md:h-full md:aspect-square rounded-lg overflow-hidden bg-muted">
+                              <Image
+                                src={productImage}
+                                alt={`${result.model} COAX vannvarmer`}
+                                fill
+                                className="object-cover"
+                                sizes="320px"
+                              />
                             </div>
                           )}
                         </div>
-                      );
-                    })()}
-                  </CardContent>
-                </Card>
-              )}
+
+                        {/* Specs Table */}
+                        <div className="flex flex-col space-y-4 h-full">
+                          <Table className="rounded-lg overflow-hidden">
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead className="font-medium">
+                                  Modell
+                                </TableHead>
+                                <TableHead className="text-right font-semibold">
+                                  {result.model}
+                                </TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {specs?.phase !== undefined && (
+                                <TableRow>
+                                  <TableCell className="font-medium">
+                                    {getSpecLabel("phase")}
+                                  </TableCell>
+                                  <TableCell className="text-right font-semibold">
+                                    {phaseValue}
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                              {(flowRatesRaw || flowRatesFormatted) && (
+                                <TableRow>
+                                  <TableCell className="font-medium">
+                                    {getSpecLabel("flowRates")}
+                                  </TableCell>
+                                  <TableCell className="text-right font-semibold">
+                                    {flowRatesRaw && shouldDisplayAsBadges("flowRates", flowRatesRaw) ? (
+                                      <div className="flex flex-wrap gap-2 justify-end">
+                                        {formatSpecForBadges("flowRates", flowRatesRaw as unknown[]).map(
+                                          (badgeText, index) => (
+                                            <Badge
+                                              key={index}
+                                              variant="primary"
+                                              className="text-sm"
+                                            >
+                                              {badgeText}
+                                            </Badge>
+                                          )
+                                        )}
+                                      </div>
+                                    ) : (
+                                      flowRatesRaw 
+                                        ? formatSpecValue("flowRates", flowRatesRaw)
+                                        : flowRatesFormatted
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                              {(powerOptionsRaw || powerOptionsFormatted) && powerOptionsFormatted !== "—" && (
+                                <TableRow>
+                                  <TableCell className="font-medium">
+                                    {getSpecLabel("powerOptions")}
+                                  </TableCell>
+                                  <TableCell className="text-right font-semibold">
+                                    {powerOptionsRaw && shouldDisplayAsBadges("powerOptions", powerOptionsRaw) ? (
+                                      <div className="flex flex-wrap gap-2 justify-end">
+                                        {formatSpecForBadges("powerOptions", powerOptionsRaw as unknown[]).map(
+                                          (badgeText, index) => (
+                                            <Badge
+                                              key={index}
+                                              variant="primary"
+                                              className="text-sm"
+                                            >
+                                              {badgeText}
+                                            </Badge>
+                                          )
+                                        )}
+                                      </div>
+                                    ) : (
+                                      powerOptionsRaw
+                                        ? formatSpecValue("powerOptions", powerOptionsRaw)
+                                        : powerOptionsFormatted
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                              {dimensionsValue !== "—" && (
+                                <TableRow>
+                                  <TableCell className="font-medium">
+                                    {getSpecLabel("dimensions")}
+                                  </TableCell>
+                                  <TableCell className="text-right font-semibold">
+                                    {dimensionsValue}
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                            </TableBody>
+                          </Table>
+
+                          {/* View Product Link */}
+                          {product && (
+                            <Button asChild size="lg" className="w-full">
+                              <Link href={`/produkter/${product.id}`}>
+                                Les mer om {result.model}
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
             </div>
           </CardContent>
         </Card>
-              
+
         <Card>
           <CardHeader>
             <CardTitle>Produkttabell</CardTitle>
@@ -425,68 +489,59 @@ const ModelSelectorClient = () => {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table
-                className="text-sm w-full"
-                style={{ minWidth: "1000px", tableLayout: "fixed" }}
+              <Table
+                className="text-sm w-full rounded-lg overflow-hidden"
+                style={{ minWidth: "1000px" }}
               >
-                <colgroup>
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "20%" }} />
-                  <col style={{ width: "40%" }} />
-                </colgroup>
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-3 whitespace-nowrap">Modell</th>
-                    <th className="text-left p-3 whitespace-nowrap">Fase</th>
-                    <th className="text-left p-3 whitespace-nowrap">
-                      Liter per minutt
-                    </th>
-                    <th className="text-left p-3 whitespace-nowrap">
-                      Effekt (kW)
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="whitespace-nowrap">Modell</TableHead>
+                    <TableHead className="whitespace-nowrap">
+                      {getSpecLabel("phase")}
+                    </TableHead>
+                    <TableHead>{getSpecLabel("flowRates")}</TableHead>
+                    <TableHead>{getSpecLabel("powerOptions")}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {productsLoading ? (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         colSpan={4}
                         className="p-4 text-center text-muted-foreground"
                       >
                         Laster produkter...
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : tableProducts.length > 0 ? (
                     tableProducts.map((product) => (
-                      <tr
-                        key={product.id}
-                        className="border-b bg-background hover:bg-muted"
-                      >
-                        <td className="p-3 font-semibold">{product.model}</td>
-                        <td className="p-3 whitespace-nowrap">
+                      <TableRow key={product.id}>
+                        <TableCell className="p-3 font-semibold whitespace-nowrap">
+                          {product.model}
+                        </TableCell>
+                        <TableCell className="p-3 whitespace-nowrap">
                           {product.phase}
-                        </td>
-                        <td className="p-3">
+                        </TableCell>
+                        <TableCell className="p-3">
                           {renderFlowRates(product.flowRates)}
-                        </td>
-                        <td className="p-3">
+                        </TableCell>
+                        <TableCell className="p-3">
                           {renderPowerOptions(product.powerOptions)}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   ) : (
-                    <tr>
-                      <td
+                    <TableRow>
+                      <TableCell
                         colSpan={4}
                         className="p-4 text-center text-muted-foreground"
                       >
                         Ingen produktdata tilgjengelig.
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           </CardContent>
         </Card>

@@ -45,7 +45,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
     shortcut: "/favicon.png",
     apple: "/favicon.png",
   },
@@ -94,8 +97,6 @@ export const viewport = {
   userScalable: true,
 };
 
-const MEASUREMENT_ID = "G-HC5YYERVLC";
-
 export default function RootLayout({
   children,
 }: {
@@ -104,6 +105,10 @@ export default function RootLayout({
   return (
     <html lang="nb" suppressHydrationWarning>
       <head>
+        <meta
+          name="google-site-verification"
+          content="lhyWww0E7mLyxuCOHQ6JLeO9RsAsHes-Pd9rcbAbTA8"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -121,25 +126,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        {/* Google Analytics 4 - gtag.js script for compatibility with Google Tag Assistant */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            // Disable GA until consent is given
-            window['ga-disable-${MEASUREMENT_ID}'] = true;
-            // Configure gtag but don't send page_view yet (will be sent after consent)
-            gtag('config', '${MEASUREMENT_ID}', {
-              'send_page_view': false,
-              'anonymize_ip': true
-            });
-          `}
-        </Script>
+        {/* Firebase Analytics is initialized in firebaseConfig.ts and controlled via cookie consent */}
         <StructuredData data={OrganizationSchema()} />
         <StructuredData data={WebSiteSchema()} />
         <Providers>
@@ -159,6 +146,7 @@ export default function RootLayout({
               <ScrollUp />
               {/* <ChatDemo /> */}
             </div>
+
             <Suspense fallback={null}>
               <CookieConsent />
             </Suspense>

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, HelpCircle } from "lucide-react";
 import { navItems } from "@/navItems";
 import Logo from "./Logo";
 import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
@@ -43,6 +43,13 @@ const Footer = () => {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/faq"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
+              >
+                <HelpCircle className="h-4 w-4" aria-hidden="true" />
+                FAQ
+              </Link>
               <button
                 className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
                 onClick={() => {

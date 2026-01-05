@@ -1,80 +1,80 @@
-import ReactGA from "react-ga4";
-
-const MEASUREMENT_ID = "G-HC5YYERVLC";
-const GA_DISABLE_KEY = `ga-disable-${MEASUREMENT_ID}`;
+import { logEvent, setAnalyticsCollectionEnabled } from "firebase/analytics";
+import { firebaseAnalytics } from "@/firebaseConfig";
 
 let isInitialized = false;
+let isEnabled = false;
 
-const setGADisabled = (disabled: boolean) => {
-  if (typeof window === "undefined") return;
-  (window as typeof window & Record<string, boolean>)[GA_DISABLE_KEY] = disabled;
-};
-
-// Declare gtag function for TypeScript
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag: (...args: unknown[]) => void;
-  }
-}
-
+/**
+ * Initialize Firebase Analytics tracking.
+ * This enables analytics collection and marks the service as initialized.
+ */
 export const initGA = () => {
-  // Enable GA tracking first
-  setGADisabled(false);
-  
-  // If already initialized, just reconfigure gtag to ensure tracking is enabled
-  if (isInitialized) {
-    if (typeof window !== "undefined" && window.gtag) {
-      // Reconfigure gtag to enable tracking
-      window.gtag("config", MEASUREMENT_ID, {
-        send_page_view: true,
-        anonymize_ip: true,
-      });
-    }
+  if (typeof window === "undefined") return;
+  if (!firebaseAnalytics) {
+    console.warn("Firebase Analytics is not available");
     return;
   }
-  
-  // Initialize react-ga4 (uses gtag under the hood)
-  ReactGA.initialize(MEASUREMENT_ID);
-  
-  // Also ensure gtag is properly configured and send initial pageview
-  if (typeof window !== "undefined" && window.gtag) {
-    // Reconfigure gtag to enable tracking
-    window.gtag("config", MEASUREMENT_ID, {
-      send_page_view: true,
-      anonymize_ip: true,
-    });
-    
-    // Send initial pageview
-    window.gtag("event", "page_view", {
-      page_path: window.location.pathname + window.location.search,
-    });
+
+  // Enable analytics collection
+  try {
+    setAnalyticsCollectionEnabled(firebaseAnalytics, true);
+    isEnabled = true;
+    isInitialized = true;
+
+    // Log initial page view
+    if (window.location) {
+      logPageView(
+        window.location.pathname + window.location.search
+      );
+    }
+  } catch (error) {
+    console.warn("Failed to enable Firebase Analytics:", error);
   }
-  
-  isInitialized = true;
 };
 
+/**
+ * Disable Firebase Analytics tracking.
+ * This disables analytics collection but keeps the service initialized.
+ */
 export const disableGA = () => {
-  setGADisabled(true);
-  // Note: We don't reset isInitialized here because ReactGA.initialize should only be called once
-  // The disable flag will prevent tracking even if initialized
-};
+  if (typeof window === "undefined") return;
+  if (!firebaseAnalytics) return;
 
-export const logPageView = (path: string) => {
-  if (!isInitialized) return;
-  
-  // Use both react-ga4 and gtag for compatibility
-  ReactGA.send({ hitType: "pageview", page: path });
-  
-  // Also send via gtag directly
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", "page_view", {
-      page_path: path,
-    });
+  // Disable analytics collection
+  try {
+    setAnalyticsCollectionEnabled(firebaseAnalytics, false);
+    isEnabled = false;
+  } catch (error) {
+    console.warn("Failed to disable Firebase Analytics:", error);
   }
 };
 
-// Ensure GA is disabled until the user explicitly opts in.
-if (typeof window !== "undefined") {
-  setGADisabled(true);
+/**
+ * Log a page view event.
+ * Only logs if analytics is initialized and enabled.
+ */
+export const logPageView = (path: string) => {
+  if (typeof window === "undefined") return;
+  if (!firebaseAnalytics || !isInitialized || !isEnabled) return;
+
+  try {
+    logEvent(firebaseAnalytics, "page_view", {
+      page_path: path,
+      page_title: document.title,
+    });
+  } catch (error) {
+    console.warn("Failed to log page view:", error);
+  }
+};
+
+// Ensure analytics is disabled until the user explicitly opts in.
+if (typeof window !== "undefined" && firebaseAnalytics) {
+  // Explicitly disable analytics collection on initialization
+  // This ensures analytics is off by default until consent is given
+  try {
+    setAnalyticsCollectionEnabled(firebaseAnalytics, false);
+  } catch (error) {
+    // Analytics might not be available yet, which is fine
+    // It will be properly initialized when initGA() is called
+  }
 }

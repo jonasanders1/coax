@@ -875,31 +875,31 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
     }
 
     const data = await res.json();
-    
+
     // Parse the response to extract water and wastewater prices
     // Data structure: value array is flat, ordered by [municipality, contentCode, year]
     const municipalities = data.dimension?.KOKkommuneregion0000?.category;
     const contentCodes = data.dimension?.ContentsCode?.category;
     const values = data.value || [];
-    
+
     if (!municipalities || !contentCodes) {
       throw new Error("Invalid data structure from SSB API");
     }
-    
+
     const municipalityIndex = municipalities.index || {};
     const municipalityLabels = municipalities.label || {};
     const contentCodeIndex = contentCodes.index || {};
     const contentCodeLabels = contentCodes.label || {};
-    
+
     // Get indices for water and wastewater
     const waterIndex = contentCodeIndex["KOSvannk30000"];
     const wastewaterIndex = contentCodeIndex["KOSavlopk30000"];
-    
+
     // Calculate dimensions
     const numMunicipalities = data.size?.[0] || 0;
     const numContentCodes = data.size?.[1] || 0;
     const numYears = data.size?.[2] || 0;
-    
+
     // Reorganize data: { municipalityCode: { name, waterPrice, wastewaterPrice } }
     const organizedData: Record<
       string,
@@ -909,28 +909,29 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
         wastewaterPrice: number | null; // kr per m³
       }
     > = {};
-    
+
     // Parse values array
     // Formula: valueIndex = municipalityIndex * (numContentCodes * numYears) + contentCodeIndex * numYears + yearIndex
     for (const [municipalityCode, municipalityIdx] of Object.entries(
       municipalityIndex
     )) {
-      const municipalityName = municipalityLabels[municipalityCode] || municipalityCode;
-      
+      const municipalityName =
+        municipalityLabels[municipalityCode] || municipalityCode;
+
       // Calculate indices in the value array
       const waterValueIdx =
         (municipalityIdx as number) * (numContentCodes * numYears) +
         (waterIndex as number) * numYears +
         0; // year index (only 2025)
-      
+
       const wastewaterValueIdx =
         (municipalityIdx as number) * (numContentCodes * numYears) +
         (wastewaterIndex as number) * numYears +
         0; // year index (only 2025)
-      
+
       const waterPrice = values[waterValueIdx] ?? null;
       const wastewaterPrice = values[wastewaterValueIdx] ?? null;
-      
+
       organizedData[municipalityCode] = {
         name: municipalityName,
         waterPrice: typeof waterPrice === "number" ? waterPrice : null,
@@ -938,7 +939,7 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
           typeof wastewaterPrice === "number" ? wastewaterPrice : null,
       };
     }
-    
+
     // Calculate averages (excluding null values)
     const validWaterPrices = Object.values(organizedData)
       .map((d) => d.waterPrice)
@@ -946,7 +947,7 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
     const validWastewaterPrices = Object.values(organizedData)
       .map((d) => d.wastewaterPrice)
       .filter((p): p is number => p !== null);
-    
+
     const averageWaterPrice =
       validWaterPrices.length > 0
         ? validWaterPrices.reduce((a, b) => a + b, 0) / validWaterPrices.length
@@ -956,7 +957,7 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
         ? validWastewaterPrices.reduce((a, b) => a + b, 0) /
           validWastewaterPrices.length
         : null;
-    
+
     const result = {
       municipalities: organizedData,
       averages: {
@@ -969,22 +970,18 @@ export async function getWaterPrices(): Promise<WaterPriceData> {
         source: "SSB (Statistisk sentralbyrå)",
       },
     };
-    
-    console.log("Organized Water Price Data:", result);
-    console.log("Average Water Price (kr/m³):", averageWaterPrice);
-    console.log("Average Wastewater Price (kr/m³):", averageWastewaterPrice);
-    
+
     return result;
   } catch (error) {
     console.error("Error fetching water prices:", error);
     console.warn("Falling back to hard-coded average prices");
-    
+
     // Fallback to hard-coded averages if API fails completely
     const fallbackAverages = {
       waterPrice: 22.735632183908052,
       wastewaterPrice: 26.506017191977115,
     };
-    
+
     // Return fallback structure with empty municipalities but valid averages
     return {
       municipalities: {},

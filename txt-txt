@@ -1,0 +1,52 @@
+ // Extract specs for display
+  const phase = product.specs?.phase;
+  const powerOptions = product.specs?.powerOptions;
+  const voltage = product.specs?.voltage;
+  const flowRates = product.specs?.flowRates;
+
+  // Format power display
+  const powerDisplay = Array.isArray(powerOptions)
+    ? `${powerOptions[0]}-${powerOptions[powerOptions.length - 1]} kW`
+    : powerOptions
+    ? `${powerOptions} kW`
+    : null;
+
+  // Format voltage display
+  const voltageDisplay = Array.isArray(voltage)
+    ? voltage.join("/")
+    : voltage || null;
+
+  // Format flow rate display
+  const flowRateDisplay =
+    flowRates && flowRates.length > 0 ? flowRates[0] : null;
+
+  // Build quick specs string
+  const quickSpecs = [
+    powerDisplay,
+    voltageDisplay ? `${voltageDisplay}V` : null,
+    flowRateDisplay,
+  ]
+    .filter(Boolean)
+    .join(" • ");
+
+
+
+      {/* Badges overlay */}
+      <div className="absolute top-2 left-2 z-10 flex flex-col gap-2">
+      {phase && (
+        <Badge
+          variant="primary"
+          className="text-xs font-semibold"
+        >
+          {phase}-fase
+        </Badge>
+      )}
+      {powerDisplay && (
+        <Badge
+          variant="secondary"
+          className="text-xs font-semibold "
+        >
+          {powerDisplay}
+        </Badge>
+      )}
+    </div>
