@@ -23,7 +23,6 @@ import { useAppStore } from "@/store/appStore";
 import Logo from "@/shared/components/layout/Logo";
 import { useEffect, useRef, useState } from "react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { ChevronRight } from "lucide-react";
 
 const Header = () => {
   const pathname = usePathname();

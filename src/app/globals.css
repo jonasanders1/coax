@@ -24,7 +24,7 @@
     --popover-foreground: 215 15% 20%;
 
     /* Primary - Vibrant blue that stands out (increased saturation) */
-    --primary: 217 95% 60%;
+    --primary: 217 54% 24%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Complementary muted color for badges, etc. */
@@ -59,8 +59,8 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
-      hsla(217, 95%, 60%, 0.9) 0%,
-      hsla(217, 90%, 55%, 0.8) 100%
+      hsla(217, 59%, 46%, 0.9) 0%,
+      hsla(217, 81%, 27%, 0.8) 100%
     );
     --gradient-destructive: linear-gradient(
       135deg,
