@@ -22,10 +22,10 @@ const ReferencesClient = () => {
                 <Card key={ref.id}>
                   {ref.image && (
                     <CardContent className="p-0">
-                      <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-t-lg">
                         <img
                           src={ref.image}
-                          alt={`${ref.caption} - ${ref.testimonial.substring(
+                          alt={`${ref.caption} - ${ref.testimonial?.substring(
                             0,
                             50
                           )}...`}

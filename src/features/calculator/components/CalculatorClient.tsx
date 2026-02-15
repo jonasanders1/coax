@@ -206,7 +206,7 @@ const CalculatorClient = () => {
       <div className="container max-w-6xl mx-auto px-4 space-y-10">
         <PageTitle
           title="COAX Forbrukskalkulator"
-          text="Se hvor mye energi, vann og penger du kan spare ved å bytte fra tradisjonell varmtvannstank til en direkte vannvarmer fra COAX"
+          text="Se hvor mye energi, vann og penger du kan spare ved å bytte fra tradisjonell varmtvannstank til en COAX vannvarmer"
         />
 
         <section className="mt-12 space-y-6">
@@ -705,7 +705,7 @@ const CalculatorClient = () => {
                 <h3 className="text-xl font-semibold mb-2">
                   {isUsingCustomParams
                     ? "Du bruker tilpassede parametere"
-                    : "Vil du justere parametrene?"}
+                    : "Prøv enkelt med egne verdier!"}
                 </h3>
                 <p className="text-muted-foreground">
                   {isUsingCustomParams

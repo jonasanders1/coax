@@ -155,37 +155,37 @@ const HomePage = () => {
           animate={
             hasAnimated
               ? {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: ANIMATION_DURATION,
-                    ease: EASING_CURVE,
-                    delay: ANIMATION_DELAY_INITIAL,
-                  },
-                }
+                opacity: 1,
+                y: 0,
+                transition: {
+                  duration: ANIMATION_DURATION,
+                  ease: EASING_CURVE,
+                  delay: ANIMATION_DELAY_INITIAL,
+                },
+              }
               : {}
           }
           className="container mx-auto px-4 py-24 text-center"
         >
           <motion.h1
-            className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-white text-black mb-6 max-w-3xl mx-auto"
+            className="text-3xl md:text-4xl lg:text-4xl font-semibold dark:text-white text-black mb-6 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: ANIMATION_OFFSET_Y_SMALL }}
             animate={
               hasAnimated
                 ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_HERO,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: ANIMATION_DELAY_HERO,
+                    duration: ANIMATION_DURATION,
+                    ease: EASING_CURVE,
+                  },
+                }
                 : {}
             }
           >
             {/* Spar strøm, plass, vann og miljø! */}
-            Spar strøm, plass og miljø – med direkte vannvarming uten tank
+            Spar strøm, plass og miljø med direkte vannvarming – helt uten tank!
           </motion.h1>
           <motion.p
             className="text-base md:text-xl text-foreground mb-8 max-w-2xl mx-auto"
@@ -193,14 +193,14 @@ const HomePage = () => {
             animate={
               hasAnimated
                 ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_SUBTITLE,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: ANIMATION_DELAY_SUBTITLE,
+                    duration: ANIMATION_DURATION,
+                    ease: EASING_CURVE,
+                  },
+                }
                 : {}
             }
           >
@@ -213,14 +213,14 @@ const HomePage = () => {
             animate={
               hasAnimated
                 ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_BUTTONS,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: ANIMATION_DELAY_BUTTONS,
+                    duration: ANIMATION_DURATION,
+                    ease: EASING_CURVE,
+                  },
+                }
                 : {}
             }
           >
@@ -255,13 +255,13 @@ const HomePage = () => {
             animate={
               hasAnimated
                 ? {
-                    opacity: 1,
-                    transition: {
-                      delay: ANIMATION_DELAY_BUTTONS + 0.2,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                  opacity: 1,
+                  transition: {
+                    delay: ANIMATION_DELAY_BUTTONS + 0.2,
+                    duration: ANIMATION_DURATION,
+                    ease: EASING_CURVE,
+                  },
+                }
                 : {}
             }
             className="mt-8 text-sm text-muted-foreground"
@@ -307,7 +307,7 @@ const HomePage = () => {
                       )}
                     </div>
                     <h3 className="text-xl font-bold mb-3">{b.title}</h3>
-                    <p className="text-muted-foreground">{b.text}</p>
+                    <p className="text-muted-foreground text-lg">{b.text}</p>
                   </CardContent>
                 </Card>
               );
@@ -320,7 +320,7 @@ const HomePage = () => {
       <section className="py-20 md:py-32 bg-background">
         <div className="container max-w-6xl mx-auto px-4">
           <SectionTitle
-            title="Moderne løsning vs. Gammel teknologi"
+            title="Moderne teknologi vs. Gammel løsning"
             text="Se hvor stor forskjell en tankløs vannvarmer kan gjøre i strømforbruk, plass og komfort."
           />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
@@ -330,7 +330,7 @@ const HomePage = () => {
               gradient="var(--gradient-primary)"
             />
             <ComparisonCard
-              title="Tradisjonell tankbereder"
+              title="Konvensjonell tankbereder"
               items={comparison.traditional}
               gradient="var(--gradient-destructive)"
             />
@@ -340,12 +340,12 @@ const HomePage = () => {
             <div className="flex flex-col gap-4 items-start">
               <div className="flex flex-col gap-2">
                 <h3 className="text-xl md:text-2xl font-bold">
-                  Se hvor mye du sparer
+                  Hvor mye kan du spare?
                 </h3>
                 <p>
                   Bruk vår forbrukskalkulator for å se hvor mye du kan spare med
-                  COAX direkte vannvarmer. Sammenlign strømforbruk, vannforbruk
-                  og årlige kostnader med tradisjonell varmtvannsbereder.
+                  COAX varmtvannsbereder. Sammenlign strømforbruk, vannforbruk
+                  og årlige kostnader med konvensjonell varmtvannsbereder.
                 </p>{" "}
               </div>
               <Button
@@ -517,14 +517,14 @@ const HomePage = () => {
               animate={
                 hasAnimated
                   ? {
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      delay: ANIMATION_DELAY_INITIAL,
+                      duration: ANIMATION_DURATION,
+                      ease: EASING_CURVE,
+                    },
+                  }
                   : {}
               }
               className="relative w-full rounded-xl overflow-hidden order-1"
@@ -553,14 +553,14 @@ const HomePage = () => {
               animate={
                 hasAnimated
                   ? {
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL + 0.1,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      delay: ANIMATION_DELAY_INITIAL + 0.1,
+                      duration: ANIMATION_DURATION,
+                      ease: EASING_CURVE,
+                    },
+                  }
                   : {}
               }
               className="order-2 md:order-2"
@@ -599,14 +599,14 @@ const HomePage = () => {
               animate={
                 hasAnimated
                   ? {
-                      opacity: 1,
-                      y: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL + 0.2,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      delay: ANIMATION_DELAY_INITIAL + 0.2,
+                      duration: ANIMATION_DURATION,
+                      ease: EASING_CURVE,
+                    },
+                  }
                   : {}
               }
               className="col-span-1 md:col-span-2 order-3 mt-4 md:mt-0"

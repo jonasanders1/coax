@@ -109,7 +109,7 @@ const ModelSelectorClient = () => {
   // Render flow rates as a single badge with range
   const renderFlowRates = (flowRates: string[]) => {
     const range = extractFlowRange(flowRates);
-    
+
     if (!range) {
       return <span className="text-muted-foreground">—</span>;
     }
@@ -171,7 +171,7 @@ const ModelSelectorClient = () => {
       <div className="min-h-screen pt-24 pb-16 bg-muted dark:bg-background animate-fade-in-up">
         <div className="container mx-auto px-4 max-w-6xl">
           <PageTitle
-            title="Finn riktig COAX-modell med Bøttemetoden"
+            title="Finn riktig COAX-modell med enkel bøttemetode"
             text="Den enkleste måten å finne riktig kapasitet på."
           />
           <div className="flex items-center justify-center py-16">
@@ -230,7 +230,7 @@ const ModelSelectorClient = () => {
                   <div className="lg:pr-4">
                     <ol className="space-y-2.5 text-sm md:text-base text-muted-foreground list-decimal list-inside ml-1">
                       <li className="pl-1">
-                        Ta med deg en {BUCKET_VOLUME_LITERS}-liters bøtte i
+                        Ta med deg en vanlig {BUCKET_VOLUME_LITERS}-liters bøtte i
                         dusjen
                       </li>
                       <li className="pl-1">
@@ -256,7 +256,7 @@ const ModelSelectorClient = () => {
                         htmlFor="seconds"
                         className="text-base mb-4 block font-medium"
                       >
-                        Tid for å fylle {BUCKET_VOLUME_LITERS}L bøtte:{" "}
+                        Tiden det tar for å fylle en vanlig {BUCKET_VOLUME_LITERS}L bøtte:{" "}
                         <strong className="text-primary">
                           {seconds} sekunder
                         </strong>
@@ -307,12 +307,12 @@ const ModelSelectorClient = () => {
                   );
                   const productImage = product?.images?.[0];
                   const specs = product?.specs;
-                  
+
                   // Get values using consistent formatting
-                  const phaseValue = specs?.phase !== undefined 
+                  const phaseValue = specs?.phase !== undefined
                     ? formatSpecValue("phase", specs.phase)
                     : `${result.phase}-fase`;
-                  
+
                   // Flow rates: use specs if available, otherwise format from result
                   const flowRatesRaw = specs?.flowRates && specs.flowRates.length > 0
                     ? specs.flowRates
@@ -320,7 +320,7 @@ const ModelSelectorClient = () => {
                   const flowRatesFormatted = flowRatesRaw
                     ? null // Will format based on shouldDisplayAsBadges
                     : formatFlowRange(result.minFlow, result.maxFlow);
-                  
+
                   // Power options: use specs if available, otherwise format from result
                   const powerOptionsRaw = specs?.powerOptions
                     ? specs.powerOptions
@@ -330,11 +330,11 @@ const ModelSelectorClient = () => {
                     : (result.minPowerOption > 0 && result.maxPowerOption > 0
                       ? formatPowerRange(result.minPowerOption, result.maxPowerOption)
                       : "—");
-                  
+
                   const dimensionsValue = specs?.dimensions
                     ? formatSpecValue("dimensions", specs.dimensions)
                     : "—";
-                  
+
                   const usageItems = result.usage
                     .split(",")
                     .map((item) => item.trim())
@@ -375,11 +375,11 @@ const ModelSelectorClient = () => {
                           <Table className="rounded-lg overflow-hidden">
                             <TableHeader>
                               <TableRow>
-                                <TableHead className="font-medium">
+                                <TableHead className="font-bold text-lg">
                                   Modell
                                 </TableHead>
                                 <TableHead className="text-right font-semibold">
-                                  {result.model}
+                                  <span className="text-lg font-bold">{result.model}</span>
                                 </TableHead>
                               </TableRow>
                             </TableHeader>
@@ -415,7 +415,7 @@ const ModelSelectorClient = () => {
                                         )}
                                       </div>
                                     ) : (
-                                      flowRatesRaw 
+                                      flowRatesRaw
                                         ? formatSpecValue("flowRates", flowRatesRaw)
                                         : flowRatesFormatted
                                     )}

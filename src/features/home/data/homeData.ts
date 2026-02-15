@@ -7,7 +7,7 @@ import {
   ShowerHead,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import cabinImage from "@/assets/cabin-water-heater.png";
+import cabinImage from "@/assets/cabin.jpg";
 import homeImage from "@/assets/home-water-heater.webp";
 import industrialImage from "@/assets/industrial-water-heater.png";
 
@@ -26,12 +26,12 @@ export const benefits: Benefit[] = [
   {
     icon: Leaf,
     title: "Plassbesparende og miljøvennlig",
-    text: "Uten tank frigjør du verdifull plass i boligen. COAX er kompakt, diskret og ideell for små bad, hytter og moderne leiligheter. Null lagring betyr også mindre energisløsing og lavere CO₂-avtrykk.",
+    text: "Uten tank frigjør du verdifull plass i boligen. COAX er kompakt, diskret og ideell for små bad, hytter og moderne leiligheter. Null lagring av varmtvann betyr også mindre energisløsing og lavere CO₂-avtrykk.",
   },
   {
     icon: Droplet,
     title: "Friskt og hygienisk varmtvann",
-    text: "Vannet varmes direkte ved tapping, uten å stå lagret i en tank. Det gir hygienisk, oksygenrikt varmtvann – helt uten risiko for bakterievekst som legionella.",
+    text: "Vannet varmes direkte ved tapping, uten å stå lagret i en tank. Det gir hygienisk, oksygenrikt varmtvann – helt uten økt risiko for bakterievekst som legionella.",
   },
 ];
 
@@ -109,15 +109,17 @@ export const comparison: Comparison = {
     { text: "Begrenset varmtvannsmengde", icon: XCircle },
     { text: "Lang oppvarmingstid", icon: XCircle },
     { text: "Kortere levetid: 8-12 år", icon: XCircle },
+    { text: "Behøver vedlikehold", icon: XCircle },
   ],
   coax: [
     { text: "Bruker kun strøm når vann tappes", icon: CheckCircle },
     { text: "Kompakt veggmontering", icon: CheckCircle },
     { text: "Alltid friskt og rent vann", icon: CheckCircle },
-    { text: "24-34% lavere energibruk", icon: CheckCircle },
-    { text: "Miljøvennlig og driftssikkert valg", icon: CheckCircle },
+    { text: "Optil 60% lavere energibruk", icon: CheckCircle },
+    { text: "Miljøvennlig og driftssikker", icon: CheckCircle },
     { text: "Ubegrenset varmtvannsmengde", icon: CheckCircle },
     { text: "Lang levetid: 15-20 år", icon: CheckCircle },
+    { text: "Vedlikeholdsfri", icon: CheckCircle },
   ],
 };
 
@@ -131,8 +133,8 @@ export type CustomerSegment = {
 export const customerSegments: CustomerSegment[] = [
   {
     id: "cabin-owners",
-    title: "For hytter og fritidsboliger",
-    text: "COAX passer for både små og store hytter, fra enkle 1-fas installasjoner til kraftigere 3-fas anlegg (230/400 V). Enheten festes flatt på vegg, tar ingen gulvplass og er enkel å montere og demontere ved evt. service. Ingen tank betyr ingen tømming ved sesongavslutning, men systemet kan også tømmes sammen med hevert for rørsystemet. Presis styring av vann og energi gjør COAX ideell for vannsparende armaturer og dusjhoder, samtidig som man kan bruke vannsisterner eller begrensede vanntilførsel uten å miste komfort.",
+    title: "For alle typer hytter",
+    text: "COAX passer for både små og store hytter, fra enkle 1-fas installasjoner til kraftigere 3-fas anlegg (230/400 V). Enheten festes flatt på vegg og bygger kun 5-10 cm ut fra veggen, tar ingen gulvplass og er enkel å montere og demontere ved evt. service. Ingen tank betyr ingen tømming ved sesongavslutning, men systemet kan også tømmes sammen med hevert for rørsystemet. Presis styring av vann og energi gjør COAX ideell for vannsparende armaturer og dusjhoder, samtidig som man kan bruke vannsisterner eller begrensede vanntilførsel uten å miste komfort.",
     image: cabinImage,
   },
   {

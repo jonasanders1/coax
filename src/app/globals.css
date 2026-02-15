@@ -1,7 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); */
 /* @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -59,6 +59,16 @@
     /* Gradients */
     --gradient-primary: linear-gradient(
       135deg,
+      hsla(217, 47%, 49%, 0.9) 0%,
+      hsla(217, 35%, 46%, 0.8) 100%
+    );
+    --gradient-destructive: linear-gradient(
+      135deg,
+      hsla(0, 55%, 56%, 0.9) 0%,
+      hsla(0, 55%, 36%, 0.8) 100%
+    );
+    /* --gradient-primary: linear-gradient(
+      135deg,
       hsla(217, 59%, 46%, 0.9) 0%,
       hsla(217, 81%, 27%, 0.8) 100%
     );
@@ -66,42 +76,43 @@
       135deg,
       hsla(0, 70%, 50%, 0.9) 0%,
       hsla(0, 65%, 55%, 0.8) 100%
-    );
+    ); */
     --gradient-success: linear-gradient(
       135deg,
       hsla(114, 45%, 45%, 0.9) 0%,
       hsla(114, 40%, 40%, 0.8) 100%
     );
-    --gradient-card: linear-gradient(
-      to bottom,
-      hsl(0 0% 98%),
-      hsl(0 0% 99%)
-    );
+    --gradient-card: linear-gradient(to bottom, hsl(0 0% 98%), hsl(0 0% 99%));
     --gradient-hero: linear-gradient(
       135deg,
       hsla(0, 0%, 97%, 0.4) 0%,
-      hsla(0, 0%, 97%, 0.7) 50%,
-      hsla(0, 0%, 95%, 0.8) 100%
+      hsla(0, 0%, 97%, 0.3) 50%,
+      hsla(0, 0%, 95%, 0.1) 100%
     );
 
     /* Default Shadows - Light Theme */
     --shadow-sm: 0 1px 2px 0 hsl(215 20% 10% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(215 20% 10% / 0.1),
+    --shadow-md:
+      0 4px 6px -1px hsl(215 20% 10% / 0.1),
       0 2px 4px -1px hsl(215 20% 10% / 0.06);
-    --shadow-lg: 0 10px 15px -3px hsl(215 20% 10% / 0.1),
+    --shadow-lg:
+      0 10px 15px -3px hsl(215 20% 10% / 0.1),
       0 4px 6px -2px hsl(215 20% 10% / 0.05);
 
     /* Card Shadows - Light Theme */
     /* Subtle inset highlight (lighter than card) + outer shadow (darker) */
-    --shadow-card-sm: inset 0 1px 2px hsl(0 0% 100% / 0.6),
-      0 1px 2px hsl(0 0% 0% / 0.05), 0 2px 4px hsl(0 0% 0% / 0.08);
+    --shadow-card-sm:
+      inset 0 1px 2px hsl(0 0% 100% / 0.6), 0 1px 2px hsl(0 0% 0% / 0.05),
+      0 2px 4px hsl(0 0% 0% / 0.08);
 
-    --shadow-card-md: inset 0 1px 3px hsl(0 0% 100% / 0.7),
-      0 2px 4px hsl(0 0% 0% / 0.08), 0 4px 8px hsl(0 0% 0% / 0.1);
+    --shadow-card-md:
+      inset 0 1px 3px hsl(0 0% 100% / 0.7), 0 2px 4px hsl(0 0% 0% / 0.08),
+      0 4px 8px hsl(0 0% 0% / 0.1);
 
-    --shadow-card-lg: inset 0 2px 4px hsl(0 0% 100% / 0.8),
-      0 4px 6px hsl(0 0% 0% / 0.1), 0 8px 16px hsl(0 0% 0% / 0.12);
-    
+    --shadow-card-lg:
+      inset 0 2px 4px hsl(0 0% 100% / 0.8), 0 4px 6px hsl(0 0% 0% / 0.1),
+      0 8px 16px hsl(0 0% 0% / 0.12);
+
     --shadow-inset: inset 0 0px 10px 0 hsl(215 20% 10% / 0.1);
   }
 
@@ -165,11 +176,7 @@
       hsla(114, 40%, 40%, 0.6) 100%
     );
 
-    --gradient-card: linear-gradient(
-      to bottom,
-      hsl(0 0% 18%),
-      hsl(0 0% 13%)
-    );
+    --gradient-card: linear-gradient(to bottom, hsl(0 0% 18%), hsl(0 0% 13%));
 
     --gradient-hero: linear-gradient(
       135deg,
@@ -180,32 +187,37 @@
     /* Shadows - Dark Theme (light highlights instead of dark shadows) */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.4);
 
-    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.45),
-      0 2px 4px -1px hsl(0 0% 0% / 0.35);
+    --shadow-md:
+      0 4px 6px -1px hsl(0 0% 0% / 0.45), 0 2px 4px -1px hsl(0 0% 0% / 0.35);
 
-    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5),
-      0 4px 6px -2px hsl(0 0% 0% / 0.35);
+    --shadow-lg:
+      0 10px 15px -3px hsl(0 0% 0% / 0.5), 0 4px 6px -2px hsl(0 0% 0% / 0.35);
 
     /* Card Shadows - Emphasis on soft depth + subtle inner light */
     /* Card Shadows – soft inner highlight + deep realistic drop shadows */
-    --shadow-card-sm: inset 0 1px 2px hsl(0 0% 20% / 0.6),
+    --shadow-card-sm:
+      inset 0 1px 2px hsl(0 0% 20% / 0.6),
       /* light highlight on top edge */ 0 1px 2px hsl(0 0% 0% / 0.5),
       /* deep subtle drop shadow */ 0 2px 4px hsl(0 0% 0% / 0.35); /* diffuse depth layer */
 
-    --shadow-card-md: inset 0 1px 3px hsl(0 0% 22% / 0.7),
+    --shadow-card-md:
+      inset 0 1px 3px hsl(0 0% 22% / 0.7),
       /* stronger top-edge highlight */ 0 2px 4px hsl(0 0% 0% / 0.55),
       /* main shadow depth */ 0 4px 8px hsl(0 0% 0% / 0.4); /* soft ambient layer */
 
-    --shadow-card-lg: inset 0 2px 4px hsl(0 0% 25% / 0.75),
+    --shadow-card-lg:
+      inset 0 2px 4px hsl(0 0% 25% / 0.75),
       /* pronounced highlight */ 0 4px 6px hsl(0 0% 0% / 0.55),
       /* grounded shadow */ 0 8px 16px hsl(0 0% 0% / 0.45); /* large-area falloff */
-    
+
     --shadow-inset: inset 0 0px 10px 0 hsl(0 0% 0% / 0.4);
   }
 }
 
 html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Unified scrollbar styles for all scrollable areas */
@@ -256,11 +268,11 @@ html {
   .section-padding {
     @apply py-20 md:py-32;
   }
-  
+
   .section-padding-sm {
     @apply py-16 md:py-24;
   }
-  
+
   .section-padding-lg {
     @apply py-24 md:py-40;
   }
@@ -275,14 +287,23 @@ html {
 
   body {
     @apply bg-background text-foreground font-sans;
-    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     line-height: 1.7;
   }
 
   /* Display font for hero headlines */
   h1 {
-    font-family: "Inter", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Inter",
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     font-weight: 800;
     line-height: 1.2;
@@ -291,7 +312,11 @@ html {
   }
 
   h2 {
-    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     font-weight: 700;
     line-height: 1.2;
@@ -299,7 +324,11 @@ html {
   }
 
   h3 {
-    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     font-weight: 600;
     line-height: 1.3;
@@ -307,7 +336,11 @@ html {
   }
 
   h4 {
-    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     font-weight: 600;
     line-height: 1.4;
@@ -316,7 +349,11 @@ html {
 
   h5,
   h6 {
-    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    font-family:
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
       sans-serif;
     font-weight: 600;
     line-height: 1.4;

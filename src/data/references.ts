@@ -7,6 +7,20 @@ export const references = [
     image: "/reference-images/ref1.webp",
     },
     {
+      id: "ref-9",
+      caption: "Tretopphytter, Odda",
+      testimonial:
+      '"3-fase varmere til kjøkken og bad i tretopphytter"',
+    image: "/reference-images/ref9.webp",
+    },
+    {
+      id: "ref-10",
+      caption: "Kommunalt pumpehus, Horten",
+      testimonial:
+      '"1-fase og 3-fase varmere i Kommunale pumpehus"',
+    image: "/reference-images/ref10.webp",
+    },
+    {
       id: "ref-2",
       caption: "Eventyrhytter, Gol",
       testimonial:
@@ -51,16 +65,9 @@ export const references = [
     {
       id: "ref-8",
       caption: "Hytteutleie, Sognedalshytta",
-      testimonial:
-      '"blabla"',
+      // testimonial:'"1-fase varmere for kjøkken og bad"',
     image: "/reference-images/ref8.webp",
     },
-    {
-      id: "ref-9",
-      caption: "Tretopphytter, Odda",
-      testimonial:
-      '"3-fase varmere til kjøkken og bad i tretopphytter"',
-    image: "/reference-images/ref9.webp",
-    },
+  
   ];
   

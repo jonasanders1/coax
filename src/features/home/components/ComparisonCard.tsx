@@ -25,7 +25,7 @@ export function ComparisonCard({
       <div className="absolute right-20 top-1/2 h-16 w-16 -translate-y-1/2 rounded-full bg-white/10"></div>
 
       <CardHeader className="relative z-10">
-        <CardTitle className="text-2xl text-white">{title}</CardTitle>
+        <CardTitle className="text-3xl text-white">{title}</CardTitle>
       </CardHeader>
       <CardContent className="relative z-10">
         <div className="grid gap-4">

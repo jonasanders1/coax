@@ -61,7 +61,7 @@ export const DEFAULT_PARAMS: CalculationParams = {
   strømprisNOKPerkWh: 1.5, // Common
   inletTempC: 10.0, // Common
   targetTempC: 40.0, // Common
-  flowRateLPerMinTankless: 6.0, // COAX
+  flowRateLPerMinTankless: 7.0, // COAX
   flowRateLPerMinTank: 9.0, // Tank
   kitchenUsesPerPersonPerDay: 4, // Common
   kitchenDurationSec: 37, // Common
