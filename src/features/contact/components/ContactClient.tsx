@@ -7,10 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Button } from "@/shared/components/ui/button";
 import ContactForm from "@/features/contact/components/ContactForm";
 import NeedsAssessmentForm from "@/features/contact/components/NeedsAssessmentForm";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, ClipboardList } from "lucide-react";
+import { cn } from "@/shared/lib/utils";
 import PageTitle from "@/shared/components/common/PageTitle";
 import {
   StructuredData,
@@ -19,8 +19,25 @@ import {
 
 import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
 
+const FORM_OPTIONS = [
+  {
+    value: "general" as const,
+    title: "Generell forespørsel",
+    description:
+      "Har du et spørsmål, eller ønsker du et uforpliktende tilbud? Send oss en melding.",
+    icon: Mail,
+  },
+  {
+    value: "needs" as const,
+    title: "Behovsvurdering",
+    description:
+      "Usikker på hva du trenger? Svar på noen enkle spørsmål, så hjelper vi deg videre.",
+    icon: ClipboardList,
+  },
+];
+
 const ContactClient = () => {
-  const [formType, setFormType] = useState<"general" | "needs">("general");
+  const [formType, setFormType] = useState<"general" | "needs" | null>(null);
   const { openChat } = useChatBot();
   return (
     <div className="min-h-screen pt-24 animate-fade-in-up">
@@ -33,29 +50,59 @@ const ContactClient = () => {
       <section className="py-16 md:py-24 bg-muted">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex gap-2">
-                <Button
-                  variant={formType === "general" ? "default" : "outline"}
-                  onClick={() => setFormType("general")}
-                  className="flex-1 "
-                >
-                  Generell forespørsel
-                </Button>
-                <Button
-                  variant={formType === "needs" ? "default" : "outline"}
-                  onClick={() => setFormType("needs")}
-                  className="flex-1"
-                >
-                  Behovsvurdering
-                </Button>
+            <div className="lg:col-span-2 space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {FORM_OPTIONS.map((option) => {
+                  const isSelected = formType === option.value;
+                  const Icon = option.icon;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setFormType(option.value)}
+                      className={cn(
+                        "relative rounded-xl border-2 bg-background p-5 text-left transition-all duration-200",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        isSelected
+                          ? "border-primary shadow-md"
+                          : "border-border hover:border-primary/50 hover:shadow-sm"
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "mb-3 inline-flex rounded-lg p-2.5",
+                          isSelected
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        )}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="font-semibold">{option.title}</div>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {option.description}
+                      </p>
+                      <span
+                        className={cn(
+                          "absolute right-4 top-4 h-4 w-4 rounded-full border-2 transition-colors",
+                          isSelected
+                            ? "border-primary bg-primary"
+                            : "border-muted-foreground/40"
+                        )}
+                      >
+                        {isSelected && (
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {formType === "general" ? (
-                <ContactForm />
-              ) : (
-                <NeedsAssessmentForm />
-              )}
+              {formType === "general" && <ContactForm />}
+              {formType === "needs" && <NeedsAssessmentForm />}
             </div>
 
             <div className="space-y-6">
