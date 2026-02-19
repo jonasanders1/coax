@@ -23,8 +23,7 @@ import {
 } from "@/features/contact/utils/formSubmission";
 import {
   APPLICATION_AREAS,
-  VOLTAGE_PHASE_OPTIONS,
-  MAIN_FUSE_OPTIONS,
+  ELECTRICAL_OPTIONS,
   WATER_FLOW_OPTIONS,
   USAGE_POINTS,
   FORM_STEPS,
@@ -46,8 +45,7 @@ export default function NeedsAssessmentForm() {
     phone: "",
     applicationArea: [],
     applicationAreaOther: "",
-    voltagePhase: "",
-    mainFuse: "",
+    electricalSetup: "",
     waterFlow: "",
     waterFlowCustom: "",
     usagePoints: [],
@@ -168,8 +166,7 @@ export default function NeedsAssessmentForm() {
           phone: "",
           applicationArea: [],
           applicationAreaOther: "",
-          voltagePhase: "",
-          mainFuse: "",
+          electricalSetup: "",
           waterFlow: "",
           waterFlowCustom: "",
           usagePoints: [],
@@ -313,7 +310,7 @@ export default function NeedsAssessmentForm() {
         );
 
       case 3: {
-        const mainFuseOptions = MAIN_FUSE_OPTIONS.map((option) => ({
+        const electricalOptions = ELECTRICAL_OPTIONS.map((option) => ({
           value: option.value,
           label: option.description
             ? `${option.label} (${option.description})`
@@ -324,45 +321,26 @@ export default function NeedsAssessmentForm() {
           <div className="space-y-6">
             {header}
 
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <FilterSelect
-                  id="voltagePhase"
-                  label="Spenning og faser"
-                  value={formData.voltagePhase ?? ""}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      voltagePhase: value,
-                    }))
-                  }
-                  disabled={isSubmitting}
-                  options={VOLTAGE_PHASE_OPTIONS}
-                  placeholder="Velg spenning/fase"
-                />
-              </div>
+            <div className="space-y-3">
+              <FilterSelect
+                id="electricalSetup"
+                label="Elektrisk oppsett"
+                value={formData.electricalSetup ?? ""}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    electricalSetup: value,
+                  }))
+                }
+                disabled={isSubmitting}
+                options={electricalOptions}
+                placeholder="Velg fase, sikring og spenning"
+              />
 
-              <div className="space-y-3">
-                <FilterSelect
-                  id="mainFuse"
-                  label="Hovedsikringer (Ampere)"
-                  value={formData.mainFuse ?? ""}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      mainFuse: value,
-                    }))
-                  }
-                  disabled={isSubmitting}
-                  options={mainFuseOptions}
-                  placeholder="Velg hovedsikringer"
-                />
-
-                <p className="text-xs text-muted-foreground">
-                  Vi anbefaler å konsultere en elektriker for å bekrefte
-                  maksimal watt som oppsettet ditt kan håndtere.
-                </p>
-              </div>
+              <p className="text-xs text-muted-foreground">
+                Vi anbefaler å konsultere en elektriker for å bekrefte
+                maksimal watt som oppsettet ditt kan håndtere.
+              </p>
             </div>
           </div>
         );

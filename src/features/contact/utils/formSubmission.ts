@@ -23,8 +23,7 @@ export interface ContactFormData {
 export interface NeedsAssessmentFormData extends ContactFormData {
   applicationArea?: string[];
   applicationAreaOther?: string;
-  voltagePhase?: string;
-  mainFuse?: string;
+  electricalSetup?: string;
   waterFlow?: string;
   waterFlowCustom?: string;
   usagePoints?: string[];
@@ -107,12 +106,8 @@ export function createFormData(
       );
     }
     
-    if (assessmentData.voltagePhase) {
-      formData.append("Spenning/fase", assessmentData.voltagePhase);
-    }
-    
-    if (assessmentData.mainFuse) {
-      formData.append("Hovedsikringer", assessmentData.mainFuse);
+    if (assessmentData.electricalSetup) {
+      formData.append("Elektrisk oppsett", assessmentData.electricalSetup);
     }
 
     

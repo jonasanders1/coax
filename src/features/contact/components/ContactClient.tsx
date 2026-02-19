@@ -78,7 +78,7 @@ const ContactClient = () => {
                       >
                         <Icon className="h-5 w-5" />
                       </div>
-                      <div className="font-semibold">{option.title}</div>
+                      <div className="font-semibold md:text-2xl">{option.title}</div>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {option.description}
                       </p>
