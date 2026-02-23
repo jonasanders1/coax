@@ -4,11 +4,12 @@
  */
 
 import {
-  sanitizeText,
   sanitizeEmail,
   sanitizeEmailHeader,
+  sanitizeForEmail,
   normalizeWhitespace,
 } from "@/shared/utils/inputValidation";
+import { ELECTRICAL_OPTIONS } from "@/config/needsAssessmentConfig";
 
 const WEB3FORMS_ACCESS_KEY = "a9c0ed65-714a-4a64-876b-e47b207198dd";
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
@@ -38,7 +39,7 @@ export interface SubmissionOptions {
 }
 
 /**
- * Sanitizes contact form data
+ * Sanitizes contact form data for email submission
  */
 export function sanitizeContactData(data: ContactFormData): {
   name: string;
@@ -47,117 +48,128 @@ export function sanitizeContactData(data: ContactFormData): {
   message?: string;
 } {
   return {
-    name: sanitizeText(normalizeWhitespace(data.name)),
+    name: sanitizeForEmail(normalizeWhitespace(data.name)),
     email: sanitizeEmail(data.email),
     phone: data.phone ? normalizeWhitespace(data.phone) : "",
-    message: data.message ? sanitizeText(data.message) : undefined,
+    message: data.message ? sanitizeForEmail(data.message) : undefined,
   };
 }
 
 /**
- * Creates FormData for Web3Forms submission
+ * Resolves the electrical setup value to its human-readable label
  */
-export function createFormData(
+function getElectricalLabel(value: string): string {
+  const option = ELECTRICAL_OPTIONS.find((o) => o.value === value);
+  return option ? option.label : value;
+}
+
+/**
+ * Creates a JSON payload for Web3Forms submission.
+ * Uses JSON with explicit Content-Type to ensure proper UTF-8 encoding
+ * for Norwegian characters in field names and values.
+ */
+export function createSubmissionPayload(
   data: ContactFormData | NeedsAssessmentFormData,
   options: SubmissionOptions = {}
-): FormData {
+): Record<string, string> {
   const sanitized = sanitizeContactData(data);
-  const formData = new FormData();
 
-  // Contact fields
-  formData.append("Navn", sanitized.name);
-  formData.append("E-post", sanitized.email);
-  if (sanitized.phone) {
-    formData.append("Telefonnr.", sanitized.phone);
-  }
-  if (sanitized.message) {
-    formData.append("Melding", sanitized.message);
-  }
-
-  // Web3Forms required fields
-  formData.append("access_key", WEB3FORMS_ACCESS_KEY);
-  formData.append("from_name", "COAX nettside");
-  formData.append("replyto", sanitizeEmailHeader(sanitized.email));
-  
-  // Subject line
   const subject =
     options.subject ||
     `${sanitized.name} har sendt en forespørsel via COAX.no`;
-  formData.append("subject", sanitizeEmailHeader(subject));
-  
-  formData.append("botcheck", "");
+
+  const payload: Record<string, string> = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    from_name: "COAX nettside",
+    replyto: sanitizeEmailHeader(sanitized.email),
+    subject: sanitizeEmailHeader(subject),
+    botcheck: "",
+    Navn: sanitized.name,
+    "E-post": sanitized.email,
+  };
+
+  if (sanitized.phone) {
+    payload["Telefonnr."] = sanitized.phone;
+  }
+  if (sanitized.message) {
+    payload["Melding"] = sanitized.message;
+  }
 
   // Add assessment-specific fields
   if (options.formType === "needs_assessment") {
     const assessmentData = data as NeedsAssessmentFormData;
-    
-    formData.append("Type", "Behovsvurdering");
-    
+
+    payload["Type"] = "Behovsvurdering";
+
     if (assessmentData.applicationArea?.length) {
-      formData.append(
-        "Anvendelsesområde",
-        JSON.stringify(assessmentData.applicationArea)
-      );
+      payload["Anvendelsesomraade"] = assessmentData.applicationArea.join(", ");
     }
     if (assessmentData.applicationAreaOther) {
-      formData.append(
-        "Anvendelsesområde (annet)",
-        sanitizeText(assessmentData.applicationAreaOther)
+      payload["Anvendelsesomraade (annet)"] = sanitizeForEmail(
+        assessmentData.applicationAreaOther
       );
-    }
-    
-    if (assessmentData.electricalSetup) {
-      formData.append("Elektrisk oppsett", assessmentData.electricalSetup);
     }
 
-    
+    if (assessmentData.electricalSetup) {
+      payload["Elektrisk oppsett"] = getElectricalLabel(
+        assessmentData.electricalSetup
+      );
+    }
+
     if (assessmentData.waterFlow) {
-      formData.append("Vannstrømbehov", assessmentData.waterFlow);
+      payload["Vannstrombehov"] = assessmentData.waterFlow;
     }
     if (assessmentData.waterFlowCustom) {
-      formData.append(
-        "water_flow_custom",
-        sanitizeText(assessmentData.waterFlowCustom)
+      payload["Vannstrom (egendefinert)"] = sanitizeForEmail(
+        assessmentData.waterFlowCustom
       );
     }
-    
+
     if (assessmentData.usagePoints?.length) {
-      formData.append(
-        "Brukspunkter",
-        JSON.stringify(assessmentData.usagePoints)
-      );
+      payload["Brukspunkter"] = assessmentData.usagePoints.join(", ");
     }
     if (assessmentData.usagePointsOther) {
-      formData.append(
-        "Brukspunkter (annet)",
-        sanitizeText(assessmentData.usagePointsOther)
+      payload["Brukspunkter (annet)"] = sanitizeForEmail(
+        assessmentData.usagePointsOther
       );
     }
-    
+
     if (assessmentData.comments) {
-      formData.append("Tilleggskommentar", sanitizeText(assessmentData.comments));
+      payload["Tilleggskommentar"] = sanitizeForEmail(assessmentData.comments);
     }
   }
 
-  return formData;
+  return payload;
 }
 
 /**
- * Submits form data to Web3Forms
+ * Submits form data to Web3Forms as JSON with proper UTF-8 encoding
  */
 export async function submitToWeb3Forms(
-  formData: FormData
-): Promise<{ success: boolean; message?: string }> {
+  payload: Record<string, string>
+): Promise<{ success: boolean; message?: string; quotaExceeded?: boolean }> {
   try {
     const response = await fetch(WEB3FORMS_URL, {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(payload),
     });
 
+    if (response.status === 429) {
+      return { success: false, quotaExceeded: true };
+    }
+
     const result = await response.json();
+
+    const isQuotaError =
+      !result.success &&
+      typeof result.message === "string" &&
+      /quota|limit|exceeded|too many/i.test(result.message);
+
     return {
       success: result.success === true,
       message: result.message,
+      quotaExceeded: isQuotaError,
     };
   } catch (error) {
     console.error("Form submission error:", error);
@@ -165,3 +177,6 @@ export async function submitToWeb3Forms(
   }
 }
 
+export const QUOTA_EXCEEDED_TITLE = "Skjemaet er midlertidig utilgjengelig";
+export const QUOTA_EXCEEDED_DESCRIPTION =
+  "Vi har mottatt mange henvendelser. Kontakt oss direkte på post@coax.no eller ring 977 32 838.";

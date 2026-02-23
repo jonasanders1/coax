@@ -21,7 +21,7 @@ export const benefits: Benefit[] = [
   {
     icon: Zap,
     title: "Energieffektiv Vannvarmer",
-    text: "COAX varmer vannet i det du åpner kranen – uten standby-forbruk eller varmetap fra tank. Vannet er varmt i løpet av 2–3 sekunder, med opptil 99 % virkningsgrad. Det gir lavere energibruk og lavere strømregning.",
+    text: "COAX er kun påslått de sekundene og minuttene det tappes varmtvann. Vår moderne løsnig, med opptil 98 % virkningsgrad, gir har et vesentlig lavere og helt nøyaktig forbruk av strøm, vann og avløp.",
   },
   {
     icon: Leaf,

@@ -112,3 +112,16 @@ export function normalizeWhitespace(input: string): string {
   return input.trim().replace(/\s+/g, " ");
 }
 
+/**
+ * Sanitizes text for use in email body content.
+ * Strips HTML tags and dangerous patterns without HTML-encoding regular characters.
+ */
+export function sanitizeForEmail(input: string): string {
+  if (!input) return "";
+
+  return input
+    .replace(/<[^>]*>/g, "") // Strip HTML tags
+    .replace(/[\r\n]{3,}/g, "\n\n") // Collapse excessive newlines
+    .trim();
+}
+

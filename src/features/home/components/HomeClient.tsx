@@ -16,7 +16,7 @@ import {
   CarouselIndicators,
   CarouselApi,
 } from "@/shared/components/ui/carousel";
-import { CalculatorIcon, PackageIcon } from "lucide-react";
+import { CalculatorIcon, PackageIcon, ClipboardList } from "lucide-react";
 import heroImage from "@/assets/hero-water-heater.png";
 import Image from "next/image";
 import { LazyMotion, domAnimation, m } from "framer-motion";
@@ -193,7 +193,8 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                   : {}
               }
             >
-              Spar optil 50% på strømregningen med energieffektive vannvarmere som
+
+              Spar optil 50% på kostneden på varmtvannet med energieffektive vannvarmere som
               gir varmtvann på sekundet - helt uten lagringstank!
             </m.p>
             <m.div
@@ -265,6 +266,10 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
         {/* Benefits Section */}
         <section className="py-20 md:py-32 bg-muted">
           <div className="container  mx-auto px-4">
+            <SectionTitle
+              title="Hvorfor velge COAX?"
+              text="COAX varmer vannet i det du åpner kranen – uten standby-forbruk eller varmetap fra tank."
+            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {benefits.map((b) => {
                 const Icon = b.icon;
@@ -325,7 +330,7 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               />
             </div>
 
-            <blockquote className="border-l-4 border-primary pl-7 p-4 mt-8">
+            <blockquote className="border-l-4 border-primary pl-7 p-4 mt-8 max-w-2xl">
               <div className="flex flex-col gap-4 items-start">
                 <div className="flex flex-col gap-2">
                   <h3 className="text-xl md:text-2xl font-bold">
@@ -443,7 +448,7 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               </Carousel>
             </div>
 
-            <blockquote className="border-l-4 border-primary pl-7 p-4 mt-8">
+            {/* <blockquote className="border-l-4 border-primary pl-7 p-4 mt-8">
               <div className="flex flex-col gap-4 items-start">
                 <div className="flex flex-col gap-2">
                   <h3 className="text-2xl md:text-3xl font-bold">
@@ -467,6 +472,35 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                       aria-hidden="true"
                     />
                     Gå til Bøttemetoden
+                  </Link>
+                </Button>
+              </div>
+            </blockquote> */}
+
+            <blockquote className="border-l-4 border-primary pl-7 p-4 mt-8 max-w-3xl">
+              <div className="flex flex-col gap-4 items-start">
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-2xl md:text-3xl font-bold">
+                    Usikker på hvilken COAX som passer deg best?
+                  </h3>
+                  <p>
+                    COAX er fleksibel og dekker de fleste behov i hjemmet. Svar på noen raske spørsmål om ditt forbruk og behov, så guider vi deg til den perfekte løsningen – enkelt og effektivt!
+                  </p>
+
+                </div>
+                <Button
+                  asChild
+                  size="lg"
+                  className="text-md px-8 font-normal shadow-md w-full md:w-auto"
+                  style={{ background: "var(--gradient-primary)" }}
+                  aria-label="Start behovsvurdering for å finne riktig COAX-løsning"
+                >
+                  <Link href="/kontakt">
+                    <ClipboardList
+                      className="w-5 h-5 mr-2"
+                      aria-hidden="true"
+                    />
+                    Start behovsvurdering
                   </Link>
                 </Button>
               </div>

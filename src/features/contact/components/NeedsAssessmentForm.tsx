@@ -17,8 +17,10 @@ import ContactFields from "@/features/contact/components/ContactFields";
 import FilterSelect from "@/features/contact/components/FilterSelect";
 import NeedsAssessmentFormHeader from "@/features/contact/components/NeedsAssessmentFormHeader";
 import {
-  createFormData,
+  createSubmissionPayload,
   submitToWeb3Forms,
+  QUOTA_EXCEEDED_TITLE,
+  QUOTA_EXCEEDED_DESCRIPTION,
   type NeedsAssessmentFormData,
 } from "@/features/contact/utils/formSubmission";
 import {
@@ -144,12 +146,12 @@ export default function NeedsAssessmentForm() {
     setIsSubmitting(true);
 
     try {
-      const data = createFormData(formData, {
+      const payload = createSubmissionPayload(formData, {
         formType: "needs_assessment",
         subject: `Behovsvurdering fra ${formData.name} via COAX.no`,
       });
 
-      const result = await submitToWeb3Forms(data);
+      const result = await submitToWeb3Forms(payload);
 
       if (result.success) {
         toast({
@@ -176,6 +178,13 @@ export default function NeedsAssessmentForm() {
         setCurrentStep(1);
 
         router.push("/takk");
+      } else if (result.quotaExceeded) {
+        toast({
+          title: QUOTA_EXCEEDED_TITLE,
+          description: QUOTA_EXCEEDED_DESCRIPTION,
+          variant: "destructive",
+          duration: Infinity,
+        });
       } else {
         toast({
           title: "Oi! Noe gikk galt",

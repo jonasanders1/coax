@@ -13,8 +13,10 @@ import { isValidEmail, isValidPhone } from "@/shared/utils/inputValidation";
 import { useFormInput } from "@/hooks/useFormInput";
 import ContactFields from "@/features/contact/components/ContactFields";
 import {
-  createFormData,
+  createSubmissionPayload,
   submitToWeb3Forms,
+  QUOTA_EXCEEDED_TITLE,
+  QUOTA_EXCEEDED_DESCRIPTION,
   type ContactFormData,
 } from "@/features/contact/utils/formSubmission";
 
@@ -70,12 +72,12 @@ export default function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      const data = createFormData(formData, {
+      const payload = createSubmissionPayload(formData, {
         formType: "general",
         subject: `${formData.name} har sendt en forespørsel via COAX.no`,
       });
 
-      const result = await submitToWeb3Forms(data);
+      const result = await submitToWeb3Forms(payload);
 
       if (result.success) {
         toast({
@@ -88,6 +90,13 @@ export default function ContactForm() {
         setFormData({ name: "", email: "", phone: "", message: "" });
 
         router.push("/takk");
+      } else if (result.quotaExceeded) {
+        toast({
+          title: QUOTA_EXCEEDED_TITLE,
+          description: QUOTA_EXCEEDED_DESCRIPTION,
+          variant: "destructive",
+          duration: Infinity,
+        });
       } else {
         toast({
           title: "Oi! Noe gikk galt",

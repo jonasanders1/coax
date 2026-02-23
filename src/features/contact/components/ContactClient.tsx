@@ -17,16 +17,9 @@ import {
   LocalBusinessSchema,
 } from "@/shared/components/common/StructuredData";
 
-import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
+// import { useChatBot } from "@/features/chatbot/hooks/useChatBot";
 
 const FORM_OPTIONS = [
-  {
-    value: "general" as const,
-    title: "Generell forespørsel",
-    description:
-      "Har du et spørsmål, eller ønsker du et uforpliktende tilbud? Send oss en melding.",
-    icon: Mail,
-  },
   {
     value: "needs" as const,
     title: "Behovsvurdering",
@@ -34,11 +27,18 @@ const FORM_OPTIONS = [
       "Usikker på hva du trenger? Svar på noen enkle spørsmål, så hjelper vi deg videre.",
     icon: ClipboardList,
   },
+  {
+    value: "general" as const,
+    title: "Generell forespørsel",
+    description:
+      "Har du et spørsmål, eller ønsker du et uforpliktende tilbud? Send oss en melding.",
+    icon: Mail,
+  },
 ];
 
 const ContactClient = () => {
-  const [formType, setFormType] = useState<"general" | "needs" | null>(null);
-  const { openChat } = useChatBot();
+  const [formType, setFormType] = useState<"general" | "needs">("needs");
+  // const { openChat } = useChatBot();
   return (
     <div className="min-h-screen pt-24 animate-fade-in-up">
       <StructuredData data={LocalBusinessSchema()} />
