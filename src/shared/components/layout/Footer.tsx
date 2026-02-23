@@ -50,15 +50,6 @@ const Footer = () => {
                 <HelpCircle className="h-4 w-4" aria-hidden="true" />
                 FAQ
               </Link>
-              <button
-                className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-2 justify-center md:justify-start"
-                onClick={() => {
-                  openChat();
-                }}
-              >
-                <MessageCircle className="h-4 w-4" />
-                COAX-AI
-              </button>
             </nav>
           </div>
 
