@@ -25,22 +25,22 @@ export const APPLICATION_AREAS: string[] = [
 ];
 
 export const ELECTRICAL_OPTIONS: SelectOption[] = [
-  { value: "1-faset-25A-230V", label: "1-faset, 25A, med 230V", description: "ca. 2 l/min" },
-  { value: "1-faset-32A-230V", label: "1-faset, 32A, med 230V", description: "ca. 3 l/min" },
-  { value: "1-faset-40A-230V", label: "1-faset, 40A, med 230V", description: "ca. 3 l/min" },
-  { value: "1-faset-50A-230V", label: "1-faset, 50A, med 230V", description: "ca. 4 l/min" },
-  { value: "1-faset-63A-230V", label: "1-faset, 63A, med 230V", description: "ca. 5 l/min" },
-  { value: "3-faset-25A-230V", label: "3-faset, 25A, med 230V", description: "ca. 4 l/min" },
-  { value: "3-faset-32A-230V", label: "3-faset, 32A, med 230V", description: "ca. 5 l/min" },
-  { value: "3-faset-40A-230V", label: "3-faset, 40A, med 230V", description: "ca. 6 l/min" },
-  { value: "3-faset-50A-230V", label: "3-faset, 50A, med 230V", description: "ca. 7 l/min" },
-  { value: "3-faset-63A-230V", label: "3-faset, 63A, med 230V", description: "ca. 9 l/min" },
-  { value: "3x20A-400V", label: "3-faset, 20A, med 400V", description: "ca. 6 l/min" },
-  { value: "3x25A-400V", label: "3-faset, 25A, med 400V", description: "ca. 6 l/min" },
-  { value: "3x32A-400V", label: "3-faset, 32A, med 400V", description: "ca. 7 l/min" },
-  { value: "3x40A-400V", label: "3-faset, 40A, med 400V", description: "ca. 9 l/min" },
-  { value: "3x50A-400V", label: "3-faset, 50A, med 400V", description: "ca. 12 l/min" },
-  { value: "3x63A-400V", label: "3-faset, 63A, med 400V", description: "ca. 13 l/min" },
+  { value: "1-faset-25A-230V", label: "1-faset, 25A, med 230V" },
+  { value: "1-faset-32A-230V", label: "1-faset, 32A, med 230V" },
+  { value: "1-faset-40A-230V", label: "1-faset, 40A, med 230V" },
+  { value: "1-faset-50A-230V", label: "1-faset, 50A, med 230V" },
+  { value: "1-faset-63A-230V", label: "1-faset, 63A, med 230V" },
+  { value: "3-faset-25A-230V", label: "3-faset, 25A, med 230V" },
+  { value: "3-faset-32A-230V", label: "3-faset, 32A, med 230V" },
+  { value: "3-faset-40A-230V", label: "3-faset, 40A, med 230V" },
+  { value: "3-faset-50A-230V", label: "3-faset, 50A, med 230V" },
+  { value: "3-faset-63A-230V", label: "3-faset, 63A, med 230V" },
+  { value: "3x20A-400V", label: "3-faset, 20A, med 400V" },
+  { value: "3x25A-400V", label: "3-faset, 25A, med 400V" },
+  { value: "3x32A-400V", label: "3-faset, 32A, med 400V" },
+  { value: "3x40A-400V", label: "3-faset, 40A, med 400V" },
+  { value: "3x50A-400V", label: "3-faset, 50A, med 400V" },
+  { value: "3x63A-400V", label: "3-faset, 63A, med 400V" },
 ];
 
 export const WATER_FLOW_OPTIONS: SelectOption[] = [
