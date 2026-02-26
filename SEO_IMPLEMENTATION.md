@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 ```
 
 **Key Features:**
-- **metadataBase**: Base URL for all relative URLs (`https://coax.jonasanders1.com`)
+- **metadataBase**: Base URL for all relative URLs (`https://coax.no`)
 - **Default title**: "COAX – Effektive tankløse vannvarmere"
 - **Default description**: Optimized Norwegian description
 - **Keywords**: Array of relevant Norwegian keywords
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 The base URL is centralized in `src/config/site.ts`:
 
 ```typescript
-export const siteUrl = "https://coax.jonasanders1.com";
+export const siteUrl = "https://coax.no";
 ```
 
 This ensures consistent URL generation across the application.
@@ -160,7 +160,7 @@ Routes are defined in `src/config/sitemapRoutes.json`:
 - Product routes are manually added
 - Last modified date is set to current date
 
-**Access:** `https://coax.jonasanders1.com/sitemap.xml`
+**Access:** `https://coax.no/sitemap.xml`
 
 ---
 
@@ -192,7 +192,7 @@ export default function robots(): MetadataRoute.Robots {
 - API routes (`/api/`)
 - Thank you page (`/takk`)
 
-**Access:** `https://coax.jonasanders1.com/robots.txt`
+**Access:** `https://coax.no/robots.txt`
 
 ---
 

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import sitemapRoutes from "@/config/sitemapRoutes.json";
 
-const BASE_URL = "https://coax.jonasanders1.com";
+const BASE_URL = "https://coax.no";
 
 const UNIQUE_ROUTES = Array.from(new Set(["/", ...sitemapRoutes]));
 
@@ -13,4 +13,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
   }));
 }
-

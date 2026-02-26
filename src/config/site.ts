@@ -1,4 +1,4 @@
-export const siteUrl = "https://coax.jonasanders1.com";
+export const siteUrl = "https://coax.no";
 
 export const absoluteUrl = (path: string) => {
   try {
