@@ -21,7 +21,7 @@ export const benefits: Benefit[] = [
   {
     icon: Zap,
     title: "Energieffektiv Vannvarmer",
-    text: "COAX er kun påslått de sekundene og minuttene det tappes varmtvann. Vår moderne løsnig, med opptil 98 % virkningsgrad, gir har et vesentlig lavere og helt nøyaktig forbruk av strøm, vann og avløp.",
+    text: "COAX er kun påslått de sekundene og minuttene det tappes varmtvann. Vår moderne løsnig, med opptil 98 % virkningsgrad, gir et vesentlig lavere og helt nøyaktig forbruk av strøm, vann og avløp.",
   },
   {
     icon: Leaf,
