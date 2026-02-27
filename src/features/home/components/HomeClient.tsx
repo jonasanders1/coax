@@ -62,10 +62,7 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
   const [hasAnimated, setHasAnimated] = useState(false);
   const [api, setApi] = React.useState<CarouselApi>();
   const autoScrollIntervalRef = React.useRef<NodeJS.Timeout | null>(null);
-  const {
-    fetchFaqs,
-    fetchProducts,
-  } = useAppContext();
+  const { fetchFaqs, fetchProducts } = useAppContext();
 
   useEffect(() => {
     setHasAnimated(true);
@@ -144,14 +141,14 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
             animate={
               hasAnimated
                 ? {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: ANIMATION_DURATION,
-                    ease: EASING_CURVE,
-                    delay: ANIMATION_DELAY_INITIAL,
-                  },
-                }
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: ANIMATION_DURATION,
+                      ease: EASING_CURVE,
+                      delay: ANIMATION_DELAY_INITIAL,
+                    },
+                  }
                 : {}
             }
             className="container mx-auto px-4 py-24 text-center"
@@ -162,19 +159,20 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               animate={
                 hasAnimated
                   ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_HERO,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_HERO,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
                   : {}
               }
             >
               {/* Spar strøm, plass, vann og miljø! */}
-              Spar strøm, plass, vann og miljø med morderne vannvarming – helt uten tank!
+              Spar strøm, plass, vann og miljø med morderne vannvarming – helt
+              uten tank!
             </m.h1>
             <m.p
               className="text-base md:text-xl text-foreground mb-8 max-w-2xl mx-auto"
@@ -182,20 +180,20 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               animate={
                 hasAnimated
                   ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_SUBTITLE,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_SUBTITLE,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
                   : {}
               }
             >
-
-              Spar optil 50% på kostneden på varmtvannet med energieffektive vannvarmere som
-              gir varmtvann på sekundet - helt uten lagringstank!
+              Spar opptil 50% på kostnaden på varmtvannet med energieffektive
+              vannvarmere som gir varmtvann på sekundet - helt uten
+              lagringstank!
             </m.p>
             <m.div
               className="flex flex-col sm:flex-row gap-4 justify-center"
@@ -203,14 +201,14 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               animate={
                 hasAnimated
                   ? {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      delay: ANIMATION_DELAY_BUTTONS,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        delay: ANIMATION_DELAY_BUTTONS,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
                   : {}
               }
             >
@@ -245,13 +243,13 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
               animate={
                 hasAnimated
                   ? {
-                    opacity: 1,
-                    transition: {
-                      delay: ANIMATION_DELAY_BUTTONS + 0.2,
-                      duration: ANIMATION_DURATION,
-                      ease: EASING_CURVE,
-                    },
-                  }
+                      opacity: 1,
+                      transition: {
+                        delay: ANIMATION_DELAY_BUTTONS + 0.2,
+                        duration: ANIMATION_DURATION,
+                        ease: EASING_CURVE,
+                      },
+                    }
                   : {}
               }
               className="mt-8 text-sm text-muted-foreground"
@@ -275,7 +273,7 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                 const Icon = b.icon;
                 // Extract number from title for badge
                 const numberMatch = b.title.match(
-                  /(\d+(?:-\d+)?%)|(\d+(?:-\d+)?\s*m²)/
+                  /(\d+(?:-\d+)?%)|(\d+(?:-\d+)?\s*m²)/,
                 );
                 const numberBadge = numberMatch ? numberMatch[0] : null;
 
@@ -337,9 +335,10 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                     Hvor mye kan du spare?
                   </h3>
                   <p>
-                    Bruk vår forbrukskalkulator for å se hvor mye du kan spare med
-                    COAX varmtvannsbereder. Sammenlign strømforbruk, vannforbruk
-                    og årlige kostnader med konvensjonell varmtvannsbereder.
+                    Bruk vår forbrukskalkulator for å se hvor mye du kan spare
+                    med COAX varmtvannsbereder. Sammenlign strømforbruk,
+                    vannforbruk og årlige kostnader med konvensjonell
+                    varmtvannsbereder.
                   </p>{" "}
                 </div>
                 <Button
@@ -350,7 +349,10 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                   aria-label="Gå til forbrukskalkulator for å beregne din besparelse"
                 >
                   <Link href="/kalkulator">
-                    <CalculatorIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+                    <CalculatorIcon
+                      className="w-5 h-5 mr-2"
+                      aria-hidden="true"
+                    />
                     Gå til forbrukskalkulator
                   </Link>
                 </Button>
@@ -369,10 +371,10 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
             <div className="space-y-4 mb-12 max-w-6xl mx-auto">
               <div className="text-muted-foreground">
                 COAX vannvarmere bruker samme effektive varmeprinsipp i alle
-                modeller, men leveres i ulike watteffekter og for både 1-faset og
-                3-faset (230/400 Volt). Det gjør det enkelt å velge riktig
-                kapasitet etter behov, fra små leiligheter til større boliger. Med
-                direkte vannoppvarming uten tank får du raskt og stabilt
+                modeller, men leveres i ulike watteffekter og for både 1-faset
+                og 3-faset (230/400 Volt). Det gjør det enkelt å velge riktig
+                kapasitet etter behov, fra små leiligheter til større boliger.
+                Med direkte vannoppvarming uten tank får du raskt og stabilt
                 varmtvann, samtidig som energi- og vannforbruket reduseres.
                 Systemet gir presis kontroll over forbruk og er plassbesparende,
                 driftssikkert og skalerbart.
@@ -484,9 +486,10 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                     Usikker på hvilken COAX som passer deg best?
                   </h3>
                   <p>
-                    COAX er fleksibel og dekker de fleste behov i hjemmet. Svar på noen raske spørsmål om ditt forbruk og behov, så guider vi deg til den perfekte løsningen – enkelt og effektivt!
+                    COAX er fleksibel og dekker de fleste behov i hjemmet. Svar
+                    på noen raske spørsmål om ditt forbruk og behov, så guider
+                    vi deg til den perfekte løsningen – enkelt og effektivt!
                   </p>
-
                 </div>
                 <Button
                   asChild
@@ -540,14 +543,14 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                 animate={
                   hasAnimated
                     ? {
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                          delay: ANIMATION_DELAY_INITIAL,
+                          duration: ANIMATION_DURATION,
+                          ease: EASING_CURVE,
+                        },
+                      }
                     : {}
                 }
                 className="relative w-full rounded-xl overflow-hidden order-1"
@@ -576,14 +579,14 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                 animate={
                   hasAnimated
                     ? {
-                      opacity: 1,
-                      x: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL + 0.1,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                          delay: ANIMATION_DELAY_INITIAL + 0.1,
+                          duration: ANIMATION_DURATION,
+                          ease: EASING_CURVE,
+                        },
+                      }
                     : {}
                 }
                 className="order-2 md:order-2"
@@ -605,11 +608,11 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                     </ol>
                     <div className="mt-3 md:mt-4">
                       <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
-                        Dette gir tryggere bruk, høyere energieffektivitet, lavere
-                        driftskostnader, mer stabil temperatur og bedre
+                        Dette gir tryggere bruk, høyere energieffektivitet,
+                        lavere driftskostnader, mer stabil temperatur og bedre
                         varmeeffekt, samtidig som risikoen for tørrkoking
-                        reduseres, komponentenes levetid forlenges, og vedlikehold
-                        blir enklere.
+                        reduseres, komponentenes levetid forlenges, og
+                        vedlikehold blir enklere.
                       </p>
                     </div>
                   </CardContent>
@@ -622,14 +625,14 @@ const HomeClient = ({ openChatOnLoad }: HomeClientProps) => {
                 animate={
                   hasAnimated
                     ? {
-                      opacity: 1,
-                      y: 0,
-                      transition: {
-                        delay: ANIMATION_DELAY_INITIAL + 0.2,
-                        duration: ANIMATION_DURATION,
-                        ease: EASING_CURVE,
-                      },
-                    }
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: ANIMATION_DELAY_INITIAL + 0.2,
+                          duration: ANIMATION_DURATION,
+                          ease: EASING_CURVE,
+                        },
+                      }
                     : {}
                 }
                 className="col-span-1 md:col-span-2 order-3 mt-4 md:mt-0"
