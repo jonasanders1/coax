@@ -55,7 +55,7 @@ export const howItWorksSteps: HowItWorksStep[] = [
   {
     icon: CheckCircle,
     title: "Steg 3: Steng kranen",
-    text: "COAX slår seg av umiddelbart. Ingen unødig strømbruk – kun rent varmtvann når du trenger det.",
+    text: "COAX slår seg av umiddelbart. Ingen unødig strømbruk – kun friskt varmtvann når du trenger det.",
   },
 ];
 
@@ -114,7 +114,7 @@ export const comparison: Comparison = {
   coax: [
     { text: "Bruker kun strøm når vann tappes", icon: CheckCircle },
     { text: "Kompakt veggmontering", icon: CheckCircle },
-    { text: "Alltid friskt og rent vann", icon: CheckCircle },
+    { text: "Alltid friskt vann", icon: CheckCircle },
     { text: "Optil 60% lavere energibruk", icon: CheckCircle },
     { text: "Miljøvennlig og driftssikker", icon: CheckCircle },
     { text: "Ubegrenset varmtvannsmengde", icon: CheckCircle },
